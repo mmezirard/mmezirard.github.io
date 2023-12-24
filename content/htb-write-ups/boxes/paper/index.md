@@ -43,7 +43,7 @@ Well, we already know the IP we are targeting, so this phase is actually empty!
 
 ## TCP port scanning
 
-As usual, I'll initiate a port scan on Antique using a TCP SYN `nmap` scan to assess its attack surface.
+As usual, I'll initiate a port scan on Paper using a TCP SYN `nmap` scan to assess its attack surface.
 
 ```sh
 ❯ nmap -sS 10.10.11.143 -p-
