@@ -216,7 +216,7 @@ It looks we got access to a website meant to 'conduct multi functional printers 
 
 Before exploring the website, let's look up the technologies in use with the [Wappalyzer](https://www.wappalyzer.com/) extension.
 
-![IIS homepage Wappalyzer extension](iis-homepage-wappalyzer-extension.png)
+![IIS homepage Wappalyzer extension](iis-homepage-wappalyzer.png)
 
 So it confirms what we already discovered, but it also reveals that this website is using Bootstrap and libraries like jQuery.
 
@@ -568,7 +568,7 @@ Looks like there's a single network.
 Let's enumerate all local users.
 
 ```cmd
-C:\Users\tony\Documents> powershell -command "Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table"
+C:\Users\tony\Documents> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table"
 ```
 
 ```
@@ -584,7 +584,7 @@ It looks like there's only us, `tony`.
 Let's enumerate all local groups.
 
 ```cmd
-C:\Users\tony\Documents> powershell -command "Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096"
+C:\Users\tony\Documents> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096"
 ```
 
 ```
@@ -611,6 +611,44 @@ Users                               Users are prevented from making accidental o
 ```
 
 Looks classic.
+
+## User account information
+
+Let's gather more information about us.
+
+```cmd
+C:\Users\tony\Documents> net user tony
+```
+
+```
+User name                    tony
+Full Name
+Comment
+User's comment
+Country/region code          000 (System Default)
+Account active               Yes
+Account expires              Never
+
+Password last set            9/7/2021 10:49:20 PM
+Password expires             Never
+Password changeable          9/7/2021 10:49:20 PM
+Password required            Yes
+User may change password     Yes
+
+Workstations allowed         All
+Logon script
+User profile
+Home directory
+Last logon                   12/24/2023 4:20:52 PM
+
+Logon hours allowed          All
+
+Local Group Memberships      *Remote Management Use*Users
+Global Group memberships     *None
+<SNIP>
+```
+
+We don't belong to interesting groups.
 
 ## Home folder
 
