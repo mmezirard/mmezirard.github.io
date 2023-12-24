@@ -31,7 +31,7 @@ I like to maintain consistency in my workflow for every box, so before starting 
 
 I'll also strive to minimize the use of Metasploit, because it hides the complexity of some exploits, and prefer a more manual approach when it's not too much hassle to really understand what's happening on the machine.
 
-Throughout this write-up, my machine's IP address will be `10.10.14.5`, while the target machine's IP address will be `10.10.11.106`. The commands ran on my machine will be prefixed with `❯` for clarity, and if I ever need to transfer files or binaries to the target machine I'll always place them in the `/tmp/` or `C:\tmp\` folder to clean up more easily later on.
+Throughout this write-up, my machine's IP address will be `10.10.14.5`, while the target machine's IP address will be `10.10.11.106`. The commands ran on my machine will be prefixed with `❯` for clarity, and if I ever need to transfer files or binaries to the target machine I'll always place them in the `/tmp` or `C:\tmp` folder to clean up more easily later on.
 
 Now we should be ready to go!
 
@@ -172,7 +172,7 @@ Well, looks like it isn't! Let's move on to the web server we identified earlier
 
 ## IIS (port `80/tcp`)
 
-If we browse to `http://10.10.11.106`, we are asked for credentials, as expected from the scripts we ran earlier.
+If we browse to `http://10.10.11.106/`, we are asked for credentials, as expected from the scripts we ran earlier.
 
 The `http-auth` found a value associated with the `WWW-Authenticate` HTTP header... let's see it for ourselves.
 
@@ -181,7 +181,7 @@ The `http-auth` found a value associated with the `WWW-Authenticate` HTTP header
 Let's check out the HTTP response headers when we request the homepage.
 
 ```sh
-❯ curl http://10.10.11.106 -I
+❯ curl http://10.10.11.106/ -I
 ```
 
 ```
@@ -239,13 +239,13 @@ However, we don't see anything appearing. The only difference (as we already fou
 Let's crawl the website to see if I missed something.
 
 ```sh
-❯ katana -u http://10.10.11.106 -H "Authorization: Basic YWRtaW46YWRtaW4="
+❯ katana -u http://10.10.11.106/ -H "Authorization: Basic YWRtaW46YWRtaW4="
 ```
 
 ```
 <SNIP>
-[INF] Started standard crawling for => http://10.10.11.106
-http://10.10.11.106
+[INF] Started standard crawling for => http://10.10.11.106/
+http://10.10.11.106/
 http://10.10.11.106/fw_up.php
 http://10.10.11.106/index.php
 ```
