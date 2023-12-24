@@ -563,6 +563,20 @@ virbr0-nic: flags=4098<BROADCAST,MULTICAST>  mtu 1500
 
 Looks like there's multiple networks, but they're not interesting at the moment.
 
+## Hostname
+
+What is Paper's hostname?
+
+```sh
+[dwight@paper ~]$ hostname
+```
+
+```
+paper
+```
+
+Yeah I know, very surprising.
+
 ## Local users
 
 Let's enumerate all the local users that have a console.

@@ -340,7 +340,7 @@ Looks like there's a single network.
 
 ## Local users
 
-Let's enumerate all local users using an obfuscated version of `PowerView`.
+Let's enumerate all local users using `PowerView`.
 
 ```cmd
 C:\Users\kostas\Desktop> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table"
@@ -356,7 +356,7 @@ It looks like there's only us, `kostas`.
 
 ## Local groups
 
-Let's enumerate all local groups, once again using an obfuscated version of `PowerView`.
+Let's enumerate all local groups, once again using `PowerView`.
 
 ```cmd
 C:\Users\kostas\Desktop> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096"
@@ -428,6 +428,8 @@ Global Group memberships     *None
 <SNIP>
 ```
 
+We don't belong to interesting groups.
+
 ## Home folder
 
 If we check our home folder, we find the user flag on our Desktop. Let's retrieve its content.
@@ -498,7 +500,7 @@ There's nothing that we can leverage to elevate our privileges.
 
 ## Shares
 
-Let's list the SMB shares available on Optimum, using the version of `PowerView` as before.
+Let's list the SMB shares available on Optimum, using the same version of `PowerView` as before.
 
 ```cmd
 C:\Users\kostas\Desktop> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetShare | Select-Object Name, Remark | Format-Table"
