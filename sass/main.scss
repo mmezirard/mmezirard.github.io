@@ -1,0 +1,45 @@
+@import 'cards.scss';
+@import 'fonts.scss';
+@import "markdown/markdown.scss";
+@import 'page.scss';
+@import 'partials/partials.scss';
+@import 'variables.scss';
+
+:root {
+    --border-color: var(--bg-1);
+    --code-font: 'Jetbrains Mono Variable', monospace;
+    --header-font: 'Space Grotesk Variable', 'Helvetica', sans-serif;
+    --text-font: 'Jetbrains Mono Variable', monospace;
+}
+
+html {
+    background-color: var(--bg-0);
+    color: var(--text-0);
+    font-family: var(--text-font);
+    line-height: 1.6rem;
+}
+
+body {
+    margin: 0 auto;
+    max-width: 64rem;
+    padding: 0 2rem;
+    word-wrap: break-word;
+}
+
+@media all and (min-width: $breakpoint-sm) {
+    html {
+        font-size: 1.031rem;
+    }
+}
+
+@media all and (min-width: $breakpoint-md) {
+    html {
+        font-size: 1.063rem;
+    }
+}
+
+@media all and (min-width: $breakpoint-lg) {
+    html {
+        font-size: 1.125rem;
+    }
+}

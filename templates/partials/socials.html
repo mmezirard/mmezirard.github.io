@@ -1,0 +1,7 @@
+<div class="socials">
+    {% for social in config.extra.socials %}
+        <a class="social" href="{{social.url}}">
+            <img src="/icons/{{social.name}}.svg" alt="{{ social.name }}" />
+        </a>
+    {% endfor %}
+</div>

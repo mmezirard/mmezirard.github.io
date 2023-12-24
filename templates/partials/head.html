@@ -1,0 +1,37 @@
+<head>
+    <title>
+        {% if page.title %}
+            {{ page.title }} | {{ config.title }}
+        {% elif section.title %}
+            {{ section.title }} | {{ config.title }}
+        {% else %}
+            {{ config.title }}
+        {% endif %}
+    </title>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="/main.css"
+    />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>

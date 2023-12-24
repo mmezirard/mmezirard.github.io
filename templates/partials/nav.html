@@ -1,0 +1,11 @@
+<nav>
+    <ul>
+        {% for nav in config.extra.nav %}
+            <li>
+                <a href="{{nav.url}}">
+                    {{ nav.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</nav>

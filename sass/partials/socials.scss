@@ -1,0 +1,18 @@
+.socials {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+
+    a {
+        align-self: center;
+        border-bottom: unset;
+        display: flex;
+        flex-direction: row;
+        padding: 0.125rem;
+    }
+
+    .social {
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+}

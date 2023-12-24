@@ -1,0 +1,15 @@
+@import "syntax/light.scss";
+
+:root.light {
+    --bg-0: #fff;
+    --bg-1: #f2f2f2;
+    --bg-2: #fefefe;
+    --hover-color: white;
+    --primary-color: #ef5350;
+    --text-0: rgba(0, 0, 0, 87%);
+    --text-1: rgba(0, 0, 0, 66%);
+
+    .social:hover img {
+        filter: invert(1);
+    }
+}

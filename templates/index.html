@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {{ macros_page::h1(title=section.title) }}
+    {{ section.content | safe}}
+{% endblock content %}
