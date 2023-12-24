@@ -1,4 +1,11 @@
 <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    {% if page.description %}
+        <meta description="{{ page.description }}">
+    {% elif section.description %}
+        <meta description="{{ section.description }}">
+    {% endif %}
     <title>
         {% if page.title %}
             {{ page.title }} | {{ config.title }}
@@ -8,13 +15,8 @@
             {{ config.title }}
         {% endif %}
     </title>
-    <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link
-        rel="stylesheet"
-        type="text/css"
-        href="/main.css"
-    />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
     <link
         id="theme-light-style"
         rel="stylesheet"
