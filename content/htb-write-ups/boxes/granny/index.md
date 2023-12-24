@@ -267,7 +267,7 @@ Once again, it went off without a hitch!
 Now let's trigger our payload:
 
 ```sh
-❯ curl 'http://10.10.10.15/revshell.aspx' --silent
+❯ curl http://10.10.10.15/revshell.aspx -s
 ```
 
 And if we check our listener:
@@ -388,7 +388,7 @@ Looks like there's a single network.
 
 ## Local users
 
-Let's enumerate all local users.
+Let's enumerate all local users. Since Powershell is not available on Granny, I won't be able to use `PowerView` for that.
 
 ```cmd
 c:\windows\system32\inetsrv> net users
@@ -408,7 +408,7 @@ There's a user named `Lakis`! Let's keep that in mind as we continue our enumera
 
 ## Local groups
 
-Let's enumerate all local groups in the SAM database.
+Let's enumerate all local groups.
 
 ```cmd
 c:\windows\system32\inetsrv> net localgroup
@@ -437,7 +437,11 @@ Aliases for \\GRANNY
 The command completed successfully.
 ```
 
-Looks like really classic groups.
+Looks classic.
+
+## User account information
+
+We're not really a Windows user, so we can't gather more information about us.
 
 ## Home folder
 
@@ -445,7 +449,7 @@ Since we're a service account, we don't have a home folder. And if we try to acc
 
 ## Command history
 
-We can check for command history files, but we find nothing.
+We can check for command history files, but we find none.
 
 ## Tokens
 
