@@ -565,7 +565,7 @@ Looks like there's a single network.
 
 ## Local users
 
-Let's enumerate all local users.
+Let's enumerate all local users using `PowerView`.
 
 ```cmd
 C:\Users\tony\Documents> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table"
@@ -581,7 +581,7 @@ It looks like there's only us, `tony`.
 
 ## Local groups
 
-Let's enumerate all local groups.
+Let's enumerate all local groups, once again using `PowerView`.
 
 ```cmd
 C:\Users\tony\Documents> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096"
