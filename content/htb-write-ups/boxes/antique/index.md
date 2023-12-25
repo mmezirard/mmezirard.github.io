@@ -826,7 +826,7 @@ Alright, so now we should have access to the mysterious website from our own mac
 
 ### Browser
 
-Let's open up a browser and go to `http://127.0.0.1:631`.
+Let's open up a browser and go to `http://127.0.0.1:631/`.
 
 ![CUPS homepage](cups-homepage.png)
 
@@ -839,7 +839,7 @@ According to the homepage, 'CUPS is the standards-based, open source printing sy
 Let's check out the HTTP response headers when we request the homepage.
 
 ```sh
-❯ curl http://127.0.0.1:631 -I
+❯ curl http://127.0.0.1:631/ -I
 ```
 
 ```

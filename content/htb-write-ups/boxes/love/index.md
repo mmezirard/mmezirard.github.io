@@ -253,7 +253,7 @@ It doesn't work, but it leaks that it's not using MySQL, but MariaDB!
 
 ## Apache (port `80/tcp`)
 
-Let's browse to `http://love.htb` and see which webpage is served.
+Let's browse to `http://love.htb/` and see which webpage is served.
 
 ![Domain homepage](domain-homepage.png)
 
@@ -264,7 +264,7 @@ It looks like a login form to vote for something.
 Before exploring it further, let's check the HTTP response headers when we request the homepage.
 
 ```sh
-❯ curl -k http://love.htb -I
+❯ curl -k http://love.htb/ -I
 ```
 
 ```
@@ -316,13 +316,13 @@ I tried some SQLi payloads, but none were successful.
 Let's crawl the website to see there are hidden files and directories.
 
 ```sh
-❯ katana -u http://love.htb
+❯ katana -u http://love.htb/
 ```
 
 ```
 <SNIP>
-[INF] Started standard crawling for => http://love.htb
-http://love.htb
+[INF] Started standard crawling for => http://love.htb/
+http://love.htb/
 http://love.htb/bower_components/jquery-slimscroll/jquery.slimscroll.min.js
 http://love.htb/bower_components/fastclick/lib/fastclick.js
 http://love.htb/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js
@@ -494,7 +494,7 @@ If we search [ExploitDB](https://www.exploit-db.com/) for `Voting System`, we fi
 
 Let's not lose too much time on the `love.htb` domain, since we found in the [Scripts](#scripts) section a subdomain.
 
-Let's browse to `http://staging.love.htb` and see which web page is served.
+Let's browse to `http://staging.love.htb/` and see which web page is served.
 
 ![Subdomain homepage](subdomain-homepage.png)
 
@@ -552,7 +552,7 @@ Now we know that the PHP code fetches the file from the URL we enter and shows i
 
 We can try to access the web severs we found in the [TCP port scanning](#tcp-port-scanning) section.
 
-If we enter `https://127.0.0.1:443` as the file URL, it returns nothing. But if we enter `http://127.0.0.1:5000`...
+If we enter `https://127.0.0.1:443/` as the file URL, it returns nothing. But if we enter `http://127.0.0.1:5000/`...
 
 ![Retrieving the content of Apache server on port '5000/tcp' with SSRF](get-apache-server-port-5000-content-with-ssrf.png)
 

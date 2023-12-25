@@ -137,7 +137,7 @@ The connection closed!
 
 ### Browser
 
-The banner grabbing was unsuccessful, so let's assume that this is a web server. Let's browse to `http://10.10.10.11:8500`:
+The banner grabbing was unsuccessful, so let's assume that this is a web server. Let's browse to `http://10.10.10.11:8500/`:
 
 ![ColdFusion homepage](coldfusion-homepage.png)
 
@@ -148,7 +148,7 @@ It hanged for an eternity, but in the end it returned a web page! It looks like 
 Before investigating the content of this folder, let's check out the HTTP response headers when we request the homepage.
 
 ```sh
-❯ curl http://10.10.10.11:8500 -I
+❯ curl http://10.10.10.11:8500/ -I
 ```
 
 ```
