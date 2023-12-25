@@ -13,17 +13,50 @@
     top: 0;
 
     &[data-lang='cmd'] {
-        background-color: #9A73B5;
+        background-color: #9a73b5;
+    }
+
+    &[data-lang='css'] {
+        background-color: #3D5A80;
+    }
+
+    &[data-lang='html'] {
+        background-color: #fd5732;
+    }
+
+    &[data-lang='json'] {
+        background-color: #FFD700;
+    }
+
+    &[data-lang='lua'] {
+        background-color: #68a67d;
+    }
+
+    &[data-lang='php'] {
+        background-color: #4A4E4D;
+    }
+
+    &[data-lang='pl'] {
+        background-color: #6296b7;
     }
 
     &[data-lang='plain'] {
         background-color: #cccbc8;
     }
 
+    &[data-lang='py'] {
+        background-color: #00668c;
+    }
+
     &[data-lang='sh'] {
-        background-color: #26A69A;
+        background-color: #26a69a;
+    }
+
+    &[data-lang='sql'] {
+        background-color: #8B5D33;
     }
 }
+
 pre {
     font-family: var(--code-font);
     line-height: 1.4rem;

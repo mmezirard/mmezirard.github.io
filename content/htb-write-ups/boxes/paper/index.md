@@ -123,7 +123,7 @@ Let's explore them.
 
 ## Apache (port `80/tcp`)
 
-If we browse to `http://10.10.11.143`, we see this web page:
+If we browse to `http://10.10.11.143/`, we see this web page:
 
 ![Apache homepage](apache-homepage.png)
 
@@ -134,7 +134,7 @@ As we discovered in the last section, this website is the default installation p
 Let's check out the HTTP response headers when we request the homepage.
 
 ```sh
-❯ curl http://10.10.11.143 -I
+❯ curl http://10.10.11.143/ -I
 ```
 
 ```
@@ -167,7 +167,7 @@ Let's add this hostname at the end of our `/etc/hosts`:
 ❯ echo "10.10.11.143 office.paper" | tee -a /etc/hosts
 ```
 
-Now, let's browse to `http://office.paper`:
+Now, let's browse to `http://office.paper/`:
 
 ![Domain homepage](domain-homepage.png)
 
@@ -178,7 +178,7 @@ This time this is a real website!
 Once again, let's check out the HTTP response headers when we request the homepage.
 
 ```sh
-❯ curl http://office.paper -I
+❯ curl http://office.paper/ -I
 ```
 
 ```
@@ -222,7 +222,7 @@ That's a great news for us, since WordPress has a wealth of plugins vulnerable t
 Let's run `wpscan` to check for WordPress issues.
 
 ```sh
-❯ wpscan --url http://office.paper --api-token $TOKEN
+❯ wpscan --url http://office.paper/ --api-token $TOKEN
 ```
 
 ```
@@ -293,7 +293,7 @@ We discovered a new subdomain, so let's add it to our `/etc/hosts` file.
 ❯ echo "10.10.11.143 chat.office.paper" | tee -a /etc/hosts
 ```
 
-Now let's see what this subdomain holds by browsing to `http://chat.office.paper`.
+Now let's see what this subdomain holds by browsing to `http://chat.office.paper/`.
 
 ![Subdomain homepage](subdomain-homepage.png)
 

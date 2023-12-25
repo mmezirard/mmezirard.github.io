@@ -127,7 +127,7 @@ Let's move on to the exploration of the Apache web server first, since this is t
 
 ## Apache (port `80/tcp`)
 
-Let's browse to `http://10.10.11.116` and we see what this title-less web page is about.
+Let's browse to `http://10.10.11.116/` and we see what this title-less web page is about.
 
 ![Apache homepage](apache-homepage.png)
 
@@ -138,7 +138,7 @@ Hmm... it looks like a website to register for an event of some kind. Maybe it's
 Let's check out the HTTP response headers when we request the homepage.
 
 ```sh
-❯ curl http://10.10.11.116 -I
+❯ curl http://10.10.11.116/ -I
 ```
 
 ```
@@ -192,7 +192,7 @@ Unfortunately, this is what we get:
 
 None of the mathematical expressions we entered is computed, which means that it's not vulnerable to SSTI.
 
-### Inner workings
+### Under the hood 
 
 Let's look at the first request we sent using [Caido](https://caido.io/).
 
