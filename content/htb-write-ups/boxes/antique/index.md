@@ -456,31 +456,29 @@ All of these profiles are classic.
 Let's gather the list of connected NICs.
 
 ```sh
-lp@antique:~$ ifconfig -a
+lp@antique:~$ ip a
 ```
 
 ```
-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 10.10.11.107  netmask 255.255.254.0  broadcast 10.10.11.255
-        inet6 dead:beef::250:56ff:feb9:365d  prefixlen 64  scopeid 0x0<global>
-        inet6 fe80::250:56ff:feb9:365d  prefixlen 64  scopeid 0x20<link>
-        ether 00:50:56:b9:36:5d  txqueuelen 1000  (Ethernet)
-        RX packets 71  bytes 6732 (6.7 KB)
-        RX errors 0  dropped 5  overruns 0  frame 0
-        TX packets 92  bytes 6784 (6.7 KB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
-        inet 127.0.0.1  netmask 255.0.0.0
-        inet6 ::1  prefixlen 128  scopeid 0x10<host>
-        loop  txqueuelen 1000  (Local Loopback)
-        RX packets 2  bytes 176 (176.0 B)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 2  bytes 176 (176.0 B)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 00:50:56:b9:93:90 brd ff:ff:ff:ff:ff:ff
+    altname enp3s0
+    altname ens160
+    inet 10.10.11.107/23 brd 10.10.11.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 dead:beef::250:56ff:feb9:9390/64 scope global dynamic mngtmpaddr 
+       valid_lft 86397sec preferred_lft 14397sec
+    inet6 fe80::250:56ff:feb9:9390/64 scope link 
+       valid_lft forever preferred_lft forever
 ```
 
-Looks like there's a single network.
+So there's only the loopback interface and the Ethernet interface.
 
 ## Hostname
 

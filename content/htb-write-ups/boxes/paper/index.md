@@ -522,46 +522,35 @@ Okay, so there's probably none!
 Let's gather the list of connected NICs.
 
 ```sh
-[dwight@paper ~]$ ifconfig -a
+[dwight@paper ~]$ ip a
 ```
 
 ```
-eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 10.10.11.143  netmask 255.255.254.0  broadcast 10.10.11.255
-        inet6 dead:beef::250:56ff:feb9:4338  prefixlen 64  scopeid 0x0<global>
-        inet6 fe80::250:56ff:feb9:4338  prefixlen 64  scopeid 0x20<link>
-        ether 00:50:56:b9:43:38  txqueuelen 1000  (Ethernet)
-        RX packets 2464  bytes 279316 (272.7 KiB)
-        RX errors 0  dropped 1  overruns 0  frame 0
-        TX packets 1257  bytes 3105495 (2.9 MiB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
-        inet 127.0.0.1  netmask 255.0.0.0
-        inet6 ::1  prefixlen 128  scopeid 0x10<host>
-        loop  txqueuelen 1000  (Local Loopback)
-        RX packets 24096  bytes 10496156 (10.0 MiB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 24096  bytes 10496156 (10.0 MiB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-virbr0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
-        inet 192.168.122.1  netmask 255.255.255.0  broadcast 192.168.122.255
-        ether 52:54:00:9b:e7:f7  txqueuelen 1000  (Ethernet)
-        RX packets 0  bytes 0 (0.0 B)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 0  bytes 0 (0.0 B)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-virbr0-nic: flags=4098<BROADCAST,MULTICAST>  mtu 1500
-        ether 52:54:00:9b:e7:f7  txqueuelen 1000  (Ethernet)
-        RX packets 0  bytes 0 (0.0 B)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 0  bytes 0 (0.0 B)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 00:50:56:b9:6d:27 brd ff:ff:ff:ff:ff:ff
+    inet 10.10.11.143/23 brd 10.10.11.255 scope global noprefixroute eth0
+       valid_lft forever preferred_lft forever
+    inet6 dead:beef::250:56ff:feb9:6d27/64 scope global dynamic mngtmpaddr 
+       valid_lft 86400sec preferred_lft 14400sec
+    inet6 fe80::250:56ff:feb9:6d27/64 scope link 
+       valid_lft forever preferred_lft forever
+3: virbr0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default qlen 1000
+    link/ether 52:54:00:9b:e7:f7 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0
+       valid_lft forever preferred_lft forever
+4: virbr0-nic: <BROADCAST,MULTICAST> mtu 1500 qdisc fq_codel master virbr0 state DOWN group default qlen 1000
+    link/ether 52:54:00:9b:e7:f7 brd ff:ff:ff:ff:ff:ff
 ```
 
-Looks like there's multiple networks, but they're not interesting at the moment.
+So there's the loopback interface, the Ethernet interface, and the mysterious `virbr0` and `virbr0-nic` interfaces.
+
+If we serach online, we find that these interfaces are created by `libvirt`, and are used by VMs to connect to the outside network.
 
 ## Hostname
 
