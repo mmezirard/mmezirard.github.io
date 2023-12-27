@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let langCode = preElement.dataset.lang
 
         if (langCode === undefined) {
-            langCode = 'plain';
+            langCode = 'plain'
         }
 
         codeIndicator.dataset.lang = langCode
@@ -24,15 +24,16 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 const languageMapping = {
-    cmd: "CMD",
-    css: "CSS",
-    html: 'HTML',
-    json: 'JSON',
-    lua: 'LUA',
-    php: 'PHP',
-    pl: 'PERL',
-    plain: 'PLAINTEXT',
-    py: 'PYTHON',
-    sh: 'SHELL',
-    sql: 'SQL'
+    'c#': 'C#',
+    'cmd': 'CMD',
+    'css': 'CSS',
+    'html': 'HTML',
+    'json': 'JSON',
+    'lua': 'LUA',
+    'php': 'PHP',
+    'pl': 'PERL',
+    'plain': 'PLAINTEXT',
+    'py': 'PYTHON',
+    'sh': 'SHELL',
+    'sql': 'SQL',
 }

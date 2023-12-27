@@ -12,6 +12,10 @@
     right: 0;
     top: 0;
 
+    &[data-lang='c#'] {
+        background-color: #0D6E6E;
+    }
+
     &[data-lang='cmd'] {
         background-color: #9a73b5;
     }
