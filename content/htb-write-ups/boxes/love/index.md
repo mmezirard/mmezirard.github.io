@@ -365,6 +365,7 @@ Let's see if we can find unliked folders.
 ```
 
 ```
+<SNIP>
 [Status: 301, Size: 332, Words: 22, Lines: 10, Duration: 65ms]
 | URL | http://love.htb/includes
 | --> | http://love.htb/includes/
@@ -462,6 +463,7 @@ Let's see if we can find unliked folders.
 [Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 43ms]
 | URL | http://love.htb/aux
     * FUZZ: aux
+<SNIP>
 ```
 
 It gets a few hits. One of them is `admin`!

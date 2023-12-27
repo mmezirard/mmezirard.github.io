@@ -104,7 +104,7 @@ Let's explore it!
 
 ## HFS (port `80/tcp`)
 
-Let's browse to `http://10.10.10.8` and we see what we get.
+Let's browse to `http://10.10.10.8/` and we see what we get.
 
 ![HFS homepage](hfs-homepage.png)
 
@@ -117,7 +117,7 @@ At the bottom, there's also a 'Server Information' section indicating that this 
 Let's check out the HTTP response headers when we request the homepage.
 
 ```sh
-❯ curl http://10.10.10.8 -I
+❯ curl http://10.10.10.8/ -I
 ```
 
 ```

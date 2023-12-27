@@ -511,6 +511,8 @@ That's much better!
 
 # Local enumeration
 
+If we run `whoami`, we see that we got access as `www-data`.
+
 ## Distribution
 
 Let's see which distribution Validation is using.
