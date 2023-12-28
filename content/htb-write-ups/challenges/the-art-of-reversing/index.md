@@ -17,7 +17,7 @@ toc = true
 
 **Created by**: [Thiseas](https://app.hackthebox.com/users/93)
 
-**Description**: This is a program that generates product keys for a specific software brand. The input is the client username and the number of days that the sofware will remain active on the client. The output is the product key that client will use to activate the software package. We just have the following product key: `cathhtkeepaln-wymddd`. Could you find the corresponding username say A and the number of activation days say B given as input? The flag you need to enter must follow this format: HTB{AB}.
+**Description**: This is a program that generates product keys for a specific software brand. The input is the client username and the number of days that the sofware will remain active on the client. The output is the product key that client will use to activate the software package. We just have the following product key: `cathhtkeepaln-wymddd`. Could you find the corresponding username say `A` and the number of activation days say `B` given as input? The flag you need to enter must follow this format: `HTB{AB}`.
 
 # Setup
 
@@ -115,7 +115,7 @@ library
 mscoree.dll
 ```
 
-So this binary uses the `mscoree.dll` library, which provides the fundamental functions of the Microsoft.NET framework.
+So this binary uses the `mscoree.dll` library, which provides the fundamental functionalities for the Microsoft.NET framework.
 
 # Imports
 
@@ -219,10 +219,9 @@ If we read the challenge's description, we understand that we have to find the u
 
 # Decompilation
 
-Now that we have an of idea of how this .NET assembly behaves and of what its dependencies are, let's decompile it and explore it the revived version of [dnSpy](https://github.com/dnSpyEx/dnSpy). I'm going to load `TheArtOfReversing.exe` and focus on the `DotNetTwo` tab, since it contains the functions we're interested in.
+Now that we have an of idea of how this .NET assembly behaves and of what its dependencies are, let's decompile it and explore it using the revived version of [dnSpy](https://github.com/dnSpyEx/dnSpy). I'm going to load `TheArtOfReversing.exe` and focus on the `DotNetTwo` tab, since it contains the functions we're interested in.
 
 ## Components
-
 
 ![DotNetTwo tab](dotnettwo-tab.png)
 

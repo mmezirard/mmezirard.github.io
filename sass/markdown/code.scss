@@ -12,6 +12,14 @@
     right: 0;
     top: 0;
 
+    &[data-lang='asm'] {
+        background-color: #dd6236;
+    }
+
+    &[data-lang='c'] {
+        background-color: #2c2c2c;
+    }
+
     &[data-lang='c#'] {
         background-color: #0D6E6E;
     }

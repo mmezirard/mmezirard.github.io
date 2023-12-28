@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 const languageMapping = {
+    'asm': 'ASSEMBLER',
+    'c': 'C',
     'c#': 'C#',
     'cmd': 'CMD',
     'css': 'CSS',
