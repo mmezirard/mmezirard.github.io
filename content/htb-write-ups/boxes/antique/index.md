@@ -72,10 +72,6 @@ PORT   STATE SERVICE VERSION
 <SNIP>
 ```
 
-Alright, so `nmap` identified Telnet running on port `23/tcp`. Its fingerprint is unknown though, so we don't know its version.
-
-And that's all. No other open ports. So either there's some UDP open ports too that we didn't find because we only scanned TCP, or Telnet is our way in.
-
 ## Scripts
 
 Let's run `nmap`'s default scripts on this service to see if they can find additional information.
@@ -93,7 +89,7 @@ PORT   STATE SERVICE
 
 Unfortunately, `nmap`'s scans failed to uncover more information.
 
-Let's explore Telnet then!
+Let's explore Telnet then, since this is the only service using an open TCP port!
 
 ## Telnet (port `23/tcp`)
 

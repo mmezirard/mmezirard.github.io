@@ -74,8 +74,6 @@ Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
 
 Alright, so apparently Granny is running Windows.
 
-Granny only hosts an IIS web server on port `80/tcp`, so it eliminates any ambiguity about the route to take for establishing a foothold.
-
 ## Scripts
 
 Let's run `nmap`'s default scripts on this service to see if they can find additional information.

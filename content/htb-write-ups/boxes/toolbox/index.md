@@ -93,18 +93,6 @@ Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
 
 Alright, so `nmap` managed to determine that Toolbox is running Windows. That's good to know!
 
-It also found a wealth of open ports, but it's quite common for a Windows host.
-
-First of all, Toolbox hosts an FTP server on the standard port `21/tcp` using FileZilla.
-
-Furthermore, `nmap` identified that Toolbox is accepting connections over SSH and WinRM on the standard ports `22/tcp` and `5985/tcp`. This is seldom a good entry point, but it may come in handy later on to get a stable shell when we get credentials.
-
-Another open port is the port `135/tcp`, corresponding to MSRPC. We can use it to run a bunch of queries through the machine exposed RPCs, but it's seldom a good entry point: it's often used to enumerate the AD domain the machine is linked to. Maybe we'll come back to it if we find out that Love is actually linked to a domain.
-
-Speaking of SMB, it listens for connections on the standard port `445/tcp`.
-
-Last but not least, the port `443/tcp` is open, corresponding to the `ssl/http` service. It's actually used by Apache version `2.4.38`, corresponding to a... Debian host? But I thought that Tooblox was running Windows!
-
 ## Scripts
 
 Let's run `nmap`'s default scripts on these services to see if they can find additional information.
@@ -167,11 +155,28 @@ Let's add this subdomain and the corresponding domain to our hosts file.
 ❯ echo "10.10.10.236 megalogistic.com admin.megalogistic.com" | tee -a /etc/hosts
 ```
 
-Let's explore the FTP and SMB servers!
+Let's explore the FTP and SMB servers first!
 
 ## FTP (port `21/tcp`)
 
 Usually I would start with the exploration FTP server, but we already know that we can connect anonymously and that it hosts a `docker-toolbox.exe` file, so this would be pointless.
+
+### Known CVEs
+
+Just for good measure, let's check if FTP is vulnerable to known exploits.
+
+```sh
+❯ nmap -sS 10.10.10.236 -p 21 --script vuln
+```
+
+```
+<SNIP>
+PORT   STATE SERVICE
+21/tcp open  ftp
+<SNIP>
+```
+
+Nothing!
 
 ## SMB (port `445/tcp`)
 

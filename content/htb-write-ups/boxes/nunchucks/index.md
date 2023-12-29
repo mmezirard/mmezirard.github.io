@@ -78,12 +78,6 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Alright, so `nmap`  managed to determine that Nunchucks is running Linux, and the SSH version discloses that it might be Ubuntu. That's good to know!
 
-It also identified that Nunchucks is accepting connections over SSH on the standard port `22/tcp`. This is seldom a good entry point, but it may come in handy later on to get a stable shell when we get credentials.
-
-More interestingly, the ports `80/tcp` and `443/tcp` are open, respectively used by the `http` and `ssl/http` services. They are both running `nginx 1.18.0 (Ubuntu)`.
-
-The entry point into this box probably lies in one of these two services.
-
 ## Scripts
 
 Let's run `nmap`'s default scripts on these services to see if they can find additional information.

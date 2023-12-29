@@ -78,14 +78,6 @@ Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
 
 Alright, so `nmap` managed to determine that Access is running Windows. That's good to know!
 
-Aside from that, `nmap` found three open ports.
-
-First up, we have the port `21/tcp`, corresponding to FTP. I'll start the enumeration phase with this service, maybe we have access to interesting shares (although it's usually not the case).
-
-Next in line is `23/tcp`, which means that we can connect to the box over Telnet. Probably useful to get a shell once we obtain credentials.
-
-The last is `80/tcp`, used by a Microsoft IIS web server. This is likely the way to get a foothold, depending on whether FTP is successful or not.
-
 ## Scripts
 
 Let's run `nmap`'s default scripts on these services to see if they can find additional information.
@@ -374,9 +366,26 @@ John
 
 There's a lot of garbage, but we can clearly see a message from `john@megacorp.com` to `security@accesscontrolsystems.com`. Apparently, the password for the `security` account has been changed to `4Cc3ssC0ntr0ller`!
 
+### Known CVEs
+
+Just for good measure, let's check if FTP is vulnerable to known exploits.
+
+```sh
+❯ nmap -sS 10.10.10.98 -p 21 --script vuln
+```
+
+```
+<SNIP>
+PORT   STATE SERVICE
+21/tcp open  ftp
+<SNIP>
+```
+
+Nothing!
+
 # Foothold (Telnet)
 
-Let's try these new credentials with Telnet.
+Let's try the credentials we found to connect to Access over Telnet.
 
 ```sh
 ❯ telnet 10.10.10.98

@@ -104,24 +104,6 @@ Service Info: Hosts: www.example.com, LOVE, www.love.htb; OS: Windows; CPE: cpe:
 
 Alright, so `nmap` managed to determine that Love is running Windows. That's good to know!
 
-It also found a wealth of open ports, but it's quite common for a Windows host.
-
-First of all, the ports `80/tcp`, `443/tcp` and `5000/tcp` are all utilized by an Apache web server. According to the `nmap` scan results, the detected Apache version is `2.4.46`, and it operates with PHP version `7.3.27`. It also found out that this is the Windows x64 version, which gives us insights about Love's architecture! One of these web servers is likely our entry point into the box.
-
-Another open port is the port `135/tcp`, corresponding to MSRPC. We can use it to run a bunch of queries through the machine exposed RPCs, but it's seldom a good entry point: it's often used to enumerate the AD domain the machine is linked to. Maybe we'll come back to it if we find out that Love is actually linked to a domain.
-
-There's also the port `139/tcp`, used by the service `netbios-ssn`. There's not much to say about it, it's just a networking protocol used for communication between devices on a LAN. It's also used as a fallback for SMB in situations where more modern and efficient methods are not available.
-
-Speaking of SMB, it listens for connections on the standard port `445/tcp`. It looks like it corresponds to a version ranging from Windows 7 to Windows 10. Love's version is becoming clearer!
-
-Furthermore, the port `3306/tcp`, commonly used by MySQL, is listening for connections. It might be worth peeking into it.
-
-There's also a mysterious service on port `5040/tcp`, which `nmap` couldn't identify.
-
-More interestingly, the ports `5985/tcp` and `5986/tcp` are used by WinRM, so if we get credentials we'll have an easy shell.
-
-And finally, connections are being accepted on port `7680/tcp`, likely associated with `pando-pub`. I've encountered this service previously, and it proved to be useless, so I'll ignore it.
-
 ## Scripts
 
 Let's run `nmap`'s default scripts on these services to see if it finds something interesting.
@@ -358,7 +340,88 @@ If we search online, we find that `AdminLTE` is a Bootstrap dashboard template. 
 
 ### Directory fuzzing
 
-Let's see if we can find unliked folders.
+Let's see if we can find unliked files.
+
+```sh
+❯ ffuf -v -c -u http://love.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-files.txt -maxtime 60
+```
+
+```
+<SNIP>
+[Status: 200, Size: 4388, Words: 654, Lines: 126, Duration: 90ms]
+| URL | http://love.htb/index.php
+    * FUZZ: index.php
+
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 99ms]
+| URL | http://love.htb/login.php
+| --> | index.php
+    * FUZZ: login.php
+
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 43ms]
+| URL | http://love.htb/home.php
+| --> | index.php
+    * FUZZ: home.php
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 33ms]
+| URL | http://love.htb/.htaccess
+    * FUZZ: .htaccess
+
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 34ms]
+| URL | http://love.htb/logout.php
+| --> | index.php
+    * FUZZ: logout.php
+
+[Status: 200, Size: 4388, Words: 654, Lines: 126, Duration: 35ms]
+| URL | http://love.htb/.
+    * FUZZ: .
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 34ms]
+| URL | http://love.htb/.html
+    * FUZZ: .html
+
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 42ms]
+| URL | http://love.htb/preview.php
+| --> | index.php
+    * FUZZ: preview.php
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 33ms]
+| URL | http://love.htb/.htpasswd
+    * FUZZ: .htpasswd
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 37ms]
+| URL | http://love.htb/.htm
+    * FUZZ: .htm
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 34ms]
+| URL | http://love.htb/.htpasswds
+    * FUZZ: .htpasswds
+
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 41ms]
+| URL | http://love.htb/Login.php
+| --> | index.php
+    * FUZZ: Login.php
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 54ms]
+| URL | http://love.htb/.htgroup
+    * FUZZ: .htgroup
+
+[Status: 200, Size: 4388, Words: 654, Lines: 126, Duration: 39ms]
+| URL | http://love.htb/Index.php
+    * FUZZ: Index.php
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 34ms]
+| URL | http://love.htb/.htaccess.bak
+    * FUZZ: .htaccess.bak
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 73ms]
+| URL | http://love.htb/.htuser
+    * FUZZ: .htuser
+<SNIP>
+```
+
+The `login.php` is interesting, but as we've seen in [Under the hood](#under-the-hood) it's used to handle login.
+
+Let's look for directories now.
 
 ```sh
 ❯ ffuf -v -c -u http://love.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-directories.txt -maxtime 60

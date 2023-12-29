@@ -75,12 +75,6 @@ PORT    STATE SERVICE  VERSION
 <SNIP>
 ```
 
-Alright, so `nmap` found that Paper is accepting connections over SSH on the standard port `22/tcp`. This is seldom a good entry point, but it may come in handy later on to get a stable shell when we get credentials.
-
-It also found two other open ports related to Web services. The first one is `80/tcp`, used by the `http` service, and the second one is `443/tcp`, used this time by the `ssl/http` service.
-
-Interestingly, these two services are using `Apache httpd 2.4.37 ((centos) OpenSSL/1.1.1k mod_fcgid/2.3.9)`, so we can assucme that these are indeed web servers.
-
 ## Scripts
 
 Let's run `nmap`'s default scripts on this service to see if they can find additional information.

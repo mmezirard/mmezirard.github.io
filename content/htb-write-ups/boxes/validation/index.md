@@ -89,10 +89,6 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Okay, so `nmap` managed to identify Validation's OS: it's Linux, and the SSH service version suggests that the distribution is Ubuntu.
 
-First of all, we see that Traceback is accepting connections over SSH on the standard port `22/tcp`. This is seldom a good entry point, but it may come in handy later on to get a stable shell when we get credentials.
-
-We also notice that the ports `80/tcp`, `4566/tcp` and `8080/tcp` are used as web servers, as indicated by the `http` service. Apparently the first is using Apache and the other two are using Nginx.
-
 ## Scripts
 
 Let's run `nmap`'s default scripts on these services to see if they can find additional information.
@@ -119,11 +115,9 @@ PORT     STATE SERVICE
 
 Well, apparently `nmap` doesn't have much scripts to investigate these services.
 
-Let's start by exploring the web server.
-
 The output of these scripts is not really insightful, we only learned that the default web page on the Apache server lacks a title, while the Nginx server on port `8080/tcp` displays a title reading `502 Bad Gateway`. Unfortunately, `nmap` failed to retrieve the server title on port `4566/tcp`, but manual inspection reveals that this is `403 Forbidden`.
 
-Let's move on to the exploration of the Apache web server first, since this is the only one that doesn't have a page title referring to an error.
+Let's move on to the exploration of the Apache web server first, since this is the only one that doesn't have a page title evoking an error.
 
 ## Apache (port `80/tcp`)
 

@@ -73,16 +73,6 @@ PORT     STATE SERVICE    VERSION
 <SNIP>
 ```
 
-Okay, so apparently the mysterious port `7680/tcp` is open, and it may correspond to the `pando-pub` service. I didn't know what it was, so I searched online and found:
-
-> Pando was an application which was mainly aimed at sending (and receiving) files which would normally be too large to send via more "conventional" means. It used both peer-to-peer (BitTorrent protocol) and client-server architectures and was released for Windows and Mac OS X operating systems.
->
-> Pando shut down its servers and ceased business on August 31, 2013.
->
-> — [Wikipedia](https://en.wikipedia.org/wiki/Pando_(application))
-
-Buff is also hosting an Apache web server on port `8080/tcp`.
-
 ## Scripts
 
 Let's run `nmap`'s default scripts on these services to see if they can find additional information.
@@ -111,7 +101,7 @@ Let's browse to `http://10.10.10.198:8080/` and we see what we get.
 
 This looks like a website about fitness. This is probably why this box is named Buff.
 
-## HTTP headers
+### HTTP headers
 
 Let's check out the HTTP response headers when we request the homepage.
 
@@ -134,7 +124,7 @@ Content-Type: text/html; charset=UTF-8
 
 The `X-Powered-By` indicates that PHP version `7.4.6` is used. It also confirms what we already discovered thanks to the scans we ran ealier: Buff is running Apache version `2.4.43`.
 
-## Technology lookup
+### Technology lookup
 
 While we're at it, let's look up the technologies used by this website with the [Wappalyzer](https://www.wappalyzer.com/) extension.
 
@@ -142,7 +132,7 @@ While we're at it, let's look up the technologies used by this website with the 
 
 Surprisingly, it doesn't find the Apache technology. It does reveal that this website is using Bootstrap and libraries like jQuery though.
 
-## Exploration
+### Exploration
 
 If we browse the website, we see that we have access to several web pages aside from the 'Home' web page.
 

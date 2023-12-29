@@ -78,13 +78,7 @@ Service Info: Host: DRIVER; OS: Windows; CPE: cpe:/o:microsoft:windows
 <SNIP>
 ```
 
-Alright, so apparently Driver is running Windows, and the SMB service version suggests that it might be Windows 7.
-
-We see that Driver hosts an IIS web server on port `80/tcp` and accepts SMB connections on port `445/tcp`. This is likely our entry point inside the box.
-
-We could also use MSRPC on port `135/tcp` to run a bunch of queries through the machine exposed RPCs. But generally this is useful for querying information about AD, and we don't know whether Driver is linked to a domain or not yet, so this is pointless. Maybe we'll come back to it later.
-
-More interestingly, the port `5985/tcp` is open, which means that we can connect to Driver over WinRM. Let's keep that in mind, it will be handy if we get credentials.
+Alright, so apparently Driver is running Windows, and the SMB service version suggests that it might be a version of Windows ranging from 7 to 10.
 
 ## Scripts
 
@@ -283,7 +277,7 @@ Let's see if we can find the directory where the files are uploaded.
 <SNIP>
 ```
 
-What about files then?
+Nothing. But maybe there's unliked web pages?
 
 ```sh
 ❯ ffuf -v -c -u http://10.10.11.106/FUZZ -H "Authorization: Basic YWRtaW46YWRtaW4=" -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-files.txt -maxtime 60

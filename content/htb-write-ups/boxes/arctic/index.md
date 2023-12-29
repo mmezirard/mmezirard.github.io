@@ -78,24 +78,6 @@ Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
 
 Alright, so `nmap` managed to determine that Arctic is running Windows. That's good to know!
 
-Aside from that, `nmap` found three open ports.
-
-The first is `135/tcp` and corresponds to MSRPC. We can use it to run a bunch of queries through the machine exposed RPCs, but it's seldom a good entry point: it's often used to enumerate the AD domain the machine is linked to. Maybe we'll come back to it if we find out that Arctic is actually linked to a domain.
-
-The second is the port `8500/tcp`, which may or may not be used by the `fmtp` service. I never encountered this port nor this service, so I'll run a Google search and see what I get.
-
-I couldn't identify what the `fmtp` service was referring to. The results sometimes associate it with 'Flight Message Transfer Protocol', sometimes with 'File Multicast Transport Protocol', and even once with 'Family and Community Medicine Training Program'!
-
-But if I search for the standard services using the port `8500/tcp`, I find something interesting:
-
-> Port 8500 is commonly used for web-based applications and services, such as Adobe ColdFusion Server, a development platform that enables developers to create and deliver web-based applications. It can also be used for other web servers, such as Apache Tomcat.
->
-> — [TCP UDP Ports](https://tcp-udp-ports.com/port-8500.htm)
-
-This website also mentions that this port is officially associated with 'Flight Message Transfer Protocol', but unofficially it can conflict with other apps. So that's what `fmtp` actually corresponds to!
-
-The third and last open port is `49154/tcp`, and it's apparently also used by MSRPC, so I'm just going to ignore it.
-
 ## Scripts
 
 Let's run `nmap`'s default scripts on these services to see if they can find additional information.

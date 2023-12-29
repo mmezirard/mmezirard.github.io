@@ -74,14 +74,6 @@ Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
 
 Alright, so `nmap` managed to determine that Optimum is running Windows. That's good to know!
 
-Aside from that, `nmap` found a single open port: `80/tcp`, used by HttpFileServer.
-
-If we search online, we find:
-
-> HTTP File Server, otherwise known as HFS, is a free web server specifically designed for publishing and sharing files. The complete feature set differs from other web servers; it lacks some common features, like CGI, or even ability to run as a Windows service, but includes, for example, counting file downloads. It is even advised against using it as an ordinary web server.
->
-> — [Wikipedia](https://en.wikipedia.org/wiki/HTTP_File_Server)
-
 ## Scripts
 
 Let's run `nmap`'s default scripts on this service to see if they can find additional information.
