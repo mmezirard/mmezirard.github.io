@@ -25,7 +25,16 @@ I'll complete this challenge using a Linux VM. I'll create a `workspace` directo
 
 # Identification
 
-The challenge file is named `behindthescenes`, so we can infer that it's meant to be run on Linux. But let's confirm this by running `file` on it.
+```sh
+❯ tree -a "/workspace"
+```
+
+```
+/workspace
+└── behindthescenes
+```
+
+The challenge is comprised of a single file named `behindthescenes`, so we can infer that it's meant to be run on Linux. But let's confirm this by running `file` on it.
 
 ```sh
 ❯ file /workspace/behindthescenes
