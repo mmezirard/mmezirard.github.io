@@ -32,6 +32,8 @@ I'll complete this challenge mostly using a Windows VM, even though I prefer usi
 ```
 /workspace
 └── TheArtOfReversing.exe
+
+<SNIP>
 ```
 
 The challenge is comprised of a single file named `TheArtOfReversing.exe`, so we can infer that it's meant to be run on Windows. But let's confirm this by running `file` on it.

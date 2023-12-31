@@ -33,6 +33,8 @@ I'll complete this challenge using a Linux VM. I'll create a `workspace` directo
 /workspace
 ├── encrypt
 └── flag.enc
+
+<SNIP>
 ```
 
 The challenge is comprised of two files: `encrypt` and `flag.enc`.
