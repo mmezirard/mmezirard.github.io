@@ -516,7 +516,6 @@ www-data@validation:/var/www/html$ cat /etc/os-release
 ```
 
 ```
-cat /etc/os-release
 PRETTY_NAME="Debian GNU/Linux 11 (bullseye)"
 NAME="Debian GNU/Linux"
 VERSION_ID="11"

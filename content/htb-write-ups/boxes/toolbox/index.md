@@ -220,7 +220,7 @@ Host script results:
 
 Well, looks like it isn't! Let's move on to the mysterious web server we found on port `443/tcp` then.
 
-# Apache (port `443/tcp`)
+## Apache (port `443/tcp`)
 
 Let's browse to `https://megalogistic.com/`:
 

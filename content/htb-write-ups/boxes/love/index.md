@@ -633,7 +633,7 @@ Okay, we have access to a dashboard now.
 
 We can manage the voters, positions and candidates, but they're all empty. We can also see the votes, but there's none.
 
-# Foothold (Authenticated RCE)
+# Foothold (File upload)
 
 Back to the [Known CVEs](#known-cves) section, one of the [ExploitDB](https://www.exploit-db.com/) entries was [Voting System 1.0 - File Upload RCE (Authenticated Remote Code Execution)](https://www.exploit-db.com/exploits/49445). Since we're authenticated now, it might be worth trying it!
 
