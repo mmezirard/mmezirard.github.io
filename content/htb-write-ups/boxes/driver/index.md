@@ -248,54 +248,44 @@ No new web page here.
 
 ### Directory fuzzing
 
-Let's see if we can find the directory where the files are uploaded.
+Let's see if we can find the directory where the files are uploaded, or other web pages.
 
 ```sh
-❯ ffuf -v -c -u http://10.10.11.106/FUZZ -H "Authorization: Basic YWRtaW46YWRtaW4=" -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-directories.txt -maxtime 60
+❯ ffuf -v -c -u http://10.10.11.106/FUZZ -H "Authorization: Basic YWRtaW46YWRtaW4=" -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -e .php
 ```
 
 ```
 <SNIP>
+[Status: 200, Size: 4279, Words: 523, Lines: 185, Duration: 28ms]
+| URL | http://10.10.11.106/index.php
+    * FUZZ: index.php
+
 [Status: 301, Size: 150, Words: 9, Lines: 2, Duration: 29ms]
 | URL | http://10.10.11.106/images
 | --> | http://10.10.11.106/images/
     * FUZZ: images
 
-[Status: 301, Size: 150, Words: 9, Lines: 2, Duration: 24ms]
+[Status: 301, Size: 150, Words: 9, Lines: 2, Duration: 23ms]
 | URL | http://10.10.11.106/Images
 | --> | http://10.10.11.106/Images/
     * FUZZ: Images
 
-[Status: 301, Size: 150, Words: 9, Lines: 2, Duration: 25ms]
+[Status: 200, Size: 4279, Words: 523, Lines: 185, Duration: 23ms]
+| URL | http://10.10.11.106/Index.php
+    * FUZZ: Index.php
+
+[Status: 301, Size: 150, Words: 9, Lines: 2, Duration: 23ms]
 | URL | http://10.10.11.106/IMAGES
 | --> | http://10.10.11.106/IMAGES/
     * FUZZ: IMAGES
 
+[Status: 200, Size: 4279, Words: 523, Lines: 185, Duration: 23ms]
+| URL | http://10.10.11.106/INDEX.php
+    * FUZZ: INDEX.php
+
 [Status: 200, Size: 4279, Words: 523, Lines: 185, Duration: 26ms]
 | URL | http://10.10.11.106/
     * FUZZ:
-<SNIP>
-```
-
-Nothing. But maybe there's unliked web pages?
-
-```sh
-❯ ffuf -v -c -u http://10.10.11.106/FUZZ -H "Authorization: Basic YWRtaW46YWRtaW4=" -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-files.txt -maxtime 60
-```
-
-```
-<SNIP>
-[Status: 200, Size: 4279, Words: 523, Lines: 185, Duration: 29ms]
-| URL | http://10.10.11.106/index.php
-    * FUZZ: index.php
-
-[Status: 200, Size: 4279, Words: 523, Lines: 185, Duration: 29ms]
-| URL | http://10.10.11.106/.
-    * FUZZ: .
-
-[Status: 200, Size: 4279, Words: 523, Lines: 185, Duration: 26ms]
-| URL | http://10.10.11.106/Index.php
-    * FUZZ: Index.php
 <SNIP>
 ```
 

@@ -261,32 +261,55 @@ I don't see anything interesting.
 Let's see if this website hides unliked web pages and directories.
 
 ```sh
-❯ ffuf -v -c -u http://bank.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-big.txt -e .php
+❯ ffuf -v -c -u http://bank.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -e .php
 ```
 
 ```
 <SNIP>
-[Status: 301, Size: 305, Words: 20, Lines: 10, Duration: 23ms]
+[Status: 302, Size: 7322, Words: 3793, Lines: 189, Duration: 29ms]
+| URL | http://bank.htb/index.php
+| --> | login.php
+    * FUZZ: index.php
+
+[Status: 200, Size: 1974, Words: 595, Lines: 52, Duration: 24ms]
+| URL | http://bank.htb/login.php
+    * FUZZ: login.php
+
+[Status: 302, Size: 3291, Words: 784, Lines: 84, Duration: 28ms]
+| URL | http://bank.htb/support.php
+| --> | login.php
+    * FUZZ: support.php
+
+[Status: 301, Size: 305, Words: 20, Lines: 10, Duration: 25ms]
 | URL | http://bank.htb/uploads
 | --> | http://bank.htb/uploads/
     * FUZZ: uploads
 
-[Status: 301, Size: 304, Words: 20, Lines: 10, Duration: 23ms]
+[Status: 301, Size: 304, Words: 20, Lines: 10, Duration: 24ms]
 | URL | http://bank.htb/assets
 | --> | http://bank.htb/assets/
     * FUZZ: assets
 
-[Status: 301, Size: 301, Words: 20, Lines: 10, Duration: 23ms]
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 25ms]
+| URL | http://bank.htb/logout.php
+| --> | index.php
+    * FUZZ: logout.php
+
+[Status: 301, Size: 301, Words: 20, Lines: 10, Duration: 22ms]
 | URL | http://bank.htb/inc
 | --> | http://bank.htb/inc/
     * FUZZ: inc
+
+[Status: 403, Size: 279, Words: 21, Lines: 11, Duration: 25ms]
+| URL | http://bank.htb/.php
+    * FUZZ: .php
 
 [Status: 302, Size: 7322, Words: 3793, Lines: 189, Duration: 30ms]
 | URL | http://bank.htb/
 | --> | login.php
     * FUZZ: 
 
-[Status: 403, Size: 288, Words: 21, Lines: 11, Duration: 25ms]
+[Status: 403, Size: 288, Words: 21, Lines: 11, Duration: 27ms]
 | URL | http://bank.htb/server-status
     * FUZZ: server-status
 

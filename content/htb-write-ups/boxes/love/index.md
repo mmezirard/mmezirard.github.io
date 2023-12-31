@@ -340,198 +340,182 @@ If we search online, we find that `AdminLTE` is a Bootstrap dashboard template. 
 
 ### Directory fuzzing
 
-Let's see if we can find unliked files.
+Let's see if we can find unliked web pages and directories.
 
 ```sh
-❯ ffuf -v -c -u http://love.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-files.txt -maxtime 60
+❯ ffuf -v -c -u http://love.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -e .php
 ```
 
 ```
 <SNIP>
-[Status: 200, Size: 4388, Words: 654, Lines: 126, Duration: 90ms]
+[Status: 200, Size: 4388, Words: 654, Lines: 126, Duration: 36ms]
 | URL | http://love.htb/index.php
     * FUZZ: index.php
 
-[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 99ms]
-| URL | http://love.htb/login.php
-| --> | index.php
-    * FUZZ: login.php
-
-[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 43ms]
-| URL | http://love.htb/home.php
-| --> | index.php
-    * FUZZ: home.php
-
-[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 33ms]
-| URL | http://love.htb/.htaccess
-    * FUZZ: .htaccess
-
-[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 34ms]
-| URL | http://love.htb/logout.php
-| --> | index.php
-    * FUZZ: logout.php
-
-[Status: 200, Size: 4388, Words: 654, Lines: 126, Duration: 35ms]
-| URL | http://love.htb/.
-    * FUZZ: .
-
-[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 34ms]
-| URL | http://love.htb/.html
-    * FUZZ: .html
-
-[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 42ms]
-| URL | http://love.htb/preview.php
-| --> | index.php
-    * FUZZ: preview.php
-
-[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 33ms]
-| URL | http://love.htb/.htpasswd
-    * FUZZ: .htpasswd
-
-[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 37ms]
-| URL | http://love.htb/.htm
-    * FUZZ: .htm
-
-[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 34ms]
-| URL | http://love.htb/.htpasswds
-    * FUZZ: .htpasswds
-
-[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 41ms]
-| URL | http://love.htb/Login.php
-| --> | index.php
-    * FUZZ: Login.php
-
-[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 54ms]
-| URL | http://love.htb/.htgroup
-    * FUZZ: .htgroup
-
-[Status: 200, Size: 4388, Words: 654, Lines: 126, Duration: 39ms]
-| URL | http://love.htb/Index.php
-    * FUZZ: Index.php
-
-[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 34ms]
-| URL | http://love.htb/.htaccess.bak
-    * FUZZ: .htaccess.bak
-
-[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 73ms]
-| URL | http://love.htb/.htuser
-    * FUZZ: .htuser
-<SNIP>
-```
-
-The `login.php` is interesting, but as we've seen in [Under the hood](#under-the-hood) it's used to handle login.
-
-Let's look for directories now.
-
-```sh
-❯ ffuf -v -c -u http://love.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-directories.txt -maxtime 60
-```
-
-```
-<SNIP>
-[Status: 301, Size: 332, Words: 22, Lines: 10, Duration: 65ms]
-| URL | http://love.htb/includes
-| --> | http://love.htb/includes/
-    * FUZZ: includes
-
-[Status: 301, Size: 329, Words: 22, Lines: 10, Duration: 73ms]
-| URL | http://love.htb/admin
-| --> | http://love.htb/admin/
-    * FUZZ: admin
-
-[Status: 301, Size: 330, Words: 22, Lines: 10, Duration: 75ms]
+[Status: 301, Size: 330, Words: 22, Lines: 10, Duration: 42ms]
 | URL | http://love.htb/images
 | --> | http://love.htb/images/
     * FUZZ: images
 
-[Status: 301, Size: 331, Words: 22, Lines: 10, Duration: 104ms]
-| URL | http://love.htb/plugins
-| --> | http://love.htb/plugins/
-    * FUZZ: plugins
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 45ms]
+| URL | http://love.htb/home.php
+| --> | index.php
+    * FUZZ: home.php
 
-[Status: 301, Size: 329, Words: 22, Lines: 10, Duration: 61ms]
-| URL | http://love.htb/Admin
-| --> | http://love.htb/Admin/
-    * FUZZ: Admin
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 26ms]
+| URL | http://love.htb/login.php
+| --> | index.php
+    * FUZZ: login.php
 
-[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 72ms]
-| URL | http://love.htb/webalizer
-    * FUZZ: webalizer
-
-[Status: 301, Size: 330, Words: 22, Lines: 10, Duration: 64ms]
+[Status: 301, Size: 330, Words: 22, Lines: 10, Duration: 24ms]
 | URL | http://love.htb/Images
 | --> | http://love.htb/Images/
     * FUZZ: Images
 
-[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 58ms]
-| URL | http://love.htb/phpmyadmin
-    * FUZZ: phpmyadmin
+[Status: 301, Size: 329, Words: 22, Lines: 10, Duration: 35ms]
+| URL | http://love.htb/admin
+| --> | http://love.htb/admin/
+    * FUZZ: admin
 
-[Status: 301, Size: 332, Words: 22, Lines: 10, Duration: 60ms]
-| URL | http://love.htb/Includes
-| --> | http://love.htb/Includes/
-    * FUZZ: Includes
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 28ms]
+| URL | http://love.htb/Home.php
+| --> | index.php
+    * FUZZ: Home.php
 
-[Status: 301, Size: 329, Words: 22, Lines: 10, Duration: 54ms]
-| URL | http://love.htb/ADMIN
-| --> | http://love.htb/ADMIN/
-    * FUZZ: ADMIN
+[Status: 301, Size: 331, Words: 22, Lines: 10, Duration: 24ms]
+| URL | http://love.htb/plugins
+| --> | http://love.htb/plugins/
+    * FUZZ: plugins
 
-[Status: 301, Size: 328, Words: 22, Lines: 10, Duration: 68ms]
+[Status: 301, Size: 332, Words: 22, Lines: 10, Duration: 23ms]
+| URL | http://love.htb/includes
+| --> | http://love.htb/includes/
+    * FUZZ: includes
+
+[Status: 200, Size: 4388, Words: 654, Lines: 126, Duration: 24ms]
+| URL | http://love.htb/Index.php
+    * FUZZ: Index.php
+
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 33ms]
+| URL | http://love.htb/Login.php
+| --> | index.php
+    * FUZZ: Login.php
+
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 24ms]
+| URL | http://love.htb/logout.php
+| --> | index.php
+    * FUZZ: logout.php
+
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 29ms]
+| URL | http://love.htb/preview.php
+| --> | index.php
+    * FUZZ: preview.php
+
+[Status: 301, Size: 328, Words: 22, Lines: 10, Duration: 23ms]
 | URL | http://love.htb/dist
 | --> | http://love.htb/dist/
     * FUZZ: dist
 
-[Status: 301, Size: 330, Words: 22, Lines: 10, Duration: 60ms]
+[Status: 403, Size: 417, Words: 37, Lines: 12, Duration: 104ms]
+| URL | http://love.htb/licenses
+    * FUZZ: licenses
+
+[Status: 301, Size: 330, Words: 22, Lines: 10, Duration: 23ms]
 | URL | http://love.htb/IMAGES
 | --> | http://love.htb/IMAGES/
     * FUZZ: IMAGES
 
-[Status: 301, Size: 329, Words: 22, Lines: 10, Duration: 61ms]
-| URL | http://love.htb/tcpdf
-| --> | http://love.htb/tcpdf/
-    * FUZZ: tcpdf
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 23ms]
+| URL | http://love.htb/%20
+    * FUZZ: %20
 
-[Status: 403, Size: 417, Words: 37, Lines: 12, Duration: 76ms]
-| URL | http://love.htb/licenses
-    * FUZZ: licenses
+[Status: 200, Size: 4388, Words: 654, Lines: 126, Duration: 88ms]
+| URL | http://love.htb/INDEX.php
+    * FUZZ: INDEX.php
 
-[Status: 403, Size: 417, Words: 37, Lines: 12, Duration: 63ms]
-| URL | http://love.htb/server-status
-    * FUZZ: server-status
+[Status: 301, Size: 329, Words: 22, Lines: 10, Duration: 40ms]
+| URL | http://love.htb/Admin
+| --> | http://love.htb/Admin/
+    * FUZZ: Admin
 
-[Status: 200, Size: 4388, Words: 654, Lines: 126, Duration: 131ms]
-| URL | http://love.htb/
-    * FUZZ: 
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 24ms]
+| URL | http://love.htb/*checkout*
+    * FUZZ: *checkout*
 
-[Status: 301, Size: 331, Words: 22, Lines: 10, Duration: 65ms]
-| URL | http://love.htb/PlugIns
-| --> | http://love.htb/PlugIns/
-    * FUZZ: PlugIns
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 29ms]
+| URL | http://love.htb/*checkout*.php
+    * FUZZ: *checkout*.php
 
-[Status: 301, Size: 332, Words: 22, Lines: 10, Duration: 56ms]
-| URL | http://love.htb/INCLUDES
-| --> | http://love.htb/INCLUDES/
-    * FUZZ: INCLUDES
-
-[Status: 301, Size: 331, Words: 22, Lines: 10, Duration: 65ms]
+[Status: 301, Size: 331, Words: 22, Lines: 10, Duration: 23ms]
 | URL | http://love.htb/Plugins
 | --> | http://love.htb/Plugins/
     * FUZZ: Plugins
 
-[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 57ms]
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 24ms]
+| URL | http://love.htb/phpmyadmin
+    * FUZZ: phpmyadmin
+
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 71ms]
+| URL | http://love.htb/HOME.php
+| --> | index.php
+    * FUZZ: HOME.php
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 23ms]
+| URL | http://love.htb/webalizer
+    * FUZZ: webalizer
+
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 27ms]
+| URL | http://love.htb/Logout.php
+| --> | index.php
+    * FUZZ: Logout.php
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 24ms]
+| URL | http://love.htb/*docroot*
+    * FUZZ: *docroot*
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 24ms]
+| URL | http://love.htb/*docroot*.php
+    * FUZZ: *docroot*.php
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 23ms]
+| URL | http://love.htb/*.php
+    * FUZZ: *.php
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 24ms]
+| URL | http://love.htb/*
+    * FUZZ: *
+
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 29ms]
+| URL | http://love.htb/Preview.php
+| --> | index.php
+    * FUZZ: Preview.php
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 27ms]
+| URL | http://love.htb/con.php
+    * FUZZ: con.php
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 27ms]
 | URL | http://love.htb/con
     * FUZZ: con
 
-[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 43ms]
-| URL | http://love.htb/aux
-    * FUZZ: aux
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 23ms]
+| URL | http://love.htb/http%3A.php
+    * FUZZ: http%3A.php
+
+[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 23ms]
+| URL | http://love.htb/http%3A
+    * FUZZ: http%3A
+
+[Status: 301, Size: 332, Words: 22, Lines: 10, Duration: 23ms]
+| URL | http://love.htb/Includes
+| --> | http://love.htb/Includes/
+    * FUZZ: Includes
 <SNIP>
 ```
 
-It gets a few hits. One of them is `admin`!
+There's many, many hits. But the most interesting has to be `/admin`.
 
-Let's browse to `http://love.htb/admin`.
+Let's browse to `http://love.htb/admin` and see what we get.
 
 ![Domain '/admin' page](domain-admin-page.png)
 

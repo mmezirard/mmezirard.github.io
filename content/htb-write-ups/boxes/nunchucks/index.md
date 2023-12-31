@@ -233,33 +233,33 @@ There's also a `scripts.js` file that could be interesting, but it only contains
 
 ### Directory fuzzing
 
-Let's see if we can find unliked files.
+Let's see if we can find unliked web pages and directories.
 
 ```sh
-❯ ffuf -v -c -u https://nunchucks.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-files.txt -maxtime 60
+❯ ffuf -v -c -u https://nunchucks.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
 ```
 
 ```
 <SNIP>
-[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 28ms]
-| URL | https://nunchucks.htb/postings.php
-    * FUZZ: postings.php
+[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 33ms]
+| URL | https://nunchucks.htb/spacer
+    * FUZZ: spacer
 
-[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 28ms]
-| URL | https://nunchucks.htb/report.php
-    * FUZZ: report.php
+[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 32ms]
+| URL | https://nunchucks.htb/12
+    * FUZZ: 12
 
-[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 24ms]
-| URL | https://nunchucks.htb/usercp.php
-    * FUZZ: usercp.php
+[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 34ms]
+| URL | https://nunchucks.htb/news
+    * FUZZ: news
 
-[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 23ms]
-| URL | https://nunchucks.htb/editpost.php
-    * FUZZ: editpost.php
+[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 34ms]
+| URL | https://nunchucks.htb/warez
+    * FUZZ: warez
 
-[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 24ms]
-| URL | https://nunchucks.htb/CHANGELOG.txt
-    * FUZZ: CHANGELOG.txt
+[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 32ms]
+| URL | https://nunchucks.htb/download
+    * FUZZ: download
 <SNIP>
 ```
 
@@ -272,62 +272,50 @@ This is a really barebone web page.
 Let's fuzz again, but this time we'll ignore the responses with the length of the default `404` web page.
 
 ```sh
-❯ ffuf -v -c -u https://nunchucks.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-files.txt -maxtime 60 -fs 45
-```
-
-We find nothing at all!
-
-Let's check directories now.
-
-```sh
-❯ ffuf -v -c -u https://nunchucks.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-directories.txt -maxtime 60 -fs 45
+❯ ffuf -v -c -u https://nunchucks.htb/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -fs 45
 ```
 
 ```
 <SNIP>
-[Status: 200, Size: 9172, Words: 3129, Lines: 184, Duration: 27ms]
+[Status: 200, Size: 19134, Words: 5929, Lines: 251, Duration: 63ms]
+| URL | https://nunchucks.htb/privacy
+    * FUZZ: privacy
+
+[Status: 200, Size: 9172, Words: 3129, Lines: 184, Duration: 24ms]
 | URL | https://nunchucks.htb/login
     * FUZZ: login
 
-[Status: 301, Size: 179, Words: 7, Lines: 11, Duration: 35ms]
+[Status: 200, Size: 17753, Words: 5558, Lines: 246, Duration: 31ms]
+| URL | https://nunchucks.htb/terms
+    * FUZZ: terms
+
+[Status: 200, Size: 9488, Words: 3266, Lines: 188, Duration: 25ms]
+| URL | https://nunchucks.htb/signup
+    * FUZZ: signup
+
+[Status: 301, Size: 179, Words: 7, Lines: 11, Duration: 25ms]
 | URL | https://nunchucks.htb/assets
 | --> | /assets/
     * FUZZ: assets
 
-[Status: 200, Size: 9172, Words: 3129, Lines: 184, Duration: 27ms]
+[Status: 200, Size: 19134, Words: 5929, Lines: 251, Duration: 27ms]
+| URL | https://nunchucks.htb/Privacy
+    * FUZZ: Privacy
+
+[Status: 200, Size: 9172, Words: 3129, Lines: 184, Duration: 24ms]
 | URL | https://nunchucks.htb/Login
     * FUZZ: Login
 
-[Status: 200, Size: 19134, Words: 5929, Lines: 251, Duration: 29ms]
-| URL | https://nunchucks.htb/privacy
-    * FUZZ: privacy
+[Status: 200, Size: 17753, Words: 5558, Lines: 246, Duration: 25ms]
+| URL | https://nunchucks.htb/Terms
+    * FUZZ: Terms
 
-[Status: 200, Size: 9488, Words: 3266, Lines: 188, Duration: 30ms]
-| URL | https://nunchucks.htb/signup
-    * FUZZ: signup
-
-[Status: 200, Size: 17753, Words: 5558, Lines: 246, Duration: 28ms]
-| URL | https://nunchucks.htb/terms
-    * FUZZ: terms
-
-[Status: 301, Size: 179, Words: 7, Lines: 11, Duration: 23ms]
+[Status: 301, Size: 179, Words: 7, Lines: 11, Duration: 24ms]
 | URL | https://nunchucks.htb/Assets
 | --> | /Assets/
     * FUZZ: Assets
 
-[Status: 200, Size: 19134, Words: 5929, Lines: 251, Duration: 26ms]
-| URL | https://nunchucks.htb/Privacy
-    * FUZZ: Privacy
-
-[Status: 200, Size: 17753, Words: 5558, Lines: 246, Duration: 46ms]
-| URL | https://nunchucks.htb/Terms
-    * FUZZ: Terms
-
-[Status: 200, Size: 30589, Words: 12757, Lines: 547, Duration: 47ms]
-| URL | https://nunchucks.htb/
-    * FUZZ: 
-
-[Status: 200, Size: 9488, Words: 3266, Lines: 188, Duration: 26ms]
+[Status: 200, Size: 9488, Words: 3266, Lines: 188, Duration: 24ms]
 | URL | https://nunchucks.htb/Signup
     * FUZZ: Signup
 
@@ -335,13 +323,29 @@ Let's check directories now.
 | URL | https://nunchucks.htb/SignUp
     * FUZZ: SignUp
 
-[Status: 200, Size: 9172, Words: 3129, Lines: 184, Duration: 43ms]
+[Status: 200, Size: 9488, Words: 3266, Lines: 188, Duration: 24ms]
+| URL | https://nunchucks.htb/signUp
+    * FUZZ: signUp
+
+[Status: 200, Size: 19134, Words: 5929, Lines: 251, Duration: 32ms]
+| URL | https://nunchucks.htb/PRIVACY
+    * FUZZ: PRIVACY
+
+[Status: 200, Size: 30589, Words: 12757, Lines: 547, Duration: 31ms]
+| URL | https://nunchucks.htb/
+    * FUZZ: 
+
+[Status: 200, Size: 9172, Words: 3129, Lines: 184, Duration: 23ms]
+| URL | https://nunchucks.htb/LogIn
+    * FUZZ: LogIn
+
+[Status: 200, Size: 9172, Words: 3129, Lines: 184, Duration: 25ms]
 | URL | https://nunchucks.htb/LOGIN
     * FUZZ: LOGIN
 <SNIP>
 ```
 
-Nothing new here.
+Nothing interesting here.
 
 ### Subdomain fuzzing
 

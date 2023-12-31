@@ -232,159 +232,105 @@ We can try to log in using common credentials, but to no avail.
 
 Before searching for known CVEs, we need to find the version of Elastix. Let's see if we can find unliked files that might give out this information:
 
-Let's see if we can find unliked files.
+Let's see if we can find unliked web pages and directories.
 
 ```sh
-❯ ffuf -v -c -u https://10.10.10.7/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-files.txt -maxtime 60
+❯ ffuf -v -c -u https://10.10.10.7/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -e .php
 ```
 
 ```
 <SNIP>
-[Status: 200, Size: 1785, Words: 103, Lines: 35, Duration: 83ms]
+[Status: 200, Size: 1785, Words: 103, Lines: 35, Duration: 57ms]
 | URL | https://10.10.10.7/index.php
     * FUZZ: index.php
 
-[Status: 200, Size: 1785, Words: 103, Lines: 35, Duration: 72ms]
-| URL | https://10.10.10.7/register.php
-    * FUZZ: register.php
-
-[Status: 200, Size: 1785, Words: 103, Lines: 35, Duration: 74ms]
-| URL | https://10.10.10.7/config.php
-    * FUZZ: config.php
-
-[Status: 200, Size: 894, Words: 6, Lines: 1, Duration: 34ms]
-| URL | https://10.10.10.7/favicon.ico
-    * FUZZ: favicon.ico
-
-[Status: 403, Size: 287, Words: 21, Lines: 11, Duration: 34ms]
-| URL | https://10.10.10.7/.htaccess
-    * FUZZ: .htaccess
-
-[Status: 200, Size: 28, Words: 3, Lines: 3, Duration: 96ms]
-| URL | https://10.10.10.7/robots.txt
-    * FUZZ: robots.txt
-
-[Status: 200, Size: 1785, Words: 103, Lines: 35, Duration: 73ms]
-| URL | https://10.10.10.7/.
-    * FUZZ: .
-
-[Status: 403, Size: 283, Words: 21, Lines: 11, Duration: 35ms]
-| URL | https://10.10.10.7/.html
-    * FUZZ: .html
-
-[Status: 403, Size: 287, Words: 21, Lines: 11, Duration: 34ms]
-| URL | https://10.10.10.7/.htpasswd
-    * FUZZ: .htpasswd
-
-[Status: 403, Size: 282, Words: 21, Lines: 11, Duration: 34ms]
-| URL | https://10.10.10.7/.htm
-    * FUZZ: .htm
-
-[Status: 403, Size: 288, Words: 21, Lines: 11, Duration: 51ms]
-| URL | https://10.10.10.7/.htpasswds
-    * FUZZ: .htpasswds
-
-[Status: 403, Size: 286, Words: 21, Lines: 11, Duration: 34ms]
-| URL | https://10.10.10.7/.htgroup
-    * FUZZ: .htgroup
-
-[Status: 403, Size: 291, Words: 21, Lines: 11, Duration: 60ms]
-| URL | https://10.10.10.7/.htaccess.bak
-    * FUZZ: .htaccess.bak
-
-[Status: 403, Size: 285, Words: 21, Lines: 11, Duration: 37ms]
-| URL | https://10.10.10.7/.htuser
-    * FUZZ: .htuser
-<SNIP>
-```
-
-The `register.php` and `config.php` files have interesting names, but they both yield the same login page as before.
-
-```sh
-❯ ffuf -v -c -u https://10.10.10.7/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-directories.txt -maxtime 60
-```
-
-```
-<SNIP>
-[Status: 301, Size: 309, Words: 20, Lines: 10, Duration: 34ms]
-| URL | https://10.10.10.7/admin
-| --> | https://10.10.10.7/admin/
-    * FUZZ: admin
-
-[Status: 301, Size: 311, Words: 20, Lines: 10, Duration: 34ms]
-| URL | https://10.10.10.7/modules
-| --> | https://10.10.10.7/modules/
-    * FUZZ: modules
-
-[Status: 301, Size: 310, Words: 20, Lines: 10, Duration: 33ms]
-| URL | https://10.10.10.7/themes
-| --> | https://10.10.10.7/themes/
-    * FUZZ: themes
-
-[Status: 301, Size: 310, Words: 20, Lines: 10, Duration: 35ms]
+[Status: 301, Size: 310, Words: 20, Lines: 10, Duration: 36ms]
 | URL | https://10.10.10.7/images
 | --> | https://10.10.10.7/images/
     * FUZZ: images
 
-[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 58ms]
+[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 37ms]
 | URL | https://10.10.10.7/help
 | --> | https://10.10.10.7/help/
     * FUZZ: help
 
-[Status: 301, Size: 307, Words: 20, Lines: 10, Duration: 37ms]
-| URL | https://10.10.10.7/var
-| --> | https://10.10.10.7/var/
-    * FUZZ: var
+[Status: 200, Size: 1785, Words: 103, Lines: 35, Duration: 103ms]
+| URL | https://10.10.10.7/register.php
+    * FUZZ: register.php
 
-[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 55ms]
+[Status: 301, Size: 310, Words: 20, Lines: 10, Duration: 25ms]
+| URL | https://10.10.10.7/themes
+| --> | https://10.10.10.7/themes/
+    * FUZZ: themes
+
+[Status: 301, Size: 311, Words: 20, Lines: 10, Duration: 22ms]
+| URL | https://10.10.10.7/modules
+| --> | https://10.10.10.7/modules/
+    * FUZZ: modules
+
+[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 23ms]
 | URL | https://10.10.10.7/mail
 | --> | https://10.10.10.7/mail/
     * FUZZ: mail
 
-[Status: 301, Size: 310, Words: 20, Lines: 10, Duration: 34ms]
+[Status: 301, Size: 309, Words: 20, Lines: 10, Duration: 41ms]
+| URL | https://10.10.10.7/admin
+| --> | https://10.10.10.7/admin/
+    * FUZZ: admin
+
+[Status: 301, Size: 310, Words: 20, Lines: 10, Duration: 48ms]
 | URL | https://10.10.10.7/static
 | --> | https://10.10.10.7/static/
     * FUZZ: static
 
-[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 36ms]
+[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 26ms]
 | URL | https://10.10.10.7/lang
 | --> | https://10.10.10.7/lang/
     * FUZZ: lang
 
-[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 35ms]
-| URL | https://10.10.10.7/libs
-| --> | https://10.10.10.7/libs/
-    * FUZZ: libs
+[Status: 200, Size: 1785, Words: 103, Lines: 35, Duration: 64ms]
+| URL | https://10.10.10.7/config.php
+    * FUZZ: config.php
 
-[Status: 301, Size: 309, Words: 20, Lines: 10, Duration: 35ms]
+[Status: 301, Size: 307, Words: 20, Lines: 10, Duration: 51ms]
+| URL | https://10.10.10.7/var
+| --> | https://10.10.10.7/var/
+    * FUZZ: var
+
+[Status: 301, Size: 309, Words: 20, Lines: 10, Duration: 31ms]
 | URL | https://10.10.10.7/panel
 | --> | https://10.10.10.7/panel/
     * FUZZ: panel
 
-[Status: 301, Size: 311, Words: 20, Lines: 10, Duration: 52ms]
-| URL | https://10.10.10.7/configs
-| --> | https://10.10.10.7/configs/
-    * FUZZ: configs
+[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 25ms]
+| URL | https://10.10.10.7/libs
+| --> | https://10.10.10.7/libs/
+    * FUZZ: libs
 
-[Status: 200, Size: 1785, Words: 103, Lines: 35, Duration: 68ms]
-| URL | https://10.10.10.7/
-    * FUZZ: 
-
-[Status: 301, Size: 314, Words: 20, Lines: 10, Duration: 38ms]
+[Status: 301, Size: 314, Words: 20, Lines: 10, Duration: 26ms]
 | URL | https://10.10.10.7/recordings
 | --> | https://10.10.10.7/recordings/
     * FUZZ: recordings
 
-[Status: 301, Size: 313, Words: 20, Lines: 10, Duration: 39ms]
+[Status: 301, Size: 311, Words: 20, Lines: 10, Duration: 53ms]
+| URL | https://10.10.10.7/configs
+| --> | https://10.10.10.7/configs/
+    * FUZZ: configs
+
+[Status: 200, Size: 1785, Words: 103, Lines: 35, Duration: 43ms]
+| URL | https://10.10.10.7/
+    * FUZZ: 
+
+[Status: 301, Size: 313, Words: 20, Lines: 10, Duration: 23ms]
 | URL | https://10.10.10.7/vtigercrm
 | --> | https://10.10.10.7/vtigercrm/
     * FUZZ: vtigercrm
 <SNIP>
 ```
 
-We got a few hits, but they all return `301` error codes.
+We got a few hits, but most of them return `301` error codes.
 
-The `/admin` is interesting though... if we try to access it anyways, we arsked to authenticate. 
+The `/admin` one is interesting, even though it returns a `301` error code... if we try to access it anyways, we are asked to authenticate. 
 
 ### Known CVEs
 
@@ -394,7 +340,7 @@ Let's search [ExploitDB](https://www.exploit-db.com/) for `Elastix`. There's sev
 
 ### LFI
 
-The `Elastix` application version `2.2.0` prone to a LFI vulnerability because it fails to properly sanitize user-supplied input. The issue lies specifically in the `graph.php` page: if we specify a specially crafted value to the `current_language` HTTP parameter, we can read any local file.
+The `Elastix` application version `2.2.0` is prone to a LFI vulnerability because it fails to properly sanitize user-supplied input. The issue lies specifically in the `graph.php` page: if we specify a specially crafted value to the `current_language` HTTP parameter, we can read any local file.
 
 Let's try to use the LFI to read the file `/etc/hosts`, by following the PoC:
 

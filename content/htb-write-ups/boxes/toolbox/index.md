@@ -296,18 +296,61 @@ The second is the contact form in the 'Contact' web page. But once again, if we 
 Let's crawl the website to see there are hidden files and directories.
 
 ```sh
-❯ katana -u https://megalogistic.htb/
+❯ katana -u https://megalogistic.com/
 ```
 
 ```
 <SNIP>
-[INF] Started standard crawling for => https://megalogistic.htb/
-https://megalogistic.htb/
+[INF] Started standard crawling for => https://megalogistic.com/
+https://megalogistic.com/
+https://megalogistic.com/js/aos.js
+https://megalogistic.com/js/main.js
+https://megalogistic.com/js/jquery.stellar.min.js
+https://megalogistic.com/js/jquery.countdown.min.js
+https://megalogistic.com/js/jquery-migrate-3.0.1.min.js
+https://megalogistic.com/js/popper.min.js
+https://megalogistic.com/js/owl.carousel.min.js
+https://megalogistic.com/js/bootstrap-datepicker.min.js
+https://megalogistic.com/js/jquery-ui.js
+https://megalogistic.com/js/jquery.magnific-popup.min.js
+https://megalogistic.com/js/bootstrap.min.js
+https://megalogistic.com/js/jquery-3.3.1.min.js
+https://megalogistic.com/css/style.css
+https://megalogistic.com/css/aos.css
+https://megalogistic.com/css/bootstrap-datepicker.css
+https://megalogistic.com/fonts/flaticon/font/flaticon.css
+https://megalogistic.com/css/owl.theme.default.min.css
+https://megalogistic.com/css/owl.carousel.min.css
+https://megalogistic.com/css/magnific-popup.css
+https://megalogistic.com/booking.html
+https://megalogistic.com/css/jquery-ui.css
+https://megalogistic.com/contact.html
+https://megalogistic.com/services.html
+https://megalogistic.com/industries.html
+https://megalogistic.com/fonts/icomoon/style.css
+https://megalogistic.com/blog.html
+https://megalogistic.com/index.html
+https://megalogistic.com/css/bootstrap.min.css
+https://megalogistic.com/about.html
 ```
+
+The `main.js` file at `/js/` could be interesting, but if we retrieve its content we see that it isn't.
 
 Nothing.
 
 ### Directory fuzzing
+
+Let's see if we can find unliked web pages and directories.
+
+```sh
+❯ ffuf -v -c -u https://megalogistic.com/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -e .php
+```
+
+```
+<SNIP>
+
+<SNIP>
+```
 
 Let's see if we can find unliked files.
 
@@ -317,77 +360,39 @@ Let's see if we can find unliked files.
 
 ```
 <SNIP>
-[Status: 301, Size: 320, Words: 20, Lines: 10, Duration: 94ms]
-| URL | https://megalogistic.com/css
-| --> | https://megalogistic.com/css/
-    * FUZZ: css
-
-[Status: 301, Size: 323, Words: 20, Lines: 10, Duration: 93ms]
+[Status: 301, Size: 323, Words: 20, Lines: 10, Duration: 26ms]
 | URL | https://megalogistic.com/images
 | --> | https://megalogistic.com/images/
     * FUZZ: images
 
-[Status: 301, Size: 319, Words: 20, Lines: 10, Duration: 94ms]
-| URL | https://megalogistic.com/js
-| --> | https://megalogistic.com/js/
-    * FUZZ: js
-
-[Status: 301, Size: 322, Words: 20, Lines: 10, Duration: 50ms]
-| URL | https://megalogistic.com/fonts
-| --> | https://megalogistic.com/fonts/
-    * FUZZ: fonts
-
-[Status: 403, Size: 282, Words: 20, Lines: 10, Duration: 55ms]
-| URL | https://megalogistic.com/server-status
-    * FUZZ: server-status
-
-[Status: 200, Size: 22357, Words: 6240, Lines: 522, Duration: 90ms]
-| URL | https://megalogistic.com/
-    * FUZZ:
-<SNIP>
-```
-
-There's nothing really interesting. What about directories then?
-
-```sh
-❯ ffuf -v -c -u https://megalogistic.com/FUZZ -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-directories.txt -maxtime 60
-```
-
-```
-<SNIP>
-[Status: 301, Size: 323, Words: 20, Lines: 10, Duration: 90ms]
-| URL | https://megalogistic.com/images
-| --> | https://megalogistic.com/images/
-    * FUZZ: images
-
-[Status: 301, Size: 319, Words: 20, Lines: 10, Duration: 24ms]
-| URL | https://megalogistic.com/js
-| --> | https://megalogistic.com/js/
-    * FUZZ: js
-
-[Status: 301, Size: 320, Words: 20, Lines: 10, Duration: 24ms]
+[Status: 301, Size: 320, Words: 20, Lines: 10, Duration: 27ms]
 | URL | https://megalogistic.com/css
 | --> | https://megalogistic.com/css/
     * FUZZ: css
 
-[Status: 301, Size: 322, Words: 20, Lines: 10, Duration: 25ms]
+[Status: 301, Size: 319, Words: 20, Lines: 10, Duration: 27ms]
+| URL | https://megalogistic.com/js
+| --> | https://megalogistic.com/js/
+    * FUZZ: js
+
+[Status: 301, Size: 322, Words: 20, Lines: 10, Duration: 24ms]
 | URL | https://megalogistic.com/fonts
 | --> | https://megalogistic.com/fonts/
     * FUZZ: fonts
 
-[Status: 200, Size: 22357, Words: 6240, Lines: 522, Duration: 66ms]
+[Status: 200, Size: 22357, Words: 6240, Lines: 522, Duration: 459ms]
 | URL | https://megalogistic.com/
     * FUZZ: 
 
-[Status: 403, Size: 282, Words: 20, Lines: 10, Duration: 1630ms]
+[Status: 403, Size: 282, Words: 20, Lines: 10, Duration: 102ms]
 | URL | https://megalogistic.com/server-status
     * FUZZ: server-status
 <SNIP>
 ```
 
-We get the same output...
+There's nothing unusual.
 
-But this is not really surprising. We found out in the [Scripts](#scripts) section the existence of a subdomain, named `admin.megalogistic.com`. The `admin` part is promising, and much more likely to give us a foothold — I just explored this domain for the sake of comprehensiveness, and in case the subdomain was a bait.
+But this is not surprising. We found out in the [Scripts](#scripts) section the existence of a subdomain, named `admin.megalogistic.com`. The `admin` part is promising, and much more likely to give us a foothold — I just explored this domain for the sake of comprehensiveness, and in case the subdomain was a bait.
 
 ### `admin.megalogistic.com` subdomain
 
