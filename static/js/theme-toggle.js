@@ -30,7 +30,7 @@ function toggleTheme() {
 }
 
 function getSavedTheme() {
-    const currentTheme = localStorage.getItem('theme')
+    let currentTheme = localStorage.getItem('theme')
     if (!currentTheme) {
         if (
             window.matchMedia &&

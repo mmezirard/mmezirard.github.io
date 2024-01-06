@@ -280,6 +280,8 @@ c:\windows\system32\inetsrv>
 
 It caught the reverse shell! Nice!
 
+Unfortunately, Powershell doesn't exist on this box.
+
 # Local enumeration
 
 If we run `whoami`, we see that we got a foothold as `NT AUTHORITY\SERVICE`.

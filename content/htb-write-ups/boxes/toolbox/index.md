@@ -432,7 +432,7 @@ Therefore, we should be able to easily bypass it by entering:
 foo' OR 1=1 -- -
 ```
 
-#### Practice
+#### Testing
 
 Let's try it with a random password!
 
@@ -1194,7 +1194,7 @@ That's great for us, we should be able to retrieve the flag files!
 
 We find the user flag on Tony's Desktop. Let's get its content:
 
-```cmd
+```ps1
 administrator@TOOLBOX C:\Users\Administrator> type C:\Users\Administrator\Desktop\root.txt
 ```
 
