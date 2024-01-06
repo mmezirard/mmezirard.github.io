@@ -35,6 +35,7 @@ const languageMapping = {
     'php': 'PHP',
     'pl': 'PERL',
     'plain': 'PLAINTEXT',
+    'ps1': 'POWERSHELL',
     'py': 'PYTHON',
     'sh': 'SHELL',
     'sql': 'SQL',
