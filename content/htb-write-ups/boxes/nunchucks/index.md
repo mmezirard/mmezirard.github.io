@@ -684,7 +684,7 @@ david@nunchucks:~$ ls -lap /etc/apparmor.d/ | grep -v '/'
 ```
 
 ```
-total 72
+<SNIP>
 -rw-r--r--   1 root root  1313 May 19  2020 lsb_release
 -rw-r--r--   1 root root  1108 May 19  2020 nvidia_modprobe
 -rw-r--r--   1 root root  3222 Mar 11  2020 sbin.dhclient

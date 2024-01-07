@@ -802,7 +802,7 @@ The mysterious `config.php` file actually holds the configuration for the MariaD
 
 My first idea was to use these credentials to connect to Validation using SSH, but it didn't work.
 
-# Privilege escalation
+# Privilege escalation (`root` impersonation)
 
 So these credentials don't work with SSH. We found out that this box had no user account, so `root` musts be the only user, which means that he musts also be the one who wrote the website. Perhaps he reused his credentials? Let's test the password we found to get `root`.
 

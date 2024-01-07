@@ -436,7 +436,7 @@ lp@antique:~$ ls -lap /etc/apparmor.d/ | grep -v '/'
 ```
 
 ```
-total 60
+<SNIP>
 -rw-r--r--   1 root root  1313 Apr 12  2020 lsb_release
 -rw-r--r--   1 root root  1108 Apr 12  2020 nvidia_modprobe
 -rw-r--r--   1 root root  3222 Mar 11  2020 sbin.dhclient
@@ -576,7 +576,7 @@ The `lxd` group is interesting to elevate privileges.
 
 ## User account information
 
-Let's see to which groups we currently belong
+Let's see to which groups we currently belong.
 
 ```sh
 lp@antique:~$ groups
