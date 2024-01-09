@@ -509,7 +509,9 @@ I tried others extensions used to execute PHP code, but they are all blocked.
 At this point, I checked the previous requests using Caido for any hints. And I found one in `/support.php`'s body:
 
 ```html
+<SNIP>
 <!-- [DEBUG] I added the file extension .htb to execute as php for debugging purposes only [DEBUG] -->
+<SNIP>
 ```
 
 It looks like what we were looking for! Let's try once again to upload a reverse shell PHP file, this time with a `.htb` extension. Then, I'll access it to execute it.

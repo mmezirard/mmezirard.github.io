@@ -430,7 +430,7 @@ Now let's try all of them with the password we found.
 
 The credentials `root`:`jEhdIekWmdjE` are valid!
 
-## Connection
+## Connect
 
 Let's use them to connect to Beep as `root`.
 

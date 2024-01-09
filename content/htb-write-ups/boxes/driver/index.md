@@ -367,7 +367,7 @@ Now we have `tony`'s password hash. Great!
 Let's place the NTLMv2 hash we managed to retrieve into `/workspace/NTLMv2.hash`. I'm going to use `hashcat` with the `rockyou` wordlist to attempt to crack it.
 
 ```sh
-❯ hashcat -m 5600 /workspace/NTLMv2.hash -a 0 /usr/share/wordlists/rockyou.txt -O
+❯ hashcat -m 5600 /workspace/NTLMv2.hash -a 0 /usr/share/wordlists/rockyou.txt
 ```
 
 ```

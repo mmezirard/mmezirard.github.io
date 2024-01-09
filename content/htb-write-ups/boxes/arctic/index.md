@@ -157,7 +157,7 @@ Anyways, now that we we know we are dealing with a server, let's proceed to its 
 
 ### Technology lookup
 
-Before explroing this website, let's look up the technologies it uses with the [Wappalyzer](https://www.wappalyzer.com/) extension.
+Before exploring this website, let's look up the technologies it uses with the [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![ColdFusion homepage Wappalyzer extension](coldfusion-homepage-wappalyzer.png)
 
