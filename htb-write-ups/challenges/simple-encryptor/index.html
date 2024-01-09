@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta description="This is a very easy Reversing challenge.">
+    
+    <title>
+        
+            Simple Encryptor | mmezirard
+        
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Simple Encryptor<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-09</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.svg"
+                src="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/cover.svg"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#identification">Identification</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#libraries">Libraries</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#imports">Imports</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#symbols">Symbols</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#strings">Strings</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#execution">Execution</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#decompilation">Decompilation</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#main">main</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#reading-unencrypted-data">Reading unencrypted data</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#calculations">Calculations</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#writing-encrypted-data">Writing encrypted data</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#putting-it-all-together">Putting it all together</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#strategy">Strategy</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#code">Code</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#compilation">Compilation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#testing">Testing</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Very easy</p>
+<p><strong>Category</strong>: Reversing</p>
+<p><strong>Release date</strong>: 2022-07-22</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/129896">Leeky</a></p>
+<p><strong>Description</strong>: On our regular checkups of our secret flag storage server we found out that we were hit by ransomware! The original flag data is nowhere to be found, but luckily we not only have the encrypted file but also the encryption program itself.</p>
+<h1 id="setup">Setup</h1>
+<p>I'll complete this challenge using a Linux VM. I'll create a <code>workspace</code> directory at <code>/</code> to hold all the files related to this challenge. The commands ran on my machine will be prefixed with <code>❯</code> for clarity.</p>
+<h1 id="identification">Identification</h1>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> tree<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/workspace
+</span><span class="z-text z-plain">├── encrypt
+</span><span class="z-text z-plain">└── flag.enc
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The challenge is comprised of two files: <code>encrypt</code> and <code>flag.enc</code>.</p>
+<p>The <code>flag.enc</code> file contains a bunch of random data. The <code>.enc</code> extension hints this is the encrypted version of the flag file.</p>
+<p>The <code>encrypt</code> file is a binary probably meant to be run on Linux. But let's confirm this by running <code>file</code> on it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> file /workspace/encrypt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/workspace/encrypt: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=0bddc0a794eca6f6e2e9dac0b6190b62f07c4c75, for GNU/Linux 3.2.0, not stripped
+</span></code></pre>
+<p>Okay, so it looks like this is a ELF 64-bit, LSB executable.</p>
+<p>Let's find more information about it using <code>zn-bin</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>I</span> /workspace/encrypt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Info]
+</span><span class="z-text z-plain">arch     x86
+</span><span class="z-text z-plain">cpu      N/A
+</span><span class="z-text z-plain">baddr    0x00000000
+</span><span class="z-text z-plain">binsz    0x00003b1e
+</span><span class="z-text z-plain">bintype  elf
+</span><span class="z-text z-plain">bits     64
+</span><span class="z-text z-plain">class    ELF64
+</span><span class="z-text z-plain">compiler GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+</span><span class="z-text z-plain">dbg_file N/A
+</span><span class="z-text z-plain">endian   LE
+</span><span class="z-text z-plain">hdr.csum N/A
+</span><span class="z-text z-plain">guid     N/A
+</span><span class="z-text z-plain">intrp    /lib64/ld-linux-x86-64.so.2
+</span><span class="z-text z-plain">laddr    0x00000000
+</span><span class="z-text z-plain">lang     c
+</span><span class="z-text z-plain">machine  AMD x86-64 architecture
+</span><span class="z-text z-plain">maxopsz  16
+</span><span class="z-text z-plain">minopsz  1
+</span><span class="z-text z-plain">os       linux
+</span><span class="z-text z-plain">cc       N/A
+</span><span class="z-text z-plain">pcalign  0
+</span><span class="z-text z-plain">relro    full
+</span><span class="z-text z-plain">rpath    NONE
+</span><span class="z-text z-plain">subsys   linux
+</span><span class="z-text z-plain">stripped false
+</span><span class="z-text z-plain">crypto   false
+</span><span class="z-text z-plain">havecode true
+</span><span class="z-text z-plain">va       true
+</span><span class="z-text z-plain">sanitiz  false
+</span><span class="z-text z-plain">static   false
+</span><span class="z-text z-plain">linenum  true
+</span><span class="z-text z-plain">lsyms    true
+</span><span class="z-text z-plain">canary   true
+</span><span class="z-text z-plain">PIE      true
+</span><span class="z-text z-plain">RELROCS  true
+</span><span class="z-text z-plain">NX       true
+</span></code></pre>
+<p>This confirms the information we got with <code>file</code>.</p>
+<p>We notice that there are a few protections in place. This is not a binary exploitation challenge, but it's still interesting to know.</p>
+<h1 id="libraries">Libraries</h1>
+<p>Let's find the list of libraries used by this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span> /workspace/encrypt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Libs]
+</span><span class="z-text z-plain">library   
+</span><span class="z-text z-plain">----------
+</span><span class="z-text z-plain">libc.so.6
+</span></code></pre>
+<p>So this binary uses the <code>libc.so.6</code> library, which provides the fundamental functionalities for programs written in C.</p>
+<h1 id="imports">Imports</h1>
+<p>Now, let's find the list of imports used by this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> /workspace/encrypt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Imports]
+</span><span class="z-text z-plain">nth vaddr      bind   type   lib name                        
+</span><span class="z-text z-plain">-------------------------------------------------------------
+</span><span class="z-text z-plain">1   ---------- WEAK   NOTYPE     _ITM_deregisterTMCloneTable
+</span><span class="z-text z-plain">2   0x000010f0 GLOBAL FUNC       fread
+</span><span class="z-text z-plain">3   0x00001100 GLOBAL FUNC       fclose
+</span><span class="z-text z-plain">4   0x00001110 GLOBAL FUNC       __stack_chk_fail
+</span><span class="z-text z-plain">5   ---------- GLOBAL FUNC       __libc_start_main
+</span><span class="z-text z-plain">6   0x00001120 GLOBAL FUNC       srand
+</span><span class="z-text z-plain">7   0x00001130 GLOBAL FUNC       ftell
+</span><span class="z-text z-plain">8   ---------- WEAK   NOTYPE     __gmon_start__
+</span><span class="z-text z-plain">9   0x00001140 GLOBAL FUNC       time
+</span><span class="z-text z-plain">10  0x00001150 GLOBAL FUNC       malloc
+</span><span class="z-text z-plain">11  0x00001160 GLOBAL FUNC       fseek
+</span><span class="z-text z-plain">12  0x00001170 GLOBAL FUNC       fopen
+</span><span class="z-text z-plain">13  0x00001180 GLOBAL FUNC       fwrite
+</span><span class="z-text z-plain">14  ---------- WEAK   NOTYPE     _ITM_registerTMCloneTable
+</span><span class="z-text z-plain">15  0x00001190 GLOBAL FUNC       rand
+</span><span class="z-text z-plain">16  ---------- WEAK   FUNC       __cxa_finalize
+</span></code></pre>
+<p>So this binary imports functions like <code>time</code> and <code>srand</code> probably to generate random numbers. It also calls <code>fread</code>, <code>fopen</code>, <code>fclose</code> and the likes to read and write to files. Finally, the <code>fwrite</code> function is likely used to print text to the terminal.</p>
+<h1 id="symbols">Symbols</h1>
+<p>Let's find the list of symbols for this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span> /workspace/encrypt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Symbols]
+</span><span class="z-text z-plain">nth paddr      vaddr      bind   type   size lib name                                   
+</span><span class="z-text z-plain">----------------------------------------------------------------------------------------
+</span><span class="z-text z-plain">1   0x00000318 0x00000318 LOCAL  SECT   0        .interp
+</span><span class="z-text z-plain">2   0x00000338 0x00000338 LOCAL  SECT   0        .note.gnu.property
+</span><span class="z-text z-plain">3   0x00000358 0x00000358 LOCAL  SECT   0        .note.gnu.build-id
+</span><span class="z-text z-plain">4   0x0000037c 0x0000037c LOCAL  SECT   0        .note.ABI-tag
+</span><span class="z-text z-plain">5   0x000003a0 0x000003a0 LOCAL  SECT   0        .gnu.hash
+</span><span class="z-text z-plain">6   0x000003c8 0x000003c8 LOCAL  SECT   0        .dynsym
+</span><span class="z-text z-plain">7   0x00000560 0x00000560 LOCAL  SECT   0        .dynstr
+</span><span class="z-text z-plain">8   0x00000630 0x00000630 LOCAL  SECT   0        .gnu.version
+</span><span class="z-text z-plain">9   0x00000658 0x00000658 LOCAL  SECT   0        .gnu.version_r
+</span><span class="z-text z-plain">10  0x00000688 0x00000688 LOCAL  SECT   0        .rela.dyn
+</span><span class="z-text z-plain">11  0x00000748 0x00000748 LOCAL  SECT   0        .rela.plt
+</span><span class="z-text z-plain">12  0x00001000 0x00001000 LOCAL  SECT   0        .init
+</span><span class="z-text z-plain">13  0x00001020 0x00001020 LOCAL  SECT   0        .plt
+</span><span class="z-text z-plain">14  0x000010e0 0x000010e0 LOCAL  SECT   0        .plt.got
+</span><span class="z-text z-plain">15  0x000010f0 0x000010f0 LOCAL  SECT   0        .plt.sec
+</span><span class="z-text z-plain">16  0x000011a0 0x000011a0 LOCAL  SECT   0        .text
+</span><span class="z-text z-plain">17  0x000014b8 0x000014b8 LOCAL  SECT   0        .fini
+</span><span class="z-text z-plain">18  0x00002000 0x00002000 LOCAL  SECT   0        .rodata
+</span><span class="z-text z-plain">19  0x00002018 0x00002018 LOCAL  SECT   0        .eh_frame_hdr
+</span><span class="z-text z-plain">20  0x00002060 0x00002060 LOCAL  SECT   0        .eh_frame
+</span><span class="z-text z-plain">21  0x00002d68 0x00003d68 LOCAL  SECT   0        .init_array
+</span><span class="z-text z-plain">22  0x00002d70 0x00003d70 LOCAL  SECT   0        .fini_array
+</span><span class="z-text z-plain">23  0x00002d78 0x00003d78 LOCAL  SECT   0        .dynamic
+</span><span class="z-text z-plain">24  0x00002f68 0x00003f68 LOCAL  SECT   0        .got
+</span><span class="z-text z-plain">25  0x00003000 0x00004000 LOCAL  SECT   0        .data
+</span><span class="z-text z-plain">26  ---------- 0x00004010 LOCAL  SECT   0        .bss
+</span><span class="z-text z-plain">27  0x00000000 0x00000000 LOCAL  SECT   0        .comment
+</span><span class="z-text z-plain">28  0x00000000 0x00000000 LOCAL  FILE   0        crtstuff.c
+</span><span class="z-text z-plain">29  0x000011d0 0x000011d0 LOCAL  FUNC   0        deregister_tm_clones
+</span><span class="z-text z-plain">30  0x00001200 0x00001200 LOCAL  FUNC   0        register_tm_clones
+</span><span class="z-text z-plain">31  0x00001240 0x00001240 LOCAL  FUNC   0        __do_global_dtors_aux
+</span><span class="z-text z-plain">32  ---------- 0x00004010 LOCAL  OBJ    1        completed.8061
+</span><span class="z-text z-plain">33  0x00002d70 0x00003d70 LOCAL  OBJ    0        __do_global_dtors_aux_fini_array_entry
+</span><span class="z-text z-plain">34  0x00001280 0x00001280 LOCAL  FUNC   0        frame_dummy
+</span><span class="z-text z-plain">35  0x00002d68 0x00003d68 LOCAL  OBJ    0        __frame_dummy_init_array_entry
+</span><span class="z-text z-plain">36  0x00000000 0x00000000 LOCAL  FILE   0        encrypt.c
+</span><span class="z-text z-plain">37  0x00000000 0x00000000 LOCAL  FILE   0        crtstuff.c
+</span><span class="z-text z-plain">38  0x00002164 0x00002164 LOCAL  OBJ    0        __FRAME_END__
+</span><span class="z-text z-plain">39  0x00000000 0x00000000 LOCAL  FILE   0        
+</span><span class="z-text z-plain">40  0x00002d70 0x00003d70 LOCAL  NOTYPE 0        __init_array_end
+</span><span class="z-text z-plain">41  0x00002d78 0x00003d78 LOCAL  OBJ    0        _DYNAMIC
+</span><span class="z-text z-plain">42  0x00002d68 0x00003d68 LOCAL  NOTYPE 0        __init_array_start
+</span><span class="z-text z-plain">43  0x00002018 0x00002018 LOCAL  NOTYPE 0        __GNU_EH_FRAME_HDR
+</span><span class="z-text z-plain">44  0x00002f68 0x00003f68 LOCAL  OBJ    0        _GLOBAL_OFFSET_TABLE_
+</span><span class="z-text z-plain">45  0x00001000 0x00001000 LOCAL  FUNC   0        _init
+</span><span class="z-text z-plain">46  0x000014b0 0x000014b0 GLOBAL FUNC   5        __libc_csu_fini
+</span><span class="z-text z-plain">48  0x00003000 0x00004000 WEAK   NOTYPE 0        data_start
+</span><span class="z-text z-plain">50  ---------- 0x00004010 GLOBAL NOTYPE 0        _edata
+</span><span class="z-text z-plain">52  0x000014b8 0x000014b8 GLOBAL FUNC   0        _fini
+</span><span class="z-text z-plain">56  0x00003000 0x00004000 GLOBAL NOTYPE 0        __data_start
+</span><span class="z-text z-plain">59  0x00003008 0x00004008 GLOBAL OBJ    0        __dso_handle
+</span><span class="z-text z-plain">60  0x00002000 0x00002000 GLOBAL OBJ    4        _IO_stdin_used
+</span><span class="z-text z-plain">62  0x00001440 0x00001440 GLOBAL FUNC   101      __libc_csu_init
+</span><span class="z-text z-plain">64  ---------- 0x00004018 GLOBAL NOTYPE 0        _end
+</span><span class="z-text z-plain">65  0x000011a0 0x000011a0 GLOBAL FUNC   47       _start
+</span><span class="z-text z-plain">67  ---------- 0x00004010 GLOBAL NOTYPE 0        __bss_start
+</span><span class="z-text z-plain">68  0x00001289 0x00001289 GLOBAL FUNC   437      main
+</span><span class="z-text z-plain">71  ---------- 0x00004010 GLOBAL OBJ    0        __TMC_END__
+</span><span class="z-text z-plain">1   ---------- ---------- WEAK   NOTYPE 0        imp._ITM_deregisterTMCloneTable
+</span><span class="z-text z-plain">2   0x000010f0 0x000010f0 GLOBAL FUNC   16       imp.fread
+</span><span class="z-text z-plain">3   0x00001100 0x00001100 GLOBAL FUNC   16       imp.fclose
+</span><span class="z-text z-plain">4   0x00001110 0x00001110 GLOBAL FUNC   16       imp.__stack_chk_fail
+</span><span class="z-text z-plain">5   ---------- ---------- GLOBAL FUNC   0        imp.__libc_start_main
+</span><span class="z-text z-plain">6   0x00001120 0x00001120 GLOBAL FUNC   16       imp.srand
+</span><span class="z-text z-plain">7   0x00001130 0x00001130 GLOBAL FUNC   16       imp.ftell
+</span><span class="z-text z-plain">8   ---------- ---------- WEAK   NOTYPE 0        imp.__gmon_start__
+</span><span class="z-text z-plain">9   0x00001140 0x00001140 GLOBAL FUNC   16       imp.time
+</span><span class="z-text z-plain">10  0x00001150 0x00001150 GLOBAL FUNC   16       imp.malloc
+</span><span class="z-text z-plain">11  0x00001160 0x00001160 GLOBAL FUNC   16       imp.fseek
+</span><span class="z-text z-plain">12  0x00001170 0x00001170 GLOBAL FUNC   16       imp.fopen
+</span><span class="z-text z-plain">13  0x00001180 0x00001180 GLOBAL FUNC   16       imp.fwrite
+</span><span class="z-text z-plain">14  ---------- ---------- WEAK   NOTYPE 0        imp._ITM_registerTMCloneTable
+</span><span class="z-text z-plain">15  0x00001190 0x00001190 GLOBAL FUNC   16       imp.rand
+</span><span class="z-text z-plain">16  ---------- ---------- WEAK   FUNC   0        imp.__cxa_finalize
+</span></code></pre>
+<p>We notice a <code>main.c</code> entry, and some of the functions we discovered in the last section.</p>
+<h1 id="strings">Strings</h1>
+<p>Finally, let's retrieve the list of strings contained in this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>z</span> /workspace/encrypt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Strings]
+</span><span class="z-text z-plain">nth paddr      vaddr      len size section type  string   
+</span><span class="z-text z-plain">----------------------------------------------------------
+</span><span class="z-text z-plain">0   0x00002007 0x00002007 4   5    .rodata ascii flag
+</span><span class="z-text z-plain">1   0x0000200f 0x0000200f 8   9    .rodata ascii flag.enc
+</span></code></pre>
+<p>There's only <code>2</code> strings.</p>
+<p>The first one is <code>flag</code>, and the second is <code>flag.enc</code>. We already have a <code>flag.enc</code> file, but not a <code>flag</code> one. We can assume that the program reads the input of <code>flag</code> and outputs it to <code>flag.enc</code> in a somehow encrypted form.</p>
+<h1 id="execution">Execution</h1>
+<p>Let's execute this binary and see how it behaves.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> /workspace/encrypt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">zsh: segmentation fault  /workspace/encrypt
+</span></code></pre>
+<p>Alright, there's not much to learn here.</p>
+<h1 id="decompilation">Decompilation</h1>
+<p>Now that we have an of idea of how this C program behaves and of what its dependencies are, let's decompile it and explore it using <a href="https://github.com/NationalSecurityAgency/ghidra">Ghidra</a>. I'm going to load <code>encrypt</code> with the default options, and I'll analyze it, once again with the default options.</p>
+<p>As usual, I'll start by exploring the <code>main</code> function.</p>
+<h2 id="main"><code>main</code></h2>
+<p>Let's decompile this function.</p>
+<pre data-linenos data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><table><tbody><tr><td>1</td><td><span class="z-source z-c"><span class="z-storage z-type z-c">void</span> <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">main</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-storage z-type z-c">void</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c">
+</span></span></td></tr><tr><td>2</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span></td></tr><tr><td>3</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-storage z-type z-c">int</span> iVar1<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>4</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-support z-type z-sys-types z-c">time_t</span> tVar2<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>5</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-storage z-type z-c">long</span> in_FS_OFFSET<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>6</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-support z-type z-sys-types z-c">uint</span> local_40<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>7</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-support z-type z-sys-types z-c">uint</span> local_3c<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>8</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-storage z-type z-c">long</span> local_38<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>9</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    FILE <span class="z-keyword z-operator z-c">*</span> local_30<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>10</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-support z-type z-sys-types z-c">size_t</span> local_28<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>11</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-storage z-type z-c">void</span> <span class="z-keyword z-operator z-c">*</span> local_20<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>12</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    FILE <span class="z-keyword z-operator z-c">*</span> local_18<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>13</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-storage z-type z-c">long</span> local_10<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>14</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span></td></tr><tr><td>15</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_10 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-keyword z-operator z-c">*</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span> <span class="z-keyword z-operator z-c">*</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>in_FS_OFFSET <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>28</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>16</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_30 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fopen</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>flag<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span><span class="z-punctuation z-separator z-c">,</span> <span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>rb<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>17</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fseek</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">local_30<span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">2</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>18</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_28 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">ftell</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">local_30</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>19</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fseek</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">local_30<span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>20</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_20 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">malloc</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">local_28</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>21</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fread</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">local_20<span class="z-punctuation z-separator z-c">,</span> local_28<span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">1</span><span class="z-punctuation z-separator z-c">,</span> local_30</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>22</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fclose</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">local_30</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>23</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    tVar2 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">time</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-support z-type z-sys-types z-c">time_t</span> <span class="z-keyword z-operator z-c">*</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>0</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>24</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_40 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-support z-type z-sys-types z-c">uint</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> tVar2<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>25</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">srand</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">local_40</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>26</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-c">for</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>local_38 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-terminator z-c">;</span> local_38 <span class="z-keyword z-operator z-comparison z-c">&lt;</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> local_28<span class="z-punctuation z-terminator z-c">;</span> local_38 <span class="z-keyword z-operator z-assignment z-c">=</span> local_38 <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-decimal z-c">1</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span></td></tr><tr><td>27</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        iVar1 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">rand</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span></td></tr><tr><td>28</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-keyword z-operator z-c">*</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>byte <span class="z-keyword z-operator z-c">*</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> local_20 <span class="z-keyword z-operator z-arithmetic z-c">+</span> local_38<span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-keyword z-operator z-c">*</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>byte <span class="z-keyword z-operator z-c">*</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> local_20 <span class="z-keyword z-operator z-arithmetic z-c">+</span> local_38<span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-keyword z-operator z-arithmetic z-c">^</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>byte<span class="z-punctuation z-section z-group z-end z-c">)</span></span> iVar1<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span></td></tr><tr><td>29</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        local_3c <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">rand</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span></td></tr><tr><td>30</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        local_3c <span class="z-keyword z-operator z-assignment z-c">=</span> local_3c <span class="z-keyword z-operator z-c">&amp;</span> <span class="z-constant z-numeric z-integer z-decimal z-c">7</span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span></td></tr><tr><td>31</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-keyword z-operator z-c">*</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>byte <span class="z-keyword z-operator z-c">*</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> local_20 <span class="z-keyword z-operator z-arithmetic z-c">+</span> local_38<span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-keyword z-operator z-c">*</span>
+</span></span></span></span></td></tr><tr><td>32</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>byte <span class="z-keyword z-operator z-c">*</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> local_20 <span class="z-keyword z-operator z-arithmetic z-c">+</span> local_38<span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-keyword z-operator z-arithmetic z-c">&lt;&lt;</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>sbyte<span class="z-punctuation z-section z-group z-end z-c">)</span></span> local_3c <span class="z-keyword z-operator z-arithmetic z-c">|</span>
+</span></span></span></span></td></tr><tr><td>33</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">            <span class="z-keyword z-operator z-c">*</span>
+</span></span></span></span></td></tr><tr><td>34</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">            <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>byte <span class="z-keyword z-operator z-c">*</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> local_20 <span class="z-keyword z-operator z-arithmetic z-c">+</span> local_38<span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-keyword z-operator z-arithmetic z-c">&gt;&gt;</span> <span class="z-constant z-numeric z-integer z-decimal z-c">8</span> <span class="z-keyword z-operator z-arithmetic z-c">-</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>sbyte<span class="z-punctuation z-section z-group z-end z-c">)</span></span> local_3c<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span></td></tr><tr><td>35</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+</span></span></span></td></tr><tr><td>36</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_18 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fopen</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>flag.enc<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span><span class="z-punctuation z-separator z-c">,</span> <span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>wb<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>37</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fwrite</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"> <span class="z-keyword z-operator z-c">&amp;</span> local_40<span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">1</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">4</span><span class="z-punctuation z-separator z-c">,</span> local_18</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>38</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fwrite</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">local_20<span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">1</span><span class="z-punctuation z-separator z-c">,</span> local_28<span class="z-punctuation z-separator z-c">,</span> local_18</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>39</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fclose</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">local_18</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>40</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-c">if</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>local_10 <span class="z-keyword z-operator z-comparison z-c">!=</span> <span class="z-keyword z-operator z-c">*</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span> <span class="z-keyword z-operator z-c">*</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>in_FS_OFFSET <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>28</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span></td></tr><tr><td>41</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">__stack_chk_fail</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span></td></tr><tr><td>42</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+</span></span></span></td></tr><tr><td>43</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-flow z-return z-c">return</span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>44</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
+</span></td></tr></tbody></table></code></pre>
+<p>There's a few things going on here. Let's break down its most notable instructions.</p>
+<h3 id="reading-unencrypted-data">Reading unencrypted data</h3>
+<p>The line <code>16</code> opens a file named <code>flag</code> in read-only mode, as indicated by <code>rb</code>, and assigns the file pointer to the variable stream.</p>
+<p>The lines <code>17</code> to <code>19</code> seek to the end of the file, determine the file size using <code>ftell</code>, and then rewind the file pointer to the beginning.</p>
+<p>The lines <code>20</code> to <code>22</code> allocate memory dynamically using <code>malloc</code> to store the contents of the file. Then they read the entire content of the file into the allocated memory and close the file.</p>
+<h3 id="calculations">Calculations</h3>
+<p>The line <code>23</code> initializes a <code>tVar2</code> variable to the current time.</p>
+<p>The line <code>25</code> seeds the random number generator <code>srand</code> to the value of <code>tVar2</code>.</p>
+<p>The line <code>28</code> XORs the byte at the current position with a random value.</p>
+<p>The lines <code>31</code> to <code>34</code> shift the bits of the byte at the current position to the left by the value specified by <code>local_3c</code> and ORs it with the result of shifting the same bits to the right.</p>
+<h3 id="writing-encrypted-data">Writing encrypted data</h3>
+<p>Finally, the lines <code>36</code> to <code>39</code> open a new file named <code>flag.enc</code> in write mode, as indicated by <code>wb</code>, write the 4-byte seed value followed by the encrypted data, and then close the file.</p>
+<h1 id="putting-it-all-together">Putting it all together</h1>
+<p>There's a few things involved in the encryption of the flag file, but since the seed value is saved in the encrypted file, we should be able to unencrypt it by applying the operations in the reverse order.</p>
+<h2 id="strategy">Strategy</h2>
+<p>Here's what we have do to obtain the recover the flag file:</p>
+<ul>
+<li>Open <code>flag.enc</code></li>
+<li>Read the first 4 bytes of the file to obtain the seed</li>
+<li>Read the rest of the file to obtain the encrypted data</li>
+<li>Reverse the encryption operations</li>
+<li>Write the data to <code>flag</code></li>
+</ul>
+<h2 id="code">Code</h2>
+<p>This is obviously very cumbersome to do by hand, so here's how we would write it in C (it was generated by ChatGPT and modified by me, I'm not familiar enough with C to write it all by myself):</p>
+<pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-meta z-preprocessor z-include z-c"><span class="z-keyword z-control z-import z-include z-c">#include</span> <span class="z-string z-quoted z-other z-lt-gt z-include z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&lt;</span>stdio.h<span class="z-punctuation z-definition z-string z-end z-c">&gt;</span></span>
+</span></span><span class="z-source z-c"><span class="z-meta z-preprocessor z-include z-c"><span class="z-keyword z-control z-import z-include z-c">#include</span> <span class="z-string z-quoted z-other z-lt-gt z-include z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&lt;</span>stdlib.h<span class="z-punctuation z-definition z-string z-end z-c">&gt;</span></span>
+</span></span><span class="z-source z-c"><span class="z-meta z-preprocessor z-include z-c"><span class="z-keyword z-control z-import z-include z-c">#include</span> <span class="z-string z-quoted z-other z-lt-gt z-include z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&lt;</span>stdint.h<span class="z-punctuation z-definition z-string z-end z-c">&gt;</span></span>
+</span></span><span class="z-source z-c"><span class="z-meta z-preprocessor z-include z-c"><span class="z-keyword z-control z-import z-include z-c">#include</span> <span class="z-string z-quoted z-other z-lt-gt z-include z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&lt;</span>time.h<span class="z-punctuation z-definition z-string z-end z-c">&gt;</span></span>
+</span></span><span class="z-source z-c">
+</span><span class="z-source z-c"><span class="z-storage z-type z-c">void</span> <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">decryptFile</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-storage z-modifier z-c">const</span> <span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">inputFileName</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-storage z-modifier z-c">const</span> <span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">outputFileName</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span><span class="z-source z-c">
+</span><span class="z-source z-c"><span class="z-storage z-type z-c">int</span> <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">main</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-storage z-type z-c">void</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c"> </span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">decryptFile</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>flag.enc<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span><span class="z-punctuation z-separator z-c">,</span> <span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>flag<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-flow z-return z-c">return</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
+</span><span class="z-source z-c">
+</span><span class="z-source z-c"><span class="z-storage z-type z-c">void</span> <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">decryptFile</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-storage z-modifier z-c">const</span> <span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">inputFileName</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-storage z-modifier z-c">const</span> <span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">outputFileName</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c"> </span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Open the input file
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    FILE <span class="z-keyword z-operator z-c">*</span>inputFile <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fopen</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">inputFileName<span class="z-punctuation z-separator z-c">,</span> <span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>rb<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-c">if</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>inputFile <span class="z-keyword z-operator z-comparison z-c">==</span> <span class="z-constant z-language z-c">NULL</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">perror</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>Error opening input file<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">exit</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">EXIT_FAILURE</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Read the seed value
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-support z-type z-stdint z-c">uint32_t</span> seed<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fread</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-keyword z-operator z-c">&amp;</span>seed<span class="z-punctuation z-separator z-c">,</span> <span class="z-keyword z-operator z-word z-c">sizeof</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span><span class="z-meta z-group z-c">seed</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">1</span><span class="z-punctuation z-separator z-c">,</span> inputFile</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">printf</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>Seed: <span class="z-constant z-other z-placeholder z-c">%u</span><span class="z-constant z-character z-escape z-c">\n</span><span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span><span class="z-punctuation z-separator z-c">,</span> seed</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Open the output file
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    FILE <span class="z-keyword z-operator z-c">*</span>outputFile <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fopen</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">outputFileName<span class="z-punctuation z-separator z-c">,</span> <span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>wb<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-c">if</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>outputFile <span class="z-keyword z-operator z-comparison z-c">==</span> <span class="z-constant z-language z-c">NULL</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">perror</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>Error opening output file<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fclose</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">inputFile</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">exit</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">EXIT_FAILURE</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Get the size of the encrypted data
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fseek</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">inputFile<span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-separator z-c">,</span> SEEK_END</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-storage z-type z-c">long</span> size <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">ftell</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">inputFile</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span> <span class="z-keyword z-operator z-arithmetic z-c">-</span> <span class="z-keyword z-operator z-word z-c">sizeof</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span><span class="z-meta z-group z-c">seed</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fseek</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">inputFile<span class="z-punctuation z-separator z-c">,</span> <span class="z-keyword z-operator z-word z-c">sizeof</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span><span class="z-meta z-group z-c">seed</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-separator z-c">,</span> SEEK_SET</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Allocate memory to store the encrypted data
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-support z-type z-stdint z-c">uint8_t</span> <span class="z-keyword z-operator z-c">*</span>encryptedData <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">malloc</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">size</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-c">if</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>encryptedData <span class="z-keyword z-operator z-comparison z-c">==</span> <span class="z-constant z-language z-c">NULL</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">perror</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>Memory allocation error<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fclose</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">inputFile</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fclose</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">outputFile</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">exit</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">EXIT_FAILURE</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Read the encrypted data
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fread</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">encryptedData<span class="z-punctuation z-separator z-c">,</span> size<span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">1</span><span class="z-punctuation z-separator z-c">,</span> inputFile</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fclose</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">inputFile</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Seed the random number generator with the decrypted seed
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">srand</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">seed</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Decrypt the data
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-c">for</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span> i <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-terminator z-c">;</span> i <span class="z-keyword z-operator z-comparison z-c">&lt;</span> size<span class="z-punctuation z-terminator z-c">;</span> i<span class="z-keyword z-operator z-arithmetic z-c">++</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-support z-type z-stdint z-c">uint8_t</span> xorKey <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">rand</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-support z-type z-stdint z-c">uint8_t</span> rightShiftKey <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">rand</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span> <span class="z-keyword z-operator z-c">&amp;</span> <span class="z-constant z-numeric z-integer z-decimal z-c">7</span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        encryptedData<span class="z-meta z-brackets z-c"><span class="z-punctuation z-section z-brackets z-begin z-c">[</span>i<span class="z-punctuation z-section z-brackets z-end z-c">]</span></span> <span class="z-keyword z-operator z-assignment z-c">=</span> encryptedData<span class="z-meta z-brackets z-c"><span class="z-punctuation z-section z-brackets z-begin z-c">[</span>i<span class="z-punctuation z-section z-brackets z-end z-c">]</span></span> <span class="z-keyword z-operator z-arithmetic z-c">&gt;&gt;</span> rightShiftKey <span class="z-keyword z-operator z-arithmetic z-c">|</span> encryptedData<span class="z-meta z-brackets z-c"><span class="z-punctuation z-section z-brackets z-begin z-c">[</span>i<span class="z-punctuation z-section z-brackets z-end z-c">]</span></span> <span class="z-keyword z-operator z-arithmetic z-c">&lt;&lt;</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-constant z-numeric z-integer z-decimal z-c">8</span> <span class="z-keyword z-operator z-arithmetic z-c">-</span> rightShiftKey<span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        encryptedData<span class="z-meta z-brackets z-c"><span class="z-punctuation z-section z-brackets z-begin z-c">[</span>i<span class="z-punctuation z-section z-brackets z-end z-c">]</span></span> <span class="z-keyword z-operator z-assignment z-augmented z-c">^=</span> xorKey<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Write the decrypted data to the output file
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fwrite</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">encryptedData<span class="z-punctuation z-separator z-c">,</span> size<span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">1</span><span class="z-punctuation z-separator z-c">,</span> outputFile</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Clean up
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">free</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">encryptedData</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fclose</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">outputFile</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
+</span></code></pre>
+<h2 id="compilation">Compilation</h2>
+<p>I'll save it as <code>decrypt.c</code> and compile it:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> gcc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> decrypt decrypt.c</span>
+</span></code></pre>
+<h2 id="testing">Testing</h2>
+<p>Now let's try the <code>decrypt</code> executable to see if it successfully decrypts the <code>flag.enc</code> file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> /workspace/decrypt /workspace/flag.enc</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Seed: 1655780698
+</span></code></pre>
+<p>So apparently the seed used to encrypt the file is <code>1655780698</code>. Let's check the contenf of <code>flag</code> to see if it was successfully decrypted:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /workspace/flag</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HTB{vRy_s1MplE_F1LE3nCryp0r}
+</span></code></pre>
+<p>It worked. Nice!</p>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/challenges/simple-encryptor/success.png" alt="Success" /></p>
+<p>That's it for this challenge! I found it kinda easy, the hard part was writing the C code to reverse the enryption. As I mentioned in this write-up, I'm not familiar enough with C to write the full script myself, so I used ChatGPT. It generated a very good snippet, but it didn't quite work, it got the decryption operations wrong. I had to debug it a bit to get it to work. It was really interesting though!</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

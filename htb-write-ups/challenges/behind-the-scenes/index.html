@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta description="This is a very easy Reversing challenge.">
+    
+    <title>
+        
+            Behind the Scenes | mmezirard
+        
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Behind the Scenes<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-09</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.svg"
+                src="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/cover.svg"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#identification">Identification</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#libraries">Libraries</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#imports">Imports</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#symbols">Symbols</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#strings">Strings</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#execution">Execution</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#decompilation">Decompilation</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#main">main</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#checks">Checks</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#ud2-instruction">ud2 instruction</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#uncovering-the-whole-source-code-of-main">Uncovering the whole source code of main</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#checks-1">Checks</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#display">Display</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#putting-it-all-together">Putting it all together</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#testing">Testing</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Very easy</p>
+<p><strong>Category</strong>: Reversing</p>
+<p><strong>Release date</strong>: 2022-03-11</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/129896">Leeky</a></p>
+<p><strong>Description</strong>: After struggling to secure our secret strings for a long time, we finally figured out the solution to our problem: make decompilation harder. It should now be impossible to figure out how our programs work!</p>
+<h1 id="setup">Setup</h1>
+<p>I'll complete this challenge using a Linux VM. I'll create a <code>workspace</code> directory at <code>/</code> to hold all the files related to this challenge. The commands ran on my machine will be prefixed with <code>❯</code> for clarity.</p>
+<h1 id="identification">Identification</h1>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> tree<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/workspace
+</span><span class="z-text z-plain">└── behindthescenes
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The challenge is comprised of a single file named <code>behindthescenes</code>, so we can infer that it's meant to be run on Linux. But let's confirm this by running <code>file</code> on it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> file /workspace/behindthescenes</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/workspace/behindthescenes: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=e60ae4c886619b869178148afd12d0a5428bfe18, for GNU/Linux 3.2.0, not stripped
+</span></code></pre>
+<p>Okay, so it looks like this is a ELF 64-bit, LSB executable.</p>
+<p>Let's find more information about it using <code>zn-bin</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>I</span> /workspace/behindthescenes</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Info]
+</span><span class="z-text z-plain">arch     x86
+</span><span class="z-text z-plain">cpu      N/A
+</span><span class="z-text z-plain">baddr    0x00000000
+</span><span class="z-text z-plain">binsz    0x00003ae2
+</span><span class="z-text z-plain">bintype  elf
+</span><span class="z-text z-plain">bits     64
+</span><span class="z-text z-plain">class    ELF64
+</span><span class="z-text z-plain">compiler GCC: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
+</span><span class="z-text z-plain">dbg_file N/A
+</span><span class="z-text z-plain">endian   LE
+</span><span class="z-text z-plain">hdr.csum N/A
+</span><span class="z-text z-plain">guid     N/A
+</span><span class="z-text z-plain">intrp    /lib64/ld-linux-x86-64.so.2
+</span><span class="z-text z-plain">laddr    0x00000000
+</span><span class="z-text z-plain">lang     c
+</span><span class="z-text z-plain">machine  AMD x86-64 architecture
+</span><span class="z-text z-plain">maxopsz  16
+</span><span class="z-text z-plain">minopsz  1
+</span><span class="z-text z-plain">os       linux
+</span><span class="z-text z-plain">cc       N/A
+</span><span class="z-text z-plain">pcalign  0
+</span><span class="z-text z-plain">relro    full
+</span><span class="z-text z-plain">rpath    NONE
+</span><span class="z-text z-plain">subsys   linux
+</span><span class="z-text z-plain">stripped false
+</span><span class="z-text z-plain">crypto   false
+</span><span class="z-text z-plain">havecode true
+</span><span class="z-text z-plain">va       true
+</span><span class="z-text z-plain">sanitiz  false
+</span><span class="z-text z-plain">static   false
+</span><span class="z-text z-plain">linenum  true
+</span><span class="z-text z-plain">lsyms    true
+</span><span class="z-text z-plain">canary   true
+</span><span class="z-text z-plain">PIE      true
+</span><span class="z-text z-plain">RELROCS  true
+</span><span class="z-text z-plain">NX       true
+</span></code></pre>
+<p>This confirms the information we got with <code>file</code>.</p>
+<p>We notice that there are a few protections in place. This is not a binary exploitation challenge, but it's still interesting to know.</p>
+<h1 id="libraries">Libraries</h1>
+<p>Let's find the list of libraries used by this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span> /workspace/behindthescenes</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Libs]
+</span><span class="z-text z-plain">library   
+</span><span class="z-text z-plain">----------
+</span><span class="z-text z-plain">libc.so.6
+</span></code></pre>
+<p>So this binary uses the <code>libc.so.6</code> library, which provides the fundamental functionalities for programs written in C.</p>
+<h1 id="imports">Imports</h1>
+<p>Now, let's find the list of imports used by this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> /workspace/behindthescenes</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Imports]
+</span><span class="z-text z-plain">nth vaddr      bind   type   lib name                        
+</span><span class="z-text z-plain">-------------------------------------------------------------
+</span><span class="z-text z-plain">1   0x000010c0 GLOBAL FUNC       strncmp
+</span><span class="z-text z-plain">2   ---------- WEAK   NOTYPE     _ITM_deregisterTMCloneTable
+</span><span class="z-text z-plain">3   0x000010d0 GLOBAL FUNC       puts
+</span><span class="z-text z-plain">4   0x000010e0 GLOBAL FUNC       sigaction
+</span><span class="z-text z-plain">5   0x000010f0 GLOBAL FUNC       strlen
+</span><span class="z-text z-plain">6   0x00001100 GLOBAL FUNC       __stack_chk_fail
+</span><span class="z-text z-plain">7   0x00001110 GLOBAL FUNC       printf
+</span><span class="z-text z-plain">8   0x00001120 GLOBAL FUNC       memset
+</span><span class="z-text z-plain">9   ---------- GLOBAL FUNC       __libc_start_main
+</span><span class="z-text z-plain">10  0x00001130 GLOBAL FUNC       sigemptyset
+</span><span class="z-text z-plain">11  ---------- WEAK   NOTYPE     __gmon_start__
+</span><span class="z-text z-plain">12  ---------- WEAK   NOTYPE     _ITM_registerTMCloneTable
+</span><span class="z-text z-plain">13  ---------- WEAK   FUNC       __cxa_finalize
+</span></code></pre>
+<p>So this binary imports functions like <code>strncmp</code>, <code>strlen</code> and <code>memset</code>, but also <code>puts</code> and <code>printf</code>, so we can expect to see text printed to the terminal.</p>
+<h1 id="symbols">Symbols</h1>
+<p>Let's find the list of symbols for this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span> /workspace/behindthescenes</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Symbols]
+</span><span class="z-text z-plain">nth paddr      vaddr      bind   type   size lib name                                   
+</span><span class="z-text z-plain">----------------------------------------------------------------------------------------
+</span><span class="z-text z-plain">1   0x00000318 0x00000318 LOCAL  SECT   0        .interp
+</span><span class="z-text z-plain">2   0x00000338 0x00000338 LOCAL  SECT   0        .note.gnu.property
+</span><span class="z-text z-plain">3   0x00000358 0x00000358 LOCAL  SECT   0        .note.gnu.build-id
+</span><span class="z-text z-plain">4   0x0000037c 0x0000037c LOCAL  SECT   0        .note.ABI-tag
+</span><span class="z-text z-plain">5   0x000003a0 0x000003a0 LOCAL  SECT   0        .gnu.hash
+</span><span class="z-text z-plain">6   0x000003c8 0x000003c8 LOCAL  SECT   0        .dynsym
+</span><span class="z-text z-plain">7   0x00000518 0x00000518 LOCAL  SECT   0        .dynstr
+</span><span class="z-text z-plain">8   0x000005e8 0x000005e8 LOCAL  SECT   0        .gnu.version
+</span><span class="z-text z-plain">9   0x00000608 0x00000608 LOCAL  SECT   0        .gnu.version_r
+</span><span class="z-text z-plain">10  0x00000638 0x00000638 LOCAL  SECT   0        .rela.dyn
+</span><span class="z-text z-plain">11  0x000006f8 0x000006f8 LOCAL  SECT   0        .rela.plt
+</span><span class="z-text z-plain">12  0x00001000 0x00001000 LOCAL  SECT   0        .init
+</span><span class="z-text z-plain">13  0x00001020 0x00001020 LOCAL  SECT   0        .plt
+</span><span class="z-text z-plain">14  0x000010b0 0x000010b0 LOCAL  SECT   0        .plt.got
+</span><span class="z-text z-plain">15  0x000010c0 0x000010c0 LOCAL  SECT   0        .plt.sec
+</span><span class="z-text z-plain">16  0x00001140 0x00001140 LOCAL  SECT   0        .text
+</span><span class="z-text z-plain">17  0x000014c8 0x000014c8 LOCAL  SECT   0        .fini
+</span><span class="z-text z-plain">18  0x00002000 0x00002000 LOCAL  SECT   0        .rodata
+</span><span class="z-text z-plain">19  0x00002038 0x00002038 LOCAL  SECT   0        .eh_frame_hdr
+</span><span class="z-text z-plain">20  0x00002088 0x00002088 LOCAL  SECT   0        .eh_frame
+</span><span class="z-text z-plain">21  0x00002d80 0x00003d80 LOCAL  SECT   0        .init_array
+</span><span class="z-text z-plain">22  0x00002d88 0x00003d88 LOCAL  SECT   0        .fini_array
+</span><span class="z-text z-plain">23  0x00002d90 0x00003d90 LOCAL  SECT   0        .dynamic
+</span><span class="z-text z-plain">24  0x00002f80 0x00003f80 LOCAL  SECT   0        .got
+</span><span class="z-text z-plain">25  0x00003000 0x00004000 LOCAL  SECT   0        .data
+</span><span class="z-text z-plain">26  ---------- 0x00004010 LOCAL  SECT   0        .bss
+</span><span class="z-text z-plain">27  0x00000000 0x00000000 LOCAL  SECT   0        .comment
+</span><span class="z-text z-plain">28  0x00000000 0x00000000 LOCAL  FILE   0        crtstuff.c
+</span><span class="z-text z-plain">29  0x00001170 0x00001170 LOCAL  FUNC   0        deregister_tm_clones
+</span><span class="z-text z-plain">30  0x000011a0 0x000011a0 LOCAL  FUNC   0        register_tm_clones
+</span><span class="z-text z-plain">31  0x000011e0 0x000011e0 LOCAL  FUNC   0        __do_global_dtors_aux
+</span><span class="z-text z-plain">32  ---------- 0x00004010 LOCAL  OBJ    1        completed.8060
+</span><span class="z-text z-plain">33  0x00002d88 0x00003d88 LOCAL  OBJ    0        __do_global_dtors_aux_fini_array_entry
+</span><span class="z-text z-plain">34  0x00001220 0x00001220 LOCAL  FUNC   0        frame_dummy
+</span><span class="z-text z-plain">35  0x00002d80 0x00003d80 LOCAL  OBJ    0        __frame_dummy_init_array_entry
+</span><span class="z-text z-plain">36  0x00000000 0x00000000 LOCAL  FILE   0        main.c
+</span><span class="z-text z-plain">37  0x00000000 0x00000000 LOCAL  FILE   0        crtstuff.c
+</span><span class="z-text z-plain">38  0x000021ac 0x000021ac LOCAL  OBJ    0        __FRAME_END__
+</span><span class="z-text z-plain">39  0x00000000 0x00000000 LOCAL  FILE   0        
+</span><span class="z-text z-plain">40  0x00002d88 0x00003d88 LOCAL  NOTYPE 0        __init_array_end
+</span><span class="z-text z-plain">41  0x00002d90 0x00003d90 LOCAL  OBJ    0        _DYNAMIC
+</span><span class="z-text z-plain">42  0x00002d80 0x00003d80 LOCAL  NOTYPE 0        __init_array_start
+</span><span class="z-text z-plain">43  0x00002038 0x00002038 LOCAL  NOTYPE 0        __GNU_EH_FRAME_HDR
+</span><span class="z-text z-plain">44  0x00002f80 0x00003f80 LOCAL  OBJ    0        _GLOBAL_OFFSET_TABLE_
+</span><span class="z-text z-plain">45  0x00001000 0x00001000 LOCAL  FUNC   0        _init
+</span><span class="z-text z-plain">46  0x000014c0 0x000014c0 GLOBAL FUNC   5        __libc_csu_fini
+</span><span class="z-text z-plain">49  0x00003000 0x00004000 WEAK   NOTYPE 0        data_start
+</span><span class="z-text z-plain">52  ---------- 0x00004010 GLOBAL NOTYPE 0        _edata
+</span><span class="z-text z-plain">53  0x000014c8 0x000014c8 GLOBAL FUNC   0        _fini
+</span><span class="z-text z-plain">59  0x00003000 0x00004000 GLOBAL NOTYPE 0        __data_start
+</span><span class="z-text z-plain">60  0x00001229 0x00001229 GLOBAL FUNC   56       segill_sigaction
+</span><span class="z-text z-plain">63  0x00003008 0x00004008 GLOBAL OBJ    0        __dso_handle
+</span><span class="z-text z-plain">64  0x00002000 0x00002000 GLOBAL OBJ    4        _IO_stdin_used
+</span><span class="z-text z-plain">65  0x00001450 0x00001450 GLOBAL FUNC   101      __libc_csu_init
+</span><span class="z-text z-plain">66  ---------- 0x00004018 GLOBAL NOTYPE 0        _end
+</span><span class="z-text z-plain">67  0x00001140 0x00001140 GLOBAL FUNC   47       _start
+</span><span class="z-text z-plain">68  ---------- 0x00004010 GLOBAL NOTYPE 0        __bss_start
+</span><span class="z-text z-plain">69  0x00001261 0x00001261 GLOBAL FUNC   494      main
+</span><span class="z-text z-plain">70  ---------- 0x00004010 GLOBAL OBJ    0        __TMC_END__
+</span><span class="z-text z-plain">1   0x000010c0 0x000010c0 GLOBAL FUNC   16       imp.strncmp
+</span><span class="z-text z-plain">2   ---------- ---------- WEAK   NOTYPE 0        imp._ITM_deregisterTMCloneTable
+</span><span class="z-text z-plain">3   0x000010d0 0x000010d0 GLOBAL FUNC   16       imp.puts
+</span><span class="z-text z-plain">4   0x000010e0 0x000010e0 GLOBAL FUNC   16       imp.sigaction
+</span><span class="z-text z-plain">5   0x000010f0 0x000010f0 GLOBAL FUNC   16       imp.strlen
+</span><span class="z-text z-plain">6   0x00001100 0x00001100 GLOBAL FUNC   16       imp.__stack_chk_fail
+</span><span class="z-text z-plain">7   0x00001110 0x00001110 GLOBAL FUNC   16       imp.printf
+</span><span class="z-text z-plain">8   0x00001120 0x00001120 GLOBAL FUNC   16       imp.memset
+</span><span class="z-text z-plain">9   ---------- ---------- GLOBAL FUNC   0        imp.__libc_start_main
+</span><span class="z-text z-plain">10  0x00001130 0x00001130 GLOBAL FUNC   16       imp.sigemptyset
+</span><span class="z-text z-plain">11  ---------- ---------- WEAK   NOTYPE 0        imp.__gmon_start__
+</span><span class="z-text z-plain">12  ---------- ---------- WEAK   NOTYPE 0        imp._ITM_registerTMCloneTable
+</span><span class="z-text z-plain">13  ---------- ---------- WEAK   FUNC   0        imp.__cxa_finalize
+</span></code></pre>
+<p>We notice a <code>main.c</code> entry, and some of the functions we discovered in the last section.</p>
+<h1 id="strings">Strings</h1>
+<p>Finally, let's retrieve the list of strings contained in this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>z</span> /workspace/behindthescenes</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Strings]
+</span><span class="z-text z-plain">nth paddr      vaddr      len size section type  string                 
+</span><span class="z-text z-plain">------------------------------------------------------------------------
+</span><span class="z-text z-plain">0   0x00002004 0x00002004 22  23   .rodata ascii ./challenge &lt;password&gt;
+</span><span class="z-text z-plain">1   0x0000202b 0x0000202b 10  11   .rodata ascii &gt; HTB{%s}\n
+</span></code></pre>
+<p>There's only <code>2</code> strings.</p>
+<p>The first one is <code>./challenge &lt;password&gt;</code>. We can assume that this is a kind of help message that instructs us on the way to run this program.</p>
+<p>The second is <code>HTB{%s}\n</code>. It probably corresponds to the flag, and the <code>%s</code> here is formatted with the flag value.</p>
+<h1 id="execution">Execution</h1>
+<p>Let's execute this binary and see how it behaves.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> /workspace/behindthescenes</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">./challenge &lt;password&gt;
+</span></code></pre>
+<p>As we found out in the <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#strings">Strings</a> section, we are prompted to give an argument to the program, probably a <code>password</code> as indicated by the output. Let's enter <code>foo</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> /workspace/behindthescenes foo</span>
+</span></code></pre>
+<p>And there's no output...</p>
+<p>If we read the instructions provided by HTB, we clearly understand that we have to reverse it.</p>
+<h1 id="decompilation">Decompilation</h1>
+<p>Now that we have an of idea of how this C program behaves and of what its dependencies are, let's decompile it and explore it using <a href="https://github.com/NationalSecurityAgency/ghidra">Ghidra</a>. I'm going to load <code>TheArtOfReversing.exe</code> with the default options, and I'll analyze it, once again with the default options.</p>
+<p>As usual, I'll start by exploring the <code>main</code> function.</p>
+<h2 id="main"><code>main</code></h2>
+<pre data-linenos data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><table><tbody><tr><td>1</td><td><span class="z-source z-c"><span class="z-storage z-type z-c">void</span> <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">main</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-storage z-type z-c">void</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c">
+</span></span></td></tr><tr><td>2</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span></td></tr><tr><td>3</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-storage z-type z-c">long</span> in_FS_OFFSET<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>4</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    sigaction local_a8<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>5</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    undefined8 local_10<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>6</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span></td></tr><tr><td>7</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_10 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-keyword z-operator z-c">*</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>undefined8 <span class="z-keyword z-operator z-c">*</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>in_FS_OFFSET <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>28</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>8</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">memset</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"> <span class="z-keyword z-operator z-c">&amp;</span> local_a8<span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>98</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>9</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">sigemptyset</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"> <span class="z-keyword z-operator z-c">&amp;</span> local_a8<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">sa_mask</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>10</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_a8<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">__sigaction_handler</span><span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">sa_handler</span> <span class="z-keyword z-operator z-assignment z-c">=</span> segill_sigaction<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>11</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_a8<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">sa_flags</span> <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">4</span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>12</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">sigaction</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-constant z-numeric z-integer z-decimal z-c">4</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-keyword z-operator z-c">&amp;</span> local_a8<span class="z-punctuation z-separator z-c">,</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>sigaction <span class="z-keyword z-operator z-c">*</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>0</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>13</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-c">do</span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span></td></tr><tr><td>14</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">invalidInstructionException</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span></td></tr><tr><td>15</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span> <span class="z-keyword z-control z-c">while</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-constant z-language z-c">true</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>16</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
+</span></td></tr></tbody></table></code></pre>
+<p>That's quite unusual for a <code>main</code> function. Let's break down its most notable instructions:</p>
+<h3 id="preparation">Preparation</h3>
+<p>The line <code>4</code> defines an <code>local_a8</code> pointer to a <code>sigaction</code> structure, used for handling signal events in Linux systems.</p>
+<p>The line <code>8</code> fills the <code>local_a8</code> structure with <code>0</code>'s, essentially resetting its contents. This might be done to clear any existing signal handling settings.</p>
+<p>The line <code>12</code> configures the signal handling for signal number <code>4</code>, using the <code>local_a8</code> structure as the signal handler. This effectively connects the <code>segill_sigaction</code> function to handle invalid instruction exceptions.</p>
+<h3 id="checks">Checks</h3>
+<p>Finally, the lines <code>13</code> to <code>15</code> create an infinite loop continuously calling the <code>invalidInstructionException</code> function.</p>
+<h2 id="ud2-instruction"><code>ud2</code> instruction</h2>
+<p>We can try to obtain the decompiled <code>invalidInstructionException</code> function, but it doesn't work. Instead, we are redirected to the corresponding instruction in the disassembly:</p>
+<pre data-lang="asm" class="language-asm z-code"><code class="language-asm" data-lang="asm"><span class="z-source z-assembly"><span class="z-keyword z-control z-assembly">ud2</span>
+</span></code></pre>
+<p><code>ud2</code>? I don't know what this instruction does.</p>
+<p>If we browse the <a href="https://www.intel.com/content/www/us/en/content-details/789583/intel-64-and-ia-32-architectures-software-developer-s-manual-combined-volumes-1-2a-2b-2c-2d-3a-3b-3c-3d-and-4.html">Intel® 64 and IA-32 Architectures Software Developer’s Manual Combined Volumes: 1, 2A, 2B, 2C, 2D, 3A, 3B, 3C, 3D, and 4</a> and search for <code>ud2</code>, we find this:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/intel-manual-ud-instruction.png" alt="Intel manual" /></p>
+<p>So apparently <code>ud2</code> is an instruction used to 'Raise invalid opcode exception'. Therefore, the code in the <code>main</code> function constantly results in an error.</p>
+<h2 id="uncovering-the-whole-source-code-of-main">Uncovering the whole source code of <code>main</code></h2>
+<p>Surprisingly, we can see that there's some instructions after the <code>ud2</code> one, but since they will never be reached Ghidra didn't analyze them.</p>
+<p>We can force their decompilation by pressing <code>D</code>. Let's also change the <code>ud2</code> instruction to a <code>nop</code>, which does nothing, in order to see the decompiled version of the <code>main</code> function.</p>
+<p>Now it looks different:</p>
+<pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-storage z-type z-c">void</span> <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">main</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-storage z-type z-c">int</span> <span class="z-variable z-parameter z-c">param_1</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c">
+</span></span><span class="z-source z-c"><span class="z-meta z-function z-c"></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-storage z-type z-c">long</span> in_FS_OFFSET<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    sigaction local_a8<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    undefined8 local_10<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_10 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-keyword z-operator z-c">*</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>undefined8 <span class="z-keyword z-operator z-c">*</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>in_FS_OFFSET <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>28</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">memset</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"> <span class="z-keyword z-operator z-c">&amp;</span> local_a8<span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>98</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">sigemptyset</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"> <span class="z-keyword z-operator z-c">&amp;</span> local_a8<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">sa_mask</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_a8<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">__sigaction_handler</span><span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">sa_handler</span> <span class="z-keyword z-operator z-assignment z-c">=</span> segill_sigaction<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_a8<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">sa_flags</span> <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">4</span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">sigaction</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-constant z-numeric z-integer z-decimal z-c">4</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-keyword z-operator z-c">&amp;</span> local_a8<span class="z-punctuation z-separator z-c">,</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>sigaction <span class="z-keyword z-operator z-c">*</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>0</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-c">if</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>param_1 <span class="z-keyword z-operator z-comparison z-c">!=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">2</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-keyword z-control z-c">do</span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">            <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">invalidInstructionException</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-punctuation z-section z-block z-end z-c">}</span></span> <span class="z-keyword z-control z-c">while</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-constant z-language z-c">true</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-c">do</span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">invalidInstructionException</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span> <span class="z-keyword z-control z-c">while</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-constant z-language z-c">true</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
+</span></code></pre>
+<p>It revealed new instructions. Once again, we find <code>invalidInstructionException</code> calls. Let's continue to decompile and replace all <code>ud2</code> instructions to <code>nop</code> instructions until all <code>invalidInstructionException</code> are gone — there's actually a lot of them! In the end, here's what the <code>main</code> function looks like:</p>
+<pre data-linenos data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><table><tbody><tr><td>1</td><td><span class="z-source z-c"><span class="z-storage z-type z-c">void</span> <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">main</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-storage z-type z-c">int</span> <span class="z-variable z-parameter z-c">param_1</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-storage z-type z-c">long</span> <span class="z-variable z-parameter z-c">param_2</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c">
+</span></span></td></tr><tr><td>2</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span></td></tr><tr><td>3</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-storage z-type z-c">int</span> iVar1<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>4</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-support z-type z-sys-types z-c">size_t</span> <span class="z-variable z-other z-readwrite z-static z-mac-classic z-c">sVar2</span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>5</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-storage z-type z-c">long</span> in_FS_OFFSET<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>6</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    sigaction local_a8<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>7</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-storage z-type z-c">long</span> local_10<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>8</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span></td></tr><tr><td>9</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_10 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-keyword z-operator z-c">*</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span> <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>in_FS_OFFSET <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>28</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>10</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">memset</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-keyword z-operator z-c">&amp;</span>local_a8<span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>98</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>11</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">sigemptyset</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-keyword z-operator z-c">&amp;</span>local_a8<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">sa_mask</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>12</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_a8<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">__sigaction_handler</span><span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">sa_handler</span> <span class="z-keyword z-operator z-assignment z-c">=</span> segill_sigaction<span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>13</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    local_a8<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">sa_flags</span> <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">4</span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>14</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">sigaction</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-constant z-numeric z-integer z-decimal z-c">4</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-keyword z-operator z-c">&amp;</span>local_a8<span class="z-punctuation z-separator z-c">,</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>sigaction <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>0</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>15</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-c">if</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>param_1 <span class="z-keyword z-operator z-comparison z-c">==</span> <span class="z-constant z-numeric z-integer z-decimal z-c">2</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span></td></tr><tr><td>16</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-variable z-other z-readwrite z-static z-mac-classic z-c">sVar2</span> <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">strlen</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-keyword z-operator z-c">*</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>param_2 <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-decimal z-c">8</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span></td></tr><tr><td>17</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-keyword z-control z-c">if</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-variable z-other z-readwrite z-static z-mac-classic z-c">sVar2</span> <span class="z-keyword z-operator z-comparison z-c">==</span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>c</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-keyword z-operator z-arithmetic z-c">&amp;&amp;</span>
+</span></span></span></span></span></span></span></td></tr><tr><td>18</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c">              <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>iVar1 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">strncmp</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-keyword z-operator z-c">*</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>param_2 <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-decimal z-c">8</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-separator z-c">,</span> <span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>Itz<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span><span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">3</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-separator z-c">,</span>
+</span></span></span></span></span></span></span></span></td></tr><tr><td>19</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c">               iVar1 <span class="z-keyword z-operator z-comparison z-c">==</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-keyword z-operator z-arithmetic z-c">&amp;&amp;</span>
+</span></span></span></span></span></span></td></tr><tr><td>20</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c">             <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>iVar1 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">strncmp</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-keyword z-operator z-c">*</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span> <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>param_2 <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-decimal z-c">8</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-decimal z-c">3</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-separator z-c">,</span> <span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>_0n<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span><span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">3</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-separator z-c">,</span>
+</span></span></span></span></span></span></span></td></tr><tr><td>21</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c">              iVar1 <span class="z-keyword z-operator z-comparison z-c">==</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-keyword z-operator z-arithmetic z-c">&amp;&amp;</span>
+</span></span></span></span></span></td></tr><tr><td>22</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c"><span class="z-meta z-group z-c">            <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>iVar1 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">strncmp</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-keyword z-operator z-c">*</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span> <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>param_2 <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-decimal z-c">8</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-decimal z-c">6</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-separator z-c">,</span> <span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>Ly_<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span><span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">3</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-separator z-c">,</span>
+</span></span></span></span></span></span></span></td></tr><tr><td>23</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c">              iVar1 <span class="z-keyword z-operator z-comparison z-c">==</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span> <span class="z-keyword z-operator z-arithmetic z-c">&amp;&amp;</span>
+</span></span></span></span></span></span></span></td></tr><tr><td>24</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c">                  <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>iVar1 <span class="z-keyword z-operator z-assignment z-c">=</span>
+</span></span></span></span></span></span></span></span></td></tr><tr><td>25</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c">                       <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">strncmp</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-keyword z-operator z-c">*</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span> <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>param_2 <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-decimal z-c">8</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-decimal z-c">9</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-separator z-c">,</span> <span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>UD2<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span><span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">3</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-separator z-c">,</span>
+</span></span></span></span></span></span></span></span></td></tr><tr><td>26</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c"><span class="z-meta z-group z-c">                   iVar1 <span class="z-keyword z-operator z-comparison z-c">==</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span></span></td></tr><tr><td>27</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">            <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">printf</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>&gt; HTB{<span class="z-constant z-other z-placeholder z-c">%s</span>}<span class="z-constant z-character z-escape z-c">\n</span><span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span><span class="z-punctuation z-separator z-c">,</span> <span class="z-keyword z-operator z-c">*</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>undefined8 <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>param_2 <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-decimal z-c">8</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span></span></td></tr><tr><td>28</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+</span></span></span></span></td></tr><tr><td>29</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span> <span class="z-keyword z-control z-c">else</span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span></td></tr><tr><td>30</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">puts</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>./challenge &lt;password&gt;<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span></td></tr><tr><td>31</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+</span></span></span></td></tr><tr><td>32</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-c">if</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>local_10 <span class="z-keyword z-operator z-comparison z-c">==</span> <span class="z-keyword z-operator z-c">*</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">long</span> <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>in_FS_OFFSET <span class="z-keyword z-operator z-arithmetic z-c">+</span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>28</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span></td></tr><tr><td>33</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        <span class="z-keyword z-control z-flow z-return z-c">return</span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span></td></tr><tr><td>34</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+</span></span></span></td></tr><tr><td>35</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">__stack_chk_fail</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></td></tr><tr><td>36</td><td><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
+</span></td></tr></tbody></table></code></pre>
+<p>This is a bit messy, but now we have a better view of the <code>main</code> function.</p>
+<h3 id="checks-1">Checks</h3>
+<p>The line <code>15</code> checks if an argument was given. If it's not the case, it prints <code>./challenge &lt;password&gt;</code>, which is exactly what happened when we didn't provide an argument to the program in the <a href="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/#execution">Execution</a> section.</p>
+<p>The line <code>17</code> checks if the length of the input is equal to <code>0xc</code>, which is <code>12</code> in decimal.</p>
+<p>The lines <code>18</code> and <code>19</code> check if the first 3 characters are equal to <code>Itz</code>.</p>
+<p>The lines <code>20</code> and <code>21</code> check if the next 3 characters are equal to <code>_0n</code>.</p>
+<p>The lines <code>22</code> and <code>23</code> check if the next 3 characters are equal to <code>Ly_</code>.</p>
+<p>The lines <code>26</code> and <code>27</code> check if the last 3 characters are equal to <code>UD2</code>.</p>
+<h3 id="display">Display</h3>
+<p>Finally, if all these checks are passed, the string <code>&gt; HTB{%s}\n</code> formatted with our input is printed back to the terminal.</p>
+<h1 id="putting-it-all-together">Putting it all together</h1>
+<p>Okay, we have a better understanding of how the binary works. To obtain the flag, we just need to enter a word of <code>12</code> characters, which succeeds all of these checks!</p>
+<p>We can find it simply by concatenating the values this word is checked against.</p>
+<p>Therefore, the secret input to get the flag must be <code>Itz_0nLy_UD2</code>!</p>
+<h2 id="testing">Testing</h2>
+<p>Let's check if this works.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> /workspace/behindthescenes Itz_0nLy_UD2</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&gt; HTB{Itz_0nLy_UD2}
+</span></code></pre>
+<p>And it did! Yay!</p>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/challenges/behind-the-scenes/success.png" alt="Success" /></p>
+<p>That's it for this challenge! I found it really hard for a challenge classified as 'Very easy'. It took me some time to have the idea of modifying the <code>ud2</code> instructions. It was fairly easy to get the flag afterwards.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

