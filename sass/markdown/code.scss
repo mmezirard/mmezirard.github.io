@@ -1,0 +1,64 @@
+.code-wrapper {
+    position: relative;
+}
+
+.code-indicator {
+    border-radius: 0 0 0.25rem 0.25rem;
+    color: var(--bg-0);
+    font-size: 0.75rem;
+    letter-spacing: 0.025rem;
+    padding: 0.1rem 0.5rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    &[data-lang='bat'] {
+        background-color: #C1F12E;
+    }
+
+    &[data-lang='sh'] {
+        background-color: #89e051;
+    }
+
+    &[data-lang='php'] {
+        background-color: #4F5D95;
+    }
+
+    &[data-lang='plain'] {
+        background-color: #7B7979;
+    }
+
+    &[data-lang='ps1'] {
+        background-color: #012456;
+    }
+
+    &[data-lang='py'] {
+        background-color: #3572A5;
+    }
+
+    &[data-lang='xml'] {
+        background-color: #0060ac;
+    }
+}
+
+pre {
+    font-family: var(--code-font);
+    line-height: 1.4rem;
+    overflow-x: auto;
+    padding: 1rem;
+
+    code {
+        background-color: transparent;
+        border: 0;
+        color: inherit;
+        font-size: 100%;
+        padding: 0;
+    }
+}
+
+code {
+    background-color: var(--bg-1);
+    border: 0.063rem solid var(--border-color);
+    border-radius: 0.313rem;
+    padding: 0.1rem 0.2rem;
+}

@@ -1,0 +1,17 @@
+base_url = "https://mmezirard.github.io"
+compile_sass = true
+build_search_index = false
+title = "mmezirard"
+author = "Matthieu Mezirard"
+
+[markdown]
+highlight_code = true
+highlight_theme = "css"
+
+[extra]
+nav = [{ name = "/htb-write-ups", url = "/htb-write-ups" }]
+socials = [
+    { name = "github", url = "https://github.com/mmezirard/" },
+    { name = "hack-the-box", url = "https://app.hackthebox.com/users/1301891/" },
+    { name = "hackerone", url = "https://hackerone.com/mmezirard/" },
+]

@@ -1,0 +1,27 @@
+header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 1.125rem 0;
+
+    .left,
+    .right {
+        align-self: center;
+        margin-bottom: 0.625rem;
+    }
+
+    .left {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        font-size: 1.5rem;
+        gap: 1rem;
+    }
+
+    .right {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}

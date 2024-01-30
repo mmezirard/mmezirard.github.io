@@ -1,0 +1,14 @@
+{%- import 'macros/cards.html' as macros_cards -%}
+{%- import 'macros/page.html' as macros_page -%}
+
+<!DOCTYPE html>
+<html lang="en">
+    {% include "partials/head.html" %}
+
+    <body>
+        {% include "partials/header.html" %}
+        {% block content %}
+        {% endblock content %}
+        {% include "partials/footer.html" %}
+    </body>
+</html>

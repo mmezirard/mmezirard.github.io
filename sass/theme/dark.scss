@@ -1,0 +1,15 @@
+@import "syntax/dark.scss";
+
+:root.dark {
+    --bg-0: #121212;
+    --bg-1: rgba(255, 255, 255, 5%);
+    --bg-2: rgba(23, 23, 23, 100%);
+    --hover-color: white;
+    --primary-color: #ef5350;
+    --text-0: rgba(255, 255, 255, 87%);
+    --text-1: rgba(255, 255, 255, 60%);
+
+    header img {
+        filter: invert(1);
+    }
+}

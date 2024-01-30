@@ -1,0 +1,44 @@
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if page.description %}
+        <meta name="author" content="{{ config.author }}">
+    {% endif %}
+    <meta name="author" content="Matthieu Mezirard" />
+    {% if page.description %}
+        <meta name="description" content="{{ page.description }}">
+    {% elif section.description %}
+        <meta name="description" content="{{ section.description }}">
+    {% endif %}
+    <title>
+        {% if page.title %}
+            {{ page.title }} | {{ config.title }}
+        {% elif section.title %}
+            {{ section.title }} | {{ config.title }}
+        {% else %}
+            {{ config.title }}
+        {% endif %}
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
