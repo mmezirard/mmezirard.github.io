@@ -25,4 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const languageMapping = {
     plain: "PLAINTEXT",
+    ps1: "POWERSHELL",
+    sh: "SHELL",
 }

@@ -12,18 +12,6 @@
     right: 0;
     top: 0;
 
-    &[data-lang='bat'] {
-        background-color: #C1F12E;
-    }
-
-    &[data-lang='sh'] {
-        background-color: #89e051;
-    }
-
-    &[data-lang='php'] {
-        background-color: #4F5D95;
-    }
-
     &[data-lang='plain'] {
         background-color: #7B7979;
     }
@@ -32,12 +20,8 @@
         background-color: #012456;
     }
 
-    &[data-lang='py'] {
-        background-color: #3572A5;
-    }
-
-    &[data-lang='xml'] {
-        background-color: #0060ac;
+    &[data-lang='sh'] {
+        background-color: #89e051;
     }
 }
 
