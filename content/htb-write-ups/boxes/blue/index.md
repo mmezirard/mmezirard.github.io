@@ -643,7 +643,7 @@ Tunnel adapter Teredo Tunneling Pseudo-Interface:
 There's an Ethernet interface, an ISATAP interface and a Teredo tunneling
 pseudo-interface.
 
-## Flags
+### Flags
 
 If we check `haris`'s Desktop folder, we find the user flag.
 
