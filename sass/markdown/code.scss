@@ -12,6 +12,10 @@
     right: 0;
     top: 0;
 
+    &[data-lang='bat'] {
+        background-color: #C1F12E;
+    }
+
     &[data-lang='plain'] {
         background-color: #7B7979;
     }
