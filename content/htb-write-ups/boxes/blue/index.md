@@ -126,7 +126,7 @@ Let's do the same for the UDP ports.
 ```
 <SNIP>
 PORT     STATE         SERVICE     VERSION
-123/udp  closed        ntp
+123/udp  open|filtered ntp
 137/udp  open|filtered netbios-ns
 138/udp  open|filtered netbios-dgm
 500/udp  open|filtered isakmp
@@ -277,8 +277,8 @@ This flaw stems from a buffer overflow within the `memmove` operation of the
 `Srv!SrvOs2FeaListSizeToNt` contains a mathematical error, resulting in an
 unintended subtraction of a DWORD from a WORD. This manipulation of the kernel
 pool layout allows the overflow to overwrite an SMBv1 buffer. Then, an attacker
-can hijack the RIP pointer in the `srvnet!SrvNetWskReceiveComplete` function,
-thus gaining RCE.
+can hijack the RIP pointer in the `srvnet!SrvNetWskReceiveComplete` function by
+sending a specific RPC request to the target system, thus gaining RCE.
 
 ### Preparation
 
@@ -558,6 +558,8 @@ haris-PC\Administrator S-1-5-21-319597671-3711062392-2889596693-500
 haris-PC\haris         S-1-5-21-319597671-3711062392-2889596693-1000
 ```
 
+There's `haris` and the built-in `Administrator`.
+
 ### Groups
 
 Let's enumerate all groups, once again using `PowerView`.
@@ -638,6 +640,9 @@ Tunnel adapter Teredo Tunneling Pseudo-Interface:
    Autoconfiguration Enabled . . . . : Yes
 ```
 
+There's an Ethernet interface, an ISATAP interface and a Teredo tunneling
+pseudo-interface.
+
 ## Flags
 
 If we check `haris`'s Desktop folder, we find the user flag.
@@ -650,8 +655,7 @@ PS C:\Windows\system32> Get-Content "C:\Users\haris\Desktop\user.txt"
 575293913358db8b4d653e9b43b5847d
 ```
 
-As for the root flag, as usual, we can find it in `Administrator`'s Desktop
-folder.
+And as usual, we can find the root flag in `Administrator`'s Desktop folder.
 
 ```ps1
 PS C:\Windows\system32> Get-Content "C:\Users\Administrator\Desktop\root.txt"
