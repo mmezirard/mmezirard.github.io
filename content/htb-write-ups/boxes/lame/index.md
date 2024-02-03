@@ -206,7 +206,7 @@ Moreover, the `smb-os-discovery` script discloses that Lame's hostname is `lame`
 
 ### FTP
 
-#### Exploring the shares
+#### Exploring the filesystem
 
 Thanks to `nmap`, we know that we can log in anonymously.
 
