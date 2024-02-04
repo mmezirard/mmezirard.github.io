@@ -369,7 +369,7 @@ It caught the reverse shell!
 
 Our home folder contains a `.ssh` directory. There's no existing private key, so
 I'll create one and add the corresponding public key to `authorized_keys`, and
-then I'll connect over SSH as `root`. This way, I'll have a much more stable
+then I'll connect over SSH to Lame. This way, I'll have a much more stable
 shell.
 
 ## Getting a lay of the land
