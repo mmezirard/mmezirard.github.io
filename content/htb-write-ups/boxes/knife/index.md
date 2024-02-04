@@ -217,7 +217,7 @@ Let's browse to `http://10.10.10.242/`.
 
 It's a website for a medical company. There's hardly more information.
 
-### Site crawling
+#### Site crawling
 
 Let's see if we can find any linked web pages or directories.
 
@@ -231,7 +231,7 @@ http://10.10.10.242/
 
 We only find the homepage.
 
-### Directory fuzzing
+#### Directory fuzzing
 
 Let's see if this website hides unliked web pages and directories.
 

@@ -471,7 +471,7 @@ file:
     </beans>
 ```
 
-I'll place it in `/workspace/server`, which is accessible over Internet.
+I'll place it in `/workspace/server`, which is accessible over the Internet.
 
 Therefore, according to
 [this GitHub PoC](https://github.com/evkl1d/CVE-2023-46604), the payload that we
@@ -729,7 +729,7 @@ nothing.
 However, it's still possible to create an Nginx config to exploit our sudo
 permissions.
 
-## Preparation
+### Preparation
 
 Let's create a config file to serve the whole filesystem and to allow PUT
 requests to upload custom files, while being `root`:
@@ -760,7 +760,7 @@ activemq@broker:~$ sudo "/usr/sbin/nginx" -c "/tmp/privesc.conf"
 Now that the web server is running with elevated rights, we have access to the
 whole filesystem, and we can upload whatever we want!
 
-## Exploitation
+### Exploitation
 
 We could just retrieve the root flag, but let's obtain a reverse shell for good
 measure.

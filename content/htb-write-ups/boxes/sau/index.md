@@ -311,7 +311,7 @@ I'll save the URL encoded version of it as the `COMMAND` shell variable.
 However, we can't directly send the command to the web server on port `80/tcp`,
 so we'll use the SSRF we identified [earlier](#ssrf-cve-2023-27163) to do so.
 
-## Exploitation
+### Exploitation
 
 Let's create a new basket named `login`, that forwards and shows the requests
 sent to `http://127.0.0.1/login`, the vulnerable endpoint.
@@ -570,7 +570,7 @@ good news (for us at least) is that `less` is exploitable! We should be able to
 follow the configuration '(c)' of the GTFOBins for `systemctl` to elevate our
 privileges.
 
-## Exploitation
+### Exploitation
 
 Let's send a bunch of random requests to the Maltrail server to fill the status
 page.
