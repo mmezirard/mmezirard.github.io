@@ -601,7 +601,7 @@ If we run `whoami`, we see that we're `root`!
 As usual, we can find the root flag in our home folder.
 
 ```sh
-root@cap:~# cat "/root/root.txt"
+root@knife:~# cat "/root/root.txt"
 ```
 
 ```
