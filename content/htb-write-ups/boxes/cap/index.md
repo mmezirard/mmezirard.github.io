@@ -135,9 +135,6 @@ PORT   STATE SERVICE
 <SNIP>
 ```
 
-The `ftp-anon` script reveals that the FTP server accepts anonymous connections.
-It didn't find any file though.
-
 The `http-title` script detected that the website's homepage title is 'Security
 Dashboard'.
 
@@ -392,7 +389,7 @@ to it.
 
 ```
 <SNIP>
-Name (10.10.10.3:root): nathan
+Name (10.10.10.245:root): nathan
 331 Please specify the password.
 Password: 
 230 Login successful.
