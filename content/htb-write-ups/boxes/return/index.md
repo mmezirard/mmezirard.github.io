@@ -448,14 +448,14 @@ and the port used for the authentication.
 
 ![Wireshark LDAP bind request](wireshark-ldap-bind-request.png)
 
-Therefore, the credentials are `return\svc-printer`:`1edFg43012!!`!
+Therefore, the credentials are `svc-printer`:`1edFg43012!!`!
 
 ## Foothold (WinRM)
 
 Let's try these credentials to connect to Return over WinRM.
 
 ```sh
-❯ evil-winrm -i "10.10.11.108" -u "return\svc-printer" -p '1edFg43012!!'
+❯ evil-winrm -i "10.10.11.108" -u "svc-printer" -p '1edFg43012!!'
 ```
 
 ```
@@ -467,8 +467,7 @@ It worked. Nice!
 
 ## Getting a lay of the land
 
-If we run `whoami`, we see that we got a foothold as `return\svc-printer`
-(obviously).
+If we run `whoami`, we see that we got a foothold as `svc-printer` (obviously).
 
 ### Architecture
 

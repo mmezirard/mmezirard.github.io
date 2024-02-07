@@ -303,8 +303,6 @@ a specific RPC request to the target system, an attacker can get RCE.
 I'll use the Metasploit module `exploit/windows/smb/ms08_067_netapi` to
 exploit this vulnerability, since it's non-trivial to do by hand.
 
-The goal is to obtain a reverse shell.
-
 I'll set the `payload` to
 `payload/windows/shell_reverse_tcp`, the `RHOSTS` to `10.10.10.4`, the
 `LHOST` to `10.10.14.4` and the `LPORT` to `9001`.

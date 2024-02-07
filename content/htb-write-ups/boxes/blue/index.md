@@ -285,8 +285,6 @@ sending a specific RPC request to the target system, thus gaining RCE.
 I'll use the Metasploit module `exploit/windows/smb/ms17_010_eternalblue` to
 exploit this vulnerability, since it's non-trivial to do by hand.
 
-The goal is to obtain a reverse shell.
-
 I'll set the `target` to `Windows 7`, the `payload` to
 `payload/windows/x64/powershell_reverse_tcp`, the `RHOSTS` to `10.10.10.40`, the
 `LHOST` to `10.10.14.4` and the `LPORT` to `9001`.
