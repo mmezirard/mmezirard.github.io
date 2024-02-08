@@ -323,6 +323,7 @@ C:\WINDOWS\system32>
 It went off without a hitch.
 
 However, I don't like Metasploit's shell, so I'll open my own on port `9002`.
+Unfortunately, Powershell doesn't exist on this box.
 
 ## Getting a lay of the land
 

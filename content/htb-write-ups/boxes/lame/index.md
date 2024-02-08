@@ -333,7 +333,7 @@ Then, I'll choose the 'nc mkfifo' payload from
 [RevShells](https://www.revshells.com/) configured to obtain a `/bin/bash`
 shell.
 
-Therefore, after logging in to the SMB server, the command I should enter to
+Therefore, after logging in to the SMB server, the command we should enter to
 exploit this CVE is:
 
 ```sh
