@@ -506,8 +506,8 @@ It caught the reverse shell!
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
 create a private key and I'll add the corresponding key to `authorized_keys`.
-Finally I'll connect over SSH as `activemq`. This way, I'll have a much more
-stable shell.
+Finally I'll connect over SSH to Broker. This way, I'll have a much more stable
+shell.
 
 ## Getting a lay of the land
 
