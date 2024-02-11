@@ -226,6 +226,7 @@ Let's see if we can find any linked web pages or directories.
 ```
 
 ```
+<SNIP>
 http://10.10.10.242/
 ```
 
