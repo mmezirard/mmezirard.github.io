@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const languageMapping = {
     bat: "CMD",
+    java: "JAVA",
     php: "PHP",
     plain: "PLAINTEXT",
     ps1: "POWERSHELL",
