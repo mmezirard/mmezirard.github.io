@@ -312,7 +312,7 @@ I'll set the `payload` to
 No we can launch the exploit!
 
 ```sh
-msf6 exploit(windows/smb/ms08_067_netapi) >
+msf6 exploit(windows/smb/ms08_067_netapi) > run
 ```
 
 ```

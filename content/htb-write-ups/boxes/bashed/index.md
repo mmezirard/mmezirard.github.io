@@ -238,7 +238,7 @@ find it!
 Let's see if we can locate this webshell.
 
 ```sh
-❯ ffuf -v -c -u "http://10.10.10.68/FUZZ" -w "/usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt" -mc "100-403,405-599" -e .php
+❯ ffuf -v -c -u "http://10.10.10.68/FUZZ" -w "/usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt" -mc "100-403,405-599" -e ".php"
 ```
 
 ```
