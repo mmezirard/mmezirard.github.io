@@ -445,6 +445,8 @@ Ethernet adapter Local Area Connection:
 
 There's just an Ethernet interface.
 
+## System enumeration
+
 ### Access tokens
 
 Let's retrieve the privileges associated with our current access token.
@@ -516,7 +518,7 @@ C:\WINDOWS\TEMP>
 
 It caught the reverse shell!
 
-## Getting a lay of the land
+## System enumeration
 
 If we run `whoami`, we see that we're `NT AUTHORITY\SYSTEM`!
 

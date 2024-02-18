@@ -466,6 +466,8 @@ Ethernet adapter Local Area Connection:
 
 There's just an Ethernet interface.
 
+## System enumeration
+
 ### Flags
 
 If we check `john`'s Desktop folder, we find the user flag.

@@ -622,6 +622,8 @@ cap
 
 Yeah I know, very surprising.
 
+## System enumeration
+
 ### Flags
 
 If we check our home folder, we find the user flag.
@@ -800,7 +802,7 @@ Our home folder contains a `.ssh` directory. There's no existing private key, so
 I'll create one and add the corresponding public key to `authorized_keys`, and
 then I'll connect over SSH to Cap. This way, I'll have a much more stable shell.
 
-## Getting a lay of the land
+## System enumeration
 
 If we run `whoami`, we see that we're `root`!
 

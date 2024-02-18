@@ -500,53 +500,121 @@ We find a few web pages, however none of them look particularly noteworthy.
 Let's see if this website hides unliked web pages and directories.
 
 ```sh
-❯ ffuf -v -c -u "http://blocky.htb/FUZZ" -w "/usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt" -mc "100-403,405-599"
+❯ ffuf -v -c -u "http://blocky.htb/FUZZ" -w "/usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt" -mc "100-403,405-599" -e "/,.php"
 ```
 
 ```
 <SNIP>
-[Status: 301, Size: 307, Words: 20, Lines: 10, Duration: 28ms]
+[Status: 403, Size: 291, Words: 22, Lines: 12, Duration: 24ms]
+| URL | http://blocky.htb/icons/
+    * FUZZ: icons/
+
+[Status: 200, Size: 380, Words: 46, Lines: 11, Duration: 26ms]
+| URL | http://blocky.htb/wiki/
+    * FUZZ: wiki/
+
+[Status: 301, Size: 307, Words: 20, Lines: 10, Duration: 26ms]
 | URL | http://blocky.htb/wiki
 | --> | http://blocky.htb/wiki/
     * FUZZ: wiki
 
-[Status: 301, Size: 313, Words: 20, Lines: 10, Duration: 24ms]
+[Status: 301, Size: 313, Words: 20, Lines: 10, Duration: 31ms]
 | URL | http://blocky.htb/wp-content
 | --> | http://blocky.htb/wp-content/
     * FUZZ: wp-content
 
-[Status: 301, Size: 310, Words: 20, Lines: 10, Duration: 23ms]
+[Status: 200, Size: 0, Words: 1, Lines: 1, Duration: 39ms]
+| URL | http://blocky.htb/wp-content/
+    * FUZZ: wp-content/
+
+[Status: 200, Size: 2397, Words: 147, Lines: 70, Duration: 181ms]
+| URL | http://blocky.htb/wp-login.php
+    * FUZZ: wp-login.php
+
+[Status: 301, Size: 0, Words: 1, Lines: 1, Duration: 4278ms]
+| URL | http://blocky.htb/index.php
+| --> | http://blocky.htb/
+    * FUZZ: index.php
+
+[Status: 301, Size: 310, Words: 20, Lines: 10, Duration: 27ms]
 | URL | http://blocky.htb/plugins
 | --> | http://blocky.htb/plugins/
     * FUZZ: plugins
 
-[Status: 301, Size: 314, Words: 20, Lines: 10, Duration: 24ms]
+[Status: 200, Size: 745, Words: 36, Lines: 38, Duration: 23ms]
+| URL | http://blocky.htb/plugins/
+    * FUZZ: plugins/
+
+[Status: 301, Size: 314, Words: 20, Lines: 10, Duration: 67ms]
 | URL | http://blocky.htb/wp-includes
 | --> | http://blocky.htb/wp-includes/
     * FUZZ: wp-includes
 
-[Status: 301, Size: 313, Words: 20, Lines: 10, Duration: 27ms]
+[Status: 200, Size: 40838, Words: 2372, Lines: 201, Duration: 167ms]
+| URL | http://blocky.htb/wp-includes/
+    * FUZZ: wp-includes/
+
+[Status: 403, Size: 296, Words: 22, Lines: 12, Duration: 25ms]
+| URL | http://blocky.htb/javascript/
+    * FUZZ: javascript/
+
+[Status: 301, Size: 313, Words: 20, Lines: 10, Duration: 25ms]
 | URL | http://blocky.htb/javascript
 | --> | http://blocky.htb/javascript/
     * FUZZ: javascript
 
-[Status: 301, Size: 311, Words: 20, Lines: 10, Duration: 24ms]
+[Status: 200, Size: 135, Words: 11, Lines: 5, Duration: 78ms]
+| URL | http://blocky.htb/wp-trackback.php
+    * FUZZ: wp-trackback.php
+
+[Status: 301, Size: 311, Words: 20, Lines: 10, Duration: 25ms]
 | URL | http://blocky.htb/wp-admin
 | --> | http://blocky.htb/wp-admin/
     * FUZZ: wp-admin
 
-[Status: 301, Size: 313, Words: 20, Lines: 10, Duration: 23ms]
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 259ms]
+| URL | http://blocky.htb/wp-admin/
+| --> | http://blocky.htb/wp-login.php?redirect_to=http%3A%2F%2Fblocky.htb%2Fwp-admin%2F&reauth=1
+    * FUZZ: wp-admin/
+
+[Status: 301, Size: 313, Words: 20, Lines: 10, Duration: 28ms]
 | URL | http://blocky.htb/phpmyadmin
 | --> | http://blocky.htb/phpmyadmin/
     * FUZZ: phpmyadmin
 
-[Status: 200, Size: 52227, Words: 3306, Lines: 314, Duration: 77ms]
+[Status: 200, Size: 10327, Words: 492, Lines: 26, Duration: 476ms]
+| URL | http://blocky.htb/phpmyadmin/
+    * FUZZ: phpmyadmin/
+
+[Status: 405, Size: 42, Words: 6, Lines: 1, Duration: 79ms]
+| URL | http://blocky.htb/xmlrpc.php
+    * FUZZ: xmlrpc.php
+
+[Status: 403, Size: 289, Words: 22, Lines: 12, Duration: 30ms]
+| URL | http://blocky.htb/.php
+    * FUZZ: .php
+
+[Status: 301, Size: 0, Words: 1, Lines: 1, Duration: 119ms]
+| URL | http://blocky.htb//
+| --> | http://blocky.htb/
+    * FUZZ: /
+
+[Status: 200, Size: 52227, Words: 3306, Lines: 314, Duration: 174ms]
 | URL | http://blocky.htb/
     * FUZZ: 
 
-[Status: 403, Size: 298, Words: 22, Lines: 12, Duration: 25ms]
+[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 66ms]
+| URL | http://blocky.htb/wp-signup.php
+| --> | http://blocky.htb/wp-login.php?action=register
+    * FUZZ: wp-signup.php
+
+[Status: 403, Size: 298, Words: 22, Lines: 12, Duration: 31ms]
 | URL | http://blocky.htb/server-status
     * FUZZ: server-status
+
+[Status: 403, Size: 299, Words: 22, Lines: 12, Duration: 32ms]
+| URL | http://blocky.htb/server-status/
+    * FUZZ: server-status/
 <SNIP>
 ```
 
@@ -824,6 +892,8 @@ Blocky
 
 Yeah I know, very surprising.
 
+## System enumeration
+
 ### Flags
 
 If we check our home folder, we find the user flag.
@@ -996,7 +1066,7 @@ mysql> SELECT user_login, user_pass FROM wp_users;
 
 Unfortunately, there's only `notch`.
 
-## Getting a lay of the land
+## System enumeration
 
 ### Sudo permissions
 
@@ -1039,7 +1109,7 @@ create a private key and I'll add the corresponding key to `authorized_keys`.
 Finally I'll connect over SSH to Broker. This way, I'll have a much more stable
 shell.
 
-## Getting a lay of the land
+## System enumeration
 
 If we run `whoami`, we see that we're `root`!
 

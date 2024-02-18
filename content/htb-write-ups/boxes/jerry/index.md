@@ -566,6 +566,8 @@ Tunnel adapter isatap.{E6565A26-EF2E-43A5-A579-B0F25E7B1DC8}:
 
 There's an Ethernet interface and an ISATAP interface.
 
+## System enumeration
+
 ### Flags
 
 If we check `Administrator`'s Desktop folder, we find a `flags` folder

