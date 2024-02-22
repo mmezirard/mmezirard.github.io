@@ -40,6 +40,10 @@
         background-color: #89e051;
     }
 
+    &[data-lang='sql'] {
+        background-color: #e38c00;
+    }
+
     &[data-lang='xml'] {
         background-color: #0060ac;
     }

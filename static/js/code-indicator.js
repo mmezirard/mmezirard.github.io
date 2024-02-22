@@ -31,5 +31,6 @@ const languageMapping = {
     ps1: "POWERSHELL",
     py: "PYTHON",
     sh: "SHELL",
+    sql: "SQL",
     xml: "XML",
 }
