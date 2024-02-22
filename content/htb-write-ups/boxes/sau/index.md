@@ -284,7 +284,8 @@ However, we notice at the bottom of the page that it's using Maltrail version `0
 #### Known vulnerabilities
 
 If we search [ExploitDB](https://www.exploit-db.com/) for `Maltrail 0.53`, we
-find nothing. However, if we search online, we find a RCE.
+find nothing. However, if we search online, we find
+[a RCE](https://www.rapid7.com/db/modules/exploit/unix/http/maltrail_rce/).
 
 ## Foothold (RCE)
 
