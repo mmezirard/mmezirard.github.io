@@ -1093,7 +1093,7 @@ We can run anything as `root`!
 Let's get an elevated shell:
 
 ```sh
-notch@Blocky:~$ sudo "/bin/bash"
+notch@Blocky:~$ sudo "su" "-"
 ```
 
 ```

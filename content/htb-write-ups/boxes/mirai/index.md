@@ -655,11 +655,11 @@ We can run anything as `root`!
 Let's get an elevated shell:
 
 ```sh
-pi@raspberrypi:~ $ sudo "/bin/bash"
+pi@raspberrypi:~ $ sudo "su" "-"
 ```
 
 ```
-root@raspberrypi:/home/pi#
+root@raspberrypi:~#
 ```
 
 Yay!
