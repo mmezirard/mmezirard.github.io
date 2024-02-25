@@ -279,7 +279,7 @@ up with a username, a POST request is sent to `/` with the parameters:
 username=<USERNAME>&country=<COUNTRY>
 ```
 
-Then,the Apache web server redirects us to `/account.php` and sets the `user`
+Then, the Apache web server redirects us to `/account.php` and sets the `user`
 cookie to a specific value.
 
 It turns out that the `user` cookie is set to the MD5 hash of the username we

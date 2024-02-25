@@ -280,7 +280,7 @@ Let's browse to `http://10.10.10.56/cgi-bin/user.sh`.
 
 It actually downloads a file!
 
-```html
+```
 Content-Type: text/plain
 
 Just an uptime test script

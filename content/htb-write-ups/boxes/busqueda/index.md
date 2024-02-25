@@ -576,7 +576,7 @@ svc@busqueda:~$ cat "/home/svc/user.txt"
 
 ### Home folders
 
-If we explore out home folder, we notice a `.gitconfig` file:
+If we explore our home folder, we notice a `.gitconfig` file:
 
 ```
 [user]
