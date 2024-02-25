@@ -182,8 +182,6 @@ This is the standard homepage for Apache Tomcat.
 A common way to get RCE with this application is by uploading a custom WAR file.
 However, to access this functionality, we need to be authenticated.
 
-#### Default credentials
-
 If we search online for Apache Tomcat's default credentials, we find a
 [wordlist](https://github.com/danielmiessler/SecLists/blob/master/Passwords/Default-Credentials/tomcat-betterdefaultpasslist.txt)
 from [SecLists](https://github.com/danielmiessler/SecLists).
@@ -193,8 +191,6 @@ I launched a Sniper attack on Burp Suite to test these credentials. Here's the r
 ![Burp Suite default credentials attack](burp-default-credentials-attack.png)
 
 The payload `dG9tY2F0OnMzY3JldA==` is valid, which corresponds to `tomcat:s3cret`.
-
-#### Exploration
 
 Let's resume our exploration of the website by authenticating to the 'Manager
 App'.
@@ -206,8 +202,8 @@ Now we have access to the WAR file upload functionality!
 ## Foothold (File upload)
 
 As I said [previously](#exploration), a common way to get RCE with Apache Tomcat
-is by uploading a custom WAR file. It requires to be authenticated, but we
-[just discovered](#default-credentials) that default credentials were used.
+is by uploading a custom WAR file. It requires to be authenticated, but we just
+discovered that default credentials were used.
 
 ### Preparation
 
