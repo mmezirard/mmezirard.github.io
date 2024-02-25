@@ -25,12 +25,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const languageMapping = {
     bat: "CMD",
+    html: "HTML",
     java: "JAVA",
     php: "PHP",
     plain: "PLAINTEXT",
     ps1: "POWERSHELL",
     py: "PYTHON",
+    rb: "RUBY",
     sh: "SHELL",
     sql: "SQL",
     xml: "XML",
+    yml: "YAML",
 }
