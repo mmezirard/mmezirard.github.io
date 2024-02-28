@@ -27,6 +27,7 @@ const languageMapping = {
     bat: "CMD",
     html: "HTML",
     java: "JAVA",
+    js: "JAVASCRIPT",
     php: "PHP",
     plain: "PLAINTEXT",
     ps1: "POWERSHELL",

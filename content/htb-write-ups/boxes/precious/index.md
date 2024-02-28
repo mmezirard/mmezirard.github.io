@@ -287,9 +287,9 @@ If I enter a valid URL, it works great.
 
 #### Under the hood
 
-If we check the previous requests using Burp Suite, we notice t hat when we
-press the 'Submit' button to submit the form, a POST message is sent to `/` with
-the data:
+If we check the previous requests using Burp Suite, we notice that when we press
+the 'Submit' button to submit the form, a POST message is sent to `/` with the
+data:
 
 ```html
 url=<URL>
