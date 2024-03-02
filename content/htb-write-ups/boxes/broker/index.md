@@ -175,71 +175,13 @@ PORT   STATE         SERVICE
 The `http-auth` script reveals that the Nginx server asks for authentication,
 using the 'Basic' scheme with a realm set to 'ActiveMQRealm'.
 
-Predictably, the `http-title` script detected that the website's homepage title
-is 'Error 401 Unauthorized'.
-
 ## Services enumeration
 
 ### ActiveMQ
 
-#### Fingerprinting
+#### Exploration
 
-Let's use `whatweb` to fingerprint Nginx's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.11.243/" -v
-```
-
-```
-WhatWeb report for http://10.10.11.243/
-Status    : 401 Unauthorized
-Title     : Error 401 Unauthorized
-IP        : 10.10.11.243
-Country   : RESERVED, ZZ
-
-Summary   : HTTPServer[Ubuntu Linux][nginx/1.18.0 (Ubuntu)], nginx[1.18.0], PoweredBy[Jetty://], WWW-Authenticate[ActiveMQRealm][basic]
-
-Detected Plugins:
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        OS           : Ubuntu Linux
-        String       : nginx/1.18.0 (Ubuntu) (from server string)
-
-[ PoweredBy ]
-        This plugin identifies instances of 'Powered by x' text and 
-        attempts to extract the value for x. 
-
-        String       : Jetty://
-
-[ WWW-Authenticate ]
-        This plugin identifies the WWW-Authenticate HTTP header and 
-        extracts the authentication method and realm. 
-
-        Module       : basic
-        String       : ActiveMQRealm
-
-[ nginx ]
-        Nginx (Engine-X) is a free, open-source, high-performance 
-        HTTP server and reverse proxy, as well as an IMAP/POP3 
-        proxy server. 
-
-        Version      : 1.18.0
-        Website     : http://nginx.net/
-
-HTTP Headers:
-        HTTP/1.1 401 Unauthorized
-        Server: nginx/1.18.0 (Ubuntu)
-        Date: Sun, 04 Feb 2024 13:35:09 GMT
-        Content-Type: text/html;charset=iso-8859-1
-        Content-Length: 447
-        Connection: close
-        WWW-Authenticate: basic realm="ActiveMQRealm"
-        Cache-Control: must-revalidate,no-cache,no-store
-```
-
-We're indeed asked to authenticate.
+If we browse to `http://10.10.11.243/`, we're indeed asked to authenticate.
 
 The only information we have at our disposal is that the realm is
 'ActiveMQRealm'... Let's search online for more information about that.
@@ -257,155 +199,21 @@ If we search online for Active MQ's default credentials, we find a
 
 And if we try them... they work!
 
-```sh
-❯ whatweb -a3 -u "admin:admin" "http://10.10.11.243/" -v
-```
-
-```
-WhatWeb report for http://10.10.11.243/
-Status    : 302 Found
-Title     : <None>
-IP        : 10.10.11.243
-Country   : RESERVED, ZZ
-
-Summary   : HTTPServer[Ubuntu Linux][nginx/1.18.0 (Ubuntu)], nginx[1.18.0], RedirectLocation[http://10.10.11.243/index.html], UncommonHeaders[x-content-type-options], X-Frame-Options[SAMEORIGIN], X-XSS-Protection[1; mode=block]
-
-Detected Plugins:
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        OS           : Ubuntu Linux
-        String       : nginx/1.18.0 (Ubuntu) (from server string)
-
-[ RedirectLocation ]
-        HTTP Server string location. used with http-status 301 and 
-        302 
-
-        String       : http://10.10.11.243/index.html (from location)
-
-[ UncommonHeaders ]
-        Uncommon HTTP server headers. The blacklist includes all 
-        the standard headers and many non standard but common ones. 
-        Interesting but fairly common headers should have their own 
-        plugins, eg. x-powered-by, server and x-aspnet-version. 
-        Info about headers can be found at www.http-stats.com 
-
-        String       : x-content-type-options (from headers)
-
-[ X-Frame-Options ]
-        This plugin retrieves the X-Frame-Options value from the 
-        HTTP header. - More Info: 
-        http://msdn.microsoft.com/en-us/library/cc288472%28VS.85%29.
-        aspx
-
-        String       : SAMEORIGIN
-
-[ X-XSS-Protection ]
-        This plugin retrieves the X-XSS-Protection value from the 
-        HTTP header. - More Info: 
-        http://msdn.microsoft.com/en-us/library/cc288472%28VS.85%29.
-        aspx
-
-        String       : 1; mode=block
-
-[ nginx ]
-        Nginx (Engine-X) is a free, open-source, high-performance 
-        HTTP server and reverse proxy, as well as an IMAP/POP3 
-        proxy server. 
-
-        Version      : 1.18.0
-        Website     : http://nginx.net/
-
-HTTP Headers:
-        HTTP/1.1 302 Found
-        Server: nginx/1.18.0 (Ubuntu)
-        Date: Sun, 04 Feb 2024 13:35:46 GMT
-        Content-Length: 0
-        Location: http://10.10.11.243/index.html
-        Connection: close
-        X-FRAME-OPTIONS: SAMEORIGIN
-        X-XSS-Protection: 1; mode=block
-        X-Content-Type-Options: nosniff
-
-WhatWeb report for http://10.10.11.243/index.html
-Status    : 200 OK
-Title     : Apache ActiveMQ
-IP        : 10.10.11.243
-Country   : RESERVED, ZZ
-
-Summary   : HTTPServer[Ubuntu Linux][nginx/1.18.0 (Ubuntu)], nginx[1.18.0], UncommonHeaders[x-content-type-options], X-Frame-Options[SAMEORIGIN], X-XSS-Protection[1; mode=block]
-
-Detected Plugins:
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        OS           : Ubuntu Linux
-        String       : nginx/1.18.0 (Ubuntu) (from server string)
-
-[ UncommonHeaders ]
-        Uncommon HTTP server headers. The blacklist includes all 
-        the standard headers and many non standard but common ones. 
-        Interesting but fairly common headers should have their own 
-        plugins, eg. x-powered-by, server and x-aspnet-version. 
-        Info about headers can be found at www.http-stats.com 
-
-        String       : x-content-type-options (from headers)
-
-[ X-Frame-Options ]
-        This plugin retrieves the X-Frame-Options value from the 
-        HTTP header. - More Info: 
-        http://msdn.microsoft.com/en-us/library/cc288472%28VS.85%29.
-        aspx
-
-        String       : SAMEORIGIN
-
-[ X-XSS-Protection ]
-        This plugin retrieves the X-XSS-Protection value from the 
-        HTTP header. - More Info: 
-        http://msdn.microsoft.com/en-us/library/cc288472%28VS.85%29.
-        aspx
-
-        String       : 1; mode=block
-
-[ nginx ]
-        Nginx (Engine-X) is a free, open-source, high-performance 
-        HTTP server and reverse proxy, as well as an IMAP/POP3 
-        proxy server. 
-
-        Version      : 1.18.0
-        Website     : http://nginx.net/
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Server: nginx/1.18.0 (Ubuntu)
-        Date: Sun, 04 Feb 2024 13:35:47 GMT
-        Content-Type: text/html
-        Transfer-Encoding: chunked
-        Connection: close
-        X-FRAME-OPTIONS: SAMEORIGIN
-        X-XSS-Protection: 1; mode=block
-        X-Content-Type-Options: nosniff
-        Last-Modified: Tue, 20 Apr 2021 06:16:30 GMT
-        Content-Encoding: gzip
-```
-
-There's a redirection to `/index.html`.
-
-#### Exploration
-
-Let's browse to `http://10.10.11.243/`, and let's authenticate.
-
 ![ActiveMQ homepage](activemq-homepage.png)
 
 It's indeed an ActiveMQ application.
 
-The homepage has a link to `/admin`. If we click on it, we're served this web page:
+#### Fingerprinting
 
-![ActiveMQ admin page](activemq-admin-page.png)
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
 
-This page leaks that the ActiveMQ version is `5.15.5`.
+![ActiveMQ homepage Wappalyzer extension](activemq-homepage-wappalyzer.png)
+
+Moreover, if we access the `/admin` web page, we find that the ActiveMQ version
+is `5.15.5`.
+
+#### Exploration
 
 I browsed this application to see if I could find functionalities I could abuse
 to get a foothold, but I found nothing.

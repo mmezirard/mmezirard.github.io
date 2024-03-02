@@ -200,9 +200,6 @@ Host script results:
 <SNIP>
 ```
 
-The `http-title` script indicates that the Lighttpd website doesn't have a
-title.
-
 ## Services enumeration
 
 ### DNS
@@ -210,57 +207,6 @@ title.
 Unfortunately, we can't communicate with the DNS server.
 
 ### Lighttpd
-
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint Lighttpd's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.10.48/" -v
-```
-
-```
-WhatWeb report for http://10.10.10.48/
-Status    : 404 Not Found
-Title     : <None>
-IP        : 10.10.10.48
-Country   : RESERVED, ZZ
-
-Summary   : HTTPServer[lighttpd/1.4.35], lighttpd[1.4.35], UncommonHeaders[x-pi-hole]
-
-Detected Plugins:
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        String       : lighttpd/1.4.35 (from server string)
-
-[ UncommonHeaders ]
-        Uncommon HTTP server headers. The blacklist includes all 
-        the standard headers and many non standard but common ones. 
-        Interesting but fairly common headers should have their own 
-        plugins, eg. x-powered-by, server and x-aspnet-version. 
-        Info about headers can be found at www.http-stats.com 
-
-        String       : x-pi-hole (from headers)
-
-[ lighttpd ]
-        Lightweight open-source web server. 
-
-        Version      : 1.4.35
-        Website     : http://www.lighttpd.net/
-
-HTTP Headers:
-        HTTP/1.1 404 Not Found
-        X-Pi-hole: A black hole for Internet advertisements.
-        Content-type: text/html; charset=UTF-8
-        Content-Length: 0
-        Connection: close
-        Date: Tue, 20 Feb 2024 11:27:25 GMT
-        Server: lighttpd/1.4.35
-```
-
-We get a 404 error code.
 
 #### Exploration
 
@@ -318,7 +264,18 @@ It's a dashboard for Pi-hole. What's that?
 >
 > — [GitHub](https://github.com/pi-hole/pi-hole)
 
-We can't do anything without being logged in though.
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this dashboard with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![Lighttpd admin page Wappalyzer extension](lighttpd-admin-page-wappalyzer.png)
+
+This reveals that this website is using PHP.
+
+#### Exploration
+
+We can't do anything without being logged in.
 
 I tested common passwords contained in
 [this wordlist](https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/top-passwords-shortlist.txt)
@@ -338,62 +295,26 @@ but it fails too.
 
 ### Plex
 
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint Plex's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.10.48:32400/" -v
-```
-
-```
-WhatWeb report for http://10.10.10.48:32400/
-Status    : 401 Unauthorized
-Title     : Unauthorized
-IP        : 10.10.10.48
-Country   : RESERVED, ZZ
-
-Summary   : Script, UncommonHeaders[x-plex-protocol,x-plex-content-original-length,x-plex-content-compressed-length]
-
-Detected Plugins:
-[ Script ]
-        This plugin detects instances of script HTML elements and 
-        returns the script language/type. 
-
-
-[ UncommonHeaders ]
-        Uncommon HTTP server headers. The blacklist includes all 
-        the standard headers and many non standard but common ones. 
-        Interesting but fairly common headers should have their own 
-        plugins, eg. x-powered-by, server and x-aspnet-version. 
-        Info about headers can be found at www.http-stats.com 
-
-        String       : x-plex-protocol,x-plex-content-original-length,x-plex-content-compressed-length (from headers)
-
-HTTP Headers:
-        HTTP/1.1 401 Unauthorized
-        Content-Type: text/html
-        X-Plex-Protocol: 1.0
-        Content-Encoding: gzip
-        X-Plex-Content-Original-Length: 193
-        X-Plex-Content-Compressed-Length: 157
-        Content-Length: 157
-        Cache-Control: no-cache
-        Date: Wed, 21 Feb 2024 07:30:06 GMT
-```
-
-We're unauthorized to access the homepage.
-
 #### Exploration
 
 Let's browse to `http://10.10.10.48:32400/`.
 
 ![Plex login page](plex-login-page.png)
 
-We're redirected to `/web/index.html`, and we're presented with a login form.
+We're redirected to `/web/index.html`, and we're presented with a Plex login
+form.
 
-We don't know any credentials though. Luckily we can create an account! But if
-we do, we don't get access to noteworthy functionalities, and there's no
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![Plex homepage Wappalyzer extension](plex-homepage-wappalyzer.png)
+
+#### Exploration
+
+We don't know any credentials at this point. Luckily we can create an account!
+But if we do, we don't get access to noteworthy functionalities, and there's no
 installed Plex servers.
 
 #### Known vulnerabilities
@@ -567,8 +488,6 @@ video
 voice
 www-data
 ```
-
-Looks classic.
 
 ### NICs
 

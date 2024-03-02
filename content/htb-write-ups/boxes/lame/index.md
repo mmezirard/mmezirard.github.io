@@ -531,8 +531,6 @@ voice
 www-data
 ```
 
-Looks classic.
-
 ### NICs
 
 Let's gather the list of connected NICs.

@@ -135,9 +135,6 @@ PORT   STATE SERVICE
 <SNIP>
 ```
 
-The `http-title` script detected that the website's homepage title is 'Security
-Dashboard'.
-
 ## Services enumeration
 
 ### FTP
@@ -185,81 +182,6 @@ only find a DOS vulnerability.
 
 ### Gunicorn
 
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint Gunicorn's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.10.245/" -v
-```
-
-```
-WhatWeb report for http://10.10.10.245/
-Status    : 200 OK
-Title     : Security Dashboard
-IP        : 10.10.10.245
-Country   : RESERVED, ZZ
-
-Summary   : Bootstrap, HTML5, HTTPServer[gunicorn], JQuery[2.2.4], Modernizr[2.8.3.min], Script, X-UA-Compatible[ie=edge]
-
-Detected Plugins:
-[ Bootstrap ]
-        Bootstrap is an open source toolkit for developing with 
-        HTML, CSS, and JS. 
-
-        Website     : https://getbootstrap.com/
-
-[ HTML5 ]
-        HTML version 5, detected by the doctype declaration 
-
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        String       : gunicorn (from server string)
-
-[ JQuery ]
-        A fast, concise, JavaScript that simplifies how to traverse 
-        HTML documents, handle events, perform animations, and add 
-        AJAX. 
-
-        Version      : 2.2.4
-        Website     : http://jquery.com/
-
-[ Modernizr ]
-        Modernizr adds classes to the <html> element which allow 
-        you to target specific browser functionality in your 
-        stylesheet. You don't actually need to write any Javascript 
-        to use it. [JavaScript] 
-
-        Version      : 2.8.3.min
-        Website     : http://www.modernizr.com/
-
-[ Script ]
-        This plugin detects instances of script HTML elements and 
-        returns the script language/type. 
-
-
-[ X-UA-Compatible ]
-        This plugin retrieves the X-UA-Compatible value from the 
-        HTTP header and meta http-equiv tag. - More Info: 
-        http://msdn.microsoft.com/en-us/library/cc817574.aspx 
-
-        String       : ie=edge
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Server: gunicorn
-        Date: Sat, 03 Feb 2024 16:18:16 GMT
-        Connection: close
-        Content-Type: text/html; charset=utf-8
-        Content-Length: 19386
-```
-
-This reveals that this website is using Bootstrap and JavaScript libraries like
-jQuery.
-
 #### Exploration
 
 Let's browse to `http://10.10.10.245/`.
@@ -268,8 +190,19 @@ Let's browse to `http://10.10.10.245/`.
 
 We are served a dashboard with various security metrics.
 
-The footer of the website also leaks that it's using a template made by
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![Gunicorn homepage Wappalyzer extension](gunicorn-homepage-wappalyzer.png)
+
+This reveals that this website is using Python.
+
+Moreover, the footer of the website leaks that it's using a template made by
 [Colorlib](https://colorlib.com/wp/).
+
+#### Exploration
 
 Let's browse to the web pages linked on the sidebar.
 

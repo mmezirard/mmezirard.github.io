@@ -126,62 +126,9 @@ PORT   STATE SERVICE
 <SNIP>
 ```
 
-The `http-title` script indicates that the website doesn't have a title.
-
 ## Services enumeration
 
 ### Apache
-
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint Apache's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.10.75/" -v
-```
-
-```
-WhatWeb report for http://10.10.10.75/
-Status    : 200 OK
-Title     : <None>
-IP        : 10.10.10.75
-Country   : RESERVED, ZZ
-
-Summary   : Apache[2.4.18], HTTPServer[Ubuntu Linux][Apache/2.4.18 (Ubuntu)]
-
-Detected Plugins:
-[ Apache ]
-        The Apache HTTP Server Project is an effort to develop and 
-        maintain an open-source HTTP server for modern operating 
-        systems including UNIX and Windows NT. The goal of this 
-        project is to provide a secure, efficient and extensible 
-        server that provides HTTP services in sync with the current 
-        HTTP standards. 
-
-        Version      : 2.4.18 (from HTTP Server Header)
-        Google Dorks: (3)
-        Website     : http://httpd.apache.org/
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        OS           : Ubuntu Linux
-        String       : Apache/2.4.18 (Ubuntu) (from server string)
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Date: Sun, 25 Feb 2024 10:38:28 GMT
-        Server: Apache/2.4.18 (Ubuntu)
-        Last-Modified: Thu, 28 Dec 2017 20:19:50 GMT
-        ETag: "5d-5616c3cf7fa77-gzip"
-        Accept-Ranges: bytes
-        Vary: Accept-Encoding
-        Content-Encoding: gzip
-        Content-Length: 96
-        Connection: close
-        Content-Type: text/html
-```
 
 #### Exploration
 
@@ -189,7 +136,7 @@ Let's browse to `http://10.10.10.75/`.
 
 ![Apache homepage](apache-homepage.png)
 
-It's a basic web page with the 'Hello world' message.
+It's a basic web page with the 'Hello world!' message.
 
 #### Source code review
 
@@ -202,94 +149,25 @@ If we check the source code of the web page, we find this comment:
 It indicates that a `nibbleblog` directory exists at the root of the web
 server.
 
+#### Exploration
+
+Let's browse to `http://10.10.10.75/nibbleblog/`.
+
+![Apache nibbleblog page](apache-nibbleblog-page.png)
+
+It's a simple blog page.
+
 #### Fingerprinting
 
-Let's use `whatweb` to fingerprint Apache's `nibbleblog` directory.
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
 
-```sh
-❯ whatweb -a3 "http://10.10.10.75/nibbleblog/" -v
-```
+![Apache nibbleblog page Wappalyzer extension](apache-nibbleblog-page-wappalyzer.png)
 
-```
-WhatWeb report for http://10.10.10.75/nibbleblog/
-Status    : 200 OK
-Title     : Nibbles - Yum yum
-IP        : 10.10.10.75
-Country   : RESERVED, ZZ
+This reveals that this website is using PHP.
 
-Summary   : Apache[2.4.18], Cookies[PHPSESSID], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 (Ubuntu)], JQuery, MetaGenerator[Nibbleblog], PoweredBy[Nibbleblog], Script
-
-Detected Plugins:
-[ Apache ]
-        The Apache HTTP Server Project is an effort to develop and 
-        maintain an open-source HTTP server for modern operating 
-        systems including UNIX and Windows NT. The goal of this 
-        project is to provide a secure, efficient and extensible 
-        server that provides HTTP services in sync with the current 
-        HTTP standards. 
-
-        Version      : 2.4.18 (from HTTP Server Header)
-        Google Dorks: (3)
-        Website     : http://httpd.apache.org/
-
-[ Cookies ]
-        Display the names of cookies in the HTTP headers. The 
-        values are not returned to save on space. 
-
-        String       : PHPSESSID
-
-[ HTML5 ]
-        HTML version 5, detected by the doctype declaration 
-
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        OS           : Ubuntu Linux
-        String       : Apache/2.4.18 (Ubuntu) (from server string)
-
-[ JQuery ]
-        A fast, concise, JavaScript that simplifies how to traverse 
-        HTML documents, handle events, perform animations, and add 
-        AJAX. 
-
-        Website     : http://jquery.com/
-
-[ MetaGenerator ]
-        This plugin identifies meta generator tags and extracts its 
-        value. 
-
-        String       : Nibbleblog
-
-[ PoweredBy ]
-        This plugin identifies instances of 'Powered by x' text and 
-        attempts to extract the value for x. 
-
-        String       : Nibbleblog
-
-[ Script ]
-        This plugin detects instances of script HTML elements and 
-        returns the script language/type. 
-
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Date: Sun, 25 Feb 2024 10:59:42 GMT
-        Server: Apache/2.4.18 (Ubuntu)
-        Set-Cookie: PHPSESSID=o6ffqqn25ra4n412ivaqrics52; path=/
-        Expires: Thu, 19 Nov 1981 08:52:00 GMT
-        Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
-        Pragma: no-cache
-        Vary: Accept-Encoding
-        Content-Encoding: gzip
-        Content-Length: 1009
-        Connection: close
-        Content-Type: text/html; charset=UTF-8
-```
-
-It reveals that this web page is using JavaScript libraries like jQuery, but
-also PHP and Nibbleblog.
+Moreover, the footer of the page we discovered indicates that it's powered by
+Nibbleblog.
 
 > Easy, fast and free CMS Blog. All you need is PHP to work.
 >
@@ -297,13 +175,7 @@ also PHP and Nibbleblog.
 
 #### Exploration
 
-Let's browse to `http://10.10.10.75/nibbleblog/`.
-
-![Apache nibbleblog page](apache-nibbleblog-page.png)
-
-It's a simple blog page. The footer confirms that it's powered by Nibbleblog.
-
-However, there's no posts and we can't do anything.
+Unfortunately, there's no posts and we can't do anything.
 
 #### Site crawling
 
@@ -353,7 +225,90 @@ Let's see if this website hides unliked web pages and directories.
 
 ```
 <SNIP>
+[Status: 200, Size: 402, Words: 33, Lines: 11, Duration: 47ms]
+| URL | http://10.10.10.75/nibbleblog/sitemap.php
+    * FUZZ: sitemap.php
 
+[Status: 301, Size: 323, Words: 20, Lines: 10, Duration: 39ms]
+| URL | http://10.10.10.75/nibbleblog/content
+| --> | http://10.10.10.75/nibbleblog/content/
+    * FUZZ: content
+
+[Status: 200, Size: 1353, Words: 88, Lines: 19, Duration: 40ms]
+| URL | http://10.10.10.75/nibbleblog/content/
+    * FUZZ: content/
+
+[Status: 301, Size: 322, Words: 20, Lines: 10, Duration: 37ms]
+| URL | http://10.10.10.75/nibbleblog/themes
+| --> | http://10.10.10.75/nibbleblog/themes/
+    * FUZZ: themes
+
+[Status: 200, Size: 1741, Words: 112, Lines: 21, Duration: 41ms]
+| URL | http://10.10.10.75/nibbleblog/themes/
+    * FUZZ: themes/
+
+[Status: 200, Size: 302, Words: 8, Lines: 8, Duration: 43ms]
+| URL | http://10.10.10.75/nibbleblog/feed.php
+    * FUZZ: feed.php
+
+[Status: 301, Size: 321, Words: 20, Lines: 10, Duration: 37ms]
+| URL | http://10.10.10.75/nibbleblog/admin
+| --> | http://10.10.10.75/nibbleblog/admin/
+    * FUZZ: admin
+
+[Status: 200, Size: 2127, Words: 136, Lines: 23, Duration: 49ms]
+| URL | http://10.10.10.75/nibbleblog/admin/
+    * FUZZ: admin/
+
+[Status: 200, Size: 1401, Words: 79, Lines: 27, Duration: 53ms]
+| URL | http://10.10.10.75/nibbleblog/admin.php
+    * FUZZ: admin.php
+
+[Status: 301, Size: 323, Words: 20, Lines: 10, Duration: 38ms]
+| URL | http://10.10.10.75/nibbleblog/plugins
+| --> | http://10.10.10.75/nibbleblog/plugins/
+    * FUZZ: plugins
+
+[Status: 200, Size: 3777, Words: 232, Lines: 31, Duration: 40ms]
+| URL | http://10.10.10.75/nibbleblog/plugins/
+    * FUZZ: plugins/
+
+[Status: 200, Size: 2987, Words: 116, Lines: 61, Duration: 3988ms]
+| URL | http://10.10.10.75/nibbleblog/index.php
+    * FUZZ: index.php
+
+[Status: 200, Size: 78, Words: 11, Lines: 1, Duration: 41ms]
+| URL | http://10.10.10.75/nibbleblog/install.php
+    * FUZZ: install.php
+
+[Status: 200, Size: 1622, Words: 103, Lines: 88, Duration: 47ms]
+| URL | http://10.10.10.75/nibbleblog/update.php
+    * FUZZ: update.php
+
+[Status: 200, Size: 4628, Words: 589, Lines: 64, Duration: 36ms]
+| URL | http://10.10.10.75/nibbleblog/README
+    * FUZZ: README
+
+[Status: 301, Size: 325, Words: 20, Lines: 10, Duration: 37ms]
+| URL | http://10.10.10.75/nibbleblog/languages
+| --> | http://10.10.10.75/nibbleblog/languages/
+    * FUZZ: languages
+
+[Status: 200, Size: 3167, Words: 208, Lines: 28, Duration: 38ms]
+| URL | http://10.10.10.75/nibbleblog/languages/
+    * FUZZ: languages/
+
+[Status: 403, Size: 301, Words: 22, Lines: 12, Duration: 43ms]
+| URL | http://10.10.10.75/nibbleblog/.php
+    * FUZZ: .php
+
+[Status: 200, Size: 2986, Words: 116, Lines: 61, Duration: 83ms]
+| URL | http://10.10.10.75/nibbleblog//
+    * FUZZ: /
+
+[Status: 200, Size: 2986, Words: 116, Lines: 61, Duration: 84ms]
+| URL | http://10.10.10.75/nibbleblog/
+    * FUZZ:
 <SNIP>
 ```
 
@@ -515,22 +470,17 @@ It's using x86_64. Let's keep that in mind to select the appropriate binaries.
 Let's see which distribution Nibbles is using.
 
 ```sh
-nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ cat "/etc/os-release"
+nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ cat "/etc/lsb-release"
 ```
 
 ```
-ID=ubuntu
-ID_LIKE=debian
-PRETTY_NAME="Ubuntu 16.04.3 LTS"
-VERSION_ID="16.04"
-HOME_URL="http://www.ubuntu.com/"
-SUPPORT_URL="http://help.ubuntu.com/"
-BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
-VERSION_CODENAME=xenial
-UBUNTU_CODENAME=xenial
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=16.04
+DISTRIB_CODENAME=xenial
+DISTRIB_DESCRIPTION="Ubuntu 16.04.3 LTS"
 ```
 
-Okay, so it's Ubuntu 16.04.3.
+Okay, so it's Ubuntu 16.04.
 
 ### Kernel
 

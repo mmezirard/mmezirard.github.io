@@ -531,8 +531,6 @@ KB976902
 KB982018
 ```
 
-There's a lot of them.
-
 ### Users
 
 Let's enumerate all users using `PowerView`.

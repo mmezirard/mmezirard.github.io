@@ -250,9 +250,6 @@ Host script results:
 <SNIP>
 ```
 
-The `http-title` script detected that the website's homepage title is 'HTB
-Printer Admin Panel'.
-
 ## Services enumeration
 
 ### SMB
@@ -300,77 +297,6 @@ It isn't.
 
 ### IIS
 
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint IIS's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.11.108/" -v
-```
-
-```
-WhatWeb report for http://10.10.11.108/
-Status    : 200 OK
-Title     : HTB Printer Admin Panel
-IP        : 10.10.11.108
-Country   : RESERVED, ZZ
-
-Summary   : HTML5, HTTPServer[Microsoft-IIS/10.0], Microsoft-IIS[10.0], PHP[7.4.13], Script, X-Powered-By[PHP/7.4.13]
-
-Detected Plugins:
-[ HTML5 ]
-        HTML version 5, detected by the doctype declaration 
-
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        String       : Microsoft-IIS/10.0 (from server string)
-
-[ Microsoft-IIS ]
-        Microsoft Internet Information Services (IIS) for Windows 
-        Server is a flexible, secure and easy-to-manage Web server 
-        for hosting anything on the Web. From media streaming to 
-        web application hosting, IIS's scalable and open 
-        architecture is ready to handle the most demanding tasks. 
-
-        Version      : 10.0
-        Website     : http://www.iis.net/
-
-[ PHP ]
-        PHP is a widely-used general-purpose scripting language 
-        that is especially suited for Web development and can be 
-        embedded into HTML. This plugin identifies PHP errors, 
-        modules and versions and extracts the local file path and 
-        username if present. 
-
-        Version      : 7.4.13
-        Google Dorks: (2)
-        Website     : http://www.php.net/
-
-[ Script ]
-        This plugin detects instances of script HTML elements and 
-        returns the script language/type. 
-
-
-[ X-Powered-By ]
-        X-Powered-By HTTP header 
-
-        String       : PHP/7.4.13 (from x-powered-by string)
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Content-Type: text/html; charset=UTF-8
-        Server: Microsoft-IIS/10.0
-        X-Powered-By: PHP/7.4.13
-        Date: Sun, 04 Feb 2024 15:51:02 GMT
-        Connection: close
-        Content-Length: 28274
-```
-
-It also reveals that this website is using PHP version `7.4.13`.
-
 #### Exploration
 
 Let's browse to `http://10.10.11.108/`.
@@ -378,6 +304,17 @@ Let's browse to `http://10.10.11.108/`.
 ![IIS homepage](iis-homepage.png)
 
 This is an administrator panel for an HTB printer.
+
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![IIS homepage Wappalyzer extension](iis-homepage-wappalyzer.png)
+
+This reveals that this website is using PHP version `7.4.13`.
+
+#### Exploration
 
 The only web page we have access to (aside from the homepage) is `/settings.php`:
 
@@ -391,7 +328,11 @@ I tried editing all the fields, but nothing happened.
 #### Under the hood
 
 In fact, when we change a setting, a POST request is sent to `/settings.php`
-with an `ip` POST parameter set to the value of the IP form field.
+with the POST data:
+
+```html
+ip=<IP>
+```
 
 Therefore, we can assume that we're not actually able to edit the other fields.
 It's not clear what this web page is used for... maybe it's used to

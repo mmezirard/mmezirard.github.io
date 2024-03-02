@@ -131,97 +131,7 @@ PORT   STATE    SERVICE
 
 ### Request Baskets
 
-#### Fingerprinting
-
 It turns out that the service running on port `55555` is a website.
-
-Let's use `whatweb` to fingerprint its homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.11.224:55555/" -v
-```
-
-```
-WhatWeb report for http://10.10.11.224:55555/
-Status    : 302 Found
-Title     : <None>
-IP        : 10.10.11.224
-Country   : RESERVED, ZZ
-
-Summary   : RedirectLocation[/web]
-
-Detected Plugins:
-[ RedirectLocation ]
-        HTTP Server string location. used with http-status 301 and 
-        302 
-
-        String       : /web (from location)
-
-HTTP Headers:
-        HTTP/1.1 302 Found
-        Content-Type: text/html; charset=utf-8
-        Location: /web
-        Date: Sun, 04 Feb 2024 12:46:51 GMT
-        Content-Length: 27
-        Connection: close
-
-WhatWeb report for http://10.10.11.224:55555/web
-Status    : 200 OK
-Title     : Request Baskets
-IP        : 10.10.11.224
-Country   : RESERVED, ZZ
-
-Summary   : Bootstrap[3.3.7], HTML5, JQuery[3.2.1], PasswordField, Script
-
-Detected Plugins:
-[ Bootstrap ]
-        Bootstrap is an open source toolkit for developing with 
-        HTML, CSS, and JS. 
-
-        Version      : 3.3.7
-        Version      : 3.3.7
-        Website     : https://getbootstrap.com/
-
-[ HTML5 ]
-        HTML version 5, detected by the doctype declaration 
-
-
-[ JQuery ]
-        A fast, concise, JavaScript that simplifies how to traverse 
-        HTML documents, handle events, perform animations, and add 
-        AJAX. 
-
-        Version      : 3.2.1
-        Website     : http://jquery.com/
-
-[ PasswordField ]
-        find password fields 
-
-
-[ Script ]
-        This plugin detects instances of script HTML elements and 
-        returns the script language/type. 
-
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Content-Type: text/html; charset=utf-8
-        Date: Sun, 04 Feb 2024 12:46:53 GMT
-        Connection: close
-        Transfer-Encoding: chunked
-```
-
-We see that there's a redirection to `/web`.
-
-This reveals that this website is using Bootstrap and JavaScript libraries like
-jQuery.
-
-The title of the page is 'Request Baskets'... what's that?
-
-> Request Baskets is a web service to collect arbitrary HTTP requests and
-> inspect them via RESTful API or simple web UI.
->
-> — [GitHub](https://github.com/darklynx/request-baskets)
 
 #### Exploration
 
@@ -229,8 +139,23 @@ Let's browse to `http://10.10.11.224:55555/`.
 
 ![Request Baskets homepage](request-baskets-homepage.png)
 
-It's indeed the Request Baskets application. The footer indicates that it's
-using version `1.2.1`. Let's explore its functionalities.
+This website is using Request Baskets... what's that?
+
+> Request Baskets is a web service to collect arbitrary HTTP requests and
+> inspect them via RESTful API or simple web UI.
+>
+> — [GitHub](https://github.com/darklynx/request-baskets)
+
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![Request Baskets homepage Wappalyzer extension](request-baskets-homepage-wappalyzer.png)
+
+Moreover, the footer of the website indicates that it's using version `1.2.1`.
+
+#### Exploration
 
 I can create a 'basket' to collect requests.
 
@@ -481,8 +406,7 @@ voice
 www-data
 ```
 
-The `lxd` group is interesting to elevate privileges. There's also a group named
-`_laurel`, which is unusual.
+The `lxd` group is interesting to elevate privileges.
 
 ### NICs
 

@@ -126,66 +126,9 @@ PORT     STATE SERVICE
 <SNIP>
 ```
 
-The `http-title` script indicates that the website doesn't have a title.
-
 ## Services enumeration
 
 ### Apache
-
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint Apache's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.10.56/" -v
-```
-
-```
-WhatWeb report for http://10.10.10.56/
-Status    : 200 OK
-Title     : <None>
-IP        : 10.10.10.56
-Country   : RESERVED, ZZ
-
-Summary   : Apache[2.4.18], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 (Ubuntu)]
-
-Detected Plugins:
-[ Apache ]
-        The Apache HTTP Server Project is an effort to develop and 
-        maintain an open-source HTTP server for modern operating 
-        systems including UNIX and Windows NT. The goal of this 
-        project is to provide a secure, efficient and extensible 
-        server that provides HTTP services in sync with the current 
-        HTTP standards. 
-
-        Version      : 2.4.18 (from HTTP Server Header)
-        Google Dorks: (3)
-        Website     : http://httpd.apache.org/
-
-[ HTML5 ]
-        HTML version 5, detected by the doctype declaration 
-
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        OS           : Ubuntu Linux
-        String       : Apache/2.4.18 (Ubuntu) (from server string)
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Date: Sun, 11 Feb 2024 15:03:25 GMT
-        Server: Apache/2.4.18 (Ubuntu)
-        Last-Modified: Fri, 22 Sep 2017 20:01:19 GMT
-        ETag: "89-559ccac257884-gzip"
-        Accept-Ranges: bytes
-        Vary: Accept-Encoding
-        Content-Encoding: gzip
-        Content-Length: 134
-        Connection: close
-        Content-Type: text/html
-```
 
 #### Exploration
 
@@ -194,6 +137,13 @@ Let's browse to `http://10.10.10.56/`.
 ![Apache homepage](apache-homepage.png)
 
 That's... weird. 'Don't Bug Me!'? Are we supposed to find a bug?
+
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![Apache homepage Wappalyzer extension](apache-homepage-wappalyzer.png)
 
 #### Known vulnerabilities
 
@@ -598,10 +548,15 @@ If we search [GTFOBins](https://gtfobins.github.io/) for `perl`, we find
 
 ### Exploitation
 
-I'll just copy and paste the given command to abuse our `sudo` permissions:
+I'll just copy and paste the given command to abuse our `sudo` permissions, but
+I'll change the shell to `/bin/bash`:
 
 ```sh
-shelly@Shocker:/usr/lib/cgi-bin$ sudo perl -e 'exec "/bin/sh";'
+shelly@Shocker:/usr/lib/cgi-bin$ sudo perl -e 'exec "/bin/bash";'
+```
+
+```
+
 ```
 
 Yay!

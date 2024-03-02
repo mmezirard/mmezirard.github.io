@@ -118,73 +118,9 @@ PORT   STATE SERVICE
 <SNIP>
 ```
 
-The `http-title` script detected that the website's homepage title is 'HFS /'.
-
 ## Services enumeration
 
 ### HFS
-
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint HFS's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.10.8/" -v
-```
-
-```
-WhatWeb report for http://10.10.10.8/
-Status    : 200 OK
-Title     : HFS /
-IP        : 10.10.10.8
-Country   : RESERVED, ZZ
-
-Summary   : Cookies[HFS_SID], HTTPServer[HFS 2.3], HttpFileServer, JQuery[1.4.4], Script[text/javascript]
-
-Detected Plugins:
-[ Cookies ]
-        Display the names of cookies in the HTTP headers. The 
-        values are not returned to save on space. 
-
-        String       : HFS_SID
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        String       : HFS 2.3 (from server string)
-
-[ HttpFileServer ]
-        You can use HFS (HTTP File Server) to send and receive 
-        files. Access your remote files, over the network. 
-
-        Google Dorks: (1)
-        Website     : http://www.rejetto.com/hfs/
-
-[ JQuery ]
-        A fast, concise, JavaScript that simplifies how to traverse 
-        HTML documents, handle events, perform animations, and add 
-        AJAX. 
-
-        Version      : 1.4.4
-        Website     : http://jquery.com/
-
-[ Script ]
-        This plugin detects instances of script HTML elements and 
-        returns the script language/type. 
-
-        String       : text/javascript
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Content-Type: text/html
-        Content-Length: 1663
-        Accept-Ranges: bytes
-        Server: HFS 2.3
-        Set-Cookie: HFS_SID=0.381638351129368; path=/;
-        Cache-Control: no-cache, no-store, must-revalidate, max-age=-1
-        Content-Encoding: gzip
-```
 
 #### Exploration
 
@@ -194,7 +130,16 @@ Let's browse to `http://10.10.10.8/`.
 
 This is a standard HFS application.
 
-Unfortunately, it doesn't contain any files or folders.
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![HFS homepage Wappalyzer extension](hfs-homepage-wappalyzer.png)
+
+#### Exploration
+
+Unfortunately, this HFS instance doesn't contain any files or folders.
 
 #### Known vulnerabilities
 
@@ -326,8 +271,6 @@ KB3000850
 KB3003057
 KB3014442
 ```
-
-There's a few of them.
 
 ### Users
 

@@ -224,109 +224,6 @@ a promising candidate, but unfortunately it doesn't work.
 
 ### Apache
 
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint Apache's homepage.
-
-```sh
-❯ whatweb -a3 "http://blocky.htb/" -v
-```
-
-```
-WhatWeb report for http://blocky.htb/
-Status    : 200 OK
-Title     : BlockyCraft &#8211; Under Construction!
-IP        : 10.10.10.37
-Country   : RESERVED, ZZ
-
-Summary   : Apache[2.4.18], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 (Ubuntu)], JQuery[1.12.4], MetaGenerator[WordPress 4.8], PoweredBy[WordPress,WordPress,], Script[text/javascript], UncommonHeaders[link], WordPress[4.7.8,4.7.9,4.8]
-
-Detected Plugins:
-[ Apache ]
-        The Apache HTTP Server Project is an effort to develop and 
-        maintain an open-source HTTP server for modern operating 
-        systems including UNIX and Windows NT. The goal of this 
-        project is to provide a secure, efficient and extensible 
-        server that provides HTTP services in sync with the current 
-        HTTP standards. 
-
-        Version      : 2.4.18 (from HTTP Server Header)
-        Google Dorks: (3)
-        Website     : http://httpd.apache.org/
-
-[ HTML5 ]
-        HTML version 5, detected by the doctype declaration 
-
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        OS           : Ubuntu Linux
-        String       : Apache/2.4.18 (Ubuntu) (from server string)
-
-[ JQuery ]
-        A fast, concise, JavaScript that simplifies how to traverse 
-        HTML documents, handle events, perform animations, and add 
-        AJAX. 
-
-        Version      : 1.12.4
-        Website     : http://jquery.com/
-
-[ MetaGenerator ]
-        This plugin identifies meta generator tags and extracts its 
-        value. 
-
-        String       : WordPress 4.8
-
-[ PoweredBy ]
-        This plugin identifies instances of 'Powered by x' text and 
-        attempts to extract the value for x. 
-
-        String       : WordPress,WordPress,
-
-[ Script ]
-        This plugin detects instances of script HTML elements and 
-        returns the script language/type. 
-
-        String       : text/javascript
-
-[ UncommonHeaders ]
-        Uncommon HTTP server headers. The blacklist includes all 
-        the standard headers and many non standard but common ones. 
-        Interesting but fairly common headers should have their own 
-        plugins, eg. x-powered-by, server and x-aspnet-version. 
-        Info about headers can be found at www.http-stats.com 
-
-        String       : link (from headers)
-
-[ WordPress ]
-        WordPress is an opensource blogging system commonly used as 
-        a CMS. 
-
-        Version      : 4.8
-        Version      : 4.7.8 (from md5 sums of files)
-        Version      : 4.7.9 (from md5 sums of files)
-        Version      : 4.8 (from md5 sums of files)
-        Aggressive function available (check plugin file or details).
-        Google Dorks: (1)
-        Website     : http://www.wordpress.org/
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Date: Sat, 10 Feb 2024 17:59:01 GMT
-        Server: Apache/2.4.18 (Ubuntu)
-        Link: <http://blocky.htb/index.php/wp-json/>; rel="https://api.w.org/"
-        Vary: Accept-Encoding
-        Content-Encoding: gzip
-        Content-Length: 17653
-        Connection: close
-        Content-Type: text/html; charset=UTF-8
-```
-
-It reveals that this website is using JavaScript libraries like jQuery, and is
-using Wordpress version `4.8`.
-
 #### Exploration
 
 Let's browse to `http://blocky.htb/`.
@@ -335,6 +232,15 @@ Let's browse to `http://blocky.htb/`.
 
 This is a website for a Minecraft server named BlockyCraft. It indicates that
 the website as well as the server are under construction.
+
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
+
+This reveals that this website is using PHP, MySQL and Wordpress version `4.8`.
 
 #### WordPress
 

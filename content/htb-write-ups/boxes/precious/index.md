@@ -166,96 +166,22 @@ The `http-title` script indicates that the Nginx server redirects to
 
 ### Nginx
 
+#### Exploration
+
+Let's browse to `http://precious.htb/`.
+
+![Domain homepage](domain-homepage.png)
+
+It's a website to convert a web page to a PDF.
+
 #### Fingerprinting
 
-Let's use `whatweb` to fingerprint Nginx's homepage.
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
 
-```sh
-❯ whatweb -a3 "http://precious.htb/" -v
-```
+![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
 
-```
-WhatWeb report for http://precious.htb/
-Status    : 200 OK
-Title     : Convert Web Page to PDF
-IP        : 10.10.11.189
-Country   : RESERVED, ZZ
-
-Summary   : HTML5, HTTPServer[nginx/1.18.0 + Phusion Passenger(R) 6.0.15], nginx[1.18.0], Ruby-on-Rails, UncommonHeaders[x-content-type-options], X-Frame-Options[SAMEORIGIN], X-Powered-By[Phusion Passenger(R) 6.0.15], X-XSS-Protection[1; mode=block]
-
-Detected Plugins:
-[ HTML5 ]
-        HTML version 5, detected by the doctype declaration 
-
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        String       : nginx/1.18.0 + Phusion Passenger(R) 6.0.15 (from server string)
-
-[ Ruby-on-Rails ]
-        Ruby on rails is an MVC web application framework written 
-        in the ruby language. Doesn't detect all RoR sites 
-
-        Website     : http://www.rubyonrails.org.
-
-[ UncommonHeaders ]
-        Uncommon HTTP server headers. The blacklist includes all 
-        the standard headers and many non standard but common ones. 
-        Interesting but fairly common headers should have their own 
-        plugins, eg. x-powered-by, server and x-aspnet-version. 
-        Info about headers can be found at www.http-stats.com 
-
-        String       : x-content-type-options (from headers)
-
-[ X-Frame-Options ]
-        This plugin retrieves the X-Frame-Options value from the 
-        HTTP header. - More Info: 
-        http://msdn.microsoft.com/en-us/library/cc288472%28VS.85%29.
-        aspx
-
-        String       : SAMEORIGIN
-
-[ X-Powered-By ]
-        X-Powered-By HTTP header 
-
-        String       : Phusion Passenger(R) 6.0.15 (from x-powered-by string)
-
-[ X-XSS-Protection ]
-        This plugin retrieves the X-XSS-Protection value from the 
-        HTTP header. - More Info: 
-        http://msdn.microsoft.com/en-us/library/cc288472%28VS.85%29.
-        aspx
-
-        String       : 1; mode=block
-
-[ nginx ]
-        Nginx (Engine-X) is a free, open-source, high-performance 
-        HTTP server and reverse proxy, as well as an IMAP/POP3 
-        proxy server. 
-
-        Version      : 1.18.0
-        Website     : http://nginx.net/
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Content-Type: text/html;charset=utf-8
-        Transfer-Encoding: chunked
-        Connection: close
-        Status: 200 OK
-        X-XSS-Protection: 1; mode=block
-        X-Content-Type-Options: nosniff
-        X-Frame-Options: SAMEORIGIN
-        Date: Sat, 24 Feb 2024 15:12:49 GMT
-        X-Powered-By: Phusion Passenger(R) 6.0.15
-        Server: nginx/1.18.0 + Phusion Passenger(R) 6.0.15
-        X-Runtime: Ruby
-        Content-Encoding: gzip
-```
-
-It reveals that this website is using Ruby on Rails and Phusion Passenger
-version `6.0.15`.
+This reveals that this website is using Phusion Passenger®. What's that?
 
 > Phusion Passenger® is a web server and application server, designed to be
 > fast, robust and lightweight. It takes a lot of complexity out of deploying
@@ -264,13 +190,10 @@ version `6.0.15`.
 >
 > — [GitHub](https://github.com/phusion/passenger)
 
+If we check the HTTP headers of the response, we also find a `X-Runtime` header
+suggesting that the server is using Ruby on Rails.
+
 #### Exploration
-
-Let's browse to `http://precious.htb/`.
-
-![Domain homepage](domain-homepage.png)
-
-It's a website to convert a web page to a PDF.
 
 We can enter a URL to fetch. I'll start by entering a random URL.
 
@@ -507,8 +430,6 @@ voice
 www-data
 ```
 
-Looks classic.
-
 ### NICs
 
 Let's gather the list of connected NICs.
@@ -697,12 +618,11 @@ end
 ```
 
 The `load` function is used for deserialization. Interestingly, it deserializes
-the `dependencies.yml` located in the current directory, so we can specify a
-custom YAML file.
+the `dependencies.yml` located in the current directory, so we can create our
+own YAML file.
 
-The `load` function is interesting here, since it's used for deserialization. By
-modifying the deserialized file, we should be able to execute arbitrary
-commands! And since we can execute this script as `root`, we will get `root`'s
+This means that by crafting a custom YAML file, we could execute arbitrary
+commands! And since we can execute this script as `root`, we would get `root`'s
 privileges.
 
 ## Privilege escalation (Ruby deserialization)

@@ -166,86 +166,6 @@ The `http-title` script indicates that the Nginx server redirects to
 
 ### Nginx
 
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint Nginx's homepage.
-
-```sh
-❯ whatweb -a3 "http://photobomb.htb/" -v
-```
-
-```
-WhatWeb report for http://photobomb.htb/
-Status    : 200 OK
-Title     : Photobomb
-IP        : 10.10.11.182
-Country   : RESERVED, ZZ
-
-Summary   : HTML5, HTTPServer[Ubuntu Linux][nginx/1.18.0 (Ubuntu)], nginx[1.18.0], Script, UncommonHeaders[x-content-type-options], X-Frame-Options[SAMEORIGIN], X-XSS-Protection[1; mode=block]
-
-Detected Plugins:
-[ HTML5 ]
-        HTML version 5, detected by the doctype declaration 
-
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        OS           : Ubuntu Linux
-        String       : nginx/1.18.0 (Ubuntu) (from server string)
-
-[ Script ]
-        This plugin detects instances of script HTML elements and 
-        returns the script language/type. 
-
-
-[ UncommonHeaders ]
-        Uncommon HTTP server headers. The blacklist includes all 
-        the standard headers and many non standard but common ones. 
-        Interesting but fairly common headers should have their own 
-        plugins, eg. x-powered-by, server and x-aspnet-version. 
-        Info about headers can be found at www.http-stats.com 
-
-        String       : x-content-type-options (from headers)
-
-[ X-Frame-Options ]
-        This plugin retrieves the X-Frame-Options value from the 
-        HTTP header. - More Info: 
-        http://msdn.microsoft.com/en-us/library/cc288472%28VS.85%29.
-        aspx
-
-        String       : SAMEORIGIN
-
-[ X-XSS-Protection ]
-        This plugin retrieves the X-XSS-Protection value from the 
-        HTTP header. - More Info: 
-        http://msdn.microsoft.com/en-us/library/cc288472%28VS.85%29.
-        aspx
-
-        String       : 1; mode=block
-
-[ nginx ]
-        Nginx (Engine-X) is a free, open-source, high-performance 
-        HTTP server and reverse proxy, as well as an IMAP/POP3 
-        proxy server. 
-
-        Version      : 1.18.0
-        Website     : http://nginx.net/
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Server: nginx/1.18.0 (Ubuntu)
-        Date: Mon, 26 Feb 2024 16:19:37 GMT
-        Content-Type: text/html;charset=utf-8
-        Transfer-Encoding: chunked
-        Connection: close
-        X-Xss-Protection: 1; mode=block
-        X-Content-Type-Options: nosniff
-        X-Frame-Options: SAMEORIGIN
-        Content-Encoding: gzip
-```
-
 #### Exploration
 
 Let's browse to `http://photobomb.htb/`.
@@ -256,13 +176,22 @@ It's a website promoting Photobomb. It's unclear what it's really about, it
 states 'You will soon be making an amazing income selling premium photographic
 gifts' and gives us a link to `/printer`, presumably to access our printer.
 
-If we browse to this page, we're asked to authenticate using HTTP
-authentication. The homepage indicates that the credentials are in our welcome
-pack, but since we don't have it, we'll have to find them.
+#### Fingerprinting
 
-If we check this login request's response, we see that it uses the 'Basic'
-scheme with a realm set to 'Admin Area'. It might suggest that `admin` is a
-valid username.
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
+
+#### Exploration
+
+If we browse to `http://photobomb.htb/printer`, we're asked to authenticate
+using HTTP authentication. The homepage indicates that the credentials are in
+our welcome pack, but since we don't have it, we'll have to find them.
+
+If we check this login request's response using Burp Suite, we see that it uses
+the 'Basic' scheme with a realm set to 'Admin Area'. It might suggest that
+`admin` is a valid username.
 
 Let's use `hydra` to try finding valid credentials using
 [this wordlist](https://github.com/danielmiessler/SecLists/blob/master/Usernames/top-usernames-shortlist.txt)

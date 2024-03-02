@@ -166,83 +166,6 @@ The `http-title` script indicates that the Apache server redirects to
 
 ### Apache
 
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint the domain homepage.
-
-```sh
-❯ whatweb -a3 "http://searcher.htb/" -v
-```
-
-```
-WhatWeb report for http://searcher.htb/
-Status    : 200 OK
-Title     : Searcher
-IP        : 10.10.11.208
-Country   : RESERVED, ZZ
-
-Summary   : Bootstrap[4.1.3], HTML5, HTTPServer[Werkzeug/2.1.2 Python/3.10.6], JQuery[3.2.1], Python[3.10.6], Script, Werkzeug[2.1.2]
-
-Detected Plugins:
-[ Bootstrap ]
-        Bootstrap is an open source toolkit for developing with 
-        HTML, CSS, and JS. 
-
-        Version      : 4.1.3
-        Website     : https://getbootstrap.com/
-
-[ HTML5 ]
-        HTML version 5, detected by the doctype declaration 
-
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        String       : Werkzeug/2.1.2 Python/3.10.6 (from server string)
-
-[ JQuery ]
-        A fast, concise, JavaScript that simplifies how to traverse 
-        HTML documents, handle events, perform animations, and add 
-        AJAX. 
-
-        Version      : 3.2.1
-        Website     : http://jquery.com/
-
-[ Python ]
-        Python is a programming language that lets you work more 
-        quickly and integrate your systems more effectively. You 
-        can learn to use Python and see almost immediate gains in 
-        productivity and lower maintenance costs. 
-
-        Version      : 3.10.6
-        Website     : http://www.python.org/
-
-[ Script ]
-        This plugin detects instances of script HTML elements and 
-        returns the script language/type. 
-
-
-[ Werkzeug ]
-        Werkzeug is a WSGI utility library for Python. 
-
-        Version      : 2.1.2
-        Website     : http://werkzeug.pocoo.org/
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Date: Fri, 09 Feb 2024 16:02:20 GMT
-        Server: Werkzeug/2.1.2 Python/3.10.6
-        Content-Type: text/html; charset=utf-8
-        Vary: Accept-Encoding
-        Content-Encoding: gzip
-        Content-Length: 3355
-        Connection: close
-```
-
-This reveals that this website is using Bootstrap and the Werkzeug library
-version `2.1.2` for Python version `3.10.6`.
-
 #### Exploration
 
 Let's browse to `http://searcher.htb/`.
@@ -252,17 +175,32 @@ Let's browse to `http://searcher.htb/`.
 Apparently, it's a website used to search keywords across social medias and the
 web.
 
-We're given a form, which we can fill with a selection of engines, and with
-keywords to search for. We also have the possibility of ticking a checkbox to
-get redirected to the result instead of just getting the URL.
+#### Fingerprinting
 
-Interestingly, the footer of the website leaks that it's using Flask and
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
+
+This reveals that this website is using Flask.
+
+If we check the HTTP headers of the response, we also find a `Server` header
+indicating that the server is using the Werkzeug library `2.1.2` for Python
+`3.10.6`.
+
+Interestingly, the footer of the website leaks that it's using
 [Searchor](https://github.com/ArjunSharda/Searchor) version `2.4.0`.
 
 > Searchor is an all-in-one PyPi Python Library that simplifies web scraping,
 > obtaining information on an topic, and generating search query URLs.
 >
 > — [GitHub](https://github.com/ArjunSharda/Searchor)
+
+#### Exploration
+
+We're given a form, which we can fill with a selection of engines, and with
+keywords to search for. We also have the possibility of ticking a checkbox to
+get redirected to the result instead of just getting the URL.
 
 #### Known vulnerabilities
 
@@ -462,8 +400,7 @@ voice
 www-data
 ```
 
-The `docker` and `lxd` groups are interesting to elevate privileges. We also
-notice a `_ssh` group, which is custom.
+The `docker` and `lxd` groups are interesting to elevate privileges.
 
 ### NICs
 
@@ -660,116 +597,6 @@ I'll add this subdomain to my `/etc/hosts` file.
 
 ### Apache
 
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint the subdomain homepage.
-
-```sh
-❯ whatweb -a3 "http://gitea.searcher.htb/" -v
-```
-
-```
-WhatWeb report for http://gitea.searcher.htb/
-Status    : 200 OK
-Title     : Gitea: Git with a cup of tea
-IP        : 10.10.11.208
-Country   : RESERVED, ZZ
-
-Summary   : Apache[2.4.52], Cookies[_csrf,i_like_gitea,macaron_flash], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.52 (Ubuntu)], HttpOnly[_csrf,i_like_gitea,macaron_flash], Meta-Author[Gitea - Git with a cup of tea], Open-Graph-Protocol[website], PoweredBy[Gitea], Script, X-Frame-Options[SAMEORIGIN]
-
-Detected Plugins:
-[ Apache ]
-        The Apache HTTP Server Project is an effort to develop and 
-        maintain an open-source HTTP server for modern operating 
-        systems including UNIX and Windows NT. The goal of this 
-        project is to provide a secure, efficient and extensible 
-        server that provides HTTP services in sync with the current 
-        HTTP standards. 
-
-        Version      : 2.4.52 (from HTTP Server Header)
-        Google Dorks: (3)
-        Website     : http://httpd.apache.org/
-
-[ Cookies ]
-        Display the names of cookies in the HTTP headers. The 
-        values are not returned to save on space. 
-
-        String       : i_like_gitea
-        String       : _csrf
-        String       : macaron_flash
-
-[ HTML5 ]
-        HTML version 5, detected by the doctype declaration 
-
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        OS           : Ubuntu Linux
-        String       : Apache/2.4.52 (Ubuntu) (from server string)
-
-[ HttpOnly ]
-        If the HttpOnly flag is included in the HTTP set-cookie 
-        response header and the browser supports it then the cookie 
-        cannot be accessed through client side script - More Info: 
-        http://en.wikipedia.org/wiki/HTTP_cookie 
-
-        String       : _csrf,i_like_gitea,macaron_flash
-
-[ Meta-Author ]
-        This plugin retrieves the author name from the meta name 
-        tag - info: 
-        http://www.webmarketingnow.com/tips/meta-tags-uncovered.html
-        #author
-
-        String       : Gitea - Git with a cup of tea
-
-[ Open-Graph-Protocol ]
-        The Open Graph protocol enables you to integrate your Web 
-        pages into the social graph. It is currently designed for 
-        Web pages representing profiles of real-world things . 
-        things like movies, sports teams, celebrities, and 
-        restaurants. Including Open Graph tags on your Web page, 
-        makes your page equivalent to a Facebook Page. 
-
-        Version      : website
-
-[ PoweredBy ]
-        This plugin identifies instances of 'Powered by x' text and 
-        attempts to extract the value for x. 
-
-        String       : Gitea
-
-[ Script ]
-        This plugin detects instances of script HTML elements and 
-        returns the script language/type. 
-
-
-[ X-Frame-Options ]
-        This plugin retrieves the X-Frame-Options value from the 
-        HTTP header. - More Info: 
-        http://msdn.microsoft.com/en-us/library/cc288472%28VS.85%29.
-        aspx
-
-        String       : SAMEORIGIN
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Date: Sat, 10 Feb 2024 07:56:00 GMT
-        Server: Apache/2.4.52 (Ubuntu)
-        Cache-Control: no-store, no-transform
-        Content-Type: text/html; charset=UTF-8
-        X-Frame-Options: SAMEORIGIN
-        Set-Cookie: i_like_gitea=5758a83c3364a583; Path=/; HttpOnly; SameSite=Lax
-        Set-Cookie: _csrf=lrSJbPGejw4EfRE0PVmHO2TVLiU6MTcwNzU1MTc2MDE2NDQwMDEwOQ; Path=/; Expires=Sun, 11 Feb 2024 07:56:00 GMT; HttpOnly; SameSite=Lax
-        Set-Cookie: macaron_flash=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax
-        Vary: Accept-Encoding
-        Content-Encoding: gzip
-        Content-Length: 5114
-        Connection: close
-```
-
 #### Exploration
 
 Let's browse to `http://gitea.searcher.htb/`.
@@ -778,7 +605,17 @@ Let's browse to `http://gitea.searcher.htb/`.
 
 This is a standard Gitea installation.
 
-The footer of the website leaks that it's using Gitea version `1.18.0+rc1`.
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![Subdomain homepage Wappalyzer extension](subdomain-homepage-wappalyzer.png)
+
+Moreover, the footer of the website leaks that it's using Gitea version
+`1.18.0+rc1`.
+
+#### Exploration
 
 Without logging in, we can't find any repository. We can list the users though:
 

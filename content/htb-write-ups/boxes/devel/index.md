@@ -132,9 +132,6 @@ PORT   STATE SERVICE
 The `ftp-anon` script reveals that the FTP server accepts anonymous connections.
 It also found a bunch of files probably associated with the IIS server.
 
-Moreover, the `http-title` script detected that the website's homepage title is
-'IIS7'.
-
 ## Services enumeration
 
 ### FTP
@@ -165,61 +162,6 @@ However, none of the files we have access to are interesting. The
 
 ### IIS
 
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint Apache's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.10.5/" -v
-```
-
-```
-WhatWeb report for http://10.10.10.5/
-Status    : 200 OK
-Title     : IIS7
-IP        : 10.10.10.5
-Country   : RESERVED, ZZ
-
-Summary   : HTTPServer[Microsoft-IIS/7.5], Microsoft-IIS[7.5][Under Construction], X-Powered-By[ASP.NET]
-
-Detected Plugins:
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        String       : Microsoft-IIS/7.5 (from server string)
-
-[ Microsoft-IIS ]
-        Microsoft Internet Information Services (IIS) for Windows 
-        Server is a flexible, secure and easy-to-manage Web server 
-        for hosting anything on the Web. From media streaming to 
-        web application hosting, IIS's scalable and open 
-        architecture is ready to handle the most demanding tasks. 
-
-        Module       : Under Construction
-        Version      : 7.5
-        Website     : http://www.iis.net/
-
-[ X-Powered-By ]
-        X-Powered-By HTTP header 
-
-        String       : ASP.NET (from x-powered-by string)
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Content-Type: text/html
-        Last-Modified: Fri, 17 Mar 2017 14:37:30 GMT
-        Accept-Ranges: bytes
-        ETag: "37b5ed12c9fd21:0"
-        Server: Microsoft-IIS/7.5
-        X-Powered-By: ASP.NET
-        Date: Sat, 24 Feb 2024 08:18:36 GMT
-        Connection: close
-        Content-Length: 689
-```
-
-It reveals that ASP.NET is used by the website.
-
 #### Exploration
 
 Let's browse to `http://10.10.10.5/`.
@@ -228,9 +170,20 @@ Let's browse to `http://10.10.10.5/`.
 
 It's a standard installation page for IIS 7.
 
-In fact, it corresponds to the `iisstart.htm` file we found on the FTP server.
-The image is also `welcome.png`. Therefore, we can assume that the FTP server
-holds the source code of the website!
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![IIS homepage Wappalyzer extension](iis-homepage-wappalyzer.png)
+
+This reveals that this website is using ASP.NET.
+
+#### Exploration
+
+In fact, the homepage corresponds to the `iisstart.htm` file we found on the FTP
+server. The image is also `welcome.png`. Therefore, we can assume that the FTP
+server holds the source code of the website!
 
 ## Foothold (File upload)
 

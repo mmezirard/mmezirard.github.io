@@ -117,91 +117,9 @@ PORT   STATE SERVICE
 <SNIP>
 ```
 
-The `http-title` script detected that the website's homepage title is 'Arrexel's
-Development Site'.
-
 ## Services enumeration
 
 ### Apache
-
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint Apache's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.10.68/" -v
-```
-
-```
-WhatWeb report for http://10.10.10.68/
-Status    : 200 OK
-Title     : Arrexel's Development Site
-IP        : 10.10.10.68
-Country   : RESERVED, ZZ
-
-Summary   : Apache[2.4.18], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.18 (Ubuntu)], JQuery, Meta-Author[Colorlib], Script[text/javascript]
-
-Detected Plugins:
-[ Apache ]
-        The Apache HTTP Server Project is an effort to develop and 
-        maintain an open-source HTTP server for modern operating 
-        systems including UNIX and Windows NT. The goal of this 
-        project is to provide a secure, efficient and extensible 
-        server that provides HTTP services in sync with the current 
-        HTTP standards. 
-
-        Version      : 2.4.18 (from HTTP Server Header)
-        Google Dorks: (3)
-        Website     : http://httpd.apache.org/
-
-[ HTML5 ]
-        HTML version 5, detected by the doctype declaration 
-
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        OS           : Ubuntu Linux
-        String       : Apache/2.4.18 (Ubuntu) (from server string)
-
-[ JQuery ]
-        A fast, concise, JavaScript that simplifies how to traverse 
-        HTML documents, handle events, perform animations, and add 
-        AJAX. 
-
-        Website     : http://jquery.com/
-
-[ Meta-Author ]
-        This plugin retrieves the author name from the meta name 
-        tag - info: 
-        http://www.webmarketingnow.com/tips/meta-tags-uncovered.html
-        #author
-
-        String       : Colorlib
-
-[ Script ]
-        This plugin detects instances of script HTML elements and 
-        returns the script language/type. 
-
-        String       : text/javascript
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Date: Sun, 04 Feb 2024 14:43:20 GMT
-        Server: Apache/2.4.18 (Ubuntu)
-        Last-Modified: Mon, 04 Dec 2017 23:03:42 GMT
-        ETag: "1e3f-55f8bbac32f80-gzip"
-        Accept-Ranges: bytes
-        Vary: Accept-Encoding
-        Content-Encoding: gzip
-        Content-Length: 1843
-        Connection: close
-        Content-Type: text/html
-```
-
-It reveals that this website is using JavaScript libraries like jQuery, and is a
-template made by [Colorlib](https://colorlib.com/wp/).
 
 #### Exploration
 
@@ -210,6 +128,15 @@ Let's browse to `http://10.10.10.68/`.
 ![Apache homepage](apache-homepage.png)
 
 This is a website that promotes the `phpbash` tool.
+
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![Apache homepage Wappalyzer extension](apache-homepage-wappalyzer.png)
+
+#### Exploration
 
 The only web page we have access to is `/single.html`:
 
@@ -388,14 +315,6 @@ www-data@bashed:/var/www/html/dev$
 
 It caught the reverse shell!
 
-### Stabilizing the shell
-
-I'll use this one-liner to stabilize a bit the shell:
-
-```sh
-script "/dev/null" -qc "/bin/bash"
-```
-
 ## Getting a lay of the land
 
 If we run `whoami`, we see that we got a foothold as `www-data`.
@@ -528,8 +447,6 @@ video
 voice
 www-data
 ```
-
-Looks classic.
 
 ### NICs
 
@@ -692,14 +609,6 @@ www-data@bashed:/var/www/html/dev$ sudo -u "scriptmanager" "/bin/bash"
 ```
 
 Now we're `scriptmanager`!
-
-### Stabilizing the shell
-
-I'll use this one-liner to stabilize a bit the shell:
-
-```sh
-script "/dev/null" -qc "/bin/bash"
-```
 
 ## System enumeration
 

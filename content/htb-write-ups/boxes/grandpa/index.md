@@ -126,88 +126,12 @@ PORT   STATE SERVICE
 <SNIP>
 ```
 
-The `http-title` script detected that the website's homepage title is 'Under
-Construction'.
-
-Furthermore, the `http-webdav-scan` script found that a few WebDAV methods were
-allowed.
+The `http-webdav-scan` script found that the website allows a few WebDAV
+methods... this is worth digging into later on!
 
 ## Services enumeration
 
 ### IIS
-
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint IIS's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.10.14/" -v
-```
-
-```
-WhatWeb report for http://10.10.10.14/
-Status    : 200 OK
-Title     : <None>
-IP        : 10.10.10.14
-Country   : RESERVED, ZZ
-
-Summary   : HTTPServer[Microsoft-IIS/6.0], Microsoft-IIS[6.0][Under Construction], MicrosoftOfficeWebServer[5.0_Pub], UncommonHeaders[microsoftofficewebserver], X-Powered-By[ASP.NET]
-
-Detected Plugins:
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        String       : Microsoft-IIS/6.0 (from server string)
-
-[ Microsoft-IIS ]
-        Microsoft Internet Information Services (IIS) for Windows 
-        Server is a flexible, secure and easy-to-manage Web server 
-        for hosting anything on the Web. From media streaming to 
-        web application hosting, IIS's scalable and open 
-        architecture is ready to handle the most demanding tasks. 
-
-        Module       : Under Construction
-        Module       : Under Construction
-        Version      : 6.0
-        Website     : http://www.iis.net/
-
-[ MicrosoftOfficeWebServer ]
-        Microsoft Office Web Server 
-
-        Version      : 5.0_Pub
-        Website     : http://microsoft.com/
-
-[ UncommonHeaders ]
-        Uncommon HTTP server headers. The blacklist includes all 
-        the standard headers and many non standard but common ones. 
-        Interesting but fairly common headers should have their own 
-        plugins, eg. x-powered-by, server and x-aspnet-version. 
-        Info about headers can be found at www.http-stats.com 
-
-        String       : microsoftofficewebserver (from headers)
-
-[ X-Powered-By ]
-        X-Powered-By HTTP header 
-
-        String       : ASP.NET (from x-powered-by string)
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Content-Length: 1433
-        Content-Type: text/html
-        Content-Location: http://10.10.10.14/iisstart.htm
-        Last-Modified: Fri, 21 Feb 2003 15:48:30 GMT
-        Accept-Ranges: bytes
-        ETag: "05b3daec0d9c21:2f4"
-        Server: Microsoft-IIS/6.0
-        MicrosoftOfficeWebServer: 5.0_Pub
-        X-Powered-By: ASP.NET
-        Date: Sun, 11 Feb 2024 12:49:08 GMT
-        Connection: close
-```
-
-It reveals that ASP.NET is used by the website.
 
 #### Exploration
 
@@ -218,8 +142,19 @@ Let's browse to `http://10.10.10.14/`.
 It reminds me of another box... [Granny](../granny/index.md)! The similarity of
 their names is probably no coincidence.
 
-However, it's not vulnerable to the same file upload vulnerability is
-[Granny](../granny/index.md).
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![IIS homepage Wappalyzer extension](iis-homepage-wappalyzer.png)
+
+This reveals that this website is using ASP.NET.
+
+#### Exploration
+
+Unfortunately, this box is not vulnerable to the same file upload vulnerability
+as [Granny](../granny/index.md).
 
 #### WebDAV
 
@@ -351,8 +286,6 @@ c:\windows\system32\inetsrv> for /f "tokens=7 delims=\" %a in ('reg query "HKEY_
 ```
 Q147222
 ```
-
-There's only one.
 
 ### Users
 

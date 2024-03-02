@@ -664,50 +664,13 @@ If we enter a random input, we receive an HTTP response.
 I'll setup a local port forwarding using `chisel` to make it available on my own
 machine.
 
-Then, let's use `whatweb` to fingerprint the service's homepage.
+#### Exploration
 
-```sh
-❯ whatweb -a3 "http://127.0.0.1:631/" -v
-```
+Let's browse to `http://127.0.0.1:631/`.
 
-```
-WhatWeb report for http://127.0.0.1:631/
-Status    : 200 OK
-Title     : Home - CUPS 1.6.1
-IP        : 127.0.0.1
-Country   : RESERVED, ZZ
+![CUPS homepage](cups-homepage.png)
 
-Summary   : Content-Language[en_US], CUPS[1.6], HTTPServer[CUPS/1.6]
-
-Detected Plugins:
-[ CUPS ]
-        Common UNIX Printing System (CUPS) 
-
-        Version      : 1.6
-        Website     : http://www.cups.org/
-
-[ Content-Language ]
-        Detect the content-language setting from the HTTP header. 
-
-        String       : en_US
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        String       : CUPS/1.6 (from server string)
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Date: Thu, 08 Feb 2024 17:49:00 GMT
-        Server: CUPS/1.6
-        Content-Language: en_US
-        Content-Type: text/html; charset=utf-8
-        Last-Modified: Thu, 13 May 2021 05:36:41 GMT
-        Content-Length: 3792
-```
-
-In fact, it's CUPS version `1.6`! What's that?
+It's the default installation page for CUPS! What's that?
 
 > CUPS (...) is a modular printing system for Unix-like computer operating
 > systems which allows a computer to act as a print server. A computer running
@@ -716,14 +679,18 @@ In fact, it's CUPS version `1.6`! What's that?
 >
 > — [Wikipedia](https://en.wikipedia.org/wiki/CUPS)
 
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![CUPS homepage Wappalyzer extension](cups-homepage-wappalyzer.png)
+
+Nothing.
+
+However, the header of the homepage indicates that CUPS is version `1.6.1`.
+
 #### Exploration
-
-Let's browse to `http://127.0.0.1:631/`.
-
-![CUPS homepage](cups-homepage.png)
-
-It's the default installation page for CUPS. It also specifies that it's version
-`1.6.1`.
 
 I browsed around a bit looking for any functionalities I could exploit to get
 `root`, but I found none.

@@ -123,54 +123,6 @@ Tomcat/7.0.88', so we can assume that it's using Apache Tomcat version `7.0.88`.
 
 ### Apache Tomcat
 
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint Apache's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.10.95:8080/" -v
-```
-
-```
-WhatWeb report for http://10.10.10.95:8080/
-Status    : 200 OK
-Title     : Apache Tomcat/7.0.88
-IP        : 10.10.10.95
-Country   : RESERVED, ZZ
-
-Summary   : Apache, HTML5, HTTPServer[Apache-Coyote/1.1]
-
-Detected Plugins:
-[ Apache ]
-        The Apache HTTP Server Project is an effort to develop and 
-        maintain an open-source HTTP server for modern operating 
-        systems including UNIX and Windows NT. The goal of this 
-        project is to provide a secure, efficient and extensible 
-        server that provides HTTP services in sync with the current 
-        HTTP standards. 
-
-        Google Dorks: (3)
-        Website     : http://httpd.apache.org/
-
-[ HTML5 ]
-        HTML version 5, detected by the doctype declaration 
-
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        String       : Apache-Coyote/1.1 (from server string)
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Server: Apache-Coyote/1.1
-        Content-Type: text/html;charset=ISO-8859-1
-        Transfer-Encoding: chunked
-        Date: Sat, 03 Feb 2024 21:56:53 GMT
-        Connection: close
-```
-
 #### Exploration
 
 Let's browse to `http://10.10.10.95:8080/`.
@@ -178,6 +130,17 @@ Let's browse to `http://10.10.10.95:8080/`.
 ![Apache Tomcat homepage](apache-tomcat-homepage.png)
 
 This is the standard homepage for Apache Tomcat.
+
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![Apache Tomcat homepage Wappalyzer extension](apache-tomcat-homepage-wappalyzer.png)
+
+Nothing.
+
+#### Exploration
 
 A common way to get RCE with this application is by uploading a custom WAR file.
 However, to access this functionality, we need to be authenticated.
@@ -447,8 +410,6 @@ KB4096417
 KB4287903
 KB4284815
 ```
-
-There's a lot of them.
 
 ### Users
 

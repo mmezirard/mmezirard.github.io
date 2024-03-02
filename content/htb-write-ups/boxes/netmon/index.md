@@ -216,10 +216,6 @@ PORT     STATE         SERVICE
 The `ftp-anon` script reveals that the FTP server accepts anonymous connections.
 It also found a bunch of files typically corresponding to a Windows filesystem.
 
-Moreover, the `http-title` script detected that the website's homepage title is
-'Welcome | PRTG Network Monitor (NETMON)', and that there's a redirection to
-`/index.htm`.
-
 ## Services enumeration
 
 ### FTP
@@ -326,81 +322,6 @@ Sadly, it isn't.
 
 ### PRTG Network Monitor
 
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint PRTG Network Monitor's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.10.152/" -v
-```
-
-```
-WhatWeb report for http://10.10.10.152/
-Status    : 302 Found
-Title     : <None>
-IP        : 10.10.10.152
-Country   : RESERVED, ZZ
-
-Summary   : HTTPServer[PRTG/18.1.37.13946], PRTG-Network-Monitor[18.1.37.13946,PRTG], RedirectLocation[/index.htm], UncommonHeaders[x-content-type-options], X-XSS-Protection[1; mode=block]
-
-Detected Plugins:
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        String       : PRTG/18.1.37.13946 (from server string)
-
-[ PRTG-Network-Monitor ]
-        PRTG Network Monitor - Availability and Bandwidth 
-        Monitoring 
-
-        Version      : PRTG
-        Version      : 18.1.37.13946
-        Google Dorks: (1)
-        Website     : http://www.paessler.com/prtg
-
-[ RedirectLocation ]
-        HTTP Server string location. used with http-status 301 and 
-        302 
-
-        String       : /index.htm (from location)
-
-[ UncommonHeaders ]
-        Uncommon HTTP server headers. The blacklist includes all 
-        the standard headers and many non standard but common ones. 
-        Interesting but fairly common headers should have their own 
-        plugins, eg. x-powered-by, server and x-aspnet-version. 
-        Info about headers can be found at www.http-stats.com 
-
-        String       : x-content-type-options (from headers)
-
-[ X-XSS-Protection ]
-        This plugin retrieves the X-XSS-Protection value from the 
-        HTTP header. - More Info: 
-        http://msdn.microsoft.com/en-us/library/cc288472%28VS.85%29.
-        aspx
-
-        String       : 1; mode=block
-
-HTTP Headers:
-        HTTP/1.1 302 Moved Temporarily
-        Connection: close
-        Content-Type: text/html; charset=ISO-8859-1
-        Content-Length: 0
-        Date: Sun, 04 Feb 2024 10:14:08 GMT
-        Expires: 0
-        Cache-Control: no-cache
-        X-Content-Type-Options: nosniff
-        X-XSS-Protection: 1; mode=block
-        Server: PRTG/18.1.37.13946
-        Location: /index.htm
-
-ERROR Opening: http://10.10.10.152/index.htm - incorrect header check
-```
-
-It detects that PRTG Network Monitor's version is `18.1.37.13946`, and that
-there's indeed a redirection to `/index.htm`.
-
 #### Exploration
 
 Let's browse to `http://10.10.10.152/`.
@@ -417,8 +338,16 @@ It looks like a login page for PRTG Network Monitor. What's that?
 >
 > — [Wikipedia](https://en.wikipedia.org/wiki/Paessler_PRTG)
 
-Okay, that's good to know. However, to access the functionalities of this
-application, we need to log in.
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![PRTG Network Monitor homepage Wappalyzer extension](prtg-network-monitor-homepage-wappalyzer.png)
+
+#### Exploration
+
+To access the functionalities of this application, we need to log in.
 
 If we search online for PRTG Network Monitor's default credentials, we find a
 [manual page](https://www.paessler.com/manuals/prtg/login) from
@@ -628,8 +557,6 @@ PS C:\Windows\system32> Get-HotFix | Select-Object -ExpandProperty "HotFixID"
 KB3199986
 KB3200970
 ```
-
-There's not many of them.
 
 ### Users
 

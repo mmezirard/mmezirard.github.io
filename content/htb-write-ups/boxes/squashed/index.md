@@ -212,9 +212,6 @@ PORT     STATE         SERVICE
 <SNIP>
 ```
 
-The `http-title` script detected that the website's homepage title is 'Built
-Better'.
-
 ## Services enumeration
 
 ### NFS
@@ -311,93 +308,6 @@ the one running on port `80`?
 
 ### Apache
 
-#### Fingerprinting
-
-Let's use `whatweb` to fingerprint Apache's homepage.
-
-```sh
-❯ whatweb -a3 "http://10.10.11.191/" -v
-```
-
-```
-WhatWeb report for http://10.10.11.191/
-Status    : 200 OK
-Title     : Built Better
-IP        : 10.10.11.191
-Country   : RESERVED, ZZ
-
-Summary   : Apache[2.4.41], Bootstrap[4.1.0], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.41 (Ubuntu)], JQuery[3.0.0], Script, X-UA-Compatible[IE=edge]
-
-Detected Plugins:
-[ Apache ]
-        The Apache HTTP Server Project is an effort to develop and 
-        maintain an open-source HTTP server for modern operating 
-        systems including UNIX and Windows NT. The goal of this 
-        project is to provide a secure, efficient and extensible 
-        server that provides HTTP services in sync with the current 
-        HTTP standards. 
-
-        Version      : 2.4.41 (from HTTP Server Header)
-        Google Dorks: (3)
-        Website     : http://httpd.apache.org/
-
-[ Bootstrap ]
-        Bootstrap is an open source toolkit for developing with 
-        HTML, CSS, and JS. 
-
-        Version      : 4.1.0
-        Version      : 4.1.0
-        Version      : 4.1.0
-        Website     : https://getbootstrap.com/
-
-[ HTML5 ]
-        HTML version 5, detected by the doctype declaration 
-
-
-[ HTTPServer ]
-        HTTP server header string. This plugin also attempts to 
-        identify the operating system from the server header. 
-
-        OS           : Ubuntu Linux
-        String       : Apache/2.4.41 (Ubuntu) (from server string)
-
-[ JQuery ]
-        A fast, concise, JavaScript that simplifies how to traverse 
-        HTML documents, handle events, perform animations, and add 
-        AJAX. 
-
-        Version      : 3.0.0
-        Website     : http://jquery.com/
-
-[ Script ]
-        This plugin detects instances of script HTML elements and 
-        returns the script language/type. 
-
-
-[ X-UA-Compatible ]
-        This plugin retrieves the X-UA-Compatible value from the 
-        HTTP header and meta http-equiv tag. - More Info: 
-        http://msdn.microsoft.com/en-us/library/cc817574.aspx 
-
-        String       : IE=edge
-
-HTTP Headers:
-        HTTP/1.1 200 OK
-        Date: Wed, 28 Feb 2024 20:46:22 GMT
-        Server: Apache/2.4.41 (Ubuntu)
-        Last-Modified: Wed, 28 Feb 2024 20:45:01 GMT
-        ETag: "7f14-61277377aae0d-gzip"
-        Accept-Ranges: bytes
-        Vary: Accept-Encoding
-        Content-Encoding: gzip
-        Content-Length: 3375
-        Connection: close
-        Content-Type: text/html
-```
-
-This reveals that this website is using Bootstrap and JavaScript libraries like
-jQuery.
-
 #### Exploration
 
 Let's browse to `http://10.10.11.191/`.
@@ -406,8 +316,17 @@ Let's browse to `http://10.10.11.191/`.
 
 It's just a template website. None of the functionalities nor links are working.
 
-The footer of the web page indicates that it's indeed a template made by
+#### Fingerprinting
+
+Let's fingerprint the technologies used by this website with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![Apache homepage Wappalyzer extension](apache-homepage-wappalyzer.png)
+
+The footer of the web page leaks that it's a template made by
 [HTML Design](https://html.design/).
+
+#### Exploration
 
 If we compare this web page with the `index.html` file we found in the
 `/var/www/html` NFS export, we see that they're the same. This means that we

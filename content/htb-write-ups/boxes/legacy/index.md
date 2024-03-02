@@ -389,8 +389,6 @@ C:\Windows\system32> for /f "tokens=7 delims=\" %a in ('reg query "HKEY_LOCAL_MA
 Q147222
 ```
 
-There's only one.
-
 ### Users
 
 Let's enumerate all users.
