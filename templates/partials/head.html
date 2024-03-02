@@ -11,13 +11,14 @@
         <meta name="description" content="{{ section.description }}">
     {% endif %}
     <title>
-        {% if page.title %}
-            {{ page.title }} | {{ config.title }}
-        {% elif section.title %}
-            {{ section.title }} | {{ config.title }}
+        {% if page %}
+            {% set trimmed_path = page.path | trim_start_matches(pat="/") | trim_end_matches(pat="/") %}
+        {% elif section %}
+            {% set trimmed_path = section.path | trim_start_matches(pat="/") | trim_end_matches(pat="/") %}
         {% else %}
-            {{ config.title }}
+            {% set trimmed_path = "404" %}
         {% endif %}
+        {{ config.extra.path_prefix }}{{ trimmed_path }}{{ config.extra.path_suffix }}
     </title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="/main.css" />

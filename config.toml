@@ -9,6 +9,8 @@ highlight_code = true
 highlight_theme = "css"
 
 [extra]
+path_prefix = "root@mmezirard:~/"
+path_suffix = "#"
 nav = [{ name = "/htb-write-ups", url = "/htb-write-ups" }]
 socials = [
     { name = "github", url = "https://github.com/mmezirard/" },
