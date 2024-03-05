@@ -1126,7 +1126,7 @@ payload:
 
 Then, let's make it executable.
 
-Finally, let's abuse our `sudo` permissions to execute it as `root`:
+Finally, let's abuse our `sudo` permissions to execute our script as `root`:
 
 ```sh
 svc@busqueda:/tmp$ sudo "/usr/bin/python3" "/opt/scripts/system-checkup.py" "full-checkup"

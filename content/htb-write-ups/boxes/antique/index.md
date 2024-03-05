@@ -344,6 +344,14 @@ lp@antique:~$
 
 It caught the reverse shell!
 
+### Stabilizing the shell
+
+I'll use this one-liner to stabilize a bit the shell by spawning a tty:
+
+```sh
+script "/dev/null" -qc "/bin/bash"
+```
+
 ## Getting a lay of the land
 
 If we run `whoami`, we see that we got a foothold as `lp`.
@@ -661,8 +669,8 @@ Content-Length: 346
 
 If we enter a random input, we receive an HTTP response.
 
-I'll setup a local port forwarding using `chisel` to make it available on my own
-machine.
+I'll setup a remote port forwarding using `chisel` to make it available on my
+own machine.
 
 #### Exploration
 

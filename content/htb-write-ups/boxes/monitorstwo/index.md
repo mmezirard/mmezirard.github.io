@@ -292,6 +292,14 @@ www-data@50bca5e748b0:/var/www/html$
 
 It caught the reverse shell!
 
+### Stabilizing the shell
+
+I'll use this one-liner to stabilize a bit the shell by spawning a tty:
+
+```sh
+script "/dev/null" -qc "/bin/bash"
+```
+
 ## System enumeration
 
 We're actually in a Docker container, and the `/etc/hosts` file indicates that
@@ -342,7 +350,7 @@ Yay!
 
 ### Stabilizing the shell
 
-I'll use this one-liner to stabilize a bit the shell:
+I'll use this one-liner to stabilize a bit the shell by spawning a tty:
 
 ```sh
 script "/dev/null" -qc "/bin/bash"
@@ -1004,7 +1012,7 @@ If we explore the second folder, we see that it's the one corresponding to this
 host.
 
 Now let's execute the `/bin/bash` binary of the `172.19.0.3` host from
-MonitorsTwo with elevated privileges:
+MonitorsTwo without dropping privileges:
 
 ```sh
 marcus@monitorstwo:~$ /var/lib/docker/overlay2/c41d5854e43bd996e128d647cb526b73d04c9ad6325201c85f73fdba372cb2f1/merged/bin/bash -p

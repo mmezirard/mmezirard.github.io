@@ -596,10 +596,6 @@ Finally, I'll connect over SSH to Mirai. I have a much more stable shell now!
 
 ## System enumeration
 
-```
-24e053901c93a1184a983b81af96883f
-```
-
 ### Home folders
 
 If we check our home folder, we find a `root.txt` file. However, it doesn't

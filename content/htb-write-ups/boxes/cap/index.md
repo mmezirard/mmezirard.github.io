@@ -720,7 +720,7 @@ Now let's set the UID of the process to `root`:
 Finally, we can open a shell:
 
 ```sh
->>> os.system("/bin/bash")
+>>> os.system("/bin/bash -i")
 ```
 
 ```

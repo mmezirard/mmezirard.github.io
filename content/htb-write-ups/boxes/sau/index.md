@@ -499,8 +499,8 @@ privileges.
 
 ### Exploitation
 
-Let's send a bunch of random requests to the Maltrail server to fill the status
-page.
+Let's resize the terminal so that the output of the command doesn't fit on the
+screen.
 
 Then, let's run the only command we can execute as `root`:
 
@@ -515,14 +515,15 @@ lines 1-58
 
 The last line indicates that we're in a pager!
 
-Now I'll just copy and paste the given command to abuse our `sudo` permissions:
+Now I'll use the given command to abuse our `sudo` permissions, but I'll change
+the shell to `/bin/bash`:
 
 ```sh
-!sh
+!/bin/bash -i
 ```
 
 ```
-#
+root@sau:/home/puma#
 ```
 
 Yay!

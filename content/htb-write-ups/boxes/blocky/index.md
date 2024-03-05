@@ -1012,7 +1012,7 @@ Yay!
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
 create a private key and I'll add the corresponding key to `authorized_keys`.
-Finally I'll connect over SSH to Broker. This way, I'll have a much more stable
+Finally I'll connect over SSH to Blocky. This way, I'll have a much more stable
 shell.
 
 ## System enumeration
