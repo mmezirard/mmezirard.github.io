@@ -214,12 +214,7 @@ Since our input is rendered and reflected in the response, maybe the website is
 vulnerable to SSTI. Let's check for it by entering the following payloads:
 
 ```
-{{7*7}}
-${7*7}
-<%= 7*7 %>
-${{7*7}}
-#{7*7}
-*{7*7}
+{{7*7}} ${7*7} <%= 7*7 %> ${{7*7}} #{7*7} *{7*7}
 ```
 
 Unfortunately, this is what we get:

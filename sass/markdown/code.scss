@@ -28,8 +28,16 @@
         background-color: #f1e05a;
     }
 
+    &[data-lang='json'] {
+        background-color: #292929;
+    }
+
     &[data-lang='php'] {
         background-color: #4F5D95;
+    }
+
+    &[data-lang='pl'] {
+        background-color: #0298c3;
     }
 
     &[data-lang='plain'] {
