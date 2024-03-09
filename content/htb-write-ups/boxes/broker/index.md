@@ -310,12 +310,13 @@ activemq@broker:/opt/apache-activemq-5.15.15/bin$
 
 It caught the reverse shell!
 
-### Stabilizing the shell
+### Spawning a tty & establishing persistence
+
+Let's use SSH to spawn a tty and to establish persistence.
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
-create a private key and I'll add the corresponding key to `authorized_keys`.
-Finally I'll connect over SSH to Broker. This way, I'll have a much more stable
-shell.
+create a private key, and I'll add the corresponding public key to
+`authorized_keys`. Finally, I'll connect over SSH to Broker as `activemq`.
 
 ## Getting a lay of the land
 

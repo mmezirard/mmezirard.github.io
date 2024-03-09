@@ -344,12 +344,12 @@ lp@antique:~$
 
 It caught the reverse shell!
 
-### Stabilizing the shell
+### Spawning a tty
 
-I'll use this one-liner to stabilize a bit the shell by spawning a tty:
+Let's use this one-liner to spawn a tty:
 
 ```sh
-script "/dev/null" -qc "/bin/bash"
+/usr/bin/script "/dev/null" -qc "/bin/bash"
 ```
 
 ## Getting a lay of the land

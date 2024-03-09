@@ -328,13 +328,16 @@ shelly@Shocker:/usr/lib/cgi-bin$
 
 It caught the reverse shell!
 
-### Stabilizing the shell
+### Spawning a tty
 
-I'll use this one-liner to stabilize a bit the shell by spawning a tty:
+Let's use this one-liner to spawn a tty:
 
 ```sh
-script "/dev/null" -qc "/bin/bash"
+/usr/bin/script "/dev/null" -qc "/bin/bash"
 ```
+
+I also tried to use SSH to establish persistence, but public key authentication
+doesn't work.
 
 ## Getting a lay of the land
 
@@ -569,13 +572,13 @@ root@Shocker:/usr/lib/cgi-bin#
 
 Yay!
 
-### Stabilizing the shell
+### Establishing persistence
 
-I'll use this one-liner to stabilize a bit the shell by spawning a tty:
+Let's use SSH to establish persistence.
 
-```sh
-script "/dev/null" -qc "/bin/bash"
-```
+Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
+create a private key, and I'll add the corresponding public key to
+`authorized_keys`. Finally, I'll connect over SSH to Shocker as `root`.
 
 ## System enumeration
 

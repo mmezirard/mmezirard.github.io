@@ -145,7 +145,7 @@ Moreover, the `ssl-cert` script discloses that the SSL certificate issuer is set
 to the domain `nunchucks.htb`. I'll add it to my `/etc/hosts` file.
 
 ```sh
-❯ echo "10.10.11.122 nunchucks.htb" >> /etc/hosts
+❯ echo "10.10.11.122 nunchucks.htb" >> "/etc/hosts"
 ```
 
 ## Services enumeration
@@ -439,7 +439,7 @@ We find a valid vhost: `store`!
 I'll add this to my `/etc/hosts` file.
 
 ```sh
-❯ echo "10.10.11.122 store.nunchucks.htb" >> /etc/hosts
+❯ echo "10.10.11.122 store.nunchucks.htb" >> "/etc/hosts"
 ```
 
 #### Exploration
@@ -477,7 +477,7 @@ When we fill the form with an email and submit it, a POST request is sent to
 
 ```json
 {
-  "email": "<EMAIL>"
+    "email": "<EMAIL>"
 }
 ```
 
@@ -485,7 +485,7 @@ The subsequent response data is:
 
 ```json
 {
-  "response": "You will receive updates on the following email address: <EMAIL>"
+    "response": "You will receive updates on the following email address: <EMAIL>"
 }
 ```
 
@@ -503,7 +503,7 @@ Here's the response JSON data:
 
 ```json
 {
-  "response": "You will receive updates on the following email address: 49 ${7*7} <%= 7*7 %> $49 #{7*7} *{7*7}."
+    "response": "You will receive updates on the following email address: 49 ${7*7} <%= 7*7 %> $49 #{7*7} *{7*7}."
 }
 ```
 
@@ -562,12 +562,13 @@ david@nunchucks:/var/www/store.nunchucks$
 
 It caught the reverse shell!
 
-### Stabilizing the shell
+### Spawning a tty & establishing persistence
+
+Let's use SSH to spawn a tty and to establish persistence.
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
-create a private key and I'll add the corresponding key to `authorized_keys`.
-Finally I'll connect over SSH to Nunchucks. This way, I'll have a much more
-stable shell.
+create a private key, and I'll add the corresponding public key to
+`authorized_keys`. Finally, I'll connect over SSH to Nunchucks as `david`.
 
 ## Getting a lay of the land
 
@@ -843,8 +844,6 @@ means that it has the ability to set its effective user ID, and it's allowed to
 do so during its execution! So this is why the `backup.pl` script in `/opt` can
 change its UID.
 
-Unfortunately,
-
 ### AppArmor
 
 Let's list the applications AppArmor profiles:
@@ -949,17 +948,18 @@ david@nunchucks:~$ /tmp/privesc.pl
 ```
 
 ```
-root@nunchucks:/opt#
+root@nunchucks:~#
 ```
 
 Nice!
 
-### Stabilizing the shell
+### Establishing persistence
 
-Our home folder contains a `.ssh` directory. There's no existing private key, so
-I'll create one and add the corresponding public key to `authorized_keys`, and
-then I'll connect over SSH to Nunchucks. This way, I'll have a much more stable
-shell.
+Let's use SSH to establish persistence.
+
+Our home folder contains a `.ssh` folder. There's no existing private key, so
+I'll create one, and I'll add the corresponding public key to `authorized_keys`.
+Finally, I'll connect over SSH to Nunchucks as `root`.
 
 ## System enumeration
 

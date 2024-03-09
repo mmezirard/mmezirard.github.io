@@ -202,11 +202,13 @@ james@knife:/$
 
 It caught the reverse shell!
 
-### Stabilizing the shell
+### Spawning a tty & establishing persistence
+
+Let's use SSH to spawn a tty and to establish persistence.
 
 Our home folder contains a `.ssh` directory with a private key. I'll add the
-corresponding public key to `authorized_keys` and I'll connect over SSH to
-Knife. This way, I'll have a much more stable shell.
+corresponding public key to `authorized_keys`, and I'll connect over SSH to
+Knife as `james`.
 
 ## Getting a lay of the land
 
@@ -445,12 +447,13 @@ root@knife:/home/james#
 
 Yay!
 
-### Stabilizing the shell
+### Establishing persistence
 
-Our home folder contains a `.ssh` directory. There's no existing private key, so
-I'll create one and add the corresponding public key to `authorized_keys`, and
-then I'll connect over SSH to Knife. This way, I'll have a much more stable
-shell.
+Let's use SSH to establish persistence.
+
+Our home folder contains a `.ssh` folder. There's no existing private key, so
+I'll create one, and I'll add the corresponding public key to `authorized_keys`.
+Finally, I'll connect over SSH to Knife as `root`.
 
 ## System enumeration
 

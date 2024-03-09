@@ -380,12 +380,13 @@ alex@squashed:/var/www/html$
 
 It caught the reverse shell!
 
-### Stabilizing the shell
+### Spawning a tty & establishing persistence
+
+Let's use SSH to spawn a tty and to establish persistence.
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
-create a private key and I'll add the corresponding key to `authorized_keys`.
-Finally I'll connect over SSH to Squashed. This way, I'll have a much more
-stable shell.
+create a private key, and I'll add the corresponding public key to
+`authorized_keys`. Finally, I'll connect over SSH to Squashed as `alex`.
 
 ## Getting a lay of the land
 
@@ -665,16 +666,18 @@ root@squashed:~#
 
 It works!
 
-### Stabilizing the shell
+### Establishing persistence
 
-Our home folder contains a `.ssh` directory. There's no existing private key, so
-I'll create one and add the corresponding public key to `authorized_keys`.
+Let's use SSH to establish persistence.
+
+Our home folder contains a `.ssh` folder. There's no existing private key, so
+I'll create one, and I'll add the corresponding public key to `authorized_keys`.
 
 It won't be enough to connect over SSH to Squashed though, since the
 `/etc/ssh/sshd_config` has the line `PermitRootLogin no`. I'll set it to `yes`,
 and I'll restart the SSH service.
 
-Finally, I'll connect over SSH to Squashed. I have a much more stable shell now!
+Finally, I'll connect over SSH to Squashed as `root`.
 
 ## System enumeration
 

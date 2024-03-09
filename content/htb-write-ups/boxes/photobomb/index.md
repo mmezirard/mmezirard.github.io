@@ -159,7 +159,7 @@ The `http-title` script indicates that the Nginx server redirects to
 `http://photobomb.htb/`. I'll add it to my `/etc/hosts` file.
 
 ```sh
-❯ echo "10.10.11.182 photobomb.htb" >> /etc/hosts
+❯ echo "10.10.11.182 photobomb.htb" >> "/etc/hosts"
 ```
 
 ## Services enumeration
@@ -359,12 +359,13 @@ wizard@photobomb:~/photobomb$
 
 It caught the reverse shell!
 
-### Stabilizing the shell
+### Spawning a tty & establishing persistence
+
+Let's use SSH to spawn a tty and to establish persistence.
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
-create a private key and I'll add the corresponding key to `authorized_keys`.
-Finally I'll connect over SSH to Photobomb. This way, I'll have a much more
-stable shell.
+create a private key, and I'll add the corresponding public key to
+`authorized_keys`. Finally, I'll connect over SSH to Photobomb as `wizard`.
 
 ## Getting a lay of the land
 
@@ -584,53 +585,52 @@ assume that it's used to start the server.
 ```rb
 <SNIP>
 post '/printer' do
-  photo = params[:photo]
-  filetype = params[:filetype]
-  dimensions = params[:dimensions]
+    photo = params[:photo]
+    filetype = params[:filetype]
+    dimensions = params[:dimensions]
 
-  # handle inputs
-  if photo.match(/\.{2}|\//)
-    halt 500, 'Invalid photo.'
-  end
+    # handle inputs
+    if photo.match(/\.{2}|\//)
+        halt 500, 'Invalid photo.'
+    end
 
-  if !FileTest.exist?( "source_images/" + photo )
-    halt 500, 'Source photo does not exist.'
-  end
+    if !FileTest.exist?( "source_images/" + photo )
+        halt 500, 'Source photo does not exist.'
+    end
 
-  if !filetype.match(/^(png|jpg)/)
-    halt 500, 'Invalid filetype.'
-  end
+    if !filetype.match(/^(png|jpg)/)
+        halt 500, 'Invalid filetype.'
+    end
 
-  if !dimensions.match(/^[0-9]+x[0-9]+$/)
-    halt 500, 'Invalid dimensions.'
-  end
+    if !dimensions.match(/^[0-9]+x[0-9]+$/)
+        halt 500, 'Invalid dimensions.'
+    end
 
-  case filetype
-  when 'png'
-    content_type 'image/png'
-  when 'jpg'
-    content_type 'image/jpeg'
-  end
+    case filetype
+    when 'png'
+        content_type 'image/png'
+    when 'jpg'
+        content_type 'image/jpeg'
+    end
 
-  filename = photo.sub('.jpg', '') + '_' + dimensions + '.' + filetype
-  response['Content-Disposition'] = "attachment; filename=#{filename}"
+    filename = photo.sub('.jpg', '') + '_' + dimensions + '.' + filetype
+    response['Content-Disposition'] = "attachment; filename=#{filename}"
 
-  if !File.exists?('resized_images/' + filename)
-    command = 'convert source_images/' + photo + ' -resize ' + dimensions + ' resized_images/' + filename
-    puts "Executing: #{command}"
-    system(command)
-  else
-    puts "File already exists."
-  end
+    if !File.exists?('resized_images/' + filename)
+        command = 'convert source_images/' + photo + ' -resize ' + dimensions + ' resized_images/' + filename
+        puts "Executing: #{command}"
+        system(command)
+    else
+        puts "File already exists."
+    end
 
-  if File.exists?('resized_images/' + filename)
-    halt 200, {}, IO.read('resized_images/' + filename)
-  end
+    if File.exists?('resized_images/' + filename)
+        halt 200, {}, IO.read('resized_images/' + filename)
+    end
 
-  #message = 'Failed to generate a copy of ' + photo + ' resized to ' + dimensions + ' with filetype ' + filetype
-  message = 'Failed to generate a copy of ' + photo
-  halt 500, message
-end
+    #message = 'Failed to generate a copy of ' + photo + ' resized to ' + dimensions + ' with filetype ' + filetype
+    message = 'Failed to generate a copy of ' + photo
+    halt 500, message
 ```
 
 The `server.rb` file is responsible for handling requests related to resizing
@@ -667,10 +667,9 @@ Let's see what the `cleanup.sh` file contains:
 cd /home/wizard/photobomb
 
 # clean up log files
-if [ -s log/photobomb.log ] && ! [ -L log/photobomb.log ]
-then
-  /bin/cat log/photobomb.log > log/photobomb.log.old
-  /usr/bin/truncate -s0 log/photobomb.log
+if [ -s log/photobomb.log ] && ! [ -L log/photobomb.log ]; then
+    /bin/cat log/photobomb.log >log/photobomb.log.old
+    /usr/bin/truncate -s0 log/photobomb.log
 fi
 
 # protect the priceless originals
@@ -719,12 +718,13 @@ root@photobomb:/home/wizard/photobomb#
 
 Yay!
 
-### Stabilizing the shell
+### Establishing persistence
 
-Our home folder contains a `.ssh` directory. There's no existing private key, so
-I'll create one and add the corresponding public key to `authorized_keys`, and
-then I'll connect over SSH to Photobomb. This way, I'll have a much more stable
-shell.
+Let's use SSH to establish persistence.
+
+Our home folder contains a `.ssh` folder. There's no existing private key, so
+I'll create one, and I'll add the corresponding public key to `authorized_keys`.
+Finally, I'll connect over SSH to Photobomb as `root`.
 
 ## System enumeration
 

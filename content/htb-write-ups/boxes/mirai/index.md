@@ -583,16 +583,18 @@ root@raspberrypi:~#
 
 Yay!
 
-### Stabilizing the shell
+### Establishing persistence
 
-Our home folder contains a `.ssh` directory. There's no existing private key, so
-I'll create one and add the corresponding public key to `authorized_keys`.
+Let's use SSH to establish persistence.
+
+Our home folder contains a `.ssh` folder. There's no existing private key, so
+I'll create one, and I'll add the corresponding public key to `authorized_keys`.
 
 It won't be enough to connect over SSH to Mirai though, since the
 `/etc/ssh/sshd_config` has the line `PubkeyAuthentication no`. I'll set it to
 `yes`, and I'll restart the SSH service.
 
-Finally, I'll connect over SSH to Mirai. I have a much more stable shell now!
+Finally, I'll connect over SSH to Mirai as `root`.
 
 ## System enumeration
 
