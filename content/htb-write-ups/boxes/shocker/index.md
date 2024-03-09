@@ -328,6 +328,11 @@ shelly@Shocker:/usr/lib/cgi-bin$
 
 It caught the reverse shell!
 
+### Establishing persistence
+
+I tried to use SSH to establish persistence, but public key authentication is
+disabled.
+
 ### Spawning a tty
 
 Let's use this one-liner to spawn a tty:
@@ -335,9 +340,6 @@ Let's use this one-liner to spawn a tty:
 ```sh
 /usr/bin/script "/dev/null" -qc "/bin/bash"
 ```
-
-I also tried to use SSH to establish persistence, but public key authentication
-doesn't work.
 
 ## Getting a lay of the land
 
