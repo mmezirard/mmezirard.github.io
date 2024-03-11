@@ -312,7 +312,7 @@ Let's fingerprint the technologies used by this web page with the
 
 ![IIS homepage Wappalyzer extension](iis-homepage-wappalyzer.png)
 
-This reveals that this website is using PHP version `7.4.13`.
+This reveals that this web page is using PHP version `7.4.13`.
 
 #### Exploration
 

@@ -179,7 +179,7 @@ Let's fingerprint the technologies used by this web page with the
 
 ![Apache homepage Wappalyzer extension](apache-homepage-wappalyzer.png)
 
-This reveals that this website is using PHP version `7.4.23`.
+This reveals that this web page is using PHP version `7.4.23`.
 
 #### Exploration
 

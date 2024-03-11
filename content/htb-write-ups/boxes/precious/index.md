@@ -181,7 +181,7 @@ Let's fingerprint the technologies used by this web page with the
 
 ![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
 
-This reveals that this website is using Phusion Passenger®. What's that?
+This reveals that this web page is using Phusion Passenger®. What's that?
 
 > Phusion Passenger® is a web server and application server, designed to be
 > fast, robust and lightweight. It takes a lot of complexity out of deploying

@@ -167,7 +167,7 @@ Let's fingerprint the technologies used by this web page with the
 
 ![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
 
-This reveals that this website is using Node.js and Express, a web framework for
+This reveals that this web page is using Node.js and Express, a web framework for
 Node.js.
 
 #### Exploration

@@ -271,7 +271,7 @@ Let's fingerprint the technologies used by this dashboard with the
 
 ![Lighttpd admin page Wappalyzer extension](lighttpd-admin-page-wappalyzer.png)
 
-This reveals that this website is using PHP.
+This reveals that this web page is using PHP.
 
 #### Exploration
 

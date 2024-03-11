@@ -164,7 +164,7 @@ Let's fingerprint the technologies used by this web page with the
 
 ![Apache nibbleblog page Wappalyzer extension](apache-nibbleblog-page-wappalyzer.png)
 
-This reveals that this website is using PHP.
+This reveals that this web page is using PHP.
 
 Moreover, the footer of the page we discovered indicates that it's powered by
 Nibbleblog.

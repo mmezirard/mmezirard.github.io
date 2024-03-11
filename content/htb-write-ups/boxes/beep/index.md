@@ -283,7 +283,7 @@ Let's fingerprint the technologies used by this web page with the
 
 ![Elastix homepage Wappalyzer extension](elastix-homepage-wappalyzer.png)
 
-This reveals that this website is using PHP version `5.1.6`.
+This reveals that this web page is using PHP version `5.1.6`.
 
 #### Exploration
 

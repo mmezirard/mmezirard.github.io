@@ -240,7 +240,7 @@ Let's fingerprint the technologies used by this web page with the
 
 ![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
 
-This reveals that this website is using PHP, MySQL and Wordpress version `4.8`.
+This reveals that this web page is using PHP, MySQL and Wordpress version `4.8`.
 
 #### WordPress
 

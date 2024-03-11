@@ -183,7 +183,7 @@ Let's fingerprint the technologies used by this web page with the
 
 ![Nginx homepage Wappalyzer extension](nginx-homepage-wappalyzer.png)
 
-This reveals that this website is using PHP version `7.4.33`.
+This reveals that this web page is using PHP version `7.4.33`.
 
 The login page also reveals that it's using Cacti version `1.2.22`.
 

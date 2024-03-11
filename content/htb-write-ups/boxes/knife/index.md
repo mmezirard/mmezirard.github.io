@@ -145,7 +145,7 @@ Let's fingerprint the technologies used by this web page with the
 
 ![Apache homepage Wappalyzer extension](apache-homepage-wappalyzer.png)
 
-This reveals that this website is using PHP version `8.1.0`.
+This reveals that this web page is using PHP version `8.1.0`.
 
 If we check the HTTP headers of the response, we also find a `X-Powered-By`
 header specifying that it's actually PHP version `8.1.0-dev`.

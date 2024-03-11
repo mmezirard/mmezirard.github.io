@@ -182,7 +182,7 @@ Let's fingerprint the technologies used by this web page with the
 
 ![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
 
-This reveals that this website is using Flask.
+This reveals that this web page is using Flask.
 
 If we check the HTTP headers of the response, we also find a `Server` header
 indicating that the server is using the Werkzeug library `2.1.2` for Python
