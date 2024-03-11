@@ -235,7 +235,7 @@ the website as well as the server are under construction.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)

@@ -131,7 +131,7 @@ This is a website that promotes the `phpbash` tool.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Apache homepage Wappalyzer extension](apache-homepage-wappalyzer.png)
@@ -315,12 +315,12 @@ www-data@bashed:/var/www/html/dev$
 
 It caught the reverse shell!
 
-### Spawning a tty
+### Spawning a pty
 
-Let's use this one-liner to spawn a tty:
+Let's use this one-liner to spawn a pty:
 
 ```sh
-/usr/bin/script "/dev/null" -qc "/bin/bash"
+python3 -c 'import pty; pty.spawn("/bin/bash")'
 ```
 
 ## Getting a lay of the land
@@ -696,12 +696,12 @@ root@bashed:/scripts#
 
 It caught the reverse shell!
 
-### Spawning a tty
+### Spawning a pty
 
-Let's use this one-liner to spawn a tty:
+Let's use this one-liner to spawn a pty:
 
 ```sh
-/usr/bin/script "/dev/null" -qc "/bin/bash"
+python3 -c 'import pty; pty.spawn("/bin/bash")'
 ```
 
 ## System enumeration

@@ -133,7 +133,7 @@ This is the standard homepage for Apache Tomcat.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Apache Tomcat homepage Wappalyzer extension](apache-tomcat-homepage-wappalyzer.png)

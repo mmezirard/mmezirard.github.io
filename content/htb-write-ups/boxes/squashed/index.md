@@ -318,7 +318,7 @@ It's just a template website. None of the functionalities nor links are working.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Apache homepage Wappalyzer extension](apache-homepage-wappalyzer.png)
@@ -332,7 +332,7 @@ If we compare this web page with the `index.html` file we found in the
 `/var/www/html` NFS export, we see that they're the same. This means that we
 have access to the source code of the web server!
 
-## Foothold (RCE)
+## Foothold (File upload)
 
 Since we have read and write access to the source code of the web server through
 the `/var/www/html` NFS export, we can simply add an executable file to get RCE.
@@ -380,9 +380,9 @@ alex@squashed:/var/www/html$
 
 It caught the reverse shell!
 
-### Spawning a tty & establishing persistence
+### Spawning a pty & establishing persistence
 
-Let's use SSH to spawn a tty and to establish persistence.
+Let's use SSH to spawn a pty and to establish persistence.
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
 create a private key, and I'll add the corresponding public key to

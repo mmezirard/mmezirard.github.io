@@ -140,7 +140,7 @@ That's... weird. 'Don't Bug Me!'? Are we supposed to find a bug?
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Apache homepage Wappalyzer extension](apache-homepage-wappalyzer.png)
@@ -338,7 +338,7 @@ disabled.
 Let's use this one-liner to spawn a tty:
 
 ```sh
-/usr/bin/script "/dev/null" -qc "/bin/bash"
+python3 -c 'import pty; pty.spawn("/bin/bash")'
 ```
 
 ## Getting a lay of the land

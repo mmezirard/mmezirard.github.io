@@ -177,7 +177,7 @@ web.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
@@ -215,7 +215,7 @@ the Searchor CLI', and links to
 
 If we read it, we see that it actually fixes a RCE vulnerability!
 
-## Foothold (RCE)
+## Foothold (Python command injection)
 
 Searchor versions prior to `2.4.2` are affected by a RCE. The vulnerability
 stems from the `eval` function call used on user-supplied inputs in the search
@@ -256,9 +256,9 @@ svc@busqueda:/var/www/app$
 
 It caught the reverse shell!
 
-### Spawning a tty & establishing persistence
+### Spawning a pty & establishing persistence
 
-Let's use SSH to spawn a tty and to establish persistence.
+Let's use SSH to spawn a pty and to establish persistence.
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
 create a private key, and I'll add the corresponding public key to
@@ -613,7 +613,7 @@ This is a standard Gitea installation.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Subdomain homepage Wappalyzer extension](subdomain-homepage-wappalyzer.png)

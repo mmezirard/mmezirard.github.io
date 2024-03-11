@@ -178,7 +178,7 @@ We're presented with a login page for Cacti.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Nginx homepage Wappalyzer extension](nginx-homepage-wappalyzer.png)
@@ -208,7 +208,7 @@ find
 [Cacti v1.2.22 - Remote Command Execution (RCE)](https://www.exploit-db.com/exploits/51166)
 ([CVE-2022-46169](https://nvd.nist.gov/vuln/detail/CVE-2022-46169)).
 
-## Foothold (RCE)
+## Foothold (OS command injection)
 
 Cacti versions up to `1.2.22` are vulnerable to an OS command injection after an
 authentication bypass. This vulnerability stems from a lack of proper
@@ -292,12 +292,12 @@ www-data@50bca5e748b0:/var/www/html$
 
 It caught the reverse shell!
 
-### Spawning a tty
+### Spawning a pty
 
-Let's use this one-liner to spawn a tty:
+Let's use this one-liner to spawn a pty:
 
 ```sh
-/usr/bin/script "/dev/null" -qc "/bin/bash"
+script "/dev/null" -qc "/bin/bash"
 ```
 
 ## System enumeration
@@ -343,18 +343,10 @@ www-data@50bca5e748b0:/var/www/html$ /sbin/capsh --gid="0" --uid="0" --
 ```
 
 ```
-
+root@50bca5e748b0:/var/www/html#
 ```
 
 Yay!
-
-### Spawning a tty
-
-Let's use this one-liner to spawn a tty:
-
-```sh
-/usr/bin/script "/dev/null" -qc "/bin/bash"
-```
 
 ## System enumeration
 

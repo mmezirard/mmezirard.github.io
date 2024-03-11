@@ -178,7 +178,7 @@ gifts' and gives us a link to `/printer`, presumably to access our printer.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
@@ -319,7 +319,7 @@ If we send an extra request with `sleep 10` as the command, there's a 10 seconds
 delay before we receive the response, so our OS command injection definitely
 worked!
 
-## Foothold (RCE)
+## Foothold (OS command injection)
 
 Since the website uses ImageMagick to dynamically convert and resize the image
 based on user-controllable inputs, and it fails to properly sanitize the
@@ -359,9 +359,9 @@ wizard@photobomb:~/photobomb$
 
 It caught the reverse shell!
 
-### Spawning a tty & establishing persistence
+### Spawning a pty & establishing persistence
 
-Let's use SSH to spawn a tty and to establish persistence.
+Let's use SSH to spawn a pty and to establish persistence.
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
 create a private key, and I'll add the corresponding public key to

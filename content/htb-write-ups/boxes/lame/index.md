@@ -358,9 +358,9 @@ root@lame:/#
 
 It caught the reverse shell!
 
-### Spawning a tty & establishing persistence
+### Spawning a pty & establishing persistence
 
-Let's use SSH to spawn a tty and to establish persistence.
+Let's use SSH to spawn a pty and to establish persistence.
 
 Our home folder contains a `.ssh` folder. There's no existing private key, so
 I'll create one, and I'll add the corresponding public key to `authorized_keys`.

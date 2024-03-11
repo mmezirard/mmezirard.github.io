@@ -140,7 +140,7 @@ It's a website for a medical company. There's hardly more information.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Apache homepage Wappalyzer extension](apache-homepage-wappalyzer.png)
@@ -156,7 +156,7 @@ If we search [ExploitDB](https://www.exploit-db.com/) for `Apache 2.4.41`, we
 find nothing. However, if we enter `PHP 8.1.0-dev`, we find
 [PHP 8.1.0-dev - 'User-Agentt' Remote Code Execution](https://www.exploit-db.com/exploits/49933).
 
-## Foothold (RCE)
+## Foothold (Backdoor)
 
 The vulnerability affecting PHP version `8.1.0-dev` is simply a backdoor
 accessible through the `User-agentt` HTTP header.
@@ -202,9 +202,9 @@ james@knife:/$
 
 It caught the reverse shell!
 
-### Spawning a tty & establishing persistence
+### Spawning a pty & establishing persistence
 
-Let's use SSH to spawn a tty and to establish persistence.
+Let's use SSH to spawn a pty and to establish persistence.
 
 Our home folder contains a `.ssh` directory with a private key. I'll add the
 corresponding public key to `authorized_keys`, and I'll connect over SSH to

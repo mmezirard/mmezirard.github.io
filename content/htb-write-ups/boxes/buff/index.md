@@ -136,7 +136,7 @@ This is a website that promotes the `phpbash` tool.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Apache homepage Wappalyzer extension](apache-homepage-wappalyzer.png)

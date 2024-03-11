@@ -306,7 +306,7 @@ form.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Plex homepage Wappalyzer extension](plex-homepage-wappalyzer.png)

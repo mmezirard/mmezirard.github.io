@@ -192,7 +192,7 @@ We are served a dashboard with various security metrics.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Gunicorn homepage Wappalyzer extension](gunicorn-homepage-wappalyzer.png)

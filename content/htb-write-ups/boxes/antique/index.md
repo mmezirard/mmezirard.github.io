@@ -344,12 +344,12 @@ lp@antique:~$
 
 It caught the reverse shell!
 
-### Spawning a tty
+### Spawning a pty
 
-Let's use this one-liner to spawn a tty:
+Let's use this one-liner to spawn a pty:
 
 ```sh
-/usr/bin/script "/dev/null" -qc "/bin/bash"
+python3 -c 'import pty; pty.spawn("/bin/bash")'
 ```
 
 ## Getting a lay of the land
@@ -689,7 +689,7 @@ It's the default installation page for CUPS! What's that?
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![CUPS homepage Wappalyzer extension](cups-homepage-wappalyzer.png)

@@ -178,7 +178,7 @@ then so I can't be sure.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
@@ -513,7 +513,7 @@ parameter value.
 If we send a request with `sleep 10` as the command, there's a 10 seconds delay
 before we receive the response, so our OS command injection must have worked!
 
-## Foothold (RCE)
+## Foothold (OS command injection)
 
 Since the website uses Bash to dynamically generate OVPN files based on
 user-controllable input, and it fails to properly sanitize the `username`
@@ -553,12 +553,12 @@ www-data@2million:~/html$
 
 It caught the reverse shell!
 
-### Spawning a tty
+### Spawning a pty
 
-Let's use this one-liner to spawn a tty:
+Let's use this one-liner to spawn a pty:
 
 ```sh
-/usr/bin/script "/dev/null" -qc "/bin/bash"
+python3 -c 'import pty; pty.spawn("/bin/bash")'
 ```
 
 ## Getting a lay of the land

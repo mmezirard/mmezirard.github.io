@@ -176,7 +176,7 @@ It's a website to convert a web page to a PDF.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
@@ -288,9 +288,9 @@ ruby@precious:/var/www/pdfapp$
 
 It caught the reverse shell!
 
-### Spawning a tty & establishing persistence
+### Spawning a pty & establishing persistence
 
-Let's use SSH to spawn a tty and to establish persistence.
+Let's use SSH to spawn a pty and to establish persistence.
 
 Our home folder doesn't contain a `.ssh` folder, so I'll create one. Then I'll
 create a private key, and I'll add the corresponding public key to

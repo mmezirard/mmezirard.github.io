@@ -340,7 +340,7 @@ It looks like a login page for PRTG Network Monitor. What's that?
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![PRTG Network Monitor homepage Wappalyzer extension](prtg-network-monitor-homepage-wappalyzer.png)

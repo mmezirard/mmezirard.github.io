@@ -172,7 +172,7 @@ It's a standard installation page for IIS 7.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![IIS homepage Wappalyzer extension](iis-homepage-wappalyzer.png)

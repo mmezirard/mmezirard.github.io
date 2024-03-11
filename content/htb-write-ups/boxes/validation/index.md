@@ -174,7 +174,7 @@ It's a website for registering to the September qualifiers of a contest.
 
 #### Fingerprinting
 
-Let's fingerprint the technologies used by this website with the
+Let's fingerprint the technologies used by this web page with the
 [Wappalyzer](https://www.wappalyzer.com/) extension.
 
 ![Apache homepage Wappalyzer extension](apache-homepage-wappalyzer.png)
@@ -535,12 +535,12 @@ www-data@validation:/var/www/html$
 
 It caught the reverse shell!
 
-### Spawning a tty
+### Spawning a pty
 
-Let's use this one-liner to spawn a tty:
+Let's use this one-liner to spawn a pty:
 
 ```sh
-/usr/bin/script "/dev/null" -qc "/bin/bash"
+script "/dev/null" -qc "/bin/bash"
 ```
 
 ## Getting a lay of the land
