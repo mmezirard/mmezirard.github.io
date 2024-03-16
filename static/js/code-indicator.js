@@ -37,6 +37,7 @@ const languageMapping = {
     rb: "RUBY",
     sh: "SHELL",
     sql: "SQL",
+    tex: "LATEX",
     xml: "XML",
     yml: "YAML",
 }

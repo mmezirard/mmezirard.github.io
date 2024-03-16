@@ -64,6 +64,10 @@
         background-color: #e38c00;
     }
 
+    &[data-lang='tex'] {
+        background-color: #3D6117;
+    }
+
     &[data-lang='xml'] {
         background-color: #0060ac;
     }

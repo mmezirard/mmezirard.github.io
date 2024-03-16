@@ -658,7 +658,7 @@ already been executed.
 
 The good news is that we're the owner of the `/scripts` folder, and that `root`
 executes all Python scripts in this folder. This means that we can create a
-Python script that will be executed as `root`!
+Python script that will be executed using `python` as `root`!
 
 ## Privilege escalation (Sudo permissions)
 
@@ -678,7 +678,7 @@ shell.
 
 ### Exploitation
 
-I'll create a `privesc.py` file to execute this command:
+I'll create a `privesc.py` file in `/scripts` to execute this command:
 
 ```py
 import os
