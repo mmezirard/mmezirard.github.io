@@ -24,7 +24,7 @@ their time...
 
 # Setup
 
-I'll complete this challenge using a Linux VM. I'll create a `workspace`
+I'll complete this challenge using a Kali Linux VM. I'll create a `workspace`
 directory at `/` to hold all the files related to this challenge, and the
 commands ran on my machine will be prefixed with `❯` for clarity.
 
@@ -487,7 +487,7 @@ def rot8(text):
 print(rot8(FLAG))
 ```
 
-If we run it, we get the `HTB{Sleping_is_not_obfuscation}` flag!
+We get the `HTB{Sleping_is_not_obfuscation}` flag!
 
 # Afterwords
 

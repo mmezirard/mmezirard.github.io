@@ -23,7 +23,7 @@ allowed passage into the spacelanes!
 
 # Setup
 
-I'll complete this challenge using a Linux VM. I'll create a `workspace`
+I'll complete this challenge using a Kali Linux VM. I'll create a `workspace`
 directory at `/` to hold all the files related to this challenge, and the
 commands ran on my machine will be prefixed with `❯` for clarity.
 

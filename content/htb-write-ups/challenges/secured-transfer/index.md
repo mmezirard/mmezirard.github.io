@@ -22,7 +22,7 @@ aether, but we can't understand a word of it! Can you understand their riddles?
 
 # Setup
 
-I'll complete this challenge using a Linux VM. I'll create a `workspace`
+I'll complete this challenge using a Kali Linux VM. I'll create a `workspace`
 directory at `/` to hold all the files related to this challenge, and the
 commands ran on my machine will be prefixed with `❯` for clarity.
 
@@ -437,6 +437,8 @@ result of this function is likely the size of the `buf_1` content.
 Finally, the line `48` writes the first 8 bytes of the `var_50` variable to the
 server, and the line `49` writes the content of the `buf_1` buffer.
 
+---
+
 Okay, so the `sub_1529` looks really important. I assume that it's used to
 encrypt the file content before sending it. Let's decompile it!
 
@@ -600,6 +602,8 @@ The line `44` closes the socket, and then the lines `46` to `48` call the
 should hold the sent file content, `var_58` corresponding to the size of the
 file and `rax_25` corresponding to a buffer of size `var_58 + 1`.
 
+---
+
 The `sub_16af` is likely used for the decryption of the data. Let's explore it!
 
 ### `sub_16af`
@@ -653,11 +657,11 @@ server. In both cases, it uses port `1337`.
 
 If it's a client, it connects to the server, reads a file, sends 8 bytes to the
 server corresponding to the file size, and sends the file content encrypted with
-the AES-256 algorithm in CBC mode.
+the AES-256-CBC algorithm.
 
 If it's a server, it opens a socket, waits for a connection, reads the first 8
 bytes corresponding to the file size, reads the data up to the file size, and
-save the file content decrypted with the AES-256 algorithm in CBC mode.
+save the file content decrypted with the AES-256-CBC algorithm.
 
 The good news is that the key and IV used for this algorithm are hardcoded, so
 we can decrypt any file sent with this program!
@@ -688,8 +692,8 @@ The data is 32 bytes long, which corresponds to the file size. Here it's set to
 
 Now let's open [CyberChef](https://gchq.github.io/CyberChef/) and select AES
 decrypt with the key set to `supersecretkeyusedforencryption!`, the IV set to
-`someinitialvalue` and the mode set to CBC, and let's enter the encrypted file
-content:
+`someinitialvalue` and the mode set to CBC. Next, let's enter the encrypted file
+content, and let's cook:
 
 ![CyberChef AES Decrypt encrypted flag](cyberchef-aes-decrypt-encrypted-flag.png)
 
