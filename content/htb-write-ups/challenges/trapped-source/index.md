@@ -26,15 +26,34 @@ help her in opening the door?
 
 I'll complete this challenge using a Kali Linux VM.
 
-# Exploration
+# Socket `94.237.49.182:44243`
+
+## Exploration
 
 Let's browse to `http://94.237.49.182:44243/`:
 
 ![Web homepage](web-homepage.png)
 
-We're presented with a vault.
+We're presented a vault.
 
-# Source code review
+## Fingerprinting
+
+Let's fingerprint the technologies used by this web page with the
+[Wappalyzer](https://www.wappalyzer.com/) extension.
+
+![Web homepage Wappalyzer extension](web-homepage-wappalyzer.png)
+
+If we check the HTTP headers of the response, we find a `Server` header
+indicating that the server is using the Werkzeug library `2.3.4` for Python
+`3.8.16`.
+
+## Exploration
+
+I tried to enter a random PIN, but it fails:
+
+![Web homepage invalid PIN entered](web-homepage-invalid-pin-entered.png)
+
+## Source code review
 
 If we check the source code of the web page, we find this `<script>` tag:
 
@@ -51,17 +70,14 @@ If we check the source code of the web page, we find this `<script>` tag:
 
 The correct PIN is written in cleartext: it's `4895`!
 
-# Exploration
+## Exploration
 
-Back to the website, let's enter this PIN.
+Back to the website, if we enter the PIN we just found, it fails!
 
-![Web homepage PIN entered](web-homepage-pin-entered.png)
+## Source code review
 
-It fails.
-
-# Source code review
-
-Back to the source code of the website, we find a link to `/script.js`.
+If we check the source code of the website once again, we find a link to
+`/script.js`.
 
 ```js
 currentPin = [];
