@@ -181,7 +181,7 @@ However, if we try to create an account, we get this error message:
 
 ![Domain sign up page error message](domain-sign-up-page-error-message.png)
 
-We can also log in at `/login`. We are presented with the same form, and if we
+We can also log in at `/login`. We're presented with the same form, and if we
 try to log in with random credentials here's the error message we get:
 
 ![Domain log in page error message](domain-log-in-page-error-message.png)

@@ -244,7 +244,7 @@ This reveals that this web page is using PHP, MySQL and Wordpress version `4.8`.
 
 #### WordPress
 
-Let's use `wpscan` to enumerate:
+Let's use `wpscan` to enumerate WordPress:
 
 ```sh
 ❯ wpscan --url "http://blocky.htb/" -e
@@ -620,7 +620,7 @@ Nice!
 
 ## Getting a lay of the land
 
-If we run `whoami`, we see that we got a foothold as `notch`.
+If we run `whoami`, we see that we got a foothold as `notch` (obviously).
 
 ### Architecture
 

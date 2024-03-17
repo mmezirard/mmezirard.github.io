@@ -200,7 +200,7 @@ Let's fingerprint the technologies used by this web page with the
 This reveals that this web page is using Python.
 
 Moreover, the footer of the website leaks that it's using a template made by
-[Colorlib](https://colorlib.com/wp/).
+[Colorlib](https://colorlib.com/).
 
 #### Exploration
 

@@ -629,7 +629,7 @@ Weirdly, we can write to this folder, but we can't read it.
 
 If we run `pspy`, we see that there's a cronjob running every minute that
 executes all PLT files in the `/opt/gnuplot` folder as `root`. This is probably
-used to execute scripts to generate the graph for the `stats.topology.htb`
+used to execute scripts to update the graph for the `stats.topology.htb`
 subdomain.
 
 The good news is that we have write access to the `/opt/gnuplot` folder, and

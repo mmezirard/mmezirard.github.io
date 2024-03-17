@@ -301,8 +301,7 @@ Let's browse to `http://10.10.10.48:32400/`.
 
 ![Plex login page](plex-login-page.png)
 
-We're redirected to `/web/index.html`, and we're presented with a Plex login
-form.
+We're redirected to `/web/index.html`, and we're presented a Plex login form.
 
 #### Fingerprinting
 

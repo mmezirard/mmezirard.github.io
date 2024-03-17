@@ -167,7 +167,7 @@ Let's browse to `http://10.10.11.211/`.
 
 ![Nginx homepage](nginx-homepage.png)
 
-We're presented with a login page for Cacti.
+We're presented a login page for Cacti.
 
 > Cacti provides a robust and extensible operational monitoring and fault
 > management framework for users around the world. It's also a complete network
