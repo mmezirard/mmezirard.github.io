@@ -181,6 +181,8 @@ vulnerability in Requests Basket affecting versions up to `1.2.1`. These
 versions allow users to create a basket that redirects traffic to a specific URL
 with the setting `forward_url`, and that shows the response, creating a SSRF.
 
+##### Exploitation
+
 Let's create a new basket named `ssrf`, that forwards and shows the requests we
 send to local port `80`, which we can't access remotely.
 

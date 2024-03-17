@@ -162,6 +162,23 @@ The `http-title` script indicates that the Nginx server redirects to
 ❯ echo "10.10.11.189 precious.htb" >> "/etc/hosts"
 ```
 
+Now I'll run `nmap`'s default scripts on the web server once again.
+
+```sh
+❯ nmap -sS "precious.htb" -p "80" -sC
+```
+
+```
+<SNIP>
+PORT   STATE SERVICE
+80/tcp open  http
+|_http-title: Convert Web Page to PDF
+<SNIP>
+```
+
+The `http_generator` script leaks that WordPress version `4.8` is used to
+generate the website.
+
 ## Services enumeration
 
 ### Nginx

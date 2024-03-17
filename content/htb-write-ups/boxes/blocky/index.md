@@ -174,6 +174,24 @@ The `http-title` script indicates that the Apache server redirects to
 ❯ echo "10.10.10.37 blocky.htb" >> "/etc/hosts"
 ```
 
+Now I'll run `nmap`'s default scripts on the web server once again.
+
+```sh
+❯ nmap -sS "blocky.htb" -p "80" -sC
+```
+
+```
+<SNIP>
+PORT   STATE SERVICE
+80/tcp open  http
+|_http-title: BlockyCraft &#8211; Under Construction!
+|_http-generator: WordPress 4.8
+<SNIP>
+```
+
+The `http_generator` script leaks that WordPress version `4.8` is used to
+generate the website.
+
 ## Services enumeration
 
 ### FTP
@@ -240,7 +258,7 @@ Let's fingerprint the technologies used by this web page with the
 
 ![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
 
-This reveals that this web page is using PHP, MySQL and Wordpress version `4.8`.
+This reveals that this web page is using PHP and MySQL.
 
 #### WordPress
 

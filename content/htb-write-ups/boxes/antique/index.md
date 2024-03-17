@@ -241,7 +241,7 @@ vulnerability affecting HP JetDirect printers. It allows attackers to obtain the
 administrative password for the web and the Telnet services by querying specific
 OIDs.
 
-#### Exploitation
+##### Exploitation
 
 This CVE is easy to exploit, we just need to retrieve the value of the OID
 `.1.3.6.1.4.1.11.2.3.9.1.1.13.0`.

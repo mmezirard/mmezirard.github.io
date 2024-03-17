@@ -162,6 +162,20 @@ The `http-title` script indicates that the Nginx server redirects to
 ❯ echo "10.10.11.182 photobomb.htb" >> "/etc/hosts"
 ```
 
+Now I'll run `nmap`'s default scripts on the web server once again.
+
+```sh
+❯ nmap -sS "photobomb.htb" -p "80" -sC
+```
+
+```
+<SNIP>
+PORT   STATE SERVICE
+80/tcp open  http
+|_http-title: Photobomb
+<SNIP>
+```
+
 ## Services enumeration
 
 ### Nginx

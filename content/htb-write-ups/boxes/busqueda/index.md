@@ -162,6 +162,20 @@ The `http-title` script indicates that the Apache server redirects to
 ❯ echo "10.10.11.208 searcher.htb" >> "/etc/hosts"
 ```
 
+Now I'll run `nmap`'s default scripts on the web server once again.
+
+```sh
+❯ nmap -sS "searcher.htb" -p "80" -sC
+```
+
+```
+<SNIP>
+PORT   STATE SERVICE
+80/tcp open  http
+|_http-title: Searcher
+<SNIP>
+```
+
 ## Services enumeration
 
 ### Apache

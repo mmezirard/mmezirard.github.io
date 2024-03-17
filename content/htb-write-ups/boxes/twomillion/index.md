@@ -161,6 +161,27 @@ The `http-title` script indicates that the Nginx server redirects to
 ❯ echo "10.10.11.221 2million.htb" >> "/etc/hosts"
 ```
 
+Now I'll run `nmap`'s default scripts on the web server once again.
+
+```sh
+❯ nmap -sS "2million.htb" -p "80" -sC
+```
+
+```
+<SNIP>
+PORT   STATE SERVICE
+80/tcp open  http
+| http-cookie-flags: 
+|   /: 
+|     PHPSESSID: 
+|_      httponly flag not set
+|_http-title: Hack The Box :: Penetration Testing Labs
+<SNIP>
+```
+
+The `http-cookie-flags` script found a `PHPSESSID` cookie, so the website might
+be using PHP.
+
 ## Services enumeration
 
 ### Nginx
@@ -183,7 +204,7 @@ Let's fingerprint the technologies used by this web page with the
 
 ![Domain homepage Wappalyzer extension](domain-homepage-wappalyzer.png)
 
-This reveals that this web page is using PHP.
+This confirms that this web page is using PHP.
 
 #### Exploration
 

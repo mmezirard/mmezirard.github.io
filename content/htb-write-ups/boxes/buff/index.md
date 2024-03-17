@@ -142,7 +142,7 @@ Let's fingerprint the technologies used by this web page with the
 ![Apache homepage Wappalyzer extension](apache-homepage-wappalyzer.png)
 
 If we check the HTTP headers of the response, we also find a `X-Powered-By`
-header specifying that the website is using PHP version `7.4.6`.
+header specifying that the web page is using PHP version `7.4.6`.
 
 Moreover, the `/contact.php` page of the website indicates that it's using Gym
 Management System version `1.0`.
