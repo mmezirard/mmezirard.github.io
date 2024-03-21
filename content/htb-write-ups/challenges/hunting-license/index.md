@@ -56,7 +56,7 @@ Let's start by statically analyzing the `license` file using the Rizin toolkit.
 Let's inspect the properties of this binary.
 
 ```sh
-❯ rz-bin -I /workspace/rev_hunting_license/license
+❯ rz-bin -I "/workspace/rev_hunting_license/license"
 ```
 
 ```
@@ -106,7 +106,7 @@ This is an ELF 64-bit, LSB executable.
 Let's find out which libraries are used by this binary.
 
 ```sh
-❯ rz-bin -l /workspace/rev_hunting_license/license
+❯ rz-bin -l "/workspace/rev_hunting_license/license"
 ```
 
 ```
@@ -127,7 +127,7 @@ programs.
 Now, let's find the list of objects imported by this binary.
 
 ```sh
-❯ rz-bin -i /workspace/rev_hunting_license/license
+❯ rz-bin -i "/workspace/rev_hunting_license/license"
 ```
 
 ```
@@ -152,7 +152,7 @@ to see text printed to the terminal and to be asked for input.
 Now, let's find the list of objects exported by this binary.
 
 ```sh
-❯ rz-bin -E /workspace/rev_hunting_license/license
+❯ rz-bin -E "/workspace/rev_hunting_license/license"
 ```
 
 ```
@@ -187,7 +187,7 @@ We notice the classic `main` function, but also `reverse` and `xor`.
 Finally, let's retrieve the list of strings contained in this binary.
 
 ```sh
-❯ rz-bin -z /workspace/rev_hunting_license/license
+❯ rz-bin -z "/workspace/rev_hunting_license/license"
 ```
 
 ```
@@ -222,7 +222,7 @@ really does.
 Let's execute this binary on Linux.
 
 ```sh
-❯ /workspace/rev_hunting_license/license
+❯ "/workspace/rev_hunting_license/license"
 ```
 
 ```

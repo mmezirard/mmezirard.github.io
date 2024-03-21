@@ -56,7 +56,7 @@ Let's start by statically analyzing the `wide` file using the Rizin toolkit.
 Let's inspect the properties of this binary.
 
 ```sh
-❯ rz-bin -I /workspace/rev_wide/wide
+❯ rz-bin -I "/workspace/rev_wide/wide"
 ```
 
 ```
@@ -106,7 +106,7 @@ This is an ELF 64-bit, LSB executable.
 Let's find out which libraries are used by this binary.
 
 ```sh
-❯ rz-bin -l /workspace/rev_wide/wide
+❯ rz-bin -l "/workspace/rev_wide/wide"
 ```
 
 ```
@@ -124,7 +124,7 @@ functionalities for programs written in C.
 Now, let's find the list of objects imported by this binary.
 
 ```sh
-❯ rz-bin -i /workspace/rev_wide/wide
+❯ rz-bin -i "/workspace/rev_wide/wide"
 ```
 
 ```
@@ -160,7 +160,7 @@ probably deals with files.
 Now, let's find the list of objects exported by this binary.
 
 ```sh
-❯ rz-bin -E /workspace/rev_wide/wide
+❯ rz-bin -E "/workspace/rev_wide/wide"
 ```
 
 ```
@@ -192,7 +192,7 @@ We notice the classic `main` function, but also `menu`.
 Finally, let's retrieve the list of strings contained in this binary.
 
 ```sh
-❯ rz-bin -z /workspace/rev_wide/wide
+❯ rz-bin -z "/workspace/rev_wide/wide"
 ```
 
 ```
@@ -229,7 +229,7 @@ really does.
 Let's execute this binary on Linux.
 
 ```sh
-❯ /workspace/rev_wide/wide "/workspace/rev_wide/db.ex"
+❯ "/workspace/rev_wide/wide" "/workspace/rev_wide/db.ex"
 ```
 
 ```

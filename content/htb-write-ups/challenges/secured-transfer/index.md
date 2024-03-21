@@ -55,7 +55,7 @@ toolkit.
 Let's inspect the properties of this binary.
 
 ```sh
-❯ rz-bin -I /workspace/rev_securedtransfer/securetransfer
+❯ rz-bin -I "/workspace/rev_securedtransfer/securetransfer"
 ```
 
 ```
@@ -105,7 +105,7 @@ This is an ELF 64-bit, LSB executable.
 Let's find out which libraries are used by this binary.
 
 ```sh
-❯ rz-bin -l /workspace/rev_securedtransfer/securetransfer
+❯ rz-bin -l "/workspace/rev_securedtransfer/securetransfer"
 ```
 
 ```
@@ -126,7 +126,7 @@ implementation.
 Now, let's find the list of objects imported by this binary.
 
 ```sh
-❯ rz-bin -i /workspace/rev_securedtransfer/securetransfer
+❯ rz-bin -i "/workspace/rev_securedtransfer/securetransfer"
 ```
 
 ```
@@ -182,7 +182,7 @@ cryptographic functions.
 Now, let's find the list of objects exported by this binary.
 
 ```sh
-❯ rz-bin -E /workspace/rev_securedtransfer/securetransfer
+❯ rz-bin -E "/workspace/rev_securedtransfer/securetransfer"
 ```
 
 ```
@@ -198,7 +198,7 @@ This binary is stripped, so there's nothing.
 Finally, let's retrieve the list of strings contained in this binary.
 
 ```sh
-❯ rz-bin -z /workspace/rev_securedtransfer/securetransfer
+❯ rz-bin -z "/workspace/rev_securedtransfer/securetransfer"
 ```
 
 ```
@@ -242,7 +242,7 @@ the `libcrypto.so.1.1` library, let's execute the `securetransfer` binary on
 Linux.
 
 ```sh
-❯ /workspace/rev_securedtransfer/securetransfer
+❯ "/workspace/rev_securedtransfer/securetransfer"
 ```
 
 ```

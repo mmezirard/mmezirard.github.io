@@ -54,7 +54,7 @@ Let's start by statically analyzing the `ouija` file using the Rizin toolkit.
 Let's inspect the properties of this binary.
 
 ```sh
-❯ rz-bin -I /workspace/rev_ouija/ouija
+❯ rz-bin -I "/workspace/rev_ouija/ouija"
 ```
 
 ```
@@ -104,7 +104,7 @@ This is an ELF 64-bit, LSB executable.
 Let's find out which libraries are used by this binary.
 
 ```sh
-❯ rz-bin -l /workspace/rev_ouija/ouija
+❯ rz-bin -l "/workspace/rev_ouija/ouija"
 ```
 
 ```
@@ -122,7 +122,7 @@ functionalities for programs written in C.
 Now, let's find the list of objects imported by this binary.
 
 ```sh
-❯ rz-bin -i /workspace/rev_ouija/ouija
+❯ rz-bin -i "/workspace/rev_ouija/ouija"
 ```
 
 ```
@@ -150,7 +150,7 @@ This binary imports functions like `putchar`, `puts` and `printf`, but also
 Now, let's find the list of objects exported by this binary.
 
 ```sh
-❯ rz-bin -E /workspace/rev_ouija/ouija
+❯ rz-bin -E "/workspace/rev_ouija/ouija"
 ```
 
 ```
@@ -181,7 +181,7 @@ We notice the classic `main` function.
 Finally, let's retrieve the list of strings contained in this binary.
 
 ```sh
-❯ rz-bin -z /workspace/rev_ouija/ouija
+❯ rz-bin -z "/workspace/rev_ouija/ouija"
 ```
 
 ```
@@ -214,7 +214,7 @@ really does.
 Let's execute this binary on Linux.
 
 ```sh
-❯ /workspace/rev_ouija/ouija
+❯ "/workspace/rev_ouija/ouija"
 ```
 
 ```

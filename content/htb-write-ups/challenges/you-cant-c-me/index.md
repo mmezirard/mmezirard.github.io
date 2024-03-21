@@ -50,7 +50,7 @@ Let's start by statically analyzing the `auth` file using the Rizin toolkit.
 Let's inspect the properties of this binary.
 
 ```sh
-❯ rz-bin -I /workspace/auth
+❯ rz-bin -I "/workspace/auth"
 ```
 
 ```
@@ -100,7 +100,7 @@ This is an ELF 64-bit, LSB executable.
 Let's find out which libraries are used by this binary.
 
 ```sh
-❯ rz-bin -l /workspace/auth
+❯ rz-bin -l "/workspace/auth"
 ```
 
 ```
@@ -118,7 +118,7 @@ functionalities for programs written in C.
 Now, let's find the list of objects imported by this binary.
 
 ```sh
-❯ rz-bin -i /workspace/auth
+❯ rz-bin -i "/workspace/auth"
 ```
 
 ```
@@ -141,7 +141,7 @@ to see text printed to the terminal and to be asked for input.
 Now, let's find the list of objects exported by this binary.
 
 ```sh
-❯ rz-bin -E /workspace/auth
+❯ rz-bin -E "/workspace/auth"
 ```
 
 ```
@@ -158,7 +158,7 @@ This binary is stripped, so there's not much.
 Finally, let's retrieve the list of strings contained in this binary.
 
 ```sh
-❯ rz-bin -z /workspace/auth
+❯ rz-bin -z "/workspace/auth"
 ```
 
 ```
@@ -185,7 +185,7 @@ really does.
 Let's execute this binary on Linux.
 
 ```sh
-❯ /workspace/auth
+❯ "/workspace/auth"
 ```
 
 ```
