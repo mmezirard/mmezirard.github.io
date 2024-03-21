@@ -100,9 +100,6 @@ NX       true
 
 This is an ELF 64-bit, LSB executable.
 
-We also notice that there are a few protections in place. This is not a binary
-exploitation challenge, but it's still interesting to know.
-
 ## Libraries
 
 Let's find out which libraries are used by this binary.
@@ -194,7 +191,7 @@ nth paddr vaddr bind type size lib name
 ----------------------------------------
 ```
 
-Nothing!
+This binary is stripped, so there's nothing.
 
 ## Strings
 
@@ -266,402 +263,275 @@ As usual, I'll start by exploring the `main` function.
 
 ### `main`
 
-```c,linenos
+```c
 int32_t main(int32_t argc, char **argv, char **envp) {
-    OPENSSL_init_crypto(2, 0);
-    OPENSSL_init_crypto(0xc, 0);
-    OPENSSL_init_crypto(0x80, 0);
+    OPENSSL_init_crypto(OPENSSL_INIT_LOAD_CRYPTO_STRINGS, NULL);
+    OPENSSL_init_crypto(OPENSSL_INIT_NO_ADD_ALL_CIPHERS, NULL);
+    OPENSSL_init_crypto(OPENSSL_INIT_NO_LOAD_CONFIG, NULL);
     if (argc == 3) {
         printf("Sending File: %s to %s\n", argv[2], argv[1]);
-        sub_1835(argv[1], argv[2]);
+        sendFile(argv[1], argv[2]);
     } else if (argc != 1) {
         puts("Usage ./securetransfer [<ip> <file>]");
     } else {
         puts("Receiving File");
-        sub_1b37();
+        receiveFile();
     }
     return 0;
 }
 ```
 
-This function starts by initializing OpenSSL.
+This function initializes OpenSSL crypto, and then either calls `sendFile` or
+`receiveFile` depending on the number of arguments provided.
 
-The function takes different branches depending on the arguments given to the
-program:
+### `sendFile`
 
-- From line `5` to `7`, if two arguments were passed to this program,
-  corresponding to an IP and a filename, the `sub_1835` function is called with
-  the given IP and filename.
-
-- At lines `8` and `9`, if a number of arguments different than two were passed
-  to this program, a message indicating the usage for this binary is printed.
-
-- From lines `10` to `12`, if no arguments were passed to this program, the
-  `sub_1b37` function is called without arguments.
-
-I reckon that this program is used to transmit or receive files. If no arguments
-are passed, it receives a file, but if arguments are passed, it sends a file.
-
-### `sub_1835`
-
-```c,linenos
-int64_t sub_1835(char *arg1, char *arg2) {
-    void *fsbase;
-    int64_t rax = *(uint64_t *)((char *)fsbase + 0x28);
-    int32_t fd = socket(2, 1, 0);
-    int64_t rax_2;
-    if (fd == 0xffffffff) {
+```c
+int64_t sendFile(char *ipAddress, char *filename) {
+    int32_t fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (fd == -1) {
         puts("ERROR: Socket creation failed");
-        rax_2 = 0;
+        return 0;
     } else {
-        int16_t addr;
-        memset(&addr, 0, 0x10);
-        addr = 2;
-        void var_24;
-        if (inet_pton(2, arg1, &var_24) == 0) {
-            printf("ERROR: Invalid input address '%s…", arg1);
-            rax_2 = 0;
+        int16_t serverAddr;
+        memset(&serverAddr, 0, 16);
+        serverAddr = AF_INET;
+        void ipv4Address;
+        if (inet_pton(AF_INET, ipAddress, &ipv4Address) == 0) {
+            printf("ERROR: Invalid input address '%s'\n", ipAddress);
+            return 0;
         } else {
-            uint16_t var_26_1 = htons(0x539);
-            if (connect(fd, &addr, 0x10) != 0) {
+            uint16_t serverPort = htons(1337);
+            if (connect(fd, &serverAddr, 16) != 0) {
                 puts("ERROR: Connection failed");
-                rax_2 = 0;
+                return 0;
             } else {
-                FILE *fp = fopen(arg2, &data_2074);
+                FILE *fp = fopen(filename, "rb");
                 if (fp == 0) {
-                    printf("ERROR: Can't open the file '%s'\n", arg2);
+                    printf("ERROR: Can't open the file '%s'\n", filename);
                     close(fd);
-                    rax_2 = 0;
+                    return 0;
                 } else {
-                    fseek(fp, 0, 2);
-                    int64_t rax_16 = ftell(fp);
-                    fseek(fp, 0, 0);
-                    if (rax_16 <= 0xf) {
+                    fseek(fp, 0, SEEK_END);
+                    int64_t fileSize = ftell(fp);
+                    fseek(fp, 0, SEEK_SET);
+                    if (fileSize <= 15) {
                         puts("ERROR: File too small");
                         fclose(fp);
                         close(fd);
-                        rax_2 = 0;
-                    } else if (rax_16 > _init) {
+                        return 0;
+                    } else if (fileSize > 4096) {
                         puts("ERROR: File too large");
                         fclose(fp);
                         close(fd);
-                        rax_2 = 0;
+                        return 0;
                     } else {
-                        int64_t buf = malloc(rax_16);
-                        int64_t buf_1 = malloc((rax_16 * 2));
-                        if (rax_16 == fread(buf, 1, rax_16, fp)) {
-                            int64_t var_50 =
-                                ((int64_t)sub_1529(buf, rax_16, buf_1));
-                            write(fd, &var_50, 8);
-                            write(fd, buf_1, var_50);
+                        int64_t fileContent = malloc(fileSize);
+                        int64_t encryptedFileContent = malloc((fileSize * 2));
+                        if (fileSize == fread(fileContent, 1, fileSize, fp)) {
+                            int64_t encryptedFileSize = ((int64_t)encryptData(
+                                fileContent, fileSize, encryptedFileContent));
+                            write(fd, &encryptedFileSize, 8);
+                            write(fd, encryptedFileContent, encryptedFileSize);
                             puts("File send...");
-                            free(buf_1);
-                            free(buf);
+                            free(encryptedFileContent);
+                            free(fileContent);
                             fclose(fp);
                             close(fd);
-                            rax_2 = 1;
+                            return 1;
                         } else {
                             puts("ERROR: Failed reading the file");
-                            free(buf_1);
-                            free(buf);
+                            free(encryptedFileContent);
+                            free(fileContent);
                             fclose(fp);
                             close(fd);
-                            rax_2 = 0;
+                            return 0;
                         }
                     }
                 }
             }
         }
     }
-    if (rax == *(uint64_t *)((char *)fsbase + 0x28)) {
-        return rax_2;
-    }
-    __stack_chk_fail();
-    /* no return */
 }
 ```
 
-There's a lot going on, so let's break down the major instructions of this
-function step by step.
+This function creates a socket and connects to the `ipAddress` on port `1337`.
+It then opens the `filename`, and if its content is within a certain range size,
+it calls the `encryptData` function on it. Finally, both the size of the
+encrypted file and the encrypted file content are sent over the socket.
 
-#### Connecting to the server
+### `encryptData`
 
-The line `4` calls the `socket` function to create an IPv4 TCP connection.
-
-The lines `6` to `8` check if the socket creation was successful, and print an
-error message if it's not the case.
-
-Then, the lines `10` and `11` create an address structure `addr` to represent
-the destination address, and initilize it with zeroes.
-
-The `inet_pton` function is used at line `14` to convert the first argument to a
-network address structure. If it fails, it prints an error message.
-
-If it succeeds however, the `htons` is called at line `18` to convert the
-`0x539` (1337) value to a port number.
-
-Finally, the lines `19` to `21` call the `connect` function with the socket,
-destination address and port as parameters to open the connection to the server.
-
-#### Opening the file
-
-If the connection is successful, the line `23` opens the file corresponding to
-the second argument as read-only.
-
-If everything goes well, the line `29` to `31` use `fseek` and `ftell` to set
-the `rax_16` varaible to the size of the file previously open, meaning that
-`rax_16` represents the size of the file.
-
-Then, the lines `32` to `36` check if the file is too small, that is if `rax_16`
-is less than `0xf` (15) bytes, and the lines `37` to `41` check if the file is
-too large, that is if `rax_16` is greater than the `_init` value (which I failed
-to retrieve).
-
-#### Writing the file to the server
-
-The line `43` allocates a `buf` variable of the size of `rax_16`, which is the
-size of the file, to store the file content. The next line allocates a `buf_2`
-variable of twice that size, to presumably store some processed version of the
-file content.
-
-Then, the line `45` reads the content of the file (`rax_16` bytes) into the
-allocated buffer `buf`. If all of the elements were successfully read, it
-continues.
-
-The lines `46` and `47` set the `var_50` variable to be the result of the
-`sub_1529` function, with the parameters `buf` corresponding to the buffer
-holding the file content, `rax_16` corresponding to the size of the file in
-bytes and `buf_1` corresponding to a buffer of twice the size of the file. The
-result of this function is likely the size of the `buf_1` content.
-
-Finally, the line `48` writes the first 8 bytes of the `var_50` variable to the
-server, and the line `49` writes the content of the `buf_1` buffer.
-
----
-
-Okay, so the `sub_1529` looks really important. I assume that it's used to
-encrypt the file content before sending it. Let's decompile it!
-
-### `sub_1529`
-
-```c,linenos
-uint64_t sub_1529(int64_t arg1, int32_t arg2, int64_t arg3) {
-    void *fsbase;
-    int64_t rax = *(uint64_t *)((char *)fsbase + 0x28);
-    char var_38;
-    __builtin_strncpy(&var_38, "supersecretkeyusedforencryption!", 0x20);
-    char const *const var_48 = "someinitialvalue";
-    int64_t rax_1 = EVP_CIPHER_CTX_new();
-    uint64_t rax_2;
-    if (rax_1 == 0) {
-        rax_2 = 0;
+```c
+uint64_t encryptData(int64_t plaintext, int32_t plaintextSize,
+                     int64_t ciphertext) {
+    char key;
+    __builtin_strncpy(&key, "supersecretkeyusedforencryption!", 32);
+    char const *const initializationVector = "someinitialvalue";
+    int64_t cipherContext = EVP_CIPHER_CTX_new();
+    if (cipherContext == 0) {
+        return 0;
     } else {
-        int32_t var_50;
-        if (EVP_EncryptInit_ex(rax_1, EVP_aes_256_cbc(), 0, &var_38, var_48) !=
-            1) {
-            rax_2 = 0;
-        } else if (EVP_EncryptUpdate(rax_1, arg3, &var_50, arg1,
-                                     ((uint64_t)arg2)) != 1) {
-            rax_2 = 0;
+        int32_t ciphertextSize;
+        if (EVP_EncryptInit_ex(cipherContext, EVP_aes_256_cbc(), 0, &key,
+                               initializationVector) != 1) {
+            return 0;
+        } else if (EVP_EncryptUpdate(cipherContext, ciphertext, &ciphertextSize,
+                                     plaintext,
+                                     ((uint64_t)plaintextSize)) != 1) {
+            return 0;
         } else {
-            int32_t rax_8 = var_50;
-            if (EVP_EncryptFinal_ex(rax_1, (((int64_t)var_50) + arg3),
-                                    &var_50) == 1) {
-                int32_t var_4c_2 = (rax_8 + var_50);
-                EVP_CIPHER_CTX_free(rax_1);
-                rax_2 = ((uint64_t)var_4c_2);
+            int32_t currentCiphertextSize = ciphertextSize;
+            if (EVP_EncryptFinal_ex(cipherContext,
+                                    (((int64_t)ciphertextSize) + ciphertext),
+                                    &ciphertextSize) == 1) {
+                int32_t finalCiphertextSize =
+                    (currentCiphertextSize + ciphertextSize);
+                EVP_CIPHER_CTX_free(cipherContext);
+                return ((uint64_t)finalCiphertextSize);
             } else {
-                rax_2 = 0;
+                return 0;
             }
         }
     }
-    if (rax == *(uint64_t *)((char *)fsbase + 0x28)) {
-        return rax_2;
-    }
-    __stack_chk_fail();
-    /* no return */
 }
 ```
 
-This function takes three arguments: `arg1`, which we know corresponds to the
-buffer holding the file content, `arg2` corresponding to the size of the file
-and `arg3` corresponding to the buffer that should hold the encrypted file
-content.
+This function performs an AES-256 encryption in CBC mode. It takes the
+`plaintext` content from a memory block along with the `plaintextSize`, and
+encrypts it using a key `supersecretkeyusedforencryption` and IV
+`someinitialvalue`. The result of the encryption is stored in a `ciphertext`
+memory block.
 
-The line `5` sets the `var_38` variable to `supersecretkeyusedforencryption!`,
-and the line `6` creates a `var_48` variable to a constant character string
-`someinitialvalue`.
+### `receiveFile`
 
-Interestingly, the line `7` calls `EVP_CIPHER_CTX_new` to allocate a new cipher
-context into `rax_1`. If the allocation is successful, the line `13` calls
-`EVP_EncryptUpdate` to perform the encryption operation with the AES-256
-algorithm in CBC mode, updating `arg3` with the encrypted data.
+```c
 
-Finally, if the encryption update succeeds, it calls `EVP_EncryptFinal_ex` to
-finalize the encryption operation at line `31`, storing the final encrypted data
-into `arg3`. The line `13` sets the `var_4c_2` to the length of the encrypted
-data, which is returned later on.
-
-Okay, so this function is the one responsible for actually encrypting the data!
-It does so with the AES-256 algorithm in CBC mode, using
-`supersecretkeyusedforencryption` as the key and `someinitialvalue` as the IV.
-
-### `sub_1b37`
-
-```c,linenos
-int64_t sub_1b37() {
-    void *fsbase;
-    int64_t rax = *(uint64_t *)((char *)fsbase + 0x28);
-    int32_t fd = socket(2, 1, 0);
-    int64_t rax_2;
-    if (fd == 0xffffffff) {
+int64_t receiveFile() {
+    int32_t fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (fd == -1) {
         puts("ERROR: Socket creation failed");
-        rax_2 = 0;
+        return 0;
     } else {
-        int16_t var_38;
-        memset(&var_38, 0, 0x10);
-        var_38 = 2;
-        int32_t var_34_1 = htonl(0);
-        uint16_t var_36_1 = htons(0x539);
-        if (bind(((uint64_t)fd), &var_38, 0x10, &var_38) != 0) {
+        int16_t localAddr;
+        memset(&localAddr, 0, 16);
+        localAddr = AF_INET;
+        int32_t socketOption = htonl(0);
+        uint16_t localPort = htons(1337);
+        if (bind(((uint64_t)fd), &localAddr, 16, &localAddr) != 0) {
             puts("ERROR: Socket bind failed");
-            rax_2 = 0;
+            return 0;
         } else if (listen(((uint64_t)fd), 1) != 0) {
             puts("ERROR: Listen failed");
-            rax_2 = 0;
+            return 0;
         } else {
-            int32_t len = 0x10;
-            void addr;
-            int32_t fd_1 = accept(fd, &addr, &len);
-            uint64_t var_58;
-            if (fd_1 < 0) {
+            int32_t clientAddrLength = 16;
+            void clientAddr;
+            int32_t clientSocket = accept(fd, &clientAddr, &clientAddrLength);
+            uint64_t encryptedFileSize;
+            if (clientSocket < 0) {
                 puts("ERROR: Accept failed");
-                rax_2 = 0;
-            } else if (read(fd_1, &var_58, 8) != 8) {
+                return 0;
+            } else if (read(clientSocket, &encryptedFileSize, 8) != 8) {
                 puts("ERROR: Reading secret length");
                 close(fd);
-                rax_2 = 0;
-            } else if (var_58 <= 0xf) {
+                return 0;
+            } else if (encryptedFileSize <= 15) {
                 puts("ERROR: File too small");
                 close(fd);
-                rax_2 = 0;
-            } else if (var_58 > _init) {
+                return 0;
+            } else if (encryptedFileSize > 4096) {
                 puts("ERROR: File too large");
                 close(fd);
-                rax_2 = 0;
+                return 0;
             } else {
-                int64_t buf = malloc(var_58);
-                if (read(fd_1, buf, var_58) == var_58) {
+                int64_t encryptedFileContent = malloc(encryptedFileSize);
+                if (read(clientSocket, encryptedFileContent,
+                         encryptedFileSize) == encryptedFileSize) {
                     close(fd);
-                    int64_t rax_25 = malloc((var_58 + 1));
-                    *(uint8_t *)(((int64_t)sub_16af(buf, ((int32_t)var_58),
-                                                    rax_25)) +
-                                 rax_25) = 0;
-                    printf("File Received...\n%s\n", rax_25);
-                    free(rax_25);
-                    free(buf);
-                    rax_2 = 1;
+                    int64_t fileContent = malloc((encryptedFileSize + 1));
+                    *(uint8_t *)(((int64_t)decryptFile(
+                                     encryptedFileContent,
+                                     ((int32_t)encryptedFileSize),
+                                     fileContent)) +
+                                 fileContent) = 0;
+                    printf("File Received...\n%s\n", fileContent);
+                    free(fileContent);
+                    free(encryptedFileContent);
+                    return 1;
                 } else {
                     puts("ERROR: File send doesn't match length");
-                    free(buf);
+                    free(encryptedFileContent);
                     close(fd);
-                    rax_2 = 0;
+                    return 0;
                 }
             }
         }
     }
-    if (rax == *(uint64_t *)((char *)fsbase + 0x28)) {
-        return rax_2;
-    }
-    __stack_chk_fail();
-    /* no return */
 }
 ```
 
-This function is similar to `sub_1835`, so I won't go into as much details.
+This function creates a socket and binds it to the port `1337`. It then listens
+for incoming connections, and reads the size of the encrypted file. If it's
+within a certain range, it reads the encrypted file content, calls the
+`decryptData` function on it, and prints the decrypted file content.
 
-#### Starting the server
+### `decryptData`
 
-The lines `4` to `20` are used to start the server. They create a socket on port
-`0x539` (1337) and open it with `bind` and `listen`.
-
-Then, it waits for a connection. The `accept` function is used for this, and the
-`addr` is set to the client's socket address structure.
-
-#### Receiving the file on the server
-
-The lines `29` to `32` call `read` to read 8 bytes of data from the socket into
-the variable `var_58`.
-
-The line `42` allocates a `buf` variable of the size of `var_58`, which is
-probably the size of the file sent. Then, the line `43` reads `var_58` bytes of
-the data from the socket, that is until the entire file has been sent.
-
-The line `44` closes the socket, and then the lines `46` to `48` call the
-`sub_16af` function, with the parameters `buf` corresponding to the buffer that
-should hold the sent file content, `var_58` corresponding to the size of the
-file and `rax_25` corresponding to a buffer of size `var_58 + 1`.
-
----
-
-The `sub_16af` is likely used for the decryption of the data. Let's explore it!
-
-### `sub_16af`
-
-```c,linenos
-uint64_t sub_16af(int64_t arg1, int32_t arg2, int64_t arg3) {
-    void *fsbase;
-    int64_t rax = *(uint64_t *)((char *)fsbase + 0x28);
-    char var_38;
-    __builtin_strncpy(&var_38, "supersecretkeyusedforencryption!", 0x20);
-    char const *const var_48 = "someinitialvalue";
-    int64_t rax_1 = EVP_CIPHER_CTX_new();
-    uint64_t rax_2;
-    if (rax_1 == 0) {
-        rax_2 = 0;
+```c
+uint64_t decryptData(int64_t ciphertext, int32_t ciphertextSize,
+                     int64_t plaintext) {
+    char key;
+    __builtin_strncpy(&key, "supersecretkeyusedforencryption!", 32);
+    char const *const initializationVector = "someinitialvalue";
+    int64_t cipherContext = EVP_CIPHER_CTX_new();
+    if (cipherContext == 0) {
+        return 0;
     } else {
-        int32_t var_50;
-        if (EVP_DecryptInit_ex(rax_1, EVP_aes_256_cbc(), 0, &var_38, var_48) !=
-            1) {
-            rax_2 = 0;
-        } else if (EVP_DecryptUpdate(rax_1, arg3, &var_50, arg1,
-                                     ((uint64_t)arg2)) != 1) {
-            rax_2 = 0;
+        int32_t plaintextSize;
+        if (EVP_DecryptInit_ex(cipherContext, EVP_aes_256_cbc(), 0, &key,
+                               initializationVector) != 1) {
+            return 0;
+        } else if (EVP_DecryptUpdate(cipherContext, plaintext, &plaintextSize,
+                                     ciphertext,
+                                     ((uint64_t)ciphertextSize)) != 1) {
+            return 0;
         } else {
-            int32_t rax_8 = var_50;
-            if (EVP_DecryptFinal_ex(rax_1, (((int64_t)var_50) + arg3),
-                                    &var_50) == 1) {
-                int32_t var_4c_2 = (rax_8 + var_50);
-                EVP_CIPHER_CTX_free(rax_1);
-                rax_2 = ((uint64_t)var_4c_2);
+            int32_t updatePlaintextSize = plaintextSize;
+            if (EVP_DecryptFinal_ex(cipherContext,
+                                    (((int64_t)plaintextSize) + plaintext),
+                                    &plaintextSize) == 1) {
+                int32_t finalPlaintextSize =
+                    (updatePlaintextSize + plaintextSize);
+                EVP_CIPHER_CTX_free(cipherContext);
+                return ((uint64_t)finalPlaintextSize);
             } else {
-                rax_2 = 0;
+                return 0;
             }
         }
     }
-    if (rax == *(uint64_t *)((char *)fsbase + 0x28)) {
-        return rax_2;
-    }
-    __stack_chk_fail();
-    /* no return */
 }
 ```
 
-This function is exactly the same as `sub_1529`, it just uses the decryption
-functions instead of the encryption ones.
+This function performs an AES-256 decryption in CBC mode. It takes the
+`ciphertext` content from a memory block along with the `ciphertextSize`, and
+decrypts it using a key `supersecretkeyusedforencryption` and IV
+`someinitialvalue`. The result of the decryption is stored in a `plaintext`
+memory block.
 
 # Putting it all together
 
-From what we could understand, this program can be used either as a client or a
-server. In both cases, it uses port `1337`.
+This program can be used either as a client or a server. In both cases, it uses
+the port `1337`.
 
-If it's a client, it connects to the server, reads a file, sends 8 bytes to the
-server corresponding to the file size, and sends the file content encrypted with
-the AES-256-CBC algorithm.
+If it's a client, it connects to the server, reads a file, sends `8` bytes to
+the server corresponding to the file size, and sends the file content encrypted
+with the AES-256 algorithm in CBC mode.
 
 If it's a server, it opens a socket, waits for a connection, reads the first 8
-bytes corresponding to the file size, reads the data up to the file size, and
-save the file content decrypted with the AES-256-CBC algorithm.
+bytes corresponding to the encrypted file size, reads the data up to the
+encrypted file size, and saves the file content decrypted with the AES-256
+algorithm in CBC mode.
 
 The good news is that the key and IV used for this algorithm are hardcoded, so
 we can decrypt any file sent with this program!
@@ -672,22 +542,22 @@ computers:
 ![Wireshark trace.pcap](wireshark-trace-pcap.png)
 
 This transmission uses the port `1337`, and was in fact made using the
-`secured_transfer` program, so we sohuld be able to decrypt the file that has
+`secured_transfer` program, so we should be able to decrypt the file that has
 been sent!
 
 If we inspect the fourth packet, we notice a 'Data' field:
 
 ![Wireshark trace.pcap file size](wireshark-trace-pcap-file-size.png)
 
-The data is 8 bytes long, and it actually corresponds to the file size. Here
-it's set to `0x20 0x00 0x00 0x00 0x00 0x00 0x00 0x00`, so the file is `0x20`
-(32) bytes long.
+The data is 8 bytes long, so it corresponds to the file size. Here it's set to
+`0x20 0x00 0x00 0x00 0x00 0x00 0x00 0x00`, so the file is `32` bytes long.
 
 The sixth packet also has a 'Data' field:
 
 ![Wireshark trace.pcap file content](wireshark-trace-pcap-file-content.png)
 
-The data is 32 bytes long, which corresponds to the file size. Here it's set to
+The data is `32` bytes long, which corresponds to the file size. Here it's set
+to
 `0x17 0x27 0x5a 0x3d 0x91 0x63 0xb2 0x79 0x83 0x92 0x81 0x3b 0xf5 0xe6 0x82 0x66 0x57 0xbd 0x11 0x42 0x60 0x76 0xc9 0x10 0xa3 0x8b 0x68 0xc2 0xbc 0xbb 0xd3 0xa5`.
 
 Now let's open [CyberChef](https://gchq.github.io/CyberChef/) and select AES

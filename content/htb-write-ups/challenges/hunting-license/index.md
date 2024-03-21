@@ -101,9 +101,6 @@ NX       true
 
 This is an ELF 64-bit, LSB executable.
 
-We also notice that there are a few protections in place. This is not a binary
-exploitation challenge, but it's still interesting to know.
-
 ## Libraries
 
 Let's find out which libraries are used by this binary.
@@ -183,7 +180,7 @@ nth paddr      vaddr      bind   type   size lib name
 70  0x00001000 0x00401000 GLOBAL FUNC   0        _init
 ```
 
-We notice a `main` function.
+We notice the classic `main` function, but also `reverse` and `xor`.
 
 ## Strings
 
@@ -255,209 +252,123 @@ As usual, I'll start by exploring the `main` function.
 
 ### `main`
 
-```c,linenos
+```c
 int32_t main(int32_t argc, char **argv, char **envp) {
     puts("So, you want to be a relic hunter?");
     puts("First, you're going to need your license, and for that you need to "
          "pass the exam.");
     puts("It's short, but it's not for the faint of heart. Are you up to the "
          "challenge?! (y/n)");
-    char rax = getchar();
-    if ((rax != 0x79 && (rax != 0x59 && rax != 0xa))) {
+    char input = getchar();
+    if ((input != 'y' && (input != 'Y' && input != '\n'))) {
         puts("Not many are...");
-        exit(0xffffffff);
-        /* no return */
+        exit(EXIT_FAILURE);
     }
     exam();
-    puts("Well done hunter - consider your…");
+    puts("Well done hunter - consider yourself certified!");
     return 0;
 }
 ```
 
-The lines `3` to `5` print the welcome message indicating that this is an exam
-to become a relic hunter.
-
-The line `6` assigns the `rax` variable to the result of the `getchar`, so it
-contains the first character of the user input.
-
-The lines `7` to `12` check if the user input is different than `y`, than `Y`
-and than a new line. If it's the case, it means that the user refused the
-challenge, so the program exits.
-
-If the user accepted the challebnge, the `exam` function is called line `13`.
+This function checks if the user is ready to start the challenge, and calls the
+`exam` function if he is.
 
 ### `exam`
 
-```c,linenos
+```c
 int64_t exam() {
-    char *rax = readline("Okay, first, a warmup - what's the first password? "
-                         "This one's not even hidden: ");
-    if (strcmp(rax, "PasswordNumeroUno") != 0) {
+    char *first_input = readline("Okay, first, a warmup - what's the first "
+                                 "password? This one's not even hidden: ");
+    if (strcmp(first_input, "PasswordNumeroUno") != 0) {
         puts("Not even close!");
-        exit(0xffffffff);
-        /* no return */
+        exit(EXIT_FAILURE);
     }
-    free(rax);
-    int64_t var_1c = 0;
-    int32_t var_14 = 0;
-    reverse(&var_1c, "0wTdr0wss4P", 0xb);
-    char *rax_4 = readline("Getting harder - what's the second password? ");
-    if (strcmp(rax_4, &var_1c) != 0) {
+    free(first_input);
+
+    int64_t second_password = 0;
+    reverse(&second_password, "0wTdr0wss4P", 11);
+    char *second_input =
+        readline("Getting harder - what's the second password? ");
+    if (strcmp(second_input, &second_password) != 0) {
         puts("You've got it all backwards...");
-        exit(0xffffffff);
-        /* no return */
+        exit(EXIT_FAILURE);
     }
-    free(rax_4);
-    int64_t s;
-    __builtin_memset(&s, 0, 0x11);
-    xor(&s, &t2, 0x11, 0x13);
-    char *rax_8 = readline(
+    free(second_input);
+
+    int64_t third_password;
+    __builtin_memset(&third_password, 0, 17);
+    xor(&third_password,
+        "\x47\x7b\x7a\x61\x77\x52\x7d\x77\x55\x7a\x7d\x72\x7f\x32\x32\x32\x13",
+        17, 19);
+    char *third_input = readline(
         "Your final test - give me the third, and most protected, password: ");
-    if (strcmp(rax_8, &s) == 0) {
-        return free(rax_8);
+    if (strcmp(third_input, &third_password) == 0) {
+        return free(third_input);
     }
     puts("Failed at the final hurdle!");
-    exit(0xffffffff);
-    /* no return */
+    exit(EXIT_FAILURE);
 }
 ```
 
-This function contains three challenges in sequence.
+This function can be broken down into three separate parts, each one requiring
+the user to enter a password.
 
-#### First challenge
+The first part checks if the user entered `PasswordNumeroUno`.
 
-The line `2` calls `readline` to read a line of text from the user, and saves
-the pointer to the first character in the `rax` variable. This variable now
-holds the user input for the first challenge.
+The second part checks if the user entered the result of the `reverse` function
+called with `second_password`, `0wTdr0wss4P` and `11`.
 
-Then, the lines `4` to `8` check if the `rax` variable is equal to the string
-`PasswordNumeroUno`. If it's not, they print a message and exit the program.
-
-#### Second challenge
-
-The lines `10` declares a `var_1c` variable initialized to `0`.
-
-Then, the line `12` calls the `reverse` function with a reference to the
-`var_1c` variable, the string `0wTdr0wss4P` and the value `0xb` (11) as
-parameters.
-
-Next, the line `13` calls `readline` to read a line of text from the user, and
-saves the pointer to the first character in the `rax_4` variable. This variable
-now holds the user input for the second challenge.
-
-Then, the lines `14` to `18` check if the `rax_4` variable is equal to the value
-of the `var_1c` variable, which holds the result of the `reverse` function
-call. If it's not, they print a message and exit the program.
-
-#### Third challenge
-
-The lines `20` and `21` declare a `s` variable, and set `0x11` (17) bytes of
-memory starting from the address of `s` to `0`.
-
-Next, the line `22` calls the `xor` function with a reference to the `s`
-variable, a reference to the `t2` variable (set to
-`0x47 0x7b 0x7a 0x61 0x77 0x52 0x7d 0x77 0x55 0x7a 0x7d 0x72 0x7f 0x32 0x32 0x32 0x13`),
-the value `0x11` (17) and the value `0x13` (19) as parameters.
-
-Then, the lines `23` and `24` call `readline` to read a line of text from the
-user, and saves the pointer to the first character in the `rax_8` variable. This
-variable now holds the user input for the third challenge.
-
-Finally, the lines `25` to `27` check if the `rax_8` variable is equal to the
-value of the `s` variable, which holds the result of the `xor` function call. If
-it is, it returns the result of the `free` function call. However, if it's not,
-they print a message and exit the program.
-
----
-
-Okay, so the solution to the first challenge is pretty obvious, as the string is
-written in clear in the code. We'll have to explore the `reverse` and `xor`
-functions to solve the second and third challenges.
+Finally, the third part checks if the user entered the result of the `xor`
+function called with `third_password`,
+`\x47\x7b\x7a\x61\x77\x52\x7d\x77\x55\x7a\x7d\x72\x7f\x32\x32\x32\x13`, `17` and
+`19`.
 
 ### `reverse`
 
-```c,linenos
-int64_t reverse(void *arg1, void *arg2, int64_t arg3) {
-    int32_t var_c = 0;
-    int64_t rax_8;
+```c
+int64_t reverse(void *destination, void *source, int64_t length) {
+    int32_t index = 0;
+    int64_t final_index;
     while (true) {
-        rax_8 = ((int64_t)var_c);
-        if (arg3 <= rax_8) {
+        final_index = ((int64_t)index);
+        if (length <= final_index) {
             break;
         }
-        *(uint8_t *)((char *)arg1 + ((int64_t)var_c)) =
-            *(uint8_t *)((char *)arg2 + ((arg3 - ((int64_t)var_c)) - 1));
-        var_c = (var_c + 1);
+        *(uint8_t *)((char *)destination + ((int64_t)index)) =
+            *(uint8_t *)((char *)source + ((length - ((int64_t)index)) - 1));
+        index = (index + 1);
     }
-    return rax_8;
+    return final_index;
 }
 ```
 
-This function takes three arguments: `arg1`, which corresponds to the buffer
-that should hold the result string, `arg2` corresponding to the buffer holding
-the string to processed and `arg3` corresponding to the size of the string that
-should be processed.
-
-The line `2` defines a `var_c` variable set to `0`.
-
-The lines `4` to `12` are an infinite loop, which continuously assign the
-`rax_8` variable to the value of `var_c` and check if `rax_8` is greater or
-equal to the value of `arg3`. If this is the case, the program hits a `break`
-instruction. Since the `var_c` variable is increased by one at the end of the
-infinite loop, it acts as a counter for this loop, and it counts the number of
-characters processed.
-
-The lines `9` and `10` inside this loop copy the byte at the current position in
-the memory pointed to by `arg2` (starting from the end) to the memory pointed to
-by `arg1` at the current position.
-
-This function seems to be designed to reverse the contents of a memory region by
-copying bytes from one memory location to another in reverse order. In the end,
-the `arg1` variable contains the bytes of the `arg2` variable in reverse order.
+This function reverses the contents of a memory block from the `source` memory
+region to the `destination` memory region, iterating over a specified `length`
+in bytes.
 
 ### `xor`
 
-```c,linenos
-int64_t xor (void *arg1, void *arg2, int64_t arg3, char arg4) {
-    int32_t var_c = 0;
-    int64_t rax_6;
+```c
+int64_t xor(void *destination, void *source, int64_t length, char key) {
+    int32_t index = 0;
+    int64_t final_index;
     while (true) {
-        rax_6 = ((int64_t)var_c);
-        if (arg3 <= rax_6) {
+        final_index = ((int64_t)index);
+        if (length <= final_index) {
             break;
         }
-        *(uint8_t *)((char *)arg1 + ((int64_t)var_c)) =
-            (*(uint8_t *)((char *)arg2 + ((int64_t)var_c)) ^ arg4);
-        var_c = (var_c + 1);
+        *(uint8_t *)((char *)destination + ((int64_t)index)) =
+            (*(uint8_t *)((char *)source + ((int64_t)index)) ^ key);
+        index = (index + 1);
     }
-    return rax_6;
+    return final_index;
 }
 ```
 
-This function takes four arguments: `arg1`, which corresponds to the buffer that
-should hold the result string, `arg2` corresponding to the buffer holding the
-string to should be processed, `arg3` corresponding to the size of the string
-that should be processed and `arg4` corresponding to the value used for
-processing.
-
-The line `2` defines a `var_c` variable set to `0`.
-
-The lines `4` to `12` are an infinite loop, which continuously assign the
-`rax_6` variable to the value of `var_c` and check if `rax_6` is greater or
-equal to the value of `arg3`. If this is the case, the program hits a `break`
-instruction. Since the `var_c` variable is increased by one at the end of the
-infinite loop, it acts as a counter for this loop, and it counts the number of
-characters processed.
-
-The lines `9` and `10` inside this loop perform bitwise XOR operation on the
-byte at the current position in the memory pointed to by `arg2` with the
-character `arg4`, and stores the result in the memory pointed to by `arg1` at
-the same position.
-
-This function seems to be designed to XOR each byte in the memory region pointed
-to by `arg2` with the character `arg4`, and stores the result in the memory
-region pointed to by `arg1`. The function iterates over the memory regions up to
-the specified length `arg3`.
+This function performs an XOR operation between the contents of a memory block
+from the `source` memory region and a given `key`, storing the result in the
+`destination` memory region. The operation is performed over a specified
+`length` in bytes.
 
 # Putting it all together
 
@@ -466,30 +377,48 @@ the specified length `arg3`.
 The solution to the first challenge is quite obvious, it's `PasswordNumeroUno`.
 
 The solution to the second challenge is the string `0wTdr0wss4P` reversed up to
-`0xb` (12) characters, which is its size, so it's the `P4ssw0rdTw0`.
+`11` characters, which is its size, so it's `P4ssw0rdTw0`.
 
 The solution to the third challenge is the string
-`0x47 0x7b 0x7a 0x61 0x77 0x52 0x7d 0x77 0x55 0x7a 0x7d 0x72 0x7f 0x32 0x32 0x32 0x13`
-XOR'ed with `0x13` (19) up to `0x11` (17) characters, which is the length of this
-string. To obtain the result of this operation, I'll run this Python script:
+`\x47\x7b\x7a\x61\x77\x52\x7d\x77\x55\x7a\x7d\x72\x7f\x32\x32\x32\x13` XOR'ed
+with `19` up to `17` characters, which is the length of this string. To obtain
+the result of this operation, I'll run this Python script:
 
 ```py
 # Define the password bytes as a list
-PASSWORD = [0x47, 0x7b, 0x7a, 0x61, 0x77, 0x52, 0x7d, 0x77, 0x55, 0x7a, 0x7d, 0x72, 0x7f, 0x32, 0x32, 0x32, 0x13]
+PASSWORD = [
+    0x47,
+    0x7b,
+    0x7a,
+    0x61,
+    0x77,
+    0x52,
+    0x7d,
+    0x77,
+    0x55,
+    0x7a,
+    0x7d,
+    0x72,
+    0x7f,
+    0x32,
+    0x32,
+    0x32,
+    0x13,
+]
 
 # Define the key for XOR operation
 KEY = 0x13
 
 # Perform XOR operation on each byte in the PASSWORD list with the KEY
-result = ''.join(chr(byte ^ KEY) for byte in PASSWORD)
+result = "".join(chr(byte ^ KEY) for byte in PASSWORD)
 
 # Print the result as a string
 print(result)
 ```
 
-If we run it, we get the `ThirdAndFinal!!!` password!
+We get the `ThirdAndFinal!!!` password!
 
-We can try these passwords for the binary questions, and they all work!
+If we run the binary once again and input these passwords, they all work!
 
 ## Remote
 
@@ -592,10 +521,10 @@ What is the XOR key used to encode the third password?
 >
 ```
 
-This is `0x13`.
+This is `19`.
 
 ```
-> 0x13
+> 19
 [+] Correct!
 
 What is the third password?

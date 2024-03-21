@@ -99,9 +99,6 @@ NX       true
 
 This is an ELF 64-bit, LSB executable.
 
-We also notice that there are a few protections in place. This is not a binary
-exploitation challenge, but it's still interesting to know.
-
 ## Libraries
 
 Let's find out which libraries are used by this binary.
@@ -177,7 +174,7 @@ nth paddr      vaddr      bind   type   size lib name
 66  ---------- 0x00004060 GLOBAL OBJ    0        __TMC_END__
 ```
 
-We notice a `main` function, and a `key` object.
+We notice the classic `main` function.
 
 ## Strings
 
@@ -256,202 +253,152 @@ As usual, I'll start by exploring the `main` function.
 
 ### `main`
 
-```c,linenos
+```c
 int32_t main(int32_t argc, char **argv, char **envp) {
-    int64_t s;
-    __builtin_memset(&s, 0, 0x1f);
-    __builtin_strncpy(&s, "ZLT{Kdwhafy_ak_fgl_gtxmkuslagf}", 0x1f);
-    setvbuf(__TMC_END__, nullptr, 2, 0);
-    char *rax = strdup(&s);
+    int64_t ciphertext;
+    __builtin_memset(&ciphertext, 0, 31);
+    __builtin_strncpy(&ciphertext, "ZLT{Kdwhafy_ak_fgl_gtxmkuslagf}", 31);
+    setvbuf(__TMC_END__, NULL, _IONBF, 0);
+    char *plaintext = strdup(&ciphertext);
     puts("Retrieving key.");
-    sleep(0xa);
-    for (int32_t i = 1; i <= 0x1d; i = (i + 1)) {
+    sleep(10);
+    for (int32_t i = 1; i <= 29; i = (i + 1)) {
         if ((i % 5) == 0) {
             printf("\r     ");
         }
-        putchar(0x2e);
-        sleep(1);
+        putchar('.');
+        sleep(10);
     }
     puts(" done!");
-    uint32_t key_1 = key;
+    uint32_t key = 13;
     puts("Hmm, I don't like that one. Let's pick a new one.");
-    sleep(0xa);
-    for (int32_t i_1 = 1; i_1 <= 0x1d; i_1 = (i_1 + 1)) {
-        if ((i_1 % 5) == 0) {
+    sleep(10);
+    for (int32_t i = 1; i <= 29; i = (i + 1)) {
+        if ((i % 5) == 0) {
             printf("\r     ");
         }
-        putchar(0x2e);
-        sleep(1);
+        putchar('.');
+        sleep(10);
     }
     puts(" done!");
-    int32_t var_4c_1 = (key_1 + 5);
+    int32_t shift = (key + 5);
     puts("Yes, 18 will do nicely.");
-    sleep(0xa);
-    for (int32_t i_2 = 1; i_2 <= 0x13; i_2 = (i_2 + 1)) {
-        if ((i_2 % 5) == 0) {
+    sleep(10);
+    for (int32_t i = 1; i <= 19; i = (i + 1)) {
+        if ((i % 5) == 0) {
             printf("\r     ");
         }
-        putchar(0x2e);
-        sleep(1);
+        putchar('.');
+        sleep(10);
     }
     puts(" done!");
-    char *var_20 = rax;
+    char *current_char = plaintext;
     puts("Let's get ready to start. This might take a while!");
-    sleep(0xa);
-    for (int32_t i_3 = 1; i_3 <= 0x31; i_3 = (i_3 + 1)) {
-        if ((i_3 % 5) == 0) {
+    sleep(10);
+    for (int32_t i = 1; i <= 49; i = (i + 1)) {
+        if ((i % 5) == 0) {
             printf("\r     ");
         }
-        putchar(0x2e);
-        sleep(1);
+        putchar('.');
+        sleep(10);
     }
     puts(" done!");
-    while (*(uint8_t *)var_20 != 0) {
-        if ((*(uint8_t *)var_20 > 0x60 && *(uint8_t *)var_20 <= 0x7a)) {
+    while (*(uint8_t *)current_char != 0) {
+        if ((*(uint8_t *)current_char >= 'a' &&
+             *(uint8_t *)current_char <= 'z')) {
             puts("This one's a lowercase letter");
-            sleep(0xa);
-            for (int32_t i_4 = 1; i_4 <= 0x13; i_4 = (i_4 + 1)) {
-                if ((i_4 % 5) == 0) {
+            sleep(10);
+            for (int32_t i = 1; i <= 19; i = (i + 1)) {
+                if ((i % 5) == 0) {
                     printf("\r     ");
                 }
-                putchar(0x2e);
-                sleep(1);
+                putchar('.');
+                sleep(10);
             }
             puts(" done!");
-            if ((((int32_t) * (uint8_t *)var_20) - var_4c_1) <= 0x60) {
+            if ((((int32_t) * (uint8_t *)current_char) - shift) < 'a') {
                 puts("Wrapping it round...");
-                sleep(0xa);
-                for (int32_t i_5 = 1; i_5 <= 0x31; i_5 = (i_5 + 1)) {
-                    if ((i_5 % 5) == 0) {
+                sleep(10);
+                for (int32_t i = 1; i <= 49; i = (i + 1)) {
+                    if ((i % 5) == 0) {
                         printf("\r     ");
                     }
-                    putchar(0x2e);
-                    sleep(1);
+                    putchar('.');
+                    sleep(10);
                 }
                 puts(" done!");
-                *(uint8_t *)var_20 = (*(uint8_t *)var_20 + 0x1a);
+                *(uint8_t *)current_char = (*(uint8_t *)current_char + 26);
             }
-            *(uint8_t *)var_20 = (*(uint8_t *)var_20 - var_4c_1);
+            *(uint8_t *)current_char = (*(uint8_t *)current_char - shift);
         }
-        if ((*(uint8_t *)var_20 <= 0x60 ||
-             (*(uint8_t *)var_20 > 0x60 && *(uint8_t *)var_20 > 0x7a))) {
-            if ((*(uint8_t *)var_20 <= 0x40 ||
-                 (*(uint8_t *)var_20 > 0x40 && *(uint8_t *)var_20 > 0x5a))) {
+        if ((*(uint8_t *)current_char < 'a' ||
+             *(uint8_t *)current_char > 'z')) {
+            if ((*(uint8_t *)current_char < 'A' ||
+                 *(uint8_t *)current_char > 'Z')) {
                 puts("We can leave this one alone.");
-                sleep(0xa);
-                for (int32_t i_6 = 1; i_6 <= 9; i_6 = (i_6 + 1)) {
-                    if ((i_6 % 5) == 0) {
+                sleep(10);
+                for (int32_t i = 1; i <= 9; i = (i + 1)) {
+                    if ((i % 5) == 0) {
                         printf("\r     ");
                     }
-                    putchar(0x2e);
-                    sleep(1);
+                    putchar('.');
+                    sleep(10);
                 }
                 puts(" done!");
             }
-            if ((*(uint8_t *)var_20 > 0x40 && *(uint8_t *)var_20 <= 0x5a)) {
+            if ((*(uint8_t *)current_char >= 'A' &&
+                 *(uint8_t *)current_char <= 'Z')) {
                 puts("This one's an uppercase letter!");
-                sleep(0xa);
-                for (int32_t i_7 = 1; i_7 <= 0x13; i_7 = (i_7 + 1)) {
-                    if ((i_7 % 5) == 0) {
+                sleep(10);
+                for (int32_t i = 1; i <= 19; i = (i + 1)) {
+                    if ((i % 5) == 0) {
                         printf("\r     ");
                     }
-                    putchar(0x2e);
-                    sleep(1);
+                    putchar('.');
+                    sleep(10);
                 }
                 puts(" done!");
-                if ((((int32_t) * (uint8_t *)var_20) - var_4c_1) <= 0x40) {
+                if ((((int32_t) * (uint8_t *)current_char) - shift) < 'A') {
                     puts("Wrapping it round...");
-                    sleep(0xa);
-                    for (int32_t i_8 = 1; i_8 <= 0x31; i_8 = (i_8 + 1)) {
-                        if ((i_8 % 5) == 0) {
+                    sleep(10);
+                    for (int32_t i = 1; i <= 49; i = (i + 1)) {
+                        if ((i % 5) == 0) {
                             printf("\r     ");
                         }
-                        putchar(0x2e);
-                        sleep(1);
+                        putchar('.');
+                        sleep(10);
                     }
                     puts(" done!");
-                    *(uint8_t *)var_20 = (*(uint8_t *)var_20 + 0x1a);
+                    *(uint8_t *)current_char = (*(uint8_t *)current_char + 26);
                 }
-                *(uint8_t *)var_20 = (*(uint8_t *)var_20 - var_4c_1);
+                *(uint8_t *)current_char = (*(uint8_t *)current_char - shift);
             }
         }
         puts("Okay, let's write down this letter! This is a pretty complex "
              "operation, you might want to check back later.");
-        sleep(0xa);
-        for (int32_t i_9 = 1; i_9 <= 0x12b; i_9 = (i_9 + 1)) {
-            if ((i_9 % 5) == 0) {
+        sleep(10);
+        for (int32_t i = 1; i <= 299; i = (i + 1)) {
+            if ((i % 5) == 0) {
                 printf("\r     ");
             }
-            putchar(0x2e);
-            sleep(1);
+            putchar('.');
+            sleep(10);
         }
         puts(" done!");
-        printf(&data_218c, ((uint64_t)((int32_t) * (uint8_t *)var_20)));
-        var_20 = &var_20[1];
+        printf("%c\n", ((uint64_t)((int32_t) * (uint8_t *)current_char)));
+        current_char = &current_char[1];
     }
     puts("You're still here?");
     return 0;
 }
 ```
 
-There's a lot going on, so let's break down the major instructions of this
-function step by step.
+This program iterates over each character of the ciphertext
+`ZLT{Kdwhafy_ak_fgl_gtxmkuslagf}`. If the character is a letter, whether
+uppercase or lowercase, its value is decreased by `18`, and this character is
+wrapped to stay a lowercase or uppercase character.
 
-#### Preparation
-
-The lines `2` to `4` declare a variable `s`, initialize `s` with zeroes, and
-copy the string `ZLT{Kdwhafy_ak_fgl_gtxmkuslagf}` (probably the encrypted flag)
-into the memory location pointed to by `s`. The copy operation is limited to
-copying `0x1f` (31) bytes, but the string is 28 characters long, meaning that
-there will be three zeroes at the end of `s`, so the string will be correctly
-terminated.
-
-The line `6` duplicates the string pointed to by `s` using the `strdup` function
-and stores the result in the variable `rax`, meaning that this variable now
-points to the beginning of the encrypted flag.
-
-The lines `8` to `16` are just artificial waiting times and print dots `.` to
-simulate that something is happening. This is actually something that will come
-up really often in this program to slow it up. Therefore, we can ignore these
-parts, as there's no consequential logic behind.
-
-The line `17` creates a `key_1` variable and sets it to the value of `key`,
-which is `0xd` (13).
-
-The line `28` creates a `var_4c_1` variable and sets it to the value of
-`key_1 + 5`, which is `0x12` (18).
-
-Then, the line `39` creates a `var_20` variable pointing to `rax`, meaning that
-the `var_20` variable now also points to the beginning of the encrypted flag.
-
-#### Calculations
-
-The lines `50` to `132` are repeated while the `var_20` is different than a
-zero. Since this variable points to a character of the endoded string flag, and
-since C strings end with zeroes, these lines will be repeated until `var_20`
-reaches the end of the string. Note that `var_20` is incremented at the line
-`131`, so there's no infinite loop.
-
-There's three branches at this point:
-
-- From line `51` to line `76`, if `var_20` is between `0x61` (a) and `0x7a` (z),
-  so if the `var_20` points to a lowercase character, the value of `var_4c_1`
-  (which is `18`) is substracted to this character. Note that this character is
-  increased by `0x1a` (26) if it becomes smaller than `a`, so it's essentially
-  wrapped so that it stays a lowercase character.
-
-- From line `92` to line `117`, if `var_20` is between `0x41` (A) and `0x5a`
-  (Z), so if the `var_20` points to an uppercase character, the exact same logic
-  applies.
-
-- From line `79` to line `91`, if `var_20` is not a letter, it doesn't change.
-
-# Putting it all together
-
-From what we could understand, this program iterates over each character of the
-hardcoded string `ZLT{Kdwhafy_ak_fgl_gtxmkuslagf}`. If the character is a
-letter, whether uppercase or lowercase, its value is decreased by `18`, and this
-character is wrapped to stay a lowercase or uppercase character.
+# Putting everything together
 
 This is an example of a Caesar cypher with a left shift of `18`. This means that
 the flag has been encrypted with the ROT18 algorithm.
@@ -465,26 +412,24 @@ I'll run this Python script for this:
 # Define the string containing the encrypted flag
 FLAG = "ZLT{Kdwhafy_ak_fgl_gtxmkuslagf}"
 
-# Function to apply the ROT8 algorithm
-def rot8(text):
-    result = ""
-    for char in text:
-        # Check if the character is alphabetic
-        if char.isalpha():
-            # Check if the character is lowercase
-            if char.islower():
-                # Apply rotation for lowercase letters
-                result += chr(((ord(char) - ord('a') + 8) % 26) + ord('a'))
-            else:
-                # Apply rotation for uppercase letters
-                result += chr(((ord(char) - ord('A') + 8) % 26) + ord('A'))
+# Apply the ROT8 algorithm
+result = ""
+for char in text:
+    # Check if the character is alphabetic
+    if char.isalpha():
+        # Check if the character is lowercase
+        if char.islower():
+            # Apply rotation for lowercase letters
+            result += chr(((ord(char) - ord('a') + 8) % 26) + ord('a'))
         else:
-            # If the character is not alphabetic, keep it unchanged
-            result += char
-    return result
+            # Apply rotation for uppercase letters
+            result += chr(((ord(char) - ord('A') + 8) % 26) + ord('A'))
+    else:
+        # If the character is not alphabetic, keep it unchanged
+        result += char
 
-# Decode the encoded flag using the rot8 function and print the result
-print(rot8(FLAG))
+# Print the result as a string
+print(result)
 ```
 
 We get the `HTB{Sleping_is_not_obfuscation}` flag!
@@ -496,6 +441,6 @@ We get the `HTB{Sleping_is_not_obfuscation}` flag!
 That's it for this box! 🎉
 
 I rated this challenge as 'Very easy'. The decompiled code was really close to
-the reality, and it was easy to decipher.
+the reality, and it was easy to understand.
 
 Thanks for reading!
