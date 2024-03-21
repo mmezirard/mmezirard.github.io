@@ -549,6 +549,6 @@ We got the flag!
 That's it for this box! 🎉
 
 I rated this challenge as 'Very easy'. The decompiled code was really close to
-the reality, and it was easy to decipher and to understand.
+the reality, and it was easy to understand.
 
 Thanks for reading!
