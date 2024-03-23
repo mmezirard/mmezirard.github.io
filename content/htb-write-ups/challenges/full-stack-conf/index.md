@@ -28,11 +28,56 @@ regularly, don't try anything funny!! 😅
 
 I'll complete this challenge using a Kali Linux VM.
 
-# Socket `94.237.62.195:49271`
+# Socket `94.237.62.149:54371`
+
+## Fingerprinting
+
+Let's gather data about the service associated with the open TCP port we've been
+given.
+
+```sh
+❯ nmap -sS "94.237.62.149" -p "54371" -sV
+```
+
+```
+<SNIP>
+PORT      STATE SERVICE VERSION
+54371/tcp open  http    Werkzeug httpd 1.0.1 (Python 3.8.6)
+<SNIP>
+```
+
+Let's do the same for the UDP port.
+
+```sh
+❯ nmap -sU "94.237.62.149" -p "54371" -sV
+```
+
+```
+<SNIP>
+PORT      STATE  SERVICE VERSION
+54371/udp closed unknown
+<SNIP>
+```
+
+## Scripts
+
+Let's run `nmap`'s default scripts on the TCP service to see if they can find
+additional information.
+
+```sh
+❯ nmap -sS "94.237.62.149" -p "54371" -sC
+```
+
+```
+<SNIP>
+PORT      STATE SERVICE
+54371/tcp open  unknown
+<SNIP>
+```
 
 ## Exploration
 
-Let's browse to `http://83.136.252.32:48648/`:
+Let's browse to `http://94.237.62.149:54371/`:
 
 ![Web homepage](web-homepage.png)
 
@@ -47,10 +92,6 @@ Let's fingerprint the technologies used by this web page with the
 ![Web homepage Wappalyzer extension](web-homepage-wappalyzer.png)
 
 This reveals that this web page is using Node.js.
-
-Moreover, if we check the HTTP headers of the response, we find a `Server`
-header indicating that the server is using the Werkzeug library `1.0.1` for
-Python `3.8.6`.
 
 ## XSS
 

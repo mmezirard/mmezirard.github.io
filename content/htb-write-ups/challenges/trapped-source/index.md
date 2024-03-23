@@ -26,11 +26,56 @@ help her in opening the door?
 
 I'll complete this challenge using a Kali Linux VM.
 
-# Socket `94.237.49.182:44243`
+# Socket `94.237.56.188:36374`
+
+## Fingerprinting
+
+Let's gather data about the service associated with the open TCP port we've been
+given.
+
+```sh
+❯ nmap -sS "94.237.56.188" -p "36374" -sV
+```
+
+```
+<SNIP>
+PORT      STATE SERVICE VERSION
+36374/tcp open  unknown
+<SNIP>
+```
+
+Let's do the same for the UDP port.
+
+```sh
+❯ nmap -sU "94.237.56.188" -p "36374" -sV
+```
+
+```
+<SNIP>
+PORT      STATE  SERVICE VERSION
+36374/udp closed unknown
+<SNIP>
+```
+
+## Scripts
+
+Let's run `nmap`'s default scripts on the TCP service to see if they can find
+additional information.
+
+```sh
+❯ nmap -sS "94.237.56.188" -p "36374" -sC
+```
+
+```
+<SNIP>
+PORT      STATE SERVICE
+36374/tcp open  unknown
+<SNIP>
+```
 
 ## Exploration
 
-Let's browse to `http://94.237.49.182:44243/`:
+Let's browse to `http://94.237.56.188:36374/`:
 
 ![Web homepage](web-homepage.png)
 
@@ -63,12 +108,12 @@ If we check the source code of the web page, we find this `<script>` tag:
         buildNumber: "v20190816",
         debug: false,
         modelName: "Valencia",
-        correctPin: "4895",
+        correctPin: "1478",
     }
 </script>
 ```
 
-The correct PIN is written in cleartext: it's `4895`!
+The correct PIN is written in cleartext: it's `1478`!
 
 ## Exploration
 
@@ -130,27 +175,20 @@ entered, a POST request is sent to `/flag` with the JSON data:
 
 ```json
 {
-    "pin":"4985"
+    "pin":"1478"
 }
 ```
 
 Since the `currentPin` variable is never updated, the correct PIN is never
-entered. Therefore, let's send ourselves the POST request to the `/flag`
-endpoint:
+entered, so the request to the endpoint is never sent.
 
-```sh
-❯ curl -s -H "Content-Type: application/json" "http://94.237.49.182:44243/flag" -X "POST" -d '{"pin": "4985"}' | jq "." --indent "4"
-```
+What we can do is manually calling the `unlock` function with the parameter
+`1478` to update the `currentPin` array. Then, if we press the 'Enter' button,
+the `checkPin` gets executed, and...
 
-```
-{
-    "message": "HTB{vi3w_cli13nt_s0urc3_S3cr3ts!}\n"
-}
-```
+![Web homepage valid PIN entered](web-homepage-valid-pin-entered.png)
 
-We got the flag!
-
-In fact, we specify any PIN we want, it's not even checked by the backend.
+We get the flag: `HTB{vi3w_cli13nt_s0urc3_S3cr3ts!}`!
 
 # Afterwords
 
@@ -159,6 +197,6 @@ In fact, we specify any PIN we want, it's not even checked by the backend.
 That's it for this box! 🎉
 
 I rated this challenge as 'Piece of cake'. It just required to read the source
-code of the page really, although it contained a bait to mislead us.
+code of the page really, and to understand what it does.
 
 Thanks for reading!

@@ -27,11 +27,56 @@ out the secret key.
 
 I'll complete this challenge using a Kali Linux VM.
 
-# Socket `83.136.252.32:48648`
+# Socket `94.237.49.166:35939`
+
+## Fingerprinting
+
+Let's gather data about the service associated with the open TCP port we've been
+given.
+
+```sh
+❯ nmap -sS "94.237.49.166" -p "35939" -sV
+```
+
+```
+<SNIP>
+PORT      STATE SERVICE VERSION
+35939/tcp open  http    nginx
+<SNIP>
+```
+
+Let's do the same for the UDP port.
+
+```sh
+❯ nmap -sU "94.237.49.166" -p "35939" -sV
+```
+
+```
+<SNIP>
+PORT      STATE  SERVICE VERSION
+35939/udp closed unknown
+<SNIP>
+```
+
+## Scripts
+
+Let's run `nmap`'s default scripts on the TCP service to see if they can find
+additional information.
+
+```sh
+❯ nmap -sS "94.237.49.166" -p "35939" -sC
+```
+
+```
+<SNIP>
+PORT      STATE SERVICE
+35939/tcp open  unknown
+<SNIP>
+```
 
 ## Exploration
 
-Let's browse to `http://83.136.252.32:48648/`:
+Let's browse to `http://94.237.49.166:35939/`:
 
 ![Web homepage](web-homepage.png)
 
