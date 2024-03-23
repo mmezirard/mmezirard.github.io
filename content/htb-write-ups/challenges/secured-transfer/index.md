@@ -264,10 +264,11 @@ As usual, I'll start by exploring the `main` function.
 ### `main`
 
 ```c
-int32_t main(int32_t argc, char **argv, char **envp) {
+int main(int argc, char **argv, char **envp) {
     OPENSSL_init_crypto(OPENSSL_INIT_LOAD_CRYPTO_STRINGS, NULL);
     OPENSSL_init_crypto(OPENSSL_INIT_NO_ADD_ALL_CIPHERS, NULL);
     OPENSSL_init_crypto(OPENSSL_INIT_NO_LOAD_CONFIG, NULL);
+
     if (argc == 3) {
         printf("Sending File: %s to %s\n", argv[2], argv[1]);
         sendFile(argv[1], argv[2]);
@@ -277,6 +278,7 @@ int32_t main(int32_t argc, char **argv, char **envp) {
         puts("Receiving File");
         receiveFile();
     }
+    
     return 0;
 }
 ```
@@ -287,70 +289,77 @@ This function initializes OpenSSL crypto, and then either calls `sendFile` or
 ### `sendFile`
 
 ```c
-int64_t sendFile(char *ipAddress, char *filename) {
-    int32_t fd = socket(AF_INET, SOCK_STREAM, 0);
+int sendFile(char *ipAddress, char *filename) {
+    int fd = socket(AF_INET, SOCK_STREAM, 0);
     if (fd == -1) {
         puts("ERROR: Socket creation failed");
         return 0;
+    }
+
+    struct sockaddr_in serverAddr;
+    memset(&serverAddr, 0, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    if (inet_pton(AF_INET, ipAddress, &serverAddr.sin_addr) <= 0) {
+        printf("ERROR: Invalid input address '%s'\n", ipAddress);
+        close(fd);
+        return 0;
+    }
+
+    serverAddr.sin_port = htons(1337);
+
+    if (connect(fd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) != 0) {
+        puts("ERROR: Connection failed");
+        close(fd);
+        return 0;
+    }
+
+    FILE *fp = fopen(filename, "rb");
+    if (fp == NULL) {
+        printf("ERROR: Can't open the file '%s'\n", filename);
+        close(fd);
+        return 0;
+    }
+
+    fseek(fp, 0, SEEK_END);
+    long long int fileSize = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    if (fileSize <= 15) {
+        puts("ERROR: File too small");
+        fclose(fp);
+        close(fd);
+        return 0;
+    } else if (fileSize > 4096) {
+        puts("ERROR: File too large");
+        fclose(fp);
+        close(fd);
+        return 0;
+    }
+
+    char *fileContent = (char *)malloc(fileSize);
+    char *encryptedFileContent = (char *)malloc(fileSize * 2);
+
+    if (fread(fileContent, 1, fileSize, fp) == fileSize) {
+        long long int encryptedFileSize =
+            encryptData(fileContent, fileSize, encryptedFileContent);
+
+        write(fd, &encryptedFileSize, sizeof(encryptedFileSize));
+        write(fd, encryptedFileContent, encryptedFileSize);
+
+        puts("File sent...");
+
+        free(encryptedFileContent);
+        free(fileContent);
+        fclose(fp);
+        close(fd);
+        return 1;
     } else {
-        int16_t serverAddr;
-        memset(&serverAddr, 0, 16);
-        serverAddr = AF_INET;
-        void ipv4Address;
-        if (inet_pton(AF_INET, ipAddress, &ipv4Address) == 0) {
-            printf("ERROR: Invalid input address '%s'\n", ipAddress);
-            return 0;
-        } else {
-            uint16_t serverPort = htons(1337);
-            if (connect(fd, &serverAddr, 16) != 0) {
-                puts("ERROR: Connection failed");
-                return 0;
-            } else {
-                FILE *fp = fopen(filename, "rb");
-                if (fp == 0) {
-                    printf("ERROR: Can't open the file '%s'\n", filename);
-                    close(fd);
-                    return 0;
-                } else {
-                    fseek(fp, 0, SEEK_END);
-                    int64_t fileSize = ftell(fp);
-                    fseek(fp, 0, SEEK_SET);
-                    if (fileSize <= 15) {
-                        puts("ERROR: File too small");
-                        fclose(fp);
-                        close(fd);
-                        return 0;
-                    } else if (fileSize > 4096) {
-                        puts("ERROR: File too large");
-                        fclose(fp);
-                        close(fd);
-                        return 0;
-                    } else {
-                        int64_t fileContent = malloc(fileSize);
-                        int64_t encryptedFileContent = malloc((fileSize * 2));
-                        if (fileSize == fread(fileContent, 1, fileSize, fp)) {
-                            int64_t encryptedFileSize = ((int64_t)encryptData(
-                                fileContent, fileSize, encryptedFileContent));
-                            write(fd, &encryptedFileSize, 8);
-                            write(fd, encryptedFileContent, encryptedFileSize);
-                            puts("File send...");
-                            free(encryptedFileContent);
-                            free(fileContent);
-                            fclose(fp);
-                            close(fd);
-                            return 1;
-                        } else {
-                            puts("ERROR: Failed reading the file");
-                            free(encryptedFileContent);
-                            free(fileContent);
-                            fclose(fp);
-                            close(fd);
-                            return 0;
-                        }
-                    }
-                }
-            }
-        }
+        puts("ERROR: Failed reading the file");
+        free(encryptedFileContent);
+        free(fileContent);
+        fclose(fp);
+        close(fd);
+        return 0;
     }
 }
 ```
@@ -363,37 +372,46 @@ encrypted file and the encrypted file content are sent over the socket.
 ### `encryptData`
 
 ```c
-uint64_t encryptData(int64_t plaintext, int32_t plaintextSize,
-                     int64_t ciphertext) {
-    char key;
-    __builtin_strncpy(&key, "supersecretkeyusedforencryption!", 32);
-    char const *const initializationVector = "someinitialvalue";
-    int64_t cipherContext = EVP_CIPHER_CTX_new();
-    if (cipherContext == 0) {
+unsigned long long int encryptData(const char *plaintext, int plaintextSize, char *ciphertext) {
+    char key[32];
+    strncpy(key, "supersecretkeyusedforencryption!", sizeof(key));
+    const char *initializationVector = "someinitialvalue";
+
+    EVP_CIPHER_CTX *cipherContext = EVP_CIPHER_CTX_new();
+    if (cipherContext == NULL) {
         return 0;
-    } else {
-        int32_t ciphertextSize;
-        if (EVP_EncryptInit_ex(cipherContext, EVP_aes_256_cbc(), 0, &key,
-                               initializationVector) != 1) {
-            return 0;
-        } else if (EVP_EncryptUpdate(cipherContext, ciphertext, &ciphertextSize,
-                                     plaintext,
-                                     ((uint64_t)plaintextSize)) != 1) {
-            return 0;
-        } else {
-            int32_t currentCiphertextSize = ciphertextSize;
-            if (EVP_EncryptFinal_ex(cipherContext,
-                                    (((int64_t)ciphertextSize) + ciphertext),
-                                    &ciphertextSize) == 1) {
-                int32_t finalCiphertextSize =
-                    (currentCiphertextSize + ciphertextSize);
-                EVP_CIPHER_CTX_free(cipherContext);
-                return ((uint64_t)finalCiphertextSize);
-            } else {
-                return 0;
-            }
-        }
     }
+
+    int ciphertextSize;
+    unsigned long long int finalCiphertextSize = 0;
+
+    if (EVP_EncryptInit_ex(cipherContext, EVP_aes_256_cbc(), NULL,
+                           (unsigned char *)key,
+                           (unsigned char *)initializationVector) != 1) {
+        EVP_CIPHER_CTX_free(cipherContext);
+        return 0;
+    }
+
+    if (EVP_EncryptUpdate(cipherContext, (unsigned char *)ciphertext,
+                          &ciphertextSize, (unsigned char *)plaintext,
+                          plaintextSize) != 1) {
+        EVP_CIPHER_CTX_free(cipherContext);
+        return 0;
+    }
+
+    finalCiphertextSize += ciphertextSize;
+
+    if (EVP_EncryptFinal_ex(cipherContext,
+                            (unsigned char *)ciphertext + ciphertextSize,
+                            &ciphertextSize) == 1) {
+        finalCiphertextSize += ciphertextSize;
+    } else {
+        EVP_CIPHER_CTX_free(cipherContext);
+        return 0;
+    }
+
+    EVP_CIPHER_CTX_free(cipherContext);
+    return finalCiphertextSize;
 }
 ```
 
@@ -401,72 +419,85 @@ This function performs an AES-256 encryption in CBC mode. It takes the
 `plaintext` content from a memory block along with the `plaintextSize`, and
 encrypts it using a key `supersecretkeyusedforencryption` and IV
 `someinitialvalue`. The result of the encryption is stored in a `ciphertext`
-memory block.
+memory block, and the `ciphertextSize` is returned.
 
 ### `receiveFile`
 
 ```c
-
-int64_t receiveFile() {
-    int32_t fd = socket(AF_INET, SOCK_STREAM, 0);
+int receiveFile() {
+    int fd = socket(AF_INET, SOCK_STREAM, 0);
     if (fd == -1) {
         puts("ERROR: Socket creation failed");
         return 0;
+    }
+
+    struct sockaddr_in localAddr;
+    memset(&localAddr, 0, sizeof(localAddr));
+    localAddr.sin_family = AF_INET;
+    localAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    localAddr.sin_port = htons(1337);
+
+    if (bind(fd, (struct sockaddr *)&localAddr, sizeof(localAddr)) != 0) {
+        puts("ERROR: Socket bind failed");
+        close(fd);
+        return 0;
+    } else if (listen(fd, 1) != 0) {
+        puts("ERROR: Listen failed");
+        close(fd);
+        return 0;
+    }
+
+    struct sockaddr_in clientAddr;
+    socklen_t clientAddrLength = sizeof(clientAddr);
+    int clientSocket =
+        accept(fd, (struct sockaddr *)&clientAddr, &clientAddrLength);
+    if (clientSocket < 0) {
+        puts("ERROR: Accept failed");
+        close(fd);
+        return 0;
+    }
+
+    unsigned long long int encryptedFileSize;
+    if (read(clientSocket, &encryptedFileSize, sizeof(encryptedFileSize)) !=
+        sizeof(encryptedFileSize)) {
+        puts("ERROR: Reading secret length");
+        close(clientSocket);
+        close(fd);
+        return 0;
+    }
+
+    if (encryptedFileSize <= 15) {
+        puts("ERROR: File too small");
+        close(clientSocket);
+        close(fd);
+        return 0;
+    } else if (encryptedFileSize > 4096) {
+        puts("ERROR: File too large");
+        close(clientSocket);
+        close(fd);
+        return 0;
+    }
+
+    char *encryptedFileContent = malloc(encryptedFileSize);
+
+    if (read(clientSocket, encryptedFileContent, encryptedFileSize) ==
+        encryptedFileSize) {
+        close(clientSocket);
+
+        char *fileContent = malloc(encryptedFileSize);
+        decryptData(encryptedFileContent, encryptedFileSize, fileContent);
+
+        printf("File Received...\n%s\n", fileContent);
+        free(fileContent);
+        free(encryptedFileContent);
+        close(fd);
+        return 1;
     } else {
-        int16_t localAddr;
-        memset(&localAddr, 0, 16);
-        localAddr = AF_INET;
-        int32_t socketOption = htonl(0);
-        uint16_t localPort = htons(1337);
-        if (bind(((uint64_t)fd), &localAddr, 16, &localAddr) != 0) {
-            puts("ERROR: Socket bind failed");
-            return 0;
-        } else if (listen(((uint64_t)fd), 1) != 0) {
-            puts("ERROR: Listen failed");
-            return 0;
-        } else {
-            int32_t clientAddrLength = 16;
-            void clientAddr;
-            int32_t clientSocket = accept(fd, &clientAddr, &clientAddrLength);
-            uint64_t encryptedFileSize;
-            if (clientSocket < 0) {
-                puts("ERROR: Accept failed");
-                return 0;
-            } else if (read(clientSocket, &encryptedFileSize, 8) != 8) {
-                puts("ERROR: Reading secret length");
-                close(fd);
-                return 0;
-            } else if (encryptedFileSize <= 15) {
-                puts("ERROR: File too small");
-                close(fd);
-                return 0;
-            } else if (encryptedFileSize > 4096) {
-                puts("ERROR: File too large");
-                close(fd);
-                return 0;
-            } else {
-                int64_t encryptedFileContent = malloc(encryptedFileSize);
-                if (read(clientSocket, encryptedFileContent,
-                         encryptedFileSize) == encryptedFileSize) {
-                    close(fd);
-                    int64_t fileContent = malloc((encryptedFileSize + 1));
-                    *(uint8_t *)(((int64_t)decryptFile(
-                                     encryptedFileContent,
-                                     ((int32_t)encryptedFileSize),
-                                     fileContent)) +
-                                 fileContent) = 0;
-                    printf("File Received...\n%s\n", fileContent);
-                    free(fileContent);
-                    free(encryptedFileContent);
-                    return 1;
-                } else {
-                    puts("ERROR: File send doesn't match length");
-                    free(encryptedFileContent);
-                    close(fd);
-                    return 0;
-                }
-            }
-        }
+        puts("ERROR: File send doesn't match length");
+        free(encryptedFileContent);
+        close(clientSocket);
+        close(fd);
+        return 0;
     }
 }
 ```
@@ -479,37 +510,46 @@ within a certain range, it reads the encrypted file content, calls the
 ### `decryptData`
 
 ```c
-uint64_t decryptData(int64_t ciphertext, int32_t ciphertextSize,
-                     int64_t plaintext) {
-    char key;
-    __builtin_strncpy(&key, "supersecretkeyusedforencryption!", 32);
-    char const *const initializationVector = "someinitialvalue";
-    int64_t cipherContext = EVP_CIPHER_CTX_new();
-    if (cipherContext == 0) {
+unsigned long long int decryptData(const char *ciphertext, int ciphertextSize, char *plaintext) {
+    char key[32];
+    strncpy(key, "supersecretkeyusedforencryption!", sizeof(key));
+    const char *initializationVector = "someinitialvalue";
+
+    EVP_CIPHER_CTX *cipherContext = EVP_CIPHER_CTX_new();
+    if (cipherContext == NULL) {
         return 0;
-    } else {
-        int32_t plaintextSize;
-        if (EVP_DecryptInit_ex(cipherContext, EVP_aes_256_cbc(), 0, &key,
-                               initializationVector) != 1) {
-            return 0;
-        } else if (EVP_DecryptUpdate(cipherContext, plaintext, &plaintextSize,
-                                     ciphertext,
-                                     ((uint64_t)ciphertextSize)) != 1) {
-            return 0;
-        } else {
-            int32_t updatePlaintextSize = plaintextSize;
-            if (EVP_DecryptFinal_ex(cipherContext,
-                                    (((int64_t)plaintextSize) + plaintext),
-                                    &plaintextSize) == 1) {
-                int32_t finalPlaintextSize =
-                    (updatePlaintextSize + plaintextSize);
-                EVP_CIPHER_CTX_free(cipherContext);
-                return ((uint64_t)finalPlaintextSize);
-            } else {
-                return 0;
-            }
-        }
     }
+
+    int plaintextSize;
+    unsigned long long int finalPlaintextSize = 0;
+
+    if (EVP_DecryptInit_ex(cipherContext, EVP_aes_256_cbc(), NULL,
+                           (unsigned char *)key,
+                           (unsigned char *)initializationVector) != 1) {
+        EVP_CIPHER_CTX_free(cipherContext);
+        return 0;
+    }
+
+    if (EVP_DecryptUpdate(cipherContext, (unsigned char *)plaintext,
+                          &plaintextSize, (unsigned char *)ciphertext,
+                          ciphertextSize) != 1) {
+        EVP_CIPHER_CTX_free(cipherContext);
+        return 0;
+    }
+
+    finalPlaintextSize += plaintextSize;
+
+    if (EVP_DecryptFinal_ex(cipherContext,
+                            (unsigned char *)plaintext + plaintextSize,
+                            &plaintextSize) == 1) {
+        finalPlaintextSize += plaintextSize;
+    } else {
+        EVP_CIPHER_CTX_free(cipherContext);
+        return 0;
+    }
+
+    EVP_CIPHER_CTX_free(cipherContext);
+    return finalPlaintextSize;
 }
 ```
 
@@ -517,7 +557,7 @@ This function performs an AES-256 decryption in CBC mode. It takes the
 `ciphertext` content from a memory block along with the `ciphertextSize`, and
 decrypts it using a key `supersecretkeyusedforencryption` and IV
 `someinitialvalue`. The result of the decryption is stored in a `plaintext`
-memory block.
+memory block, and the `plaintextSize` is returned.
 
 # Putting it all together
 

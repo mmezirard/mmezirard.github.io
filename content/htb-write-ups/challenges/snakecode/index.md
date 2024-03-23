@@ -618,7 +618,7 @@ which does nothing for the game logic and shouldn't even be executed at all.
 It does contain a very interesting string broken down into several characters...
 
 ```sh
-❯ python3 -c "print(''.join(['H', 'T', 'B', '{', 'S', 'u', 'P', '3', 'r', '_', 'S', '3', 'C', 'R', 't', '_', 'S', 'n', '4', 'k', '3', 'c', '0', 'd', '3', '}']))"
+❯ python -c "print(''.join(['H', 'T', 'B', '{', 'S', 'u', 'P', '3', 'r', '_', 'S', '3', 'C', 'R', 't', '_', 'S', 'n', '4', 'k', '3', 'c', '0', 'd', '3', '}']))"
 ```
 
 ```

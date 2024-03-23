@@ -210,22 +210,28 @@ As usual, I'll start by exploring the `main` function.
 ### `main`
 
 ```c
-int32_t main(int32_t argc, char **argv, char **envp) {
+int main(int argc, char **argv, char **envp) {
     printf("Welcome!\n");
-    int64_t password;
-    __builtin_strncpy(&password, "this_is_the_password", 21);
-    char *input = malloc(21);
-    int64_t real_password = "\x6d\x5e\x26\x26\x66\x69\x15\x55\x6f\x26\x6b\x55\x5a\x27\x5a\x55\x59\x55\x63\x29";
-    for (int32_t i = 0; i < 20; i = (i + 1)) {
-        *(uint8_t *)(&password + ((int64_t)i)) =
-            (*(uint8_t *)(&real_password + ((int64_t)i)) + 10);
+
+    char password[21];
+    const char *real_password = "\x6d\x5e\x26\x26\x66\x69\x15\x55\x6f\x26\x6b"
+                                "\x55\x5a\x27\x5a\x55\x59\x55\x63\x29";
+
+    for (int i = 0; i < 20; i++) {
+        password[i] = real_password[i] + 10;
     }
+
+    char *input = malloc(21);
     fgets(input, 21, stdin);
-    if (strcmp(&password, input) == 0) {
+
+    if (strcmp(password, input) == 0) {
         printf("HTB{%s}\n", input);
     } else {
         printf("I said, you can't c me!\n");
     }
+
+    free(input);
+
     return 0;
 }
 ```

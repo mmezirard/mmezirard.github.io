@@ -1,6 +1,6 @@
 +++
 title = "Baby RE"
-date = "2024-03-14"
+date = "2024-03-21"
 description = "This is an easy Reversing challenge."
 [extra]
 cover = "cover.svg"
@@ -222,17 +222,19 @@ As usual, I'll start by exploring the `main` function.
 ### `main`
 
 ```c
-int32_t main(int32_t argc, char **argv, char **envp) {
+int main(int argc, char **argv, char **envp) {
+    char input[20];
     puts("Insert key: ");
-    void input;
-    fgets(&input, 20, __TMC_END__);
-    if (strcmp(&input, "abcde122313\n") != 0) {
+    fgets(input, sizeof(input), stdin);
+
+    if (strcmp(input, "abcde122313\n") != 0) {
         puts("Try again later.");
     } else {
-        int64_t password;
-        __builtin_strncpy(&password, "HTB{B4BY_R3V_TH4TS_EZ}", 22);
-        puts(&password);
+        char password[22];
+        strncpy(password, "HTB{B4BY_R3V_TH4TS_EZ}", sizeof(password));
+        puts(password);
     }
+
     return 0;
 }
 ```

@@ -254,15 +254,16 @@ As usual, I'll start by exploring the `main` function.
 ### `main`
 
 ```c
-int32_t main(int32_t argc, char **argv, char **envp) {
-    int64_t ciphertext;
-    __builtin_memset(&ciphertext, 0, 31);
-    __builtin_strncpy(&ciphertext, "ZLT{Kdwhafy_ak_fgl_gtxmkuslagf}", 31);
-    setvbuf(__TMC_END__, NULL, _IONBF, 0);
-    char *plaintext = strdup(&ciphertext);
+int main(int argc, char **argv, char **envp) {
+    char ciphertext[31];
+    memset(ciphertext, 0, sizeof(ciphertext));
+    strncpy(ciphertext, "ZLT{Kdwhafy_ak_fgl_gtxmkuslagf}", sizeof(ciphertext));
+    setvbuf(stdout, NULL, _IONBF, 0);
+    char *plaintext = strdup(ciphertext);
+
     puts("Retrieving key.");
     sleep(10);
-    for (int32_t i = 1; i <= 29; i = (i + 1)) {
+    for (int i = 1; i <= 29; i++) {
         if ((i % 5) == 0) {
             printf("\r     ");
         }
@@ -270,10 +271,12 @@ int32_t main(int32_t argc, char **argv, char **envp) {
         sleep(10);
     }
     puts(" done!");
-    uint32_t key = 13;
+
+    unsigned int key = 13;
+
     puts("Hmm, I don't like that one. Let's pick a new one.");
     sleep(10);
-    for (int32_t i = 1; i <= 29; i = (i + 1)) {
+    for (int i = 1; i <= 29; i++) {
         if ((i % 5) == 0) {
             printf("\r     ");
         }
@@ -281,10 +284,13 @@ int32_t main(int32_t argc, char **argv, char **envp) {
         sleep(10);
     }
     puts(" done!");
-    int32_t shift = (key + 5);
+
+    int shift = key + 5;
+
     puts("Yes, 18 will do nicely.");
     sleep(10);
-    for (int32_t i = 1; i <= 19; i = (i + 1)) {
+
+    for (int i = 1; i <= 19; i++) {
         if ((i % 5) == 0) {
             printf("\r     ");
         }
@@ -292,10 +298,12 @@ int32_t main(int32_t argc, char **argv, char **envp) {
         sleep(10);
     }
     puts(" done!");
+
     char *current_char = plaintext;
+
     puts("Let's get ready to start. This might take a while!");
     sleep(10);
-    for (int32_t i = 1; i <= 49; i = (i + 1)) {
+    for (int i = 1; i <= 49; i++) {
         if ((i % 5) == 0) {
             printf("\r     ");
         }
@@ -303,12 +311,12 @@ int32_t main(int32_t argc, char **argv, char **envp) {
         sleep(10);
     }
     puts(" done!");
-    while (*(uint8_t *)current_char != 0) {
-        if ((*(uint8_t *)current_char >= 'a' &&
-             *(uint8_t *)current_char <= 'z')) {
+
+    while (*current_char != 0) {
+        if ((*current_char >= 'a' && *current_char <= 'z')) {
             puts("This one's a lowercase letter");
             sleep(10);
-            for (int32_t i = 1; i <= 19; i = (i + 1)) {
+            for (int i = 1; i <= 19; i++) {
                 if ((i % 5) == 0) {
                     printf("\r     ");
                 }
@@ -316,10 +324,12 @@ int32_t main(int32_t argc, char **argv, char **envp) {
                 sleep(10);
             }
             puts(" done!");
-            if ((((int32_t) * (uint8_t *)current_char) - shift) < 'a') {
+
+            if ((*current_char - shift) < 'a') {
                 puts("Wrapping it round...");
+
                 sleep(10);
-                for (int32_t i = 1; i <= 49; i = (i + 1)) {
+                for (int i = 1; i <= 49; i++) {
                     if ((i % 5) == 0) {
                         printf("\r     ");
                     }
@@ -327,17 +337,19 @@ int32_t main(int32_t argc, char **argv, char **envp) {
                     sleep(10);
                 }
                 puts(" done!");
-                *(uint8_t *)current_char = (*(uint8_t *)current_char + 26);
+
+                *current_char = (*current_char + 26);
             }
-            *(uint8_t *)current_char = (*(uint8_t *)current_char - shift);
+
+            *current_char = (*current_char - shift);
         }
-        if ((*(uint8_t *)current_char < 'a' ||
-             *(uint8_t *)current_char > 'z')) {
-            if ((*(uint8_t *)current_char < 'A' ||
-                 *(uint8_t *)current_char > 'Z')) {
+
+        if ((*current_char < 'a' || *current_char > 'z')) {
+            if ((*current_char < 'A' || *current_char > 'Z')) {
                 puts("We can leave this one alone.");
                 sleep(10);
-                for (int32_t i = 1; i <= 9; i = (i + 1)) {
+
+                for (int i = 1; i <= 9; i++) {
                     if ((i % 5) == 0) {
                         printf("\r     ");
                     }
@@ -346,11 +358,12 @@ int32_t main(int32_t argc, char **argv, char **envp) {
                 }
                 puts(" done!");
             }
-            if ((*(uint8_t *)current_char >= 'A' &&
-                 *(uint8_t *)current_char <= 'Z')) {
+
+            if ((*current_char >= 'A' && *current_char <= 'Z')) {
                 puts("This one's an uppercase letter!");
                 sleep(10);
-                for (int32_t i = 1; i <= 19; i = (i + 1)) {
+
+                for (int i = 1; i <= 19; i++) {
                     if ((i % 5) == 0) {
                         printf("\r     ");
                     }
@@ -358,10 +371,12 @@ int32_t main(int32_t argc, char **argv, char **envp) {
                     sleep(10);
                 }
                 puts(" done!");
-                if ((((int32_t) * (uint8_t *)current_char) - shift) < 'A') {
+
+                if ((*current_char - shift) < 'A') {
                     puts("Wrapping it round...");
                     sleep(10);
-                    for (int32_t i = 1; i <= 49; i = (i + 1)) {
+
+                    for (int i = 1; i <= 49; i++) {
                         if ((i % 5) == 0) {
                             printf("\r     ");
                         }
@@ -369,15 +384,18 @@ int32_t main(int32_t argc, char **argv, char **envp) {
                         sleep(10);
                     }
                     puts(" done!");
-                    *(uint8_t *)current_char = (*(uint8_t *)current_char + 26);
+
+                    *current_char = (*current_char + 26);
                 }
-                *(uint8_t *)current_char = (*(uint8_t *)current_char - shift);
+
+                *current_char = (*current_char - shift);
             }
         }
+
         puts("Okay, let's write down this letter! This is a pretty complex "
              "operation, you might want to check back later.");
         sleep(10);
-        for (int32_t i = 1; i <= 299; i = (i + 1)) {
+        for (int i = 1; i <= 299; i++) {
             if ((i % 5) == 0) {
                 printf("\r     ");
             }
@@ -385,9 +403,11 @@ int32_t main(int32_t argc, char **argv, char **envp) {
             sleep(10);
         }
         puts(" done!");
-        printf("%c\n", ((uint64_t)((int32_t) * (uint8_t *)current_char)));
-        current_char = &current_char[1];
+        printf("%c\n", *current_char);
+
+        current_char++;
     }
+
     puts("You're still here?");
     return 0;
 }
@@ -400,7 +420,7 @@ wrapped to stay a lowercase or uppercase character.
 
 # Putting everything together
 
-This is an example of a Caesar cypher with a left shift of `18`. This means that
+This is an example of a Caesar cipher with a left shift of `18`. This means that
 the flag has been encrypted with the ROT18 algorithm.
 
 Therefore, we simply have to apply the ROT8 algorithm on the encrypted flag to

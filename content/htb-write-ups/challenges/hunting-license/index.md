@@ -253,19 +253,22 @@ As usual, I'll start by exploring the `main` function.
 ### `main`
 
 ```c
-int32_t main(int32_t argc, char **argv, char **envp) {
+int main(int argc, char **argv, char **envp) {
     puts("So, you want to be a relic hunter?");
     puts("First, you're going to need your license, and for that you need to "
          "pass the exam.");
     puts("It's short, but it's not for the faint of heart. Are you up to the "
          "challenge?! (y/n)");
+
     char input = getchar();
     if ((input != 'y' && (input != 'Y' && input != '\n'))) {
         puts("Not many are...");
         exit(EXIT_FAILURE);
     }
+
     exam();
     puts("Well done hunter - consider yourself certified!");
+
     return 0;
 }
 ```
@@ -276,7 +279,7 @@ This function checks if the user is ready to start the challenge, and calls the
 ### `exam`
 
 ```c
-int64_t exam() {
+int exam() {
     char *first_input = readline("Okay, first, a warmup - what's the first "
                                  "password? This one's not even hidden: ");
     if (strcmp(first_input, "PasswordNumeroUno") != 0) {
@@ -285,26 +288,29 @@ int64_t exam() {
     }
     free(first_input);
 
-    int64_t second_password = 0;
-    reverse(&second_password, "0wTdr0wss4P", 11);
+    char second_password[11];
+    reverse(second_password, "0wTdr0wss4P", sizeof(second_password));
     char *second_input =
         readline("Getting harder - what's the second password? ");
-    if (strcmp(second_input, &second_password) != 0) {
+    if (strcmp(second_input, second_password) != 0) {
         puts("You've got it all backwards...");
         exit(EXIT_FAILURE);
     }
     free(second_input);
 
-    int64_t third_password;
-    __builtin_memset(&third_password, 0, 17);
-    xor(&third_password,
-        "\x47\x7b\x7a\x61\x77\x52\x7d\x77\x55\x7a\x7d\x72\x7f\x32\x32\x32\x13",
-        17, 19);
+    char third_password[17];
+    memset(third_password, 0, sizeof(third_password));
+    xor(third_password,
+        "\x47\x7b\x7a\x61\x77\x52\x7d\x77\x55\x7a\x7d\x72\x7f"
+        "\x32\x32\x32\x13",
+        sizeof(third_password), 19);
     char *third_input = readline(
         "Your final test - give me the third, and most protected, password: ");
-    if (strcmp(third_input, &third_password) == 0) {
-        return free(third_input);
+    if (strcmp(third_input, third_password) == 0) {
+        free(third_input);
+        return 0;
     }
+
     puts("Failed at the final hurdle!");
     exit(EXIT_FAILURE);
 }
@@ -326,19 +332,14 @@ function called with `third_password`,
 ### `reverse`
 
 ```c
-int64_t reverse(void *destination, void *source, int64_t length) {
-    int32_t index = 0;
-    int64_t final_index;
-    while (true) {
-        final_index = ((int64_t)index);
-        if (length <= final_index) {
-            break;
-        }
-        *(uint8_t *)((char *)destination + ((int64_t)index)) =
-            *(uint8_t *)((char *)source + ((length - ((int64_t)index)) - 1));
-        index = (index + 1);
+int reverse(char destination[], const char source[], int length) {
+    int index;
+
+    for (index = 0; index < length; index++) {
+        destination[index] = source[length - index - 1];
     }
-    return final_index;
+
+    return length - 1;
 }
 ```
 
@@ -349,19 +350,14 @@ in bytes.
 ### `xor`
 
 ```c
-int64_t xor(void *destination, void *source, int64_t length, char key) {
-    int32_t index = 0;
-    int64_t final_index;
-    while (true) {
-        final_index = ((int64_t)index);
-        if (length <= final_index) {
-            break;
-        }
-        *(uint8_t *)((char *)destination + ((int64_t)index)) =
-            (*(uint8_t *)((char *)source + ((int64_t)index)) ^ key);
-        index = (index + 1);
+int xor(char destination[], char source[], int length, char key) {
+    int index;
+
+    for (index = 0; index < length; index++) {
+        destination[index] = source[index] ^ key;
     }
-    return final_index;
+
+    return length - 1;
 }
 ```
 
@@ -376,45 +372,16 @@ from the `source` memory region and a given `key`, storing the result in the
 
 The solution to the first challenge is quite obvious, it's `PasswordNumeroUno`.
 
-The solution to the second challenge is the string `0wTdr0wss4P` reversed up to
-`11` characters, which is its size, so it's `P4ssw0rdTw0`.
+The solution to the second challenge is the string `0wTdr0wss4P` reversed, so
+it's `P4ssw0rdTw0`.
 
 The solution to the third challenge is the string
-`\x47\x7b\x7a\x61\x77\x52\x7d\x77\x55\x7a\x7d\x72\x7f\x32\x32\x32\x13` XOR'ed
-with `19` up to `17` characters, which is the length of this string. To obtain
-the result of this operation, I'll run this Python script:
+`\x47\x7b\x7a\x61\x77\x52\x7d\x77\x55\x7a\x7d\x72\x7f\x32\x32\x32` XOR'ed with
+`19`. To obtain the result of this operation, I'll open
+[CyberChef](https://gchq.github.io/CyberChef/) and I'll set the key to `19`.
+Then, I'll cook:
 
-```py
-# Define the password bytes as a list
-PASSWORD = [
-    0x47,
-    0x7b,
-    0x7a,
-    0x61,
-    0x77,
-    0x52,
-    0x7d,
-    0x77,
-    0x55,
-    0x7a,
-    0x7d,
-    0x72,
-    0x7f,
-    0x32,
-    0x32,
-    0x32,
-    0x13,
-]
-
-# Define the key for XOR operation
-KEY = 0x13
-
-# Perform XOR operation on each byte in the PASSWORD list with the KEY
-result = "".join(chr(byte ^ KEY) for byte in PASSWORD)
-
-# Print the result as a string
-print(result)
-```
+![CyberChef XOR third password](cyberchef-xor-third-password.png)
 
 We get the `ThirdAndFinal!!!` password!
 

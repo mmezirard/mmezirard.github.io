@@ -271,49 +271,58 @@ As usual, I'll start by exploring the `main` function.
 ### `main`
 
 ```c
-int32_t main(int32_t argc, char **argv, char **envp) {
+int main(int argc, char **argv, char **envp) {
     if (argc <= 1) {
-        printf("Usage: %s db.ex\n", *(uint64_t *)argv);
+        printf("Usage: %s db.ex\n", argv[0]);
         exit(EXIT_FAILURE);
     }
+
     puts("[*] Welcome user: kr4eq4L2$12xb, to the Widely Inflated Dimension "
          "Editor [*]");
     puts("[*]    Serving your pocket dimension storage needs since 14,012.5 B  "
          "  "
          "  [*]");
+
     FILE *fp = fopen(argv[1], "r");
-    if (fp == 0) {
+    if (fp == NULL) {
         puts("[x] There was a problem accessing your database [x]");
         exit(EXIT_FAILURE);
     }
+
     fseek(fp, 0, SEEK_END);
-    int64_t fileSize = ftell(fp);
+    long long int fileSize = ftell(fp);
     fseek(fp, 0, SEEK_SET);
-    uint32_t dimensionCount =
-        ((int32_t)(((fileSize * 0) + ((fileSize / 180) * 180)) / 180));
-    void *dimensionData = calloc(((int64_t)dimensionCount), 180);
-    fread(dimensionData, 180, ((int64_t)dimensionCount), fp);
+
+    int dimensionCount = fileSize / 180;
+
+    char *dimensionData = calloc(dimensionCount, 180);
+    fread(dimensionData, 180, ((long long int)dimensionCount), fp);
     fclose(fp);
+
     puts("[*]                       Displaying Dimensions....                  "
          "  "
          "  [*]");
     puts("[*]       Name       |              Code                |   "
          "Encrypted  "
          "  [*]");
-    for (int32_t i = 0; i < dimensionCount; i = (i + 1)) {
-        int32_t encryptionIndicator;
-        if (*(uint32_t *)((char *)dimensionData + (((int64_t)i) * 180)) == 0) {
+
+    for (int i = 0; i < dimensionCount; i++) {
+        int encryptionIndicator;
+        if (*(unsigned int *)(dimensionData + (i * 180)) == 0) {
             encryptionIndicator = ' ';
         } else {
             encryptionIndicator = '*';
         }
+
         printf("[X] %-16s | %-32s | %6s%c%7s [*]\n",
-               (((char *)dimensionData + (((int64_t)i) * 180)) + 4),
-               (((char *)dimensionData + (((int64_t)i) * 180)) + 0x14),
-               "\x00\x00\x00", ((uint64_t)encryptionIndicator), "\x00\x00\x00",
-               argv);
+               dimensionData + (i * 180) + 4, dimensionData + (i * 180) + 20,
+               "\x00\x00\x00", encryptionIndicator, "\x00\x00\x00", argv);
     }
+
     menu(dimensionData, dimensionCount);
+    free(dimensionData);
+
+    return 0;
 }
 ```
 
@@ -324,54 +333,65 @@ dimensions contained in the database. It then calls the `menu` function with the
 ### `menu`
 
 ```c
-void menu(void *dimensionData, int32_t dimensionCount) {
-    int64_t inputDimension;
-    __builtin_memset(&inputDimension, 0, 32);
+void menu(char *dimensionData, int dimensionCount) {
+    char inputDimension[32];
+    memset(inputDimension, 0, sizeof(inputDimension));
+
     while (true) {
         printf("Which dimension would you like to examine? ");
-        fgets(&inputDimension, 32, __TMC_END__);
-        int32_t selectedDimension = strtol(&inputDimension, NULL, 10);
-        if ((selectedDimension >= 0 && selectedDimension < dimensionCount)) {
-            int64_t *selectedDimensionData =
-                ((char *)dimensionData + (((int64_t)selectedDimension) * 180));
-            int32_t dataType = ((int32_t) * (uint64_t *)selectedDimensionData);
-            int64_t encryptedString = selectedDimensionData[6];
+        fgets(inputDimension, sizeof(inputDimension), stdin);
+
+        int selectedDimension = strtol(inputDimension, NULL, 10);
+
+        if (selectedDimension >= 0 && selectedDimension < dimensionCount) {
+            char *selectedDimensionData =
+                dimensionData + (selectedDimension * 180);
+
+            int dataType = *(int *)(selectedDimensionData);
+            char *encryptedString = selectedDimensionData + 6;
+
             if (dataType == 0) {
-                puts(&*(uint64_t *)((char *)encryptedString)[4]);
+                puts(encryptedString + 4);
                 continue;
             } else {
-                int64_t decryptedString = encryptedString;
                 printf("[X] That entry is encrypted - please enter your WIDE "
                        "decryption key: ");
-                void inputKey;
-                fgets(&inputKey, 16, __TMC_END__);
-                void wideInputKey;
-                mbstowcs(&wideInputKey, &inputKey, 16);
-                if (wcscmp(&wideInputKey, U"sup3rs3cr3tw1d3") != 0) {
+
+                char inputKey[16];
+                fgets(inputKey, sizeof(inputKey), stdin);
+
+                wchar_t wideInputKey[16];
+                mbstowcs(wideInputKey, inputKey, sizeof(wideInputKey));
+
+                if (wcscmp(wideInputKey, U"sup3rs3cr3tw1d3") != 0) {
                     puts("[X]                          Key was incorrect       "
-                         "          "
-                         "          [X]");
+                         "[X]");
                     continue;
                 } else {
-                    for (int32_t i = 0; i <= 127; i = (i + 1)) {
-                        if (*(uint8_t *)(&decryptedString + ((int64_t)i)) ==
-                            0) {
+                    char decryptedString[128];
+                    memcpy(decryptedString, encryptedString,
+                           sizeof(decryptedString));
+
+                    for (int i = 0; i < 128; i++) {
+                        if (decryptedString[i] == 0) {
                             break;
                         }
-                        uint64_t temp = ((uint64_t)(i * 3));
-                        int32_t shiftedValue = (((int32_t)(temp << 3)) + temp);
-                        int32_t divisor = (shiftedValue / 0xff);
-                        *(uint8_t *)(&decryptedString + ((int64_t)i)) =
-                            (*(uint8_t *)(&decryptedString + ((int64_t)i)) ^
-                             (shiftedValue -
-                              (((int8_t)(divisor << 8)) - divisor)));
+
+                        int temp = i * 3;
+                        int shiftedValue = (temp << 3) + temp;
+                        int divisor = shiftedValue / 0xff;
+
+                        decryptedString[i] ^=
+                            shiftedValue - ((divisor << 8) - divisor);
                     }
-                    puts(&decryptedString);
+
+                    puts(decryptedString);
                     continue;
                 }
             }
+        } else {
+            puts("That option was invalid.");
         }
-        puts("That option was invalid.");
     }
 }
 ```

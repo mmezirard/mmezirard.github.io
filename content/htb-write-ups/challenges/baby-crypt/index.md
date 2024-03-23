@@ -226,22 +226,22 @@ As usual, I'll start by exploring the `main` function.
 ### `main`
 
 ```c
-int32_t main(int32_t argc, char **argv, char **envp) {
+int main(int argc, char **argv, char **envp) {
     printf("Give me the key and I'll give you the flag: ");
     char *input = malloc(4);
-    fgets(input, 4, __TMC_END__);
-    char key = 0x46;
-    int64_t encryptedFlag;
-    __builtin_memcpy(&encryptedFlag,
-                     "\x3f\x64\x35\x0c\x48\x47\x05\x6f\x46\x04\x6f\x02\x04\x03"
-                     "\x13\x28\x52\x0e\x28\x58\x43\x0f\x00\x05",
-                     24);
-    for (int32_t i = 0; i <= 25; i = (i + 1)) {
-        key = (*(uint8_t *)(&encryptedFlag + ((int64_t)i)) ^
-               input[((int64_t)(i % 3))]);
-        *(uint8_t *)(&encryptedFlag + ((int64_t)i)) = key;
+    fgets(input, 4, stdin);
+
+    char encryptedFlag[24];
+    memcpy(encryptedFlag,
+           "\x3f\x64\x35\x0c\x48\x47\x05\x6f\x46\x04\x6f\x02\x04\x03"
+           "\x13\x28\x52\x0e\x28\x58\x43\x0f\x00\x05",
+           sizeof(encryptedFlag));
+    for (int i = 0; i < 24; i++) {
+        encryptedFlag[i] ^= input[i % 3];
     }
-    printf("%.26s\n", &encryptedFlag, key);
+    printf("%.26s\n", encryptedFlag);
+    free(input);
+
     return 0;
 }
 ```
@@ -265,15 +265,11 @@ Based on the decompilation of the program, only the first three characters that
 we enter are used for decryption. This means that the key we'll obtain this way
 will be valid for the whole encrypted flag!
 
-Let's use this one-liner for this:
+To obtain the result of the XOR operation, I'll open
+[CyberChef](https://gchq.github.io/CyberChef/) and I'll set the key to
+`0x48 0x54 0x42`. Then, I'll cook:
 
-```sh
-❯ python -c "print(chr(0x3f ^ 0x48) + chr(0x64 ^ 0x54) + chr(0x35 ^ 0x42))"
-```
-
-```
-w0w
-```
+![CyberChef XOR key](cyberchef-xor-key.png)
 
 The key is `w0w`!
 
