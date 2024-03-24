@@ -25,6 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const languageMapping = {
     bat: "CMD",
+    c: "C",
+    "c#": "C#",
     html: "HTML",
     java: "JAVA",
     js: "JAVASCRIPT",

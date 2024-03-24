@@ -16,6 +16,14 @@
         background-color: #C1F12E;
     }
 
+    &[data-lang='c'] {
+        background-color: #555555;
+    }
+
+    &[data-lang='c#'] {
+        background-color: #178600;
+    }
+
     &[data-lang='html'] {
         background-color: #e34c26;
     }
