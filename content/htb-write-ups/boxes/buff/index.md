@@ -516,7 +516,7 @@ save the PoC as `exploit.py`.
 Let's exploit this vulnerability to elevate our privileges.
 
 ```sh
-❯ python3 "/workspace/exploit.py"
+❯ python "/workspace/exploit.py"
 ```
 
 If we check our listener:

@@ -280,7 +280,7 @@ print(result_string)
 I'll save it as `/workspace/decoder.py`, and I'll execute it:
 
 ```sh
-❯ python3 /workspace/decoder.py
+❯ python "/workspace/decoder.py"
 ```
 
 ```

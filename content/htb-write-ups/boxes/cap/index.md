@@ -375,7 +375,7 @@ Nice!
 
 ## Getting a lay of the land
 
-If we run `whoami`, we see that we got a foothold as `nathan`.
+If we run `whoami`, we see that we got a foothold as `nathan` (obviously).
 
 ### Architecture
 
