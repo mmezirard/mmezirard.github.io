@@ -45,8 +45,7 @@ commands ran on my machine will be prefixed with `❯` for clarity.
 <SNIP>
 ```
 
-This challenge is comprised of a single file named `rebuilding`. There's no
-extension, so we can infer that it's meant to be run on Linux.
+This challenge is comprised of a single file named `rebuilding`.
 
 # Static analysis
 
@@ -54,50 +53,14 @@ Let's start by statically analyzing the `rebuilding` file using the Rizin toolki
 
 ## Properties
 
-Let's inspect the properties of this binary.
+Let's inspect the properties of this file.
 
 ```sh
-❯ rz-bin -I "/workspace/rev_rebuilding/rebuilding"
+❯ file "/workspace/rev_rebuilding/rebuilding"
 ```
 
 ```
-[Info]
-arch     x86
-cpu      N/A
-baddr    0x00000000
-binsz    0x00001ad7
-bintype  elf
-bits     64
-class    ELF64
-compiler GCC: (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
-dbg_file N/A
-endian   LE
-hdr.csum N/A
-guid     N/A
-intrp    /lib64/ld-linux-x86-64.so.2
-laddr    0x00000000
-lang     c
-machine  AMD x86-64 architecture
-maxopsz  16
-minopsz  1
-os       linux
-cc       N/A
-pcalign  0
-relro    full
-rpath    NONE
-subsys   linux
-stripped false
-crypto   false
-havecode true
-va       true
-sanitiz  false
-static   false
-linenum  true
-lsyms    true
-canary   false
-PIE      true
-RELROCS  true
-NX       true
+rebuilding: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[sha1]=c7a145f3a4b213cf895a735e2b26adffc044c190, not stripped
 ```
 
 This is an ELF 64-bit, LSB executable.
@@ -148,39 +111,6 @@ nth vaddr      bind   type   lib name
 
 This binary imports functions like `puts` and `printf`, but also `usleep`, so we
 can expect to see text printed to the terminal and waiting times.
-
-## Exports
-
-Now, let's find the list of objects exported by this binary.
-
-```sh
-❯ rz-bin -E "/workspace/rev_rebuilding/rebuilding"
-```
-
-```
-[Exports]
-nth paddr      vaddr      bind   type   size lib name                
----------------------------------------------------------------------
-13  ---------- 0x00201050 GLOBAL OBJ    8        stdout
-43  0x00000a90 0x00000a90 GLOBAL FUNC   2        __libc_csu_fini
-46  ---------- 0x00201050 GLOBAL OBJ    8        stdout@@GLIBC_2.2.5
-48  0x00001020 0x00201020 GLOBAL OBJ    34       encrypted
-50  ---------- 0x00201049 GLOBAL NOTYPE 0        _edata
-51  0x00001042 0x00201042 GLOBAL OBJ    7        key
-52  0x00000a94 0x00000a94 GLOBAL FUNC   0        _fini
-56  0x00001000 0x00201000 GLOBAL NOTYPE 0        __data_start
-58  0x00001008 0x00201008 GLOBAL OBJ    0        __dso_handle
-59  0x00000aa0 0x00000aa0 GLOBAL OBJ    4        _IO_stdin_used
-60  0x00000a20 0x00000a20 GLOBAL FUNC   101      __libc_csu_init
-62  ---------- 0x00201060 GLOBAL NOTYPE 0        _end
-63  0x00000740 0x00000740 GLOBAL FUNC   43       _start
-64  ---------- 0x00201049 GLOBAL NOTYPE 0        __bss_start
-65  0x00000887 0x00000887 GLOBAL FUNC   394      main
-67  ---------- 0x00201050 GLOBAL OBJ    0        __TMC_END__
-70  0x00000698 0x00000698 GLOBAL FUNC   0        _init
-```
-
-We notice the classic `main` function.
 
 ## Strings
 

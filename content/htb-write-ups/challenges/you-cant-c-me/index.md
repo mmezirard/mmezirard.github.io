@@ -38,8 +38,7 @@ commands ran on my machine will be prefixed with `❯` for clarity.
 <SNIP>
 ```
 
-This challenge is comprised of a single file named `auth`. There's no extension,
-so we can infer that it's meant to be run on Linux.
+This challenge is comprised of a single file named `auth`.
 
 # Static analysis
 
@@ -47,50 +46,14 @@ Let's start by statically analyzing the `auth` file using the Rizin toolkit.
 
 ## Properties
 
-Let's inspect the properties of this binary.
+Let's inspect the properties of this file.
 
 ```sh
-❯ rz-bin -I "/workspace/auth"
+❯ file "/workspace/auth"
 ```
 
 ```
-[Info]
-arch     x86
-cpu      N/A
-baddr    0x00400000
-binsz    0x00003184
-bintype  elf
-bits     64
-class    ELF64
-compiler GCC: (Ubuntu 9.2.1-9ubuntu2) 9.2.1 20191008 clang version 6.0.1-11 (tags/RELEASE_601/final)
-dbg_file N/A
-endian   LE
-hdr.csum N/A
-guid     N/A
-intrp    /lib64/ld-linux-x86-64.so.2
-laddr    0x00000000
-lang     c
-machine  AMD x86-64 architecture
-maxopsz  16
-minopsz  1
-os       linux
-cc       N/A
-pcalign  0
-relro    partial
-rpath    NONE
-subsys   linux
-stripped true
-crypto   false
-havecode true
-va       true
-sanitiz  false
-static   false
-linenum  false
-lsyms    false
-canary   false
-PIE      false
-RELROCS  false
-NX       true
+auth: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, stripped
 ```
 
 This is an ELF 64-bit, LSB executable.
@@ -135,23 +98,6 @@ nth vaddr      bind   type   lib name
 
 This binary imports functions like `printf`, but also `fgets`, so we can expect
 to see text printed to the terminal and to be asked for input.
-
-## Exports
-
-Now, let's find the list of objects exported by this binary.
-
-```sh
-❯ rz-bin -E "/workspace/auth"
-```
-
-```
-[Exports]
-nth paddr      vaddr      bind   type size lib name  
------------------------------------------------------
-7   ---------- 0x00404050 GLOBAL OBJ  8        stdin
-```
-
-This binary is stripped, so there's not much.
 
 ## Strings
 

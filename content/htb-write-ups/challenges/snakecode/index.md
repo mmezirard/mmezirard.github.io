@@ -43,63 +43,25 @@ commands ran on my machine will be prefixed with `❯` for clarity.
 <SNIP>
 ```
 
-This challenge is comprised of a single file named `chall.pyc`. Based on the
-extension, we can infer that it contains Python bytecode.
+This challenge is comprised of a single file named `chall.pyc`.
 
 # Static analysis
 
-Let's start by statically analyzing the `chall.pyc` file using the Rizin
-toolkit.
+Let's start by statically analyzing the `chall.pyc` file.
 
 ## Properties
 
 Let's inspect the properties of this file.
 
 ```sh
-❯ rz-bin -I /workspace/rev_snakecode/chall.pyc
+❯ file "/workspace/rev_snakecode/chall.pyc"
 ```
 
 ```
-[Info]
-arch     pyc
-cpu      2.7a2+
-baddr    0x00000000
-binsz    0x00001619
-bintype  pyc
-bits     16
-retguard false
-class    Python byte-compiled file
-compiler N/A
-dbg_file N/A
-endian   LE
-hdr.csum N/A
-guid     N/A
-intrp    N/A
-laddr    0x00000000
-lang     N/A
-machine  Python 2.7a2+ VM (rev edfed0e32cedf3b84c6e999052486a750a3f5bee)
-maxopsz  16
-minopsz  1
-os       any
-cc       N/A
-pcalign  0
-rpath    N/A
-subsys   
-stripped false
-crypto   false
-havecode true
-va       false
-sanitiz  false
-static   true
-linenum  false
-lsyms    false
-canary   false
-PIE      false
-RELROCS  false
-NX       false
+chall.pyc: python 2.7 byte-compiled
 ```
 
-This is a Python version `2.7a2+` bytecode file.
+This is a Python `2.7` bytecode file.
 
 ## Strings
 

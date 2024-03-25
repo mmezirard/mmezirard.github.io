@@ -41,11 +41,7 @@ commands ran on my machine will be prefixed with `❯` for clarity.
 <SNIP>
 ```
 
-This challenge is comprised of a single file named `license`. There's no
-extension, so we can infer that it's meant to be run on Linux.
-
-We're also given the `94.237.63.83:54974` socket, which is running the `license`
-binary.
+This challenge is comprised of a single file named `license`.
 
 # Static analysis
 
@@ -53,50 +49,14 @@ Let's start by statically analyzing the `license` file using the Rizin toolkit.
 
 ## Properties
 
-Let's inspect the properties of this binary.
+Let's inspect the properties of this file.
 
 ```sh
-❯ rz-bin -I "/workspace/rev_hunting_license/license"
+❯ file "/workspace/rev_hunting_license/license"
 ```
 
 ```
-[Info]
-arch     x86
-cpu      N/A
-baddr    0x00400000
-binsz    0x00003a7c
-bintype  elf
-bits     64
-class    ELF64
-compiler GCC: (Debian 10.2.1-6) 10.2.1 20210110
-dbg_file N/A
-endian   LE
-hdr.csum N/A
-guid     N/A
-intrp    /lib64/ld-linux-x86-64.so.2
-laddr    0x00000000
-lang     c
-machine  AMD x86-64 architecture
-maxopsz  16
-minopsz  1
-os       linux
-cc       N/A
-pcalign  0
-relro    partial
-rpath    NONE
-subsys   linux
-stripped false
-crypto   false
-havecode true
-va       true
-sanitiz  false
-static   false
-linenum  true
-lsyms    true
-canary   false
-PIE      false
-RELROCS  true
-NX       true
+license: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=5be88c3ed329c1570ab807b55c1875d429a581a7, for GNU/Linux 3.2.0, not stripped
 ```
 
 This is an ELF 64-bit, LSB executable.
@@ -146,41 +106,6 @@ nth vaddr      bind   type   lib name
 
 This binary imports functions like `puts`, but also `readline`, so we can expect
 to see text printed to the terminal and to be asked for input.
-
-## Exports
-
-Now, let's find the list of objects exported by this binary.
-
-```sh
-❯ rz-bin -E "/workspace/rev_hunting_license/license"
-```
-
-```
-[Exports]
-nth paddr      vaddr      bind   type   size lib name                    
--------------------------------------------------------------------------
-43  0x00001420 0x00401420 GLOBAL FUNC   1        __libc_csu_fini
-44  0x000011e1 0x004011e1 GLOBAL FUNC   86       reverse
-48  0x00003060 0x00404060 GLOBAL OBJ    12       t
-49  ---------- 0x00404081 GLOBAL NOTYPE 0        _edata
-50  0x00001424 0x00401424 GLOBAL FUNC   0        _fini
-53  0x0000128a 0x0040128a GLOBAL FUNC   300      exam
-54  0x00003050 0x00404050 GLOBAL NOTYPE 0        __data_start
-58  0x00003058 0x00404058 GLOBAL OBJ    0        __dso_handle
-59  0x00002000 0x00402000 GLOBAL OBJ    4        _IO_stdin_used
-60  0x000013c0 0x004013c0 GLOBAL FUNC   93       __libc_csu_init
-61  ---------- 0x00404088 GLOBAL NOTYPE 0        _end
-62  0x000010c0 0x004010c0 GLOBAL FUNC   1        _dl_relocate_static_pie
-63  0x00001090 0x00401090 GLOBAL FUNC   43       _start
-64  0x00001237 0x00401237 GLOBAL FUNC   83       xor
-65  ---------- 0x00404081 GLOBAL NOTYPE 0        __bss_start
-66  0x00001172 0x00401172 GLOBAL FUNC   111      main
-67  0x00003070 0x00404070 GLOBAL OBJ    17       t2
-69  ---------- 0x00404088 GLOBAL OBJ    0        __TMC_END__
-70  0x00001000 0x00401000 GLOBAL FUNC   0        _init
-```
-
-We notice the classic `main` function, but also `reverse` and `xor`.
 
 ## Strings
 
@@ -368,8 +293,6 @@ from the `source` memory region and a given `key`, storing the result in the
 
 # Putting it all together
 
-## Local
-
 The solution to the first challenge is quite obvious, it's `PasswordNumeroUno`.
 
 The solution to the second challenge is the string `0wTdr0wss4P` reversed, so
@@ -387,9 +310,10 @@ We get the `ThirdAndFinal!!!` password!
 
 If we run the binary once again and input these passwords, they all work!
 
-## Remote
+# Socket `94.237.63.83:54974`
 
-Now let's connect to the socket we were given.
+Now let's connect to the socket we were given, which is running the `license`
+binary.
 
 ```sh
 ❯ nc "94.237.63.83" "54974"
@@ -400,8 +324,7 @@ What is the file format of the executable?
 >
 ```
 
-There's a bunch of extra questions to guide us that weren't in the provided
-binary.
+There's a bunch of extra questions to guide us.
 
 In the [Properties](#properties) section, we found that the file was an ELF
 binary.

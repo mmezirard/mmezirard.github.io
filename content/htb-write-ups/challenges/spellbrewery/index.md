@@ -53,106 +53,27 @@ Let's start by statically analyzing these two files using the Rizin toolkit.
 
 ## Properties
 
-Let's inspect the properties of the `SpellBrewery` binary.
+Let's inspect the properties of the `SpellBrewery` file.
 
 ```sh
-❯ rz-bin -I "/workspace/rev_spellbrewery/SpellBrewery"
+❯ file "/workspace/rev_spellbrewery/SpellBrewery"
 ```
 
 ```
-[Info]
-arch     x86
-cpu      N/A
-baddr    0x00000000
-binsz    0x0002ba54
-bintype  elf
-bits     64
-class    ELF64
-compiler GCC: (GNU) 4.8.5 20150623 (Red Hat 4.8.5-44) clang version 9.0.0 (tags/RELEASE_900/final)
-dbg_file N/A
-endian   LE
-hdr.csum N/A
-guid     N/A
-intrp    /lib64/ld-linux-x86-64.so.2
-laddr    0x00000000
-lang     c++
-machine  AMD x86-64 architecture
-maxopsz  16
-minopsz  1
-os       linux
-cc       N/A
-pcalign  0
-relro    full
-rpath    $ORIGIN/netcoredeps
-subsys   linux
-stripped false
-crypto   false
-havecode true
-va       true
-sanitiz  false
-static   false
-linenum  true
-lsyms    true
-canary   true
-PIE      true
-RELROCS  true
-NX       true
+SpellBrewery: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=0ee68cb419f7329a3bd027c947654385d416143a, not stripped
 ```
 
-This is an ELF 64-bit, LSB executable, which loads dynamic libraries located in
-the `netcoredeps` directory in the shared libraries folder.
+The `SpellBrewery` file is an ELF 64-bit, LSB executable.
 
 ```sh
-❯ rz-bin -I "/workspace/rev_spellbrewery/SpellBrewery.dll"
+❯ file "/workspace/rev_spellbrewery/SpellBrewery.dll"
 ```
 
 ```
-[Info]
-arch     x86
-cpu      N/A
-baddr    0x00400000
-binsz    0x00003600
-bintype  pe
-bits     32
-retguard false
-class    PE32
-cmp.csum 0x0000ec7b
-compiled Sat Oct 23 11:09:36 2083 UTC+1
-compiler N/A
-dbg_file N/A
-endian   LE
-hdr.csum 0x00000000
-guid     N/A
-intrp    N/A
-laddr    0x00000000
-lang     cil
-machine  i386
-maxopsz  16
-minopsz  1
-os       windows
-overlay  false
-cc       cdecl
-pcalign  0
-rpath    N/A
-signed   false
-subsys   Windows CUI
-stripped false
-crypto   false
-havecode true
-va       true
-sanitiz  false
-static   false
-linenum  false
-lsyms    false
-canary   false
-PIE      true
-RELROCS  false
-NX       true
+SpellBrewery.dll: PE32 executable (console) Intel 80386 Mono/.Net assembly, for MS Windows, 3 sections
 ```
 
-The `SpellBrewery.dll` file is a PE32 binary.
-
-If we run `file` on it, we also discover that it's a .NET assembly.
+The `SpellBrewery.dll` file is a PE32 binary, .NET assembly.
 
 In fact, the `SpellBrewery` binary uses the `SpellBrewery.dll` library to
 provide its functionalities, so I'll focus on this file from now on.
@@ -193,22 +114,6 @@ nth vaddr      bind type lib         name
 We only find the `_CorExeMain` function, which is the starting point for DLL
 files.
 
-## Exports
-
-Now, let's find the list of objects exported by this binary.
-
-```sh
-❯ rz-bin -E "/workspace/rev_spellbrewery/SpellBrewery.dll"
-```
-
-```
-[Exports]
-nth paddr vaddr bind type size lib name 
-----------------------------------------
-```
-
-There's not debugging information.
-
 ## Strings
 
 Finally, let's retrieve the list of strings contained in this binary.
@@ -245,8 +150,6 @@ nth paddr      vaddr      len size section type    string
 21  0x00003168 0x00406368 7   16   .rsrc   utf16le 1.0.0.0
 22  0x0000318b 0x0040638b 487 488  .rsrc   ascii   <?xml version="1.0" encoding="UTF-8" standalone="yes"?>\r\n\r\n<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">\r\n  <assemblyIdentity version="1.0.0.0" name="MyApplication.app"/>\r\n  <trustInfo xmlns="urn:schemas-microsoft-com:asm.v2">\r\n    <security>\r\n      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">\r\n        <requestedExecutionLevel level="asInvoker" uiAccess="false"/>\r\n      </requestedPrivileges>\r\n    </security>\r\n  </trustInfo>\r\n</assembly>
 ```
-
-I don't see anything noteworthy.
 
 # Dynamic analysis
 

@@ -42,8 +42,7 @@ commands ran on my machine will be prefixed with `❯` for clarity.
 ```
 
 This challenge is comprised of a file named `trace.pcap` and a file named
-`securetransfer`. There's no extension, so we can infer that it's meant to be
-run on Linux.
+`securetransfer`.
 
 # Static analysis
 
@@ -52,50 +51,14 @@ toolkit.
 
 ## Properties
 
-Let's inspect the properties of this binary.
+Let's inspect the properties of this file.
 
 ```sh
-❯ rz-bin -I "/workspace/rev_securedtransfer/securetransfer"
+❯ file "/workspace/rev_securedtransfer/securetransfer"
 ```
 
 ```
-[Info]
-arch     x86
-cpu      N/A
-baddr    0x00000000
-binsz    0x00003145
-bintype  elf
-bits     64
-class    ELF64
-compiler GCC: (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
-dbg_file N/A
-endian   LE
-hdr.csum N/A
-guid     N/A
-intrp    /lib64/ld-linux-x86-64.so.2
-laddr    0x00000000
-lang     c
-machine  AMD x86-64 architecture
-maxopsz  16
-minopsz  1
-os       linux
-cc       N/A
-pcalign  0
-relro    full
-rpath    NONE
-subsys   linux
-stripped true
-crypto   false
-havecode true
-va       true
-sanitiz  false
-static   false
-linenum  false
-lsyms    false
-canary   true
-PIE      true
-RELROCS  false
-NX       true
+securetransfer: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=0457997eda987eb100de85a2954fc8b8fc660a53, for GNU/Linux 3.2.0, stripped
 ```
 
 This is an ELF 64-bit, LSB executable.
@@ -177,22 +140,6 @@ This binary imports functions like `read`, `write` and `close`, but also
 binary probably deals with files, opens connections to remote hosts, and uses
 cryptographic functions.
 
-## Exports
-
-Now, let's find the list of objects exported by this binary.
-
-```sh
-❯ rz-bin -E "/workspace/rev_securedtransfer/securetransfer"
-```
-
-```
-[Exports]
-nth paddr vaddr bind type size lib name 
-----------------------------------------
-```
-
-This binary is stripped, so there's nothing.
-
 ## Strings
 
 Finally, let's retrieve the list of strings contained in this binary.
@@ -225,9 +172,9 @@ nth paddr      vaddr      len size section type  string
 17  0x000021c0 0x000021c0 36  37   .rodata ascii Usage ./securetransfer [<ip> <file>]
 ```
 
-The last string indicate how to use this binary. It's probably expecting an
-optional IP and an optional file. The other strings indicate that the binary
-deals with files and sockets.
+The last string indicates how to use this binary: it accepts an optional IP and
+an optional file. The other strings indicate that the binary deals with files
+and sockets.
 
 # Dynamic analysis
 

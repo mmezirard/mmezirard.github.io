@@ -42,8 +42,7 @@ commands ran on my machine will be prefixed with `❯` for clarity.
 <SNIP>
 ```
 
-This challenge is comprised of a single file named `ouija`. There's no
-extension, so we can infer that it's meant to be run on Linux.
+This challenge is comprised of a single file named `ouija`.
 
 # Static analysis
 
@@ -51,50 +50,14 @@ Let's start by statically analyzing the `ouija` file using the Rizin toolkit.
 
 ## Properties
 
-Let's inspect the properties of this binary.
+Let's inspect the properties of this file.
 
 ```sh
-❯ rz-bin -I "/workspace/rev_ouija/ouija"
+❯ file "/workspace/rev_ouija/ouija"
 ```
 
 ```
-[Info]
-arch     x86
-cpu      N/A
-baddr    0x00000000
-binsz    0x00003aaa
-bintype  elf
-bits     64
-class    ELF64
-compiler GCC: (Debian 10.2.1-6) 10.2.1 20210110
-dbg_file N/A
-endian   LE
-hdr.csum N/A
-guid     N/A
-intrp    /lib64/ld-linux-x86-64.so.2
-laddr    0x00000000
-lang     c
-machine  AMD x86-64 architecture
-maxopsz  16
-minopsz  1
-os       linux
-cc       N/A
-pcalign  0
-relro    partial
-rpath    NONE
-subsys   linux
-stripped false
-crypto   false
-havecode true
-va       true
-sanitiz  false
-static   false
-linenum  true
-lsyms    true
-canary   false
-PIE      true
-RELROCS  true
-NX       true
+ouija: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=53a9e0435f7c7041c557e9d4a8418cb6a916f339, for GNU/Linux 3.2.0, not stripped
 ```
 
 This is an ELF 64-bit, LSB executable.
@@ -145,37 +108,6 @@ nth vaddr      bind   type   lib name
 This binary imports functions like `putchar`, `puts` and `printf`, but also
 `sleep`, so we can expect to see text printed to the terminal and waiting times.
 
-## Exports
-
-Now, let's find the list of objects exported by this binary.
-
-```sh
-❯ rz-bin -E "/workspace/rev_ouija/ouija"
-```
-
-```
-[Exports]
-nth paddr      vaddr      bind   type   size lib name               
---------------------------------------------------------------------
-11  ---------- 0x00004060 GLOBAL OBJ    8        stdout
-45  0x00001910 0x00001910 GLOBAL FUNC   1        __libc_csu_fini
-48  ---------- 0x00004060 GLOBAL OBJ    8        stdout@GLIBC_2.2.5
-51  ---------- 0x0000405c GLOBAL NOTYPE 0        _edata
-52  0x00003058 0x00004058 GLOBAL OBJ    4        key
-53  0x00001914 0x00001914 GLOBAL FUNC   0        _fini
-56  0x00003048 0x00004048 GLOBAL NOTYPE 0        __data_start
-58  0x00003050 0x00004050 GLOBAL OBJ    0        __dso_handle
-59  0x00002000 0x00002000 GLOBAL OBJ    4        _IO_stdin_used
-60  0x000018b0 0x000018b0 GLOBAL FUNC   93       __libc_csu_init
-61  ---------- 0x00004070 GLOBAL NOTYPE 0        _end
-62  0x000010a0 0x000010a0 GLOBAL FUNC   43       _start
-63  ---------- 0x0000405c GLOBAL NOTYPE 0        __bss_start
-64  0x00001185 0x00001185 GLOBAL FUNC   1828     main
-66  ---------- 0x00004060 GLOBAL OBJ    0        __TMC_END__
-```
-
-We notice the classic `main` function.
-
 ## Strings
 
 Finally, let's retrieve the list of strings contained in this binary.
@@ -201,8 +133,6 @@ nth paddr      vaddr      len size section type  string
 10  0x00002120 0x00002120 107 108  .rodata ascii Okay, let's write down this letter! This is a pretty complex operation, you might want to check back later.
 11  0x00002190 0x00002190 18  19   .rodata ascii You're still here?
 ```
-
-I don't see anything noteworthy.
 
 # Dynamic analysis
 

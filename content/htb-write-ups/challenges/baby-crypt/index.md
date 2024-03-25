@@ -38,59 +38,23 @@ commands ran on my machine will be prefixed with `❯` for clarity.
 <SNIP>
 ```
 
-This challenge is comprised of a single file named `baby_crypt`. There's no
-extension, so we can infer that it's meant to be run on Linux.
+This challenge is comprised of a single file named `baby_crypt`.
 
 # Static analysis
 
-Let's start by statically analyzing the `baby_crypt` file using the Rizin toolkit.
+Let's start by statically analyzing the `baby_crypt` file using the Rizin
+toolkit.
 
 ## Properties
 
-Let's inspect the properties of this binary.
+Let's inspect the properties of this file.
 
 ```sh
-❯ rz-bin -I "/workspace/baby_crypt"
+❯ file "/workspace/baby_crypt"
 ```
 
 ```
-[Info]
-arch     x86
-cpu      N/A
-baddr    0x00000000
-binsz    0x00003a2b
-bintype  elf
-bits     64
-class    ELF64
-compiler GCC: (Ubuntu 9.2.1-9ubuntu2) 9.2.1 20191008
-dbg_file N/A
-endian   LE
-hdr.csum N/A
-guid     N/A
-intrp    /lib64/ld-linux-x86-64.so.2
-laddr    0x00000000
-lang     c
-machine  AMD x86-64 architecture
-maxopsz  16
-minopsz  1
-os       linux
-cc       N/A
-pcalign  0
-relro    full
-rpath    NONE
-subsys   linux
-stripped false
-crypto   false
-havecode true
-va       true
-sanitiz  false
-static   false
-linenum  true
-lsyms    true
-canary   true
-PIE      true
-RELROCS  true
-NX       true
+baby_crypt: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=24af7e68eab982022ea63c1828813c3bfa671b51, for GNU/Linux 3.2.0, not stripped
 ```
 
 This is an ELF 64-bit, LSB executable.
@@ -138,36 +102,6 @@ nth vaddr      bind   type   lib name
 
 This binary imports functions like `printf`, but also `fgets`, so we can expect
 to see text printed to the terminal and to be asked for input.
-
-## Exports
-
-Now, let's find the list of objects exported by this binary.
-
-```sh
-❯ rz-bin -E "/workspace/baby_crypt"
-```
-
-```
-[Exports]
-nth paddr      vaddr      bind   type   size lib name               
---------------------------------------------------------------------
-10  ---------- 0x00004010 GLOBAL OBJ    8        stdin
-46  0x00001330 0x00001330 GLOBAL FUNC   5        __libc_csu_fini
-49  ---------- 0x00004010 GLOBAL OBJ    8        stdin@@GLIBC_2.2.5
-50  ---------- 0x00004010 GLOBAL NOTYPE 0        _edata
-51  0x00001338 0x00001338 GLOBAL FUNC   0        _fini
-56  0x00003000 0x00004000 GLOBAL NOTYPE 0        __data_start
-58  0x00003008 0x00004008 GLOBAL OBJ    0        __dso_handle
-59  0x00002000 0x00002000 GLOBAL OBJ    4        _IO_stdin_used
-60  0x000012c0 0x000012c0 GLOBAL FUNC   101      __libc_csu_init
-62  ---------- 0x00004020 GLOBAL NOTYPE 0        _end
-63  0x000010c0 0x000010c0 GLOBAL FUNC   47       _start
-64  ---------- 0x00004010 GLOBAL NOTYPE 0        __bss_start
-65  0x000011a9 0x000011a9 GLOBAL FUNC   273      main
-66  ---------- 0x00004010 GLOBAL OBJ    0        __TMC_END__
-```
-
-We notice the classic `main` function.
 
 ## Strings
 

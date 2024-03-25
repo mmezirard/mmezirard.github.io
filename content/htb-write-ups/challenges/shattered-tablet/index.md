@@ -42,8 +42,7 @@ commands ran on my machine will be prefixed with `❯` for clarity.
 <SNIP>
 ```
 
-This challenge is comprised of a single file named `tablet`. There's no
-extension, so we can infer that it's meant to be run on Linux.
+This challenge is comprised of a single file named `tablet`.
 
 # Static analysis
 
@@ -51,50 +50,14 @@ Let's start by statically analyzing the `tablet` file using the Rizin toolkit.
 
 ## Properties
 
-Let's inspect the properties of this binary.
+Let's inspect the properties of this file.
 
 ```sh
-❯ rz-bin -I "/workspace/rev_shattered_tablet/tablet"
+❯ file "/workspace/rev_shattered_tablet/tablet"
 ```
 
 ```
-[Info]
-arch     x86
-cpu      N/A
-baddr    0x00000000
-binsz    0x000039ec
-bintype  elf
-bits     64
-class    ELF64
-compiler GCC: (Debian 10.2.1-6) 10.2.1 20210110
-dbg_file N/A
-endian   LE
-hdr.csum N/A
-guid     N/A
-intrp    /lib64/ld-linux-x86-64.so.2
-laddr    0x00000000
-lang     c
-machine  AMD x86-64 architecture
-maxopsz  16
-minopsz  1
-os       linux
-cc       N/A
-pcalign  0
-relro    partial
-rpath    NONE
-subsys   linux
-stripped false
-crypto   false
-havecode true
-va       true
-sanitiz  false
-static   false
-linenum  true
-lsyms    true
-canary   false
-PIE      true
-RELROCS  true
-NX       true
+tablet: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=71ad3ff9f7e5fbf0edc75446337a0a68deb7ecd6, for GNU/Linux 3.2.0, not stripped
 ```
 
 This is an ELF 64-bit, LSB executable.
@@ -142,36 +105,6 @@ nth vaddr      bind   type   lib name
 This binary imports functions like `puts`, but also `fgets`, so we can expect to
 see text printed to the terminal and to be asked for input.
 
-## Exports
-
-Now, let's find the list of objects exported by this binary.
-
-```sh
-❯ rz-bin -E "/workspace/rev_shattered_tablet/tablet"
-```
-
-```
-[Exports]
-nth paddr      vaddr      bind   type   size lib name              
--------------------------------------------------------------------
-9   ---------- 0x00004040 GLOBAL OBJ    8        stdin
-45  0x000013f0 0x000013f0 GLOBAL FUNC   1        __libc_csu_fini
-49  ---------- 0x00004040 GLOBAL OBJ    8        stdin@GLIBC_2.2.5
-50  ---------- 0x00004040 GLOBAL NOTYPE 0        _edata
-51  0x000013f4 0x000013f4 GLOBAL FUNC   0        _fini
-55  0x00003030 0x00004030 GLOBAL NOTYPE 0        __data_start
-57  0x00003038 0x00004038 GLOBAL OBJ    0        __dso_handle
-58  0x00002000 0x00002000 GLOBAL OBJ    4        _IO_stdin_used
-59  0x00001390 0x00001390 GLOBAL FUNC   93       __libc_csu_init
-60  ---------- 0x00004050 GLOBAL NOTYPE 0        _end
-61  0x00001070 0x00001070 GLOBAL FUNC   43       _start
-62  ---------- 0x00004040 GLOBAL NOTYPE 0        __bss_start
-63  0x00001155 0x00001155 GLOBAL FUNC   566      main
-64  ---------- 0x00004040 GLOBAL OBJ    0        __TMC_END__
-```
-
-We notice the classic `main` function.
-
 ## Strings
 
 Finally, let's retrieve the list of strings contained in this binary.
@@ -188,8 +121,6 @@ nth paddr      vaddr      len size section type  string
 1   0x0000202b 0x0000202b 18  19   .rodata ascii Yes! That's right!
 2   0x0000203e 0x0000203e 14  15   .rodata ascii No... not that
 ```
-
-We find a few mysterious strings.
 
 # Dynamic analysis
 

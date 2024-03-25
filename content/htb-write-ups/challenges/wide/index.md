@@ -45,7 +45,6 @@ commands ran on my machine will be prefixed with `❯` for clarity.
 ```
 
 This challenge is comprised of a file named `db.ex` and a file named `wide`.
-There's no extension, so we can infer that it's meant to be run on Linux.
 
 # Static analysis
 
@@ -53,50 +52,14 @@ Let's start by statically analyzing the `wide` file using the Rizin toolkit.
 
 ## Properties
 
-Let's inspect the properties of this binary.
+Let's inspect the properties of this file.
 
 ```sh
-❯ rz-bin -I "/workspace/rev_wide/wide"
+❯ file "/workspace/rev_wide/wide"
 ```
 
 ```
-[Info]
-arch     x86
-cpu      N/A
-baddr    0x00000000
-binsz    0x00002b7b
-bintype  elf
-bits     64
-class    ELF64
-compiler GCC: (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
-dbg_file N/A
-endian   LE
-hdr.csum N/A
-guid     N/A
-intrp    /lib64/ld-linux-x86-64.so.2
-laddr    0x00000000
-lang     c
-machine  AMD x86-64 architecture
-maxopsz  16
-minopsz  1
-os       linux
-cc       N/A
-pcalign  0
-relro    full
-rpath    NONE
-subsys   linux
-stripped false
-crypto   false
-havecode true
-va       true
-sanitiz  false
-static   false
-linenum  true
-lsyms    true
-canary   false
-PIE      true
-RELROCS  true
-NX       true
+wide: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, BuildID[sha1]=13869bb7ce2c22f474b95ba21c9d7e9ff74ecc3f, not stripped
 ```
 
 This is an ELF 64-bit, LSB executable.
@@ -154,38 +117,6 @@ nth vaddr      bind   type   lib name
 This binary imports functions like `puts`, but also `fopen`, `fread` and
 `fclose`, so we can expect to see text printed to the terminal and the binary
 probably deals with files.
-
-## Exports
-
-Now, let's find the list of objects exported by this binary.
-
-```sh
-❯ rz-bin -E "/workspace/rev_wide/wide"
-```
-
-```
-[Exports]
-nth paddr      vaddr      bind   type   size lib name               
---------------------------------------------------------------------
-19  ---------- 0x00202010 GLOBAL OBJ    8        stdin
-43  0x00001070 0x00001070 GLOBAL FUNC   2        __libc_csu_fini
-49  ---------- 0x00202010 GLOBAL OBJ    8        stdin@@GLIBC_2.2.5
-51  ---------- 0x00202010 GLOBAL NOTYPE 0        _edata
-53  0x000009ea 0x000009ea GLOBAL FUNC   1016     menu
-54  0x00001074 0x00001074 GLOBAL FUNC   0        _fini
-59  0x00002000 0x00202000 GLOBAL NOTYPE 0        __data_start
-63  0x00002008 0x00202008 GLOBAL OBJ    0        __dso_handle
-64  0x00001080 0x00001080 GLOBAL OBJ    4        _IO_stdin_used
-65  0x00001000 0x00001000 GLOBAL FUNC   101      __libc_csu_init
-66  ---------- 0x00202020 GLOBAL NOTYPE 0        _end
-67  0x000008e0 0x000008e0 GLOBAL FUNC   43       _start
-69  ---------- 0x00202010 GLOBAL NOTYPE 0        __bss_start
-70  0x00000de2 0x00000de2 GLOBAL FUNC   536      main
-73  ---------- 0x00202010 GLOBAL OBJ    0        __TMC_END__
-76  0x000007d0 0x000007d0 GLOBAL FUNC   0        _init
-```
-
-We notice the classic `main` function, but also `menu`.
 
 ## Strings
 
