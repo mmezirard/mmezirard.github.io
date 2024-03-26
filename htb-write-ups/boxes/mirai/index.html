@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Linux box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;mirai#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Mirai<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2024-02-22</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/mirai/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#host-10-10-10-48">Host 10.10.10.48</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#dns">DNS</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#lighttpd">Lighttpd</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#plex">Plex</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#foothold-ssh">Foothold (SSH)</a>
+                                </li>
+
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#distribution">Distribution</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#kernel">Kernel</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#nics">NICs</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#hostname">Hostname</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#flags">Flags</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#sudo-permissions">Sudo permissions</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#privilege-escalation-sudo-permissions">Privilege escalation (Sudo permissions)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#establishing-persistence">Establishing persistence</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#system-enumeration-1">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#home-folders">Home folders</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#drives">Drives</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#exploring-dev-sdb">Exploring &#x2F;dev&#x2F;sdb</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#flags-1">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/mirai/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2017-09-01</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/2904">Arrexel</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.8</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-10-48">Host <code>10.10.10.48</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Mirai using a TCP SYN <code>nmap</code>
+scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.48<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE
+</span><span class="z-text z-plain">22/tcp    open  ssh
+</span><span class="z-text z-plain">53/tcp    open  domain
+</span><span class="z-text z-plain">80/tcp    open  http
+</span><span class="z-text z-plain">1118/tcp  open  sacred
+</span><span class="z-text z-plain">32400/tcp open  plex
+</span><span class="z-text z-plain">32469/tcp open  unknown
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.48<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE         SERVICE
+</span><span class="z-text z-plain">53/udp   open          domain
+</span><span class="z-text z-plain">68/udp   open|filtered dhcpc
+</span><span class="z-text z-plain">123/udp  open          ntp
+</span><span class="z-text z-plain">1900/udp open|filtered upnp
+</span><span class="z-text z-plain">1901/udp open|filtered fjicl-tep-a
+</span><span class="z-text z-plain">5353/udp open          zeroconf
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the services associated
+with the open TCP ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.48<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,53,80,1118,32400<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE VERSION
+</span><span class="z-text z-plain">22/tcp    open  ssh     OpenSSH 6.7p1 Debian 5+deb8u3 (protocol 2.0)
+</span><span class="z-text z-plain">53/tcp    open  domain  dnsmasq 2.76
+</span><span class="z-text z-plain">80/tcp    open  http    lighttpd 1.4.35
+</span><span class="z-text z-plain">1118/tcp  open  upnp    Platinum UPnP 1.0.5.13 (UPnP/1.0 DLNADOC/1.50)
+</span><span class="z-text z-plain">32400/tcp open  http    Plex Media Server httpd
+</span><span class="z-text z-plain">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's do the same for the UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.48<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>53,68,123,1900,1901,5353<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE         SERVICE     VERSION
+</span><span class="z-text z-plain">53/udp   open          domain      dnsmasq 2.76
+</span><span class="z-text z-plain">68/udp   open|filtered dhcpc
+</span><span class="z-text z-plain">123/udp  open          ntp         NTP v4 (unsynchronized)
+</span><span class="z-text z-plain">1900/udp open|filtered upnp
+</span><span class="z-text z-plain">1901/udp open|filtered fjicl-tep-a
+</span><span class="z-text z-plain">5353/udp open          mdns        DNS-based service discovery
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Mirai is running Linux, and the
+version of SSH suggests that it might be Debian.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP services to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.48<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,53,80,1118,32400<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE
+</span><span class="z-text z-plain">22/tcp    open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   1024 aa:ef:5c:e0:8e:86:97:82:47:ff:4a:e5:40:18:90:c5 (DSA)
+</span><span class="z-text z-plain">|   2048 e8:c1:9d:c5:43:ab:fe:61:23:3b:d7:e4:af:9b:74:18 (RSA)
+</span><span class="z-text z-plain">|   256 b6:a0:78:38:d0:c8:10:94:8b:44:b2:ea:a0:17:42:2b (ECDSA)
+</span><span class="z-text z-plain">|_  256 4d:68:40:f7:20:c4:e5:52:80:7a:44:38:b8:a2:a7:52 (ED25519)
+</span><span class="z-text z-plain">53/tcp    open  domain
+</span><span class="z-text z-plain">| dns-nsid: 
+</span><span class="z-text z-plain">|_  bind.version: dnsmasq-2.76
+</span><span class="z-text z-plain">80/tcp    open  http
+</span><span class="z-text z-plain">|_http-title: Site doesn&#39;t have a title (text/html; charset=UTF-8).
+</span><span class="z-text z-plain">1118/tcp  open  sacred
+</span><span class="z-text z-plain">32400/tcp open  plex
+</span><span class="z-text z-plain">|_ssl-date: TLS randomness does not represent time
+</span><span class="z-text z-plain">| ssl-cert: Subject: commonName=*.78063b2b367a4a389895262d75b0b03c.plex.direct/organizationName=Plex, Inc./stateOrProvinceName=CA/countryName=US
+</span><span class="z-text z-plain">| Subject Alternative Name: DNS:*.78063b2b367a4a389895262d75b0b03c.plex.direct
+</span><span class="z-text z-plain">| Not valid before: 2017-08-10T00:00:00
+</span><span class="z-text z-plain">|_Not valid after:  2018-08-10T12:00:00
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also run them on the UDP services.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.48<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>53,68,123,1900,1901,5353<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE         SERVICE
+</span><span class="z-text z-plain">53/udp   open          domain
+</span><span class="z-text z-plain">| dns-nsid: 
+</span><span class="z-text z-plain">|_  bind.version: dnsmasq-2.76
+</span><span class="z-text z-plain">68/udp   open|filtered dhcpc
+</span><span class="z-text z-plain">123/udp  open          ntp
+</span><span class="z-text z-plain">| ntp-info: 
+</span><span class="z-text z-plain">|_  
+</span><span class="z-text z-plain">1900/udp open|filtered upnp
+</span><span class="z-text z-plain">1901/udp open|filtered fjicl-tep-a
+</span><span class="z-text z-plain">5353/udp open          zeroconf
+</span><span class="z-text z-plain">| dns-service-discovery: 
+</span><span class="z-text z-plain">|   9/tcp workstation
+</span><span class="z-text z-plain">|     Address=10.10.10.48 dead:beef::9309:ce3c:9a:6056
+</span><span class="z-text z-plain">|   22/tcp udisks-ssh
+</span><span class="z-text z-plain">|_    Address=10.10.10.48 dead:beef::9309:ce3c:9a:6056
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">|_clock-skew: 1s
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="dns">DNS</h3>
+<p>Unfortunately, we can't communicate with the DNS server.</p>
+<h3 id="lighttpd">Lighttpd</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://10.10.10.48/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/mirai/lighttpd-homepage.png" alt="Lighttpd homepage" /></p>
+<p>It's just a blank page.</p>
+<h4 id="known-vulnerabilities">Known vulnerabilities</h4>
+<p>If we search <a href="https://www.exploit-db.com/">ExploitDB</a> for <code>Lighttpd 1.4</code>, we
+find
+<a href="https://www.exploit-db.com/exploits/31396">Lighttpd 1.4.x - mod_userdir Information Disclosure</a>
+(<a href="https://nvd.nist.gov/vuln/detail/CVE-2008-1270">CVE-2008-1270</a>). It could be
+interesting, but it doesn't work.</p>
+<h4 id="directory-fuzzing">Directory fuzzing</h4>
+<p>Let's see if this website hides unliked web pages and directories.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ffuf<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.48/FUZZ<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>mc</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>100-403,405-599<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[Status: 301, Size: 0, Words: 1, Lines: 1, Duration: 71ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.48/admin
+</span><span class="z-text z-plain">| --&gt; | http://10.10.10.48/admin/
+</span><span class="z-text z-plain">    * FUZZ: admin
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 18, Words: 1, Lines: 1, Duration: 74ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.48/versions
+</span><span class="z-text z-plain">    * FUZZ: versions
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 18, Words: 1, Lines: 1, Duration: 76ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.48/versions/
+</span><span class="z-text z-plain">    * FUZZ: versions/
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>We get a hit for <code>/admin</code>!</p>
+<h4 id="exploration-1">Exploration</h4>
+<p>Let's browse to <code>http://10.10.10.48/admin/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/mirai/lighttpd-admin-page.png" alt="Lighttpd admin page" /></p>
+<p>It's a dashboard for Pi-hole. What's that?</p>
+<blockquote>
+<p>The Pi-hole® is a DNS sinkhole that protects your devices from unwanted
+content without installing any client-side software.</p>
+<p>— <a href="https://github.com/pi-hole/pi-hole">GitHub</a></p>
+</blockquote>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this dashboard with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/mirai/lighttpd-admin-page-wappalyzer.png" alt="Lighttpd admin page Wappalyzer extension" /></p>
+<p>This reveals that this web page is using PHP.</p>
+<h4 id="exploration-2">Exploration</h4>
+<p>We can't do anything without being logged in.</p>
+<p>I tested common passwords contained in
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/top-passwords-shortlist.txt">this wordlist</a>
+by launching a Sniper attack on Burp Suite, but it failed.</p>
+<h4 id="known-vulnerabilities-1">Known vulnerabilities</h4>
+<p>If we search <a href="https://www.exploit-db.com/">ExploitDB</a> for <code>Pi-hole</code>, we find
+<a href="https://www.exploit-db.com/exploits/48491">Pi-Hole - heisenbergCompensator Blocklist OS Command Execution (Metasploit)</a>
+(<a href="https://nvd.nist.gov/vuln/detail/CVE-2020-11108">CVE-2020-11108</a>). That looks
+like a great way to get a foothold, since our version of Pi-hole should be
+affected by it, but unfortunately this box is not vulnerable to it.</p>
+<p>If we search online, we also find
+<a href="https://www.rapid7.com/db/modules/exploit/unix/http/pihole_whitelist_exec/">a RCE</a>,
+but it fails too.</p>
+<h3 id="plex">Plex</h3>
+<h4 id="exploration-3">Exploration</h4>
+<p>Let's browse to <code>http://10.10.10.48:32400/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/mirai/plex-login-page.png" alt="Plex login page" /></p>
+<p>We're redirected to <code>/web/index.html</code>, and we're presented a Plex login form.</p>
+<h4 id="fingerprinting-2">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/mirai/plex-homepage-wappalyzer.png" alt="Plex homepage Wappalyzer extension" /></p>
+<h4 id="exploration-4">Exploration</h4>
+<p>We don't know any credentials at this point. Luckily we can create an account!
+But if we do, we don't get access to noteworthy functionalities, and there's no
+installed Plex servers.</p>
+<h4 id="known-vulnerabilities-2">Known vulnerabilities</h4>
+<p>I couln't find the version of Plex, so I can't check for vulnerabilities.</p>
+<h2 id="foothold-ssh">Foothold (SSH)</h2>
+<p>After further research online, I found that Pi-hole is often installed on a
+Raspberry Pi.</p>
+<p>Older versions of Raspberry Pi OS automatically enabled SSH with the credentials
+<code>pi</code>:<code>raspberry</code>. It might be worth trying them, in case they haven't been
+changed.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>pi@10.10.10.48<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">The authenticity of host &#39;10.10.10.48 (10.10.10.48)&#39; can&#39;t be established.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">pi@10.10.10.48&#39;s password:
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">pi@raspberrypi:~ $
+</span></code></pre>
+<p>We got a shell. Nice!</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>pi</code> (obviously).</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Mirai's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">pi@raspberrypi:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span></span></span><span class="z-meta z-function-call z-arguments z-shell"> $ uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">i686
+</span></code></pre>
+<p>It's using i686. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="distribution">Distribution</h3>
+<p>Let's see which distribution Mirai is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">pi@raspberrypi:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span></span></span><span class="z-meta z-function-call z-arguments z-shell"> $ cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/os-release<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">PRETTY_NAME=&quot;Debian GNU/Linux 8 (jessie)&quot;
+</span><span class="z-text z-plain">NAME=&quot;Debian GNU/Linux&quot;
+</span><span class="z-text z-plain">VERSION_ID=&quot;8&quot;
+</span><span class="z-text z-plain">VERSION=&quot;8 (jessie)&quot;
+</span><span class="z-text z-plain">ID=debian
+</span><span class="z-text z-plain">HOME_URL=&quot;http://www.debian.org/&quot;
+</span><span class="z-text z-plain">SUPPORT_URL=&quot;http://www.debian.org/support&quot;
+</span><span class="z-text z-plain">BUG_REPORT_URL=&quot;https://bugs.debian.org/&quot;
+</span></code></pre>
+<p>Okay, so it's Debian 8.</p>
+<h3 id="kernel">Kernel</h3>
+<p>Let's find the kernel version of Mirai.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">pi@raspberrypi:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span></span></span><span class="z-meta z-function-call z-arguments z-shell"> $ uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">3.16.0-4-686-pae
+</span></code></pre>
+<p>It's <code>3.16.0</code>.</p>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">pi@raspberrypi:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span></span></span><span class="z-meta z-function-call z-arguments z-shell"> $ grep <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.*sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/passwd<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">pi
+</span><span class="z-text z-plain">plex
+</span><span class="z-text z-plain">root
+</span></code></pre>
+<p>There's <code>pi</code> (us), <code>plex</code> and <code>root</code>.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">pi@raspberrypi:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span></span></span><span class="z-meta z-function-call z-arguments z-shell"> $ cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/group<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">avahi
+</span><span class="z-text z-plain">backup
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">bluetooth
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">crontab
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">fax
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">gnats
+</span><span class="z-text z-plain">gpio
+</span><span class="z-text z-plain">i2c
+</span><span class="z-text z-plain">input
+</span><span class="z-text z-plain">irc
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">lightdm
+</span><span class="z-text z-plain">list
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">lpadmin
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">messagebus
+</span><span class="z-text z-plain">netdev
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nogroup
+</span><span class="z-text z-plain">ntp
+</span><span class="z-text z-plain">operator
+</span><span class="z-text z-plain">pi
+</span><span class="z-text z-plain">pihole
+</span><span class="z-text z-plain">plex
+</span><span class="z-text z-plain">plugdev
+</span><span class="z-text z-plain">proxy
+</span><span class="z-text z-plain">pulse
+</span><span class="z-text z-plain">pulse-access
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">rtkit
+</span><span class="z-text z-plain">sasl
+</span><span class="z-text z-plain">shadow
+</span><span class="z-text z-plain">spi
+</span><span class="z-text z-plain">src
+</span><span class="z-text z-plain">ssh
+</span><span class="z-text z-plain">staff
+</span><span class="z-text z-plain">sudo
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">systemd-bus-proxy
+</span><span class="z-text z-plain">systemd-journal
+</span><span class="z-text z-plain">systemd-network
+</span><span class="z-text z-plain">systemd-resolve
+</span><span class="z-text z-plain">systemd-timesync
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">voice
+</span><span class="z-text z-plain">www-data
+</span></code></pre>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">pi@raspberrypi:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span></span></span><span class="z-meta z-function-call z-arguments z-shell"> $ ifconfig</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">eth0      Link encap:Ethernet  HWaddr 00:50:56:b9:87:99  
+</span><span class="z-text z-plain">          inet addr:10.10.10.48  Bcast:10.10.10.255  Mask:255.255.255.0
+</span><span class="z-text z-plain">          inet6 addr: dead:beef::320e:a68c:f5fb:efba/64 Scope:Global
+</span><span class="z-text z-plain">          inet6 addr: fe80::250:56ff:feb9:8799/64 Scope:Link
+</span><span class="z-text z-plain">          inet6 addr: fe80::6ec5:1f0f:8082:c0df/64 Scope:Link
+</span><span class="z-text z-plain">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span><span class="z-text z-plain">          RX packets:4884 errors:0 dropped:18 overruns:0 frame:0
+</span><span class="z-text z-plain">          TX packets:11369 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class="z-text z-plain">          collisions:0 txqueuelen:1000 
+</span><span class="z-text z-plain">          RX bytes:364428 (355.8 KiB)  TX bytes:12361462 (11.7 MiB)
+</span><span class="z-text z-plain">          Interrupt:19 Base address:0x2000 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">lo        Link encap:Local Loopback  
+</span><span class="z-text z-plain">          inet addr:127.0.0.1  Mask:255.0.0.0
+</span><span class="z-text z-plain">          inet6 addr: ::1/128 Scope:Host
+</span><span class="z-text z-plain">          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+</span><span class="z-text z-plain">          RX packets:5482 errors:0 dropped:0 overruns:0 frame:0
+</span><span class="z-text z-plain">          TX packets:5482 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class="z-text z-plain">          collisions:0 txqueuelen:0 
+</span><span class="z-text z-plain">          RX bytes:1758530 (1.6 MiB)  TX bytes:1758530 (1.6 MiB)
+</span></code></pre>
+<p>There's an Ethernet interface and the loopback interface.</p>
+<h3 id="hostname">Hostname</h3>
+<p>What is Mirai's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">pi@raspberrypi:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span></span></span><span class="z-meta z-function-call z-arguments z-shell"> $ hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">raspberrypi
+</span></code></pre>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check the <code>Desktop</code> directory in our home folder, we find the user flag.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">pi@raspberrypi:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span></span></span><span class="z-meta z-function-call z-arguments z-shell"> $ cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/home/pi/Desktop/user.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ff837707441b257a20e32199d7c8838d
+</span></code></pre>
+<h3 id="sudo-permissions">Sudo permissions</h3>
+<p>Let's see if we can execute anything as another user with <code>sudo</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">pi@raspberrypi:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span></span></span><span class="z-meta z-function-call z-arguments z-shell"> $ sudo<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Matching Defaults entries for pi on localhost:
+</span><span class="z-text z-plain">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">User pi may run the following commands on localhost:
+</span><span class="z-text z-plain">    (ALL : ALL) ALL
+</span><span class="z-text z-plain">    (ALL) NOPASSWD: ALL
+</span></code></pre>
+<p>We can run anything as <code>root</code>!</p>
+<h2 id="privilege-escalation-sudo-permissions">Privilege escalation (Sudo permissions)</h2>
+<h3 id="exploitation">Exploitation</h3>
+<p>Let's get an elevated shell:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">pi@raspberrypi:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span></span></span><span class="z-meta z-function-call z-arguments z-shell"> $ sudo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>su<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>-<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root@raspberrypi:~#
+</span></code></pre>
+<p>Yay!</p>
+<h3 id="establishing-persistence">Establishing persistence</h3>
+<p>Let's use SSH to establish persistence.</p>
+<p>Our home folder contains a <code>.ssh</code> folder. There's no existing private key, so
+I'll create one, and I'll add the corresponding public key to <code>authorized_keys</code>.</p>
+<p>It won't be enough to connect over SSH to Mirai though, since the
+<code>/etc/ssh/sshd_config</code> has the line <code>PubkeyAuthentication no</code>. I'll set it to
+<code>yes</code>, and I'll restart the SSH service.</p>
+<p>Finally, I'll connect over SSH to Mirai as <code>root</code>.</p>
+<h2 id="system-enumeration-1">System enumeration</h2>
+<h3 id="home-folders">Home folders</h3>
+<p>If we check our home folder, we find a <code>root.txt</code> file. However, it doesn't
+contain the flag...</p>
+<pre class="z-code"><code><span class="z-text z-plain">I lost my original root.txt! I think I may have a backup on my USB stick...
+</span></code></pre>
+<p>Apparently, the original file has been modified, but we can find a backup on a
+USB stick.</p>
+<h3 id="drives">Drives</h3>
+<p>Let's retrieve the list of connected drives.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@raspberrypi:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>#</span></span><span class="z-meta z-function-call z-arguments z-shell"> lsblk</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+</span><span class="z-text z-plain">sda      8:0    0   10G  0 disk 
+</span><span class="z-text z-plain">├─sda1   8:1    0  1.3G  0 part /lib/live/mount/persistence/sda1
+</span><span class="z-text z-plain">└─sda2   8:2    0  8.7G  0 part /lib/live/mount/persistence/sda2
+</span><span class="z-text z-plain">sdb      8:16   0   10M  0 disk /media/usbstick
+</span><span class="z-text z-plain">sr0     11:0    1 1024M  0 rom  
+</span><span class="z-text z-plain">loop0    7:0    0  1.2G  1 loop /lib/live/mount/rootfs/filesystem.squashfs
+</span></code></pre>
+<p>A USB stick is likely mouted at <code>/media/usbstick</code>.</p>
+<h3 id="exploring-dev-sdb">Exploring <code>/dev/sdb</code></h3>
+<p>If we check the folder where the USB stick is mounted, we only find a
+<code>damnit.txt</code> file:</p>
+<pre class="z-code"><code><span class="z-text z-plain">Damnit! Sorry man I accidentally deleted your files off the USB stick.
+</span><span class="z-text z-plain">Do you know if there is any way to get them back?
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">-James
+</span></code></pre>
+<p>Apparently, James deleted the backup files on the USB stick. Luckily, there's
+still the <code>lost+found</code> folder, so we can recover the deleted files!</p>
+<p>Except that this folder is empty, meaning that this is no lost files to recover.
+Does that mean that we're at a dead end?</p>
+<p>No. When you delete a file using standard commands, the operating system just
+removes the pointer to the file's location on the drive, not the actual content
+itself. This means that the data might still be physically present on the disk,
+so we may be able to use <code>strings</code> to recover it!</p>
+<h3 id="flags-1">Flags</h3>
+<p>We know we're looking for a string of 32 characters that was present on the
+<code>/dev/sdb</code> drive. Let's see if we manage to find it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@raspberrypi:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>#</span></span><span class="z-meta z-function-call z-arguments z-shell"> strings <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/sdb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>E</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>^.{32}$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">3d3e483143ff12ec505d026fa13e020b
+</span></code></pre>
+<p>It worked!</p>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/mirai/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated the user flag as 'Not too easy' and the root flag as 'Easy'. The
+foothold was hard to find, since there were different services that all led to
+dead ends. They were rather hints indicating that Mirai was actually a Raspberry
+Pi, and combined with further research online it gave away the foothold. The
+privilege escalation was trivial to find and to exploit, however the root flag
+wasn't that easy to find, and I lost a bit of time messing with the <code>lost+found</code>
+folder.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

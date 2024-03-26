@@ -1,0 +1,1 @@
+header{display:flex;flex-direction:row;flex-wrap:wrap;justify-content:space-between;padding:1.125rem 0}header .left,header .right{align-self:center;margin-bottom:.625rem}header .left{display:flex;flex-direction:row;flex-wrap:wrap;font-size:1.5rem;gap:1rem}header .right{display:flex;flex-direction:row;flex-wrap:wrap}

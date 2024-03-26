@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="Atomic puzzles to train a specific hacking skill.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;challenges#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    
+    
+    
+        <div class="page-h1">
+            Challenges<span>.</span>
+        </div>
+    
+
+    <p>Challenges are atomic cybersecurity puzzles. Unlike boxes, challenges are much
+shorter to complete and focus on a single hacking field. The goal is also to
+find <em>flags</em> (special strings) proving that we have successfully completed the
+challenge.</p>
+<p>Challenges come in four difficulties:</p>
+<ul>
+<li><strong>Very easy</strong></li>
+<li><strong>Easy</strong></li>
+<li><strong>Medium</strong></li>
+<li><strong>Hard</strong></li>
+</ul>
+<p>HTB hosts many kinds of challenges, ranging from very hands-on to much more
+conceptual ones:</p>
+<ul>
+<li><strong>Blockchain</strong></li>
+<li><strong>Crypto</strong></li>
+<li><strong>Forensics</strong></li>
+<li><strong>GamePwn</strong></li>
+<li><strong>Hardware</strong></li>
+<li><strong>Misc</strong></li>
+<li><strong>Mobile</strong></li>
+<li><strong>OSINT</strong></li>
+<li><strong>Pwn</strong></li>
+<li><strong>Reversing</strong></li>
+<li><strong>Web</strong></li>
+</ul>
+<p>Currently, there is no way to see a full list of HTB challenges other than
+logging in into HTB and browsing the 'Challenges' section.</p>
+<p>Below are my write-ups for the challenges I completed.</p>
+
+    <div class="cards">
+        
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/biobundle/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;biobundle&#x2F;">
+                                BioBundle
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-26</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is a medium Reversing challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/spellbrewery/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;spellbrewery&#x2F;">
+                                SpellBrewery
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-24</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Reversing challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/teleport/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;teleport&#x2F;">
+                                Teleport
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-24</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is a medium Reversing challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/curlasaservice/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;curlasaservice&#x2F;">
+                                CurlAsAService
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-23</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Web challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/rebuilding/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;rebuilding&#x2F;">
+                                Rebuilding
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-23</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Reversing challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/shattered-tablet/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;shattered-tablet&#x2F;">
+                                Shattered Tablet
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-23</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is a very easy Reversing challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;baby-crypt&#x2F;">
+                                Baby Crypt
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-22</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Reversing challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/baby-re/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;baby-re&#x2F;">
+                                Baby RE
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-21</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Reversing challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/snakecode/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;snakecode&#x2F;">
+                                Snakecode
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-21</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Reversing challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/wide/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;wide&#x2F;">
+                                WIDE
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-21</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is a very easy Reversing challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/you-cant-c-me/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;you-cant-c-me&#x2F;">
+                                You Cant C Me
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-21</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Reversing challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/baby-bonechewercon/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;baby-bonechewercon&#x2F;">
+                                baby BoneChewerCon
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-17</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Web challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/full-stack-conf/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;full-stack-conf&#x2F;">
+                                Full Stack Conf
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-17</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Web challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/hunting-license/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;hunting-license&#x2F;">
+                                Hunting License
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-16</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is a very easy Reversing challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/trapped-source/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;trapped-source&#x2F;">
+                                Trapped Source
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-16</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is a very easy Web challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/ouija/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;ouija&#x2F;">
+                                Ouija
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-14</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Reversing challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.svg"
+                            src="https://mmezirard.github.io/htb-write-ups/challenges/secured-transfer/cover.svg"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;challenges&#x2F;secured-transfer&#x2F;">
+                                Secured Transfer
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-14</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Reversing challenge.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+    </div>
+
+
+        <footer></footer>
+
+    </body>
+</html>

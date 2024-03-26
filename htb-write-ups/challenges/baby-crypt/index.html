@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Reversing challenge.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;challenges&#x2F;baby-crypt#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Baby Crypt<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2024-03-22</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.svg"
+                src="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/cover.svg"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#files">Files</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#static-analysis">Static analysis</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#properties">Properties</a>
+                                </li>
+
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#libraries">Libraries</a>
+                                </li>
+
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#imports">Imports</a>
+                                </li>
+
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#strings">Strings</a>
+                                </li>
+
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#dynamic-analysis">Dynamic analysis</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#execution">Execution</a>
+                                </li>
+
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#static-analysis-1">Static analysis</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#decompilation">Decompilation</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#main">main</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#putting-everything-together">Putting everything together</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>Category</strong>: Reversing</p>
+<p><strong>Release date</strong>: 2021-04-12</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/8308">MinatoTW</a></p>
+<p><strong>Description</strong>: Give me the key and take what's yours.</p>
+<h1 id="setup">Setup</h1>
+<p>I'll complete this challenge using a Kali Linux VM. I'll create a <code>workspace</code>
+directory at <code>/</code> to hold all the files related to this challenge, and the
+commands ran on my machine will be prefixed with <code>❯</code> for clarity.</p>
+<h1 id="files">Files</h1>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> tree<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>a</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">/workspace
+</span><span class="z-text z-plain">└── baby_crypt
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>This challenge is comprised of a single file named <code>baby_crypt</code>.</p>
+<h1 id="static-analysis">Static analysis</h1>
+<p>Let's start by statically analyzing the <code>baby_crypt</code> file using the Rizin
+toolkit.</p>
+<h2 id="properties">Properties</h2>
+<p>Let's inspect the properties of this file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> file <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/baby_crypt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">baby_crypt: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=24af7e68eab982022ea63c1828813c3bfa671b51, for GNU/Linux 3.2.0, not stripped
+</span></code></pre>
+<p>This is an ELF 64-bit, LSB executable.</p>
+<h2 id="libraries">Libraries</h2>
+<p>Let's find out which libraries are used by this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/baby_crypt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Libs]
+</span><span class="z-text z-plain">library   
+</span><span class="z-text z-plain">----------
+</span><span class="z-text z-plain">libc.so.6
+</span></code></pre>
+<p>This binary uses the <code>libc.so.6</code> library, which provides the fundamental
+functionalities for programs written in C.</p>
+<h2 id="imports">Imports</h2>
+<p>Now, let's find the list of objects imported by this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/baby_crypt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Imports]
+</span><span class="z-text z-plain">nth vaddr      bind   type   lib name                        
+</span><span class="z-text z-plain">-------------------------------------------------------------
+</span><span class="z-text z-plain">1   ---------- WEAK   NOTYPE     _ITM_deregisterTMCloneTable
+</span><span class="z-text z-plain">2   0x00001080 GLOBAL FUNC       __stack_chk_fail
+</span><span class="z-text z-plain">3   0x00001090 GLOBAL FUNC       printf
+</span><span class="z-text z-plain">4   ---------- GLOBAL FUNC       __libc_start_main
+</span><span class="z-text z-plain">5   0x000010a0 GLOBAL FUNC       fgets
+</span><span class="z-text z-plain">6   ---------- WEAK   NOTYPE     __gmon_start__
+</span><span class="z-text z-plain">7   0x000010b0 GLOBAL FUNC       malloc
+</span><span class="z-text z-plain">8   ---------- WEAK   NOTYPE     _ITM_registerTMCloneTable
+</span><span class="z-text z-plain">9   ---------- WEAK   FUNC       __cxa_finalize
+</span></code></pre>
+<p>This binary imports functions like <code>printf</code>, but also <code>fgets</code>, so we can expect
+to see text printed to the terminal and to be asked for input.</p>
+<h2 id="strings">Strings</h2>
+<p>Finally, let's retrieve the list of strings contained in this binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rz-bin<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>z</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/baby_crypt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[Strings]
+</span><span class="z-text z-plain">nth paddr      vaddr      len size section type  string                                       
+</span><span class="z-text z-plain">----------------------------------------------------------------------------------------------
+</span><span class="z-text z-plain">0   0x00002008 0x00002008 44  45   .rodata ascii Give me the key and I&#39;ll give you the flag: 
+</span><span class="z-text z-plain">1   0x00002035 0x00002035 6   7    .rodata ascii %.26s\n
+</span></code></pre>
+<p>This binary probably asks for a key to obtain the flag.</p>
+<h1 id="dynamic-analysis">Dynamic analysis</h1>
+<p>Now that we have an idea of what this binary could be doing, let's see what it
+really does.</p>
+<h2 id="execution">Execution</h2>
+<p>Let's execute this binary on Linux.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/baby_crypt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Give me the key and I&#39;ll give you the flag: 
+</span></code></pre>
+<p>We're indeed asked to enter a key. I'll enter a random one:</p>
+<pre class="z-code"><code><span class="z-text z-plain">Give me the key and I&#39;ll give you the flag: hello?
+</span><span class="z-text z-plain">WYd-+m
+</span><span class="z-text z-plain">*l
+</span><span class="z-text z-plain">nlf@7b@=/gei&gt;(
+</span></code></pre>
+<p>The output is gibberish.</p>
+<h1 id="static-analysis-1">Static analysis</h1>
+<h2 id="decompilation">Decompilation</h2>
+<p>I'll load <code>baby_crypt</code> with the default options using Binary Ninja.</p>
+<p>As usual, I'll start by exploring the <code>main</code> function.</p>
+<h3 id="main"><code>main</code></h3>
+<pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-storage z-type z-c">int</span> <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">main</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-storage z-type z-c">int</span> <span class="z-variable z-parameter z-c">argc</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">argv</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">envp</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c"> </span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">printf</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>Give me the key and I&#39;ll give you the flag: <span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span>input <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">malloc</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-constant z-numeric z-integer z-decimal z-c">4</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">fgets</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">input<span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-numeric z-integer z-decimal z-c">4</span><span class="z-punctuation z-separator z-c">,</span> stdin</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-storage z-type z-c">char</span> encryptedFlag<span class="z-meta z-brackets z-c"><span class="z-punctuation z-section z-brackets z-begin z-c">[</span><span class="z-constant z-numeric z-integer z-decimal z-c">24</span><span class="z-punctuation z-section z-brackets z-end z-c">]</span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">memcpy</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">encryptedFlag<span class="z-punctuation z-separator z-c">,</span>
+</span></span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">           <span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span><span class="z-constant z-character z-escape z-c">\x3f</span><span class="z-constant z-character z-escape z-c">\x64</span><span class="z-constant z-character z-escape z-c">\x35</span><span class="z-constant z-character z-escape z-c">\x0c</span><span class="z-constant z-character z-escape z-c">\x48</span><span class="z-constant z-character z-escape z-c">\x47</span><span class="z-constant z-character z-escape z-c">\x05</span><span class="z-constant z-character z-escape z-c">\x6f</span><span class="z-constant z-character z-escape z-c">\x46</span><span class="z-constant z-character z-escape z-c">\x04</span><span class="z-constant z-character z-escape z-c">\x6f</span><span class="z-constant z-character z-escape z-c">\x02</span><span class="z-constant z-character z-escape z-c">\x04</span><span class="z-constant z-character z-escape z-c">\x03</span><span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span>
+</span></span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">           <span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span><span class="z-constant z-character z-escape z-c">\x13</span><span class="z-constant z-character z-escape z-c">\x28</span><span class="z-constant z-character z-escape z-c">\x52</span><span class="z-constant z-character z-escape z-c">\x0e</span><span class="z-constant z-character z-escape z-c">\x28</span><span class="z-constant z-character z-escape z-c">\x58</span><span class="z-constant z-character z-escape z-c">\x43</span><span class="z-constant z-character z-escape z-c">\x0f</span><span class="z-constant z-character z-escape z-c">\x00</span><span class="z-constant z-character z-escape z-c">\x05</span><span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span><span class="z-punctuation z-separator z-c">,</span>
+</span></span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">           <span class="z-keyword z-operator z-word z-c">sizeof</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span><span class="z-meta z-group z-c">encryptedFlag</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-c">for</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-storage z-type z-c">int</span> i <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-terminator z-c">;</span> i <span class="z-keyword z-operator z-comparison z-c">&lt;</span> <span class="z-constant z-numeric z-integer z-decimal z-c">24</span><span class="z-punctuation z-terminator z-c">;</span> i<span class="z-keyword z-operator z-arithmetic z-c">++</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">        encryptedFlag<span class="z-meta z-brackets z-c"><span class="z-punctuation z-section z-brackets z-begin z-c">[</span>i<span class="z-punctuation z-section z-brackets z-end z-c">]</span></span> <span class="z-keyword z-operator z-assignment z-augmented z-c">^=</span> input<span class="z-meta z-brackets z-c"><span class="z-punctuation z-section z-brackets z-begin z-c">[</span>i <span class="z-keyword z-operator z-arithmetic z-c">%</span> <span class="z-constant z-numeric z-integer z-decimal z-c">3</span><span class="z-punctuation z-section z-brackets z-end z-c">]</span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">printf</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span><span class="z-constant z-other z-placeholder z-c">%.26s</span><span class="z-constant z-character z-escape z-c">\n</span><span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span><span class="z-punctuation z-separator z-c">,</span> encryptedFlag</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">free</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">input</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">    <span class="z-keyword z-control z-flow z-return z-c">return</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
+</span></code></pre>
+<p>This program iterates over each character of the ciphertext
+<code>\x3f\x64\x35\x0c\x48\x47\x05\x6f\x46\x04\x6f\x02\x04\x03\x13\x28\x52\x0e\x28\x58\x43\x0f\x00\x05</code>,
+and XOR's it with the corresponding character in the user input modulo <code>3</code>.</p>
+<h1 id="putting-everything-together">Putting everything together</h1>
+<p>This is an example of a XOR cipher. This means that the flag has been encrypted
+with a specific key, used for both encryption and decryption. Unfortunately it's
+not hardcoded in the program.</p>
+<p>Let's think for a bit. We have the encrypted flag, and we know that the flag
+starts with the character <code>HTB</code>. Therefore, we simply have to find the key that,
+when XOR'ed with the first three characters of the encrypted flag
+(<code>\x3f\x64\x35</code>), will give us the <code>HTB</code> (<code>\x48\x54\42</code>) string!</p>
+<p>Based on the decompilation of the program, only the first three characters that
+we enter are used for decryption. This means that the key we'll obtain this way
+will be valid for the whole encrypted flag!</p>
+<p>To obtain the result of the XOR operation, I'll open
+<a href="https://gchq.github.io/CyberChef/">CyberChef</a> and I'll set the key to
+<code>0x48 0x54 0x42</code>. Then, I'll cook:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/cyberchef-xor-key.png" alt="CyberChef XOR key" /></p>
+<p>The key is <code>w0w</code>!</p>
+<p>Let's run the binary once again, and enter this as the key.</p>
+<pre class="z-code"><code><span class="z-text z-plain">HTB{x0r_1s_us3d_by_h4x0r!}
+</span></code></pre>
+<p>We got the flag!</p>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/challenges/baby-crypt/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated this challenge as 'Very easy'. The decompiled code was really close to
+the reality, and it was easy to understand. The key required to obtain the flag
+wasn't written in cleartext, but it was really straightforward to obtain
+nevertheless.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

